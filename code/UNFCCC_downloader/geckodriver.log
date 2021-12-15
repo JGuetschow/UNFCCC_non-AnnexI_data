@@ -1,0 +1,325 @@
+1639489303113	geckodriver	INFO	Listening on 127.0.0.1:36971
+1639489303122	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "55379" "-no-remote" "-profile" "/tmp/rust_mozprofile9OdzVS"
+*** You are running in headless mode.
+1639489303441	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile9OdzVS/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:55379/devtools/browser/446169f6-56cc-46e9-a2df-5b2af08f4a0d
+1639489304559	Marionette	INFO	Listening on port 45285
+1639489305183	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=345740736, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=345740736, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=345740736 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1441738465, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1441738465, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1441738465, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1441738465 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1441738465 line 1 > eval, line 1: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1639491659261	Marionette	INFO	Stopped listening on port 45285
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x39014B,name=PContent::Reply_DiscardBrowsingContext) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x39014B,name=PContent::Reply_DiscardBrowsingContext) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x390078,name=PContent::Msg_DestroyBrowsingContextGroup) Closed channel: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1639519367756	geckodriver	INFO	Listening on 127.0.0.1:45997
+1639519367765	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "55675" "-no-remote" "-profile" "/tmp/rust_mozprofileWeTifT"
+*** You are running in headless mode.
+1639519368079	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileWeTifT/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:55675/devtools/browser/5d6d5d76-20ee-4bef-95b8-04e7aea90d59
+1639519369212	Marionette	INFO	Listening on port 41425
+1639519369782	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=501642850, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=501642850, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=501642850 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1559132565, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1559132565, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1559132565 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1559132565 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1341423317, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=586920354, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=586920354, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=586920354, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=586920354 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=586920354 line 1 > eval, line 1: unreachable code after return statement
+1639521678119	Marionette	INFO	Stopped listening on port 41425
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1639522190707	geckodriver	INFO	Listening on 127.0.0.1:49737
+1639522190715	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "37063" "-no-remote" "-profile" "/tmp/rust_mozprofileUuvqyX"
+*** You are running in headless mode.
+1639522191027	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileUuvqyX/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:37063/devtools/browser/7a532d0e-d7a3-4f3e-a58a-e434522bc104
+1639522192282	Marionette	INFO	Listening on port 44663
+1639522192332	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=369187400, line 1: unreachable code after return statement
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1639522221660	geckodriver	INFO	Listening on 127.0.0.1:51591
+1639522221672	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "59599" "-no-remote" "-profile" "/tmp/rust_mozprofileqkRORJ"
+*** You are running in headless mode.
+1639522221983	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileqkRORJ/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:59599/devtools/browser/ddd83448-7b3e-4ad2-8f04-ee49aba676f6
+1639522223193	Marionette	INFO	Listening on port 44401
+1639522223292	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1008579160, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1008579160, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1008579160, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1008579160 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1008579160 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=43705666, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=43705666, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=43705666, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=43705666 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=43705666 line 1 > eval, line 1: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=683313443, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=683313443, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=683313443, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=683313443 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=683313443 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=479209735, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=479209735, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=479209735, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=479209735 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=479209735 line 1 > eval, line 1: unreachable code after return statement
+1639562607763	geckodriver	INFO	Listening on 127.0.0.1:37307
+1639562607779	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "56139" "-no-remote" "-profile" "/tmp/rust_mozprofileJbjmrs"
+*** You are running in headless mode.
+1639562608071	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileJbjmrs/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:56139/devtools/browser/ef5bf6cf-44aa-4b33-a89b-8c71adf75d21
+1639562609415	Marionette	INFO	Listening on port 38739
+1639562609506	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1587880517, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1587880517, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1587880517 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1587880517 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1012903015, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1012903015, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1012903015, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1012903015 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1012903015 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=452816995, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=452816995, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=452816995, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=452816995 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=452816995 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1569644567, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1569644567, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1569644567, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1569644567 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1569644567 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1264231927, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1264231927, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1264231927, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1264231927 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1264231927 line 1 > eval, line 1: unreachable code after return statement
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1639568647606	geckodriver	INFO	Listening on 127.0.0.1:60257
+1639568647621	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "37223" "-no-remote" "-profile" "/tmp/rust_mozprofileXRgyAl"
+*** You are running in headless mode.
+1639568647955	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileXRgyAl/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:37223/devtools/browser/6f7b746b-ac46-4029-aad4-beb8b32838dd
+1639568649161	Marionette	INFO	Listening on port 38769
+1639568649240	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=940281896, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=940281896, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=940281896, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=940281896 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=940281896 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=18&cb=1674316200, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=18&cb=1674316200, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=18&cb=1674316200, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=18&cb=1674316200 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=18&cb=1674316200 line 1 > eval, line 1: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=2110260988, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=877430967, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=877430967, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=877430967 line 1 > eval, line 1: unreachable code after return statement
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1639572649708	geckodriver	INFO	Listening on 127.0.0.1:57099
+1639572649723	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "57055" "-no-remote" "-profile" "/tmp/rust_mozprofileVIy81L"
+*** You are running in headless mode.
+1639572650051	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileVIy81L/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:57055/devtools/browser/2b011480-9277-44a6-aa3d-25da1740f11d
+1639572651352	Marionette	INFO	Listening on port 45401
+1639572651455	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=729224458, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=729224458, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=729224458, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=729224458 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=729224458 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1757070102, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1757070102, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1757070102 line 1 > eval, line 1: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1593556860, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1593556860, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1593556860, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1593556860 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1593556860 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1606842064, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1606842064, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1606842064, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1606842064 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1606842064 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1794742705, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1794742705, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1794742705, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1794742705 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1794742705 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1526827964, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1526827964, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1526827964, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1526827964 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1526827964 line 1 > eval, line 1: unreachable code after return statement
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1639576844396	geckodriver	INFO	Listening on 127.0.0.1:50165
+1639576844405	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "35695" "-no-remote" "-profile" "/tmp/rust_mozprofileTLGyEl"
+*** You are running in headless mode.
+1639576844722	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileTLGyEl/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:35695/devtools/browser/db1f6191-9d5e-4a61-88d4-70e4552930cc
+1639576846159	Marionette	INFO	Listening on port 37179
+1639576846233	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=7577239, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=7577239, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=7577239, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=7577239 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=7577239 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=17&cb=1618497072, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=17&cb=1618497072, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=17&cb=1618497072, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=17&cb=1618497072 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=17&cb=1618497072 line 1 > eval, line 1: unreachable code after return statement
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1639577495724	Marionette	INFO	Stopped listening on port 37179
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x39014B,name=PContent::Reply_DiscardBrowsingContext) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x390078,name=PContent::Msg_DestroyBrowsingContextGroup) Closed channel: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1639577577428	geckodriver	INFO	Listening on 127.0.0.1:48879
+1639577577433	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "38855" "-no-remote" "-profile" "/tmp/rust_mozprofilelnvtTm"
+*** You are running in headless mode.
+1639577577751	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.info: MINT: Trying to use the system region (based on LANG).
+console.info: MINT: System region is US
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilelnvtTm/search.json.mozlz4", (void 0)))
+console.info: MINT: Loading search-config defaults.
+JavaScript error: resource:///modules/BrowserGlue.jsm, line 4097: TypeError: invalid assignment to const 'dialogReason'
+DevTools listening on ws://localhost:38855/devtools/browser/b97da37e-320f-44a0-a8a1-e821bbc1897b
+1639577579121	Marionette	INFO	Listening on port 40509
+1639577579204	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=783948350, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=783948350, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=783948350 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=783948350 line 1 > eval, line 1: unreachable code after return statement
+console.info: MINT: main/search-config update being skipped
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1798553905, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1798553905, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1798553905, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1798553905 line 1 > eval, line 1: unreachable code after return statement
+JavaScript warning: https://unfccc.int/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=1&cb=1798553905 line 1 > eval, line 1: unreachable code after return statement
