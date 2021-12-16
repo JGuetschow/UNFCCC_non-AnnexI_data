@@ -23,9 +23,9 @@ based on download_bur from national-inventory-submissions
 ###############
 
 submissions = pd.read_csv(root / "downloaded_data" / "UNFCCC" /
-                          "submissions-bur.csv")
+                          "submissions-nc.csv")
 
-url = "https://unfccc.int/BURs"
+url = "https://unfccc.int/non-annex-I-NCs"
 
 # if we get files of this size they are error pages and we need to
 # try the download again
@@ -35,7 +35,7 @@ error_file_sizes = [212, 210]
 present_BURs = submissions.Kind.unique()
 
 # Ensure download path and subfolders exist
-download_path = root / "downloaded_data/UNFCCC"
+download_path = root / "downloaded_data" / "UNFCCC"
 if not download_path.exists():
     download_path.mkdir(parents=True)
 
@@ -142,4 +142,4 @@ for idx, submission in submissions.iterrows():
 driver.close()
 
 df = pd.DataFrame(new_downloaded)
-df.to_csv(download_path / "00_new_downloads_bur-{}.csv".format(date.today()), index=False)
+df.to_csv(download_path / "00_new_downloads_nc-{}.csv".format(date.today()), index=False)
