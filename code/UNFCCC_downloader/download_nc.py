@@ -31,9 +31,6 @@ url = "https://unfccc.int/non-annex-I-NCs"
 # try the download again
 error_file_sizes = [212, 210]
 
-# find which BUR submission rounds exist
-present_BURs = submissions.Kind.unique()
-
 # Ensure download path and subfolders exist
 download_path = root / "downloaded_data" / "UNFCCC"
 if not download_path.exists():

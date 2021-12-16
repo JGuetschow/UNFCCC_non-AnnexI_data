@@ -1,5 +1,5 @@
 # Collaborative UNFCCC non-AnnexI dataset
-Currently under initial development and not meant for wider use.
+Currently under initial development and not meant for wider use. code is based on [national-inventory-submissions](https://github.com/openclimatedata/national-inventory-submisions)
 
 ## Description
 ### Structure
