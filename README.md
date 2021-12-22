@@ -2,15 +2,76 @@
 Currently under initial development and not meant for wider use. code is based on [national-inventory-submissions](https://github.com/openclimatedata/national-inventory-submisions)
 
 ## Description
-### Structure
+### Repository structure
 The repository is structured by folders
 
 * **downloaded_data** This folder contains data downloaded from the UNFCCC website and other sources. For Biannual Update Reports (BUR), national Communications (NC), and Nationally Determined Contributions (NDC) an automatical dowloaded exists (folder UNFCCC). Within the UNFCCC folder the data is organized in a *\<country\>/\<submission\>* structure. NDC submissions are often revised. To be able to keep track of the targets and emissions inventories we store each NDC revision in a time-stamped folder. The *non-UNFCCC* folder contains official country inventories not (yet) submitted to the UNFCCC. The internal structure is the same as for the UNFCCC folder.
 * **analyzed_submissions** Here we collect all files needed to extract data from submissions. Subfolders are countries (use the same names as in the *downloaded data* folder) and within the country folders each submission / report should have it's own subfolder, e.g. *Argentina/BUR1*. National Inventory Reports (NIR) are submitted together with BURs or NCs and have no individual folder but are used as additional inputs to their BUR or NC. As the repository is in the process of being set up, there currently is no data available.
 * **extracted_data** This folder holds all extracted datasets in primap2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>_\<term\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, and *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996. As the repository is in the process of being set up, there currently is no data available.
-* **legacy_data** This folder holds all extracted datasets in primap2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>_\<term\>_\<extra\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996, and *\<extra\>* is a free identifier to distinguish several files for the same submission (in some cases data for e.g. fluorinated gases are in a seperate file). This folder also holds data where the code or some input files are not publicly available. Our aim is to reduce data in this folder to zero and to create fully open source processes for all datasets such that they can be included in the main folder.
+* **legacy_data** This folder holds all extracted datasets in primap2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>\_\<term\>\_\<extra\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996, and *\<extra\>* is a free identifier to distinguish several files for the same submission (in some cases data for e.g. fluorinated gases are in a seperate file). This folder also holds data where the code or some input files are not publicly available. Our aim is to reduce data in this folder to zero and to create fully open source processes for all datasets such that they can be included in the main folder.
 * **code** Code that is used for several countries / reports, but not (yet) part of the primap2 package. This folder also contains scripts that automate data reading for all analyzed suubmissions or subsets (e.g. all first BURs) and code to generate composite datasets. Currently the only subfolder is the *UNFCCC_downloader* where code to automatically download BUR and NC submission files from the [UNFCCC website](https://www.unfccc.int) resides.
 * **composite_datasets** This folder contains generated composite datasets in primap2 interchnage format. Each dataset has it's own subfolder which should contain a dataset name, a version, and publication date (e.g. year). As the repository is in the process of being set up, there currently is no data available.
+
+
+### Data format description (columns)
+
+All data in this repository in the comma-separated values (CSV) files is formatted consistently with the PRIMAP2 interchange format.
+
+The data contained in each column is as follows:
+
+#### "source"
+Name of the data source. Four country specific datasets it is `\<ISO3\>-GHG-inventory`, where `\<ISO3\>` is the ISO 3166 three-letter country code. Specifications for composite datasets including several countries will be added when the datasets are available.
+
+#### "scenario (PRIMAP)"
+
+The scenario specifies the submissions (e.g. BUR1, NC5, or Inventory_2021 for a non-UNFCCC inventory)
+
+#### "provenance"
+Provenance of the data. Here: "derived" as it is a composite source.
+
+#### "country (ISO3)"
+ISO 3166 three-letter country codes.
+
+#### "entity"
+Gas categories using global warming potentials (GWP) from either Second Assessment Report (SAR) or Fourth Assessment Report (AR4).
+
+Code                     Description
+----                     -----------
+CH4                      Methane
+CO2                      Carbon Dioxide
+N2O                      Nitrous Oxide
+HFCS (SARGWP100)         Hydrofluorocarbons (SAR)
+HFCS (AR4GWP100)         Hydrofluorocarbons (AR4)
+PFCS (SARGWP100)         Perfluorocarbons (SAR)
+PFCS (AR4GWP100)         Perfluorocarbons (AR4)
+SF6                      Sulfur Hexafluoride
+NF3                      Nitrogen Trifluoride
+FGASES (SARGWP100)       Fluorinated Gases (SAR): HFCs, PFCs, SF$_6$, NF$_3$
+FGASES (AR4GWP100)       Fluorinated Gases (AR4): HFCs, PFCs, SF$_6$, NF$_3$
+KYOTOGHG (SARGWP100)     Kyoto greenhouse gases (SAR)
+KYOTOGHGAR4 (AR4GWP100)  Kyoto greenhouse gases (AR4)
+
+Table: Gas categories and underlying global warming potentials
+
+
+#### "unit"
+Units are of the form *Gg/Mt/... \<substance\> / yr* where substance is the entity or for CO$_2$ equivalent units *Gg/Mt/... CO2 / yr*. The CO$_2$-equivalent is calculated according to the global warming potential indicated by the entity (see above).
+
+
+#### "category (\<term\>)"
+Categories for emission as defined in terminology \<term\>. Terminology names are those used in the [climate_categories](https://github.com/pik-primap/climate_categories) package. If the terminology name contains *\_PRIMAP* is means that some (sub)categories have been added to the official IPCC category hierarchy. Added categories outside the hierarchy begin with the prefix *M*.
+
+#### "CategoryName"
+Original name of the category as presented in the submission.
+
+#### "CategoryNameTranslation"
+Optional column. In some cases original category names have been translated to english. In this case these translations are stored in this column. 
+
+#### Remaining columns
+
+Years (depending on dataset)
+
+
 
 ## Usage
 This guide is for contributors. If you are solely interested in using the resulting data we refer to the relases of the data on zenodo which come with a DOI and are thus citeable.
