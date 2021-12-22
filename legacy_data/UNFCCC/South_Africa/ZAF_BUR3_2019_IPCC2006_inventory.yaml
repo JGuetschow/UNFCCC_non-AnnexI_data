@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/BURs
+  rights: XXXX
+  contact: mail@johannes-guetschow.de
+  comment: Read from pdf by Johannes Gütschow.
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  title: 'South Africa: BUR3'
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - source
+  - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - entity
+  - unit
+  - category (IPCC2006_PRIMAP)
+  - CategoryName
+data_file: ZAF_BUR3_2019_IPCC2006_inventory.csv

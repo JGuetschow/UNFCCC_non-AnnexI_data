@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/BURs
+  rights: XXXX
+  contact: mail@johannes-guetschow.de
+  comment: Read from pdf by Johannes Gütschow.
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  title: 'Chile: BUR2'
+  cat: category (IPCC1996_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - source
+  - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - entity
+  - unit
+  - category (IPCC1996_PRIMAP)
+  - CategoryName
+data_file: CHL_BUR2_2017_IPCC1996.csv
