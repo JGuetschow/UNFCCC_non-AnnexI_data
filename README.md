@@ -65,7 +65,7 @@ Categories for emission as defined in terminology \<term\>. Terminology names ar
 Original name of the category as presented in the submission.
 
 #### "CategoryNameTranslation"
-Optional column. In some cases original category names have been translated to english. In this case these translations are stored in this column. 
+Optional column. In some cases original category names have been translated to english. In this case these translations are stored in this column.
 
 #### Remaining columns
 
@@ -79,18 +79,17 @@ This guide is for contributors. If you are solely interested in using the result
 ### Clone and set up the repository
 This repository is not a pure git repository. It is a datalad repository which uses git for code and other small text files and git-annex for data files and binary files (for this repository mainly pdf files). The files stored in git-annex are not part of this repository but are stored in a gin repository at [gin.hemio.de](https://gin.hemio.de/jguetschow/UNFCCC_non-AnnexI_data/).
 
-To use the repository you need to have datalad installed.
-to clone the repository you can use the github url, but also the gin url.
+To use the repository you need to have datalad installed. To clone the repository you can use the github url, but also the gin url.
 
 `datalad clone git@github.com:JGuetschow/UNFCCC_non-AnnexI_data.git <directory_name>
 `
 clones the repository into the folder *\<directory_name\>*. You can also clone via `git clone`. This avoids error messages regarding git-annex. Cloning works from any sibling.
 
-The data itself (meaning all binary files) is not downloaded automatically. Only simlinks are created on clone. Needed files can be obained using
+The data itself (meaning all binary and csv files) are not downloaded automatically. Only symlinks are created on clone. Needed files can be obained using
 
 `datalad get <filename>`
 
-where \<filename\> can also be a folder to get all files within that folder. Datalad will look for a sibling that is accessible to you and provides the necessary data. In general that could also be the computer of another contributor, if that computer is accessible to you (which will normally not be the case). **NOTE: If you push to the github repository using dtalad your local clone will automatically become a sibling and of your machine is accessible from the outside it will also serve dat
+where \<filename\> can also be a folder to get all files within that folder. Datalad will look for a sibling that is accessible to you and provides the necessary data. In general that could also be the computer of another contributor, if that computer is accessible to you (which will normally not be the case). **NOTE: If you push to the github repository using datalad your local clone will automatically become a sibling and of your machine is accessible from the outside it will also serve data to others.**
 
 For more detailed information on datalad we refer to the [datalad handbook](http://handbook.datalad.org/en/latest/index.html)
 
@@ -98,17 +97,31 @@ The code is best run in a virtual environment. All python dependencies will be a
 
 The code has not been tested under Windows and Mac OS.
 
-* requirements: requirements.txt, venv, firefox-geckodriver
-* explain datalad, gin
-
 ### Update BUR, NC, and NDC submissions
-TODO: develop a method to avoid conflicts here. e.G. only a few maintainers commit the raw data and all others use that or if they need updated raw data only use that locally.
+The maintainers of this repository will update the list of submissions and the downloaded pdf files frequently. However, in some cases you might want to have the data early and 
+TODO: develop a method to avoid conflicts here. e.G. only a few maintainers commit the raw data and all others use that or if they need updated raw data only use that locally. (set up a branch in the main repo to do that)
 
 To update BUR, NC, and NDC submissions first make sure your branch is in sync with `main` to avoid conflict when merging your branch later. To update the list of submissions run `make update-bur` in the main project folder. This will create a new list of submissions. To actually download the files run `make download-bur`  
 
+### Adding new datasets
+See section [Contributing] below.
+
 
 ## Contributing
-The idea behind this data package is that several people contribute to extracting the data from pdf files such that for each user the work is less than for individual data reading and in the same time data quality improves through institutionalized data checking.
+The idea behind this data package is that several people contribute to extracting the data from pdf files such that for each user the work is less than for individual data reading and in the same time data quality improves through institutionalized data checking. You can contribute in defferent ways.
+
+### Check and propose submissions
+The easiest way to contribute to the repository is via anlysis of submissions for data coverage. Before selecting a submission for analysis check that it is not yet listed as analyzed in the submission overview issues.
+
+### Organize machine readable data
+
+### Read data
+
+### Check data
+
+### Composite datasets
+
+###
 
 * use forks,
 * use structure
