@@ -11,21 +11,22 @@ assignees: ''
 Here we list all UNFCCC submissions and other official data sources for <Country>.
 
 ## UNFCCC submissions
-List submissions with status. Data can be found in the `downloaded_data/UNFCCC/\<country\>` folder.
+List submissions with status. Data can be found in the `downloaded_data/UNFCCC/<country>` folder.
 
 Status can be
 * **unchecked**: submission not yet checked
 * **low/medium/high priority**: submissions checked. Data to be read with given priority
 * **read**:  data has been read
+* **legacy**: data is available in the repository but not reproduceable
 * **no data**: there is no data in the submission
 
 Each entry has the following form
 
-* \<submission\>, \<terminology\>, \<status\>, \<link to issue\>
+* \<submission\>, \<terminology\>, \<status\>, \<link to issue\>:
 text describing the data
 
 e.g.
-* NC1, IPCC2006, high priority, #XXXYYY
+* NC1, IPCC2006, high priority, #XXXYYY:
 Detailed data for 2015, less data for other years but main sectors present.
 
 The terminology is important as data in IPCC2006 categories has priority as it will currently not be made available through the UNFCCC interface.
@@ -42,7 +43,8 @@ The terminology is important as data in IPCC2006 categories has priority as it w
 ### Other
 
 ## Non-UNFCCC data
+List submissions with status. Data can be found in the `downloaded_data/non-UNFCCC/<country>` folder.
 For non-UNFCCC data we have the additional field source which should link to the original data source.
 
-* \<report\> \<source\> \<terminology\>\<status\> \<link to issue\>
-text
+* \<report\> \<source\> \<terminology\>\<status\> \<link to issue\>:
+text describing the data
