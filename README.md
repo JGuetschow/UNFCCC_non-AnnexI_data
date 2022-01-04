@@ -1,17 +1,21 @@
 # Collaborative UNFCCC non-AnnexI dataset
-Currently under initial development and not meant for wider use. code is based on [national-inventory-submissions](https://github.com/openclimatedata/national-inventory-submisions)
+This repository aims to organize a collective effort to bring GHG emissions and related data submitted by developing countries (non-AnnexI) to the UNFCCC into a standardized machine readable format. We focus on data not available through the [UNFCCC DI interface](https://di.unfccc.int/) which is mostly data submitted in IPCC 2006 categories.
+
+The code is based on [national-inventory-submissions](https://github.com/openclimatedata/national-inventory-submisions)
+
+
+**The repository is currently under initial development so a lot of things are still subject to change.**
 
 ## Description
 ### Repository structure
-The repository is structured by folders
+The repository is structured by folders. Here we list the folders in order of processing.
 
 * **downloaded_data** This folder contains data downloaded from the UNFCCC website and other sources. For Biannual Update Reports (BUR), national Communications (NC), and Nationally Determined Contributions (NDC) an automatical dowloaded exists (folder UNFCCC). Within the UNFCCC folder the data is organized in a *\<country\>/\<submission\>* structure. NDC submissions are often revised. To be able to keep track of the targets and emissions inventories we store each NDC revision in a time-stamped folder. The *non-UNFCCC* folder contains official country inventories not (yet) submitted to the UNFCCC. The internal structure is the same as for the UNFCCC folder.
 * **analyzed_submissions** Here we collect all files needed to extract data from submissions. Subfolders are countries (use the same names as in the *downloaded data* folder) and within the country folders each submission / report should have it's own subfolder, e.g. *Argentina/BUR1*. National Inventory Reports (NIR) are submitted together with BURs or NCs and have no individual folder but are used as additional inputs to their BUR or NC. As the repository is in the process of being set up, there currently is no data available.
-* **extracted_data** This folder holds all extracted datasets in primap2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>_\<term\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, and *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996. As the repository is in the process of being set up, there currently is no data available.
-* **legacy_data** This folder holds all extracted datasets in primap2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>\_\<term\>\_\<extra\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996, and *\<extra\>* is a free identifier to distinguish several files for the same submission (in some cases data for e.g. fluorinated gases are in a seperate file). This folder also holds data where the code or some input files are not publicly available. Our aim is to reduce data in this folder to zero and to create fully open source processes for all datasets such that they can be included in the main folder.
+* **extracted_data** This folder holds all extracted datasets in PRIMAP2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>_\<term\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, and *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996. As the repository is in the process of being set up, there currently is no data available.
 * **code** Code that is used for several countries / reports, but not (yet) part of the primap2 package. This folder also contains scripts that automate data reading for all analyzed suubmissions or subsets (e.g. all first BURs) and code to generate composite datasets. Currently the only subfolder is the *UNFCCC_downloader* where code to automatically download BUR and NC submission files from the [UNFCCC website](https://www.unfccc.int) resides.
-* **composite_datasets** This folder contains generated composite datasets in primap2 interchnage format. Each dataset has it's own subfolder which should contain a dataset name, a version, and publication date (e.g. year). As the repository is in the process of being set up, there currently is no data available.
-
+* **composite_datasets** This folder contains generated composite datasets in PRIMAP2 interchnage format. Each dataset has it's own subfolder which should contain a dataset name, a version, and publication date (e.g. year). As the repository is in the process of being set up, there currently is no data available.
+* **legacy_data** This folder holds all extracted datasets in PRIMAP2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>\_\<term\>\_\<extra\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996, and *\<extra\>* is a free identifier to distinguish several files for the same submission (in some cases data for e.g. fluorinated gases are in a seperate file). This folder also holds data where the code or some input files are not publicly available. Our aim is to reduce data in this folder to zero and to create fully open source processes for all datasets such that they can be included in the main folder.
 
 ### Data format description (columns)
 
@@ -106,6 +110,8 @@ The maintainers of this repository will update the list of submissions and the d
 
 All download scripts create files listing the new downloads in the folder *downloaded_data/UNFCCC*. the filenames use the format *00\_new\_downloads\_\<type\>-YYYY-MM-DD.csv* where *\<type\>* is *bur*, *nc*, or *ndc*. Currently, only one file per type and day is stored, so if you run the download script more than once on a day you will overwrite your frist file (likely with an empty file as you have already downloaded everything) (see also [issue #2](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/issues/2)).
 
+All new submissions have to be added to country discussion pages (where they exist) so everyone can keep track of all submissions without having to check the data folder for updates.
+
 ### Adding new datasets
 See section [Contributing] below.
 
@@ -117,21 +123,25 @@ The idea behind this data package is that several people contribute to extractin
 The easiest way to contribute to the repository is via anlysis of submissions for data coverage. Before selecting a submission for analysis check that it is not yet listed as analyzed in the submission overview issues.
 
 ### Organize machine readable data
+We usually read the data from the pdf submissions. However, the authors of the submission of course have the data in machine readable format. It's of great help for the data reading process if the data is available in machine readable format as it minimizes errors and is just much less work compared to pdf reading. So if you have good connections to authors of country submissions or the underlying data asking them to publish the data would be of great help. Publishing the dat is the optimal solution as it allows us to integrate it in this dataset. If you can obtain the data unofficially it still helps as it would allow for easy checking of results read from pdfs. Datasets created from machine readable data not publicly available can be added to the *legacy\_data* folder.
 
 ### Read data
+Read data from pdfs (or machine readable format) in a reproducable way. We read data using tools like [camelot](https://github.com/atlanhq/camelot). This enables a reproducable reading process where all parameters needed (page numbers, table boundaries etc) are defined in a script that reads the data from pdf and saves it in the PRIMAP2 interchange and native format. If you want to contribute through data reading, check out the country pages in the discussion section and the issues already created for submission selected for reading. If you start data reading for a submission please leave comment in the corresponding issue and issign the issue to yourself. If there is no issue for the submission, please add it using the template (TODO create issue template). When reading the data, please consider the data requirements when reading the data.
 
-### Check data
+### Review data
+You can contribute also through checking data. For each submission we would like to have one person responsible for reading the data and one person responsible for checking the results for completeness and correctness. Look out for issues with the tag "Needs review".
 
-### Composite datasets
 
-###
+### Issues
+There always issues open regarding coding, some of them easy to resolve, some harder.
 
-* use forks,
-* use structure
-* consider data requirements (see below)
+### Your ideas
+Contributing is ouf course not limited to the categories above. I you have ideas for improvements just open an issue or a discussion page to discuss you idea with the community.
 
-### What data should be read
+## What data should be read
+Optimally, all data that can be found in a submission should be read (emissions data, but also underlying activity data and socioeconomic data). However, it is often scattered throughout the documents and sometimes only single datapoint are available. Thus we have compiled a list of use cases and their data requirements as a basis for decisions on what to focus on. Emissions data is often presented in a similar tabular format reapeated for each year. Simetimes sectoral time series are presented in tables for individual gases. If these cases it makes sense to read all the data as the tables have to be read anyways and omitting sectoral detail does not save much time.
 
-minimal requirements for use cases
-* for PRIMAP-hist
-* for FAOSTAT
+Activity data needed depends on use case. We have listed some use cases and their requirements below.
+
+* **PRIMAP-hist**: currently only emissions data is needed. In the future activity data and socioeconomic data might be needed as well. For sectors and gases we refer to the data description available on [zenodo](https://zenodo.org/record/5494497):
+* **FAOSTAT**: FOSTAT uses only data for the AFOLU sector (AFOLU = Agriculture, Forestry, and Other Land Use). However activity data is needed in addition to emissions data. The used sectors and variables are listed in the [FAO to UNFCCC sector mapping document](https://fenixservices.fao.org/faostat/static/documents/GT/Mapping_to_UNFCCC_IPCC.pdf)
