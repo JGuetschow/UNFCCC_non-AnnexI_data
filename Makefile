@@ -5,6 +5,7 @@ help:
 	echo make download-bur: Download BUR submissions
 	echo make update-nc: Update list of NC submissions
 	echo make download-nc: Download NC submissions
+		echo make download-ndc: Download NDC submissions
 	echo make venv: create virtual environment
 
 update-bur: venv
@@ -18,6 +19,9 @@ update-nc: venv
 
 download-nc: venv
 		./venv/bin/python scripts/download_nc.py
+
+download-ndc: venv
+		./venv/bin/python scripts/download_ndc.py
 
 venv: code/requirements.txt
 	[ -d ./venv ] || python3 -m venv venv

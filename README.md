@@ -98,10 +98,13 @@ The code is best run in a virtual environment. All python dependencies will be a
 The code has not been tested under Windows and Mac OS.
 
 ### Update BUR, NC, and NDC submissions
-The maintainers of this repository will update the list of submissions and the downloaded pdf files frequently. However, in some cases you might want to have the data early and 
-TODO: develop a method to avoid conflicts here. e.G. only a few maintainers commit the raw data and all others use that or if they need updated raw data only use that locally. (set up a branch in the main repo to do that)
+The maintainers of this repository will update the list of submissions and the downloaded pdf files frequently. However, in some cases you might want to have the data early and do the download yourself. To avoid merge conflicts, please do this on a clean branch in your fork and make sure your branch is in sync with `main`.
 
-To update BUR, NC, and NDC submissions first make sure your branch is in sync with `main` to avoid conflict when merging your branch later. To update the list of submissions run `make update-bur` in the main project folder. This will create a new list of submissions. To actually download the files run `make download-bur`  
+* **BUR**: To update the list of submissions run `make update-bur` in the main project folder. This will create a new list of submissions. To actually download the files run `make download-bur`.
+* **NC**: To update the list of submissions run `make update-nc` in the main project folder. This will create a new list of submissions. To actually download the files run `make download-nc`.
+* **NDC**: For the NDC submissions we use the list published in [openclimatedata/ndcs](https://github.com/openclimatedata/ndcs) which receives daily updates. To  download the files run `make download-ndc`.
+
+All download scripts create files listing the new downloads in the folder *downloaded_data/UNFCCC*. the filenames use the format *00\_new\_downloads\_\<type\>-YYYY-MM-DD.csv* where *\<type\>* is *bur*, *nc*, or *ndc*. Currently, only one file per type and day is stored, so if you run the download script more than once on a day you will overwrite your frist file (likely with an empty file as you have already downloaded everything) (see also [issue #2](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/issues/2)).
 
 ### Adding new datasets
 See section [Contributing] below.
