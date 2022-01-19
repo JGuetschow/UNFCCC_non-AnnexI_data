@@ -18,7 +18,6 @@ The repository is structured by folders. Here we list the folders in order of pr
 * **legacy_data** This folder holds all extracted datasets in PRIMAP2 interchange format. The datasets are organized in country subfolders. The naming convention for the datasets is the following: *\<iso\>\_\<sub\>\_\<year\>\_\<term\>\_\<extra\>* where *\<iso\>* is the countries 3 letter iso code, *\<sub\>* is the submissions, e.g. **BUR1**, **NC5**, or **inventory2020** (for a non-UNFCCC inventory), *\<year\>* is the year of publication, *\<term\>* is the main sector terminology e.g. IPCC2006 or IPCC1996, and *\<extra\>* is a free identifier to distinguish several files for the same submission (in some cases data for e.g. fluorinated gases are in a seperate file). This folder also holds data where the code or some input files are not publicly available. Our aim is to reduce data in this folder to zero and to create fully open source processes for all datasets such that they can be included in the main folder.
 
 ### Data format description (columns)
-
 All data in this repository in the comma-separated values (CSV) files is formatted consistently with the PRIMAP2 interchange format.
 
 The data contained in each column is as follows:
@@ -27,7 +26,6 @@ The data contained in each column is as follows:
 Name of the data source. Four country specific datasets it is `\<ISO3\>-GHG-inventory`, where `\<ISO3\>` is the ISO 3166 three-letter country code. Specifications for composite datasets including several countries will be added when the datasets are available.
 
 #### "scenario (PRIMAP)"
-
 The scenario specifies the submissions (e.g. BUR1, NC5, or Inventory_2021 for a non-UNFCCC inventory)
 
 #### "provenance"
@@ -78,26 +76,32 @@ Years (depending on dataset)
 
 
 ## Usage
-This guide is for contributors. If you are solely interested in using the resulting data we refer to the relases of the data on zenodo which come with a DOI and are thus citeable.
+This guide is mostly targeted at contributors. If you are solely interested in using the resulting data the easiest way to get the data is to use the relases of the data on zenodo which come with a DOI and are thus citeable. If you need the most recent data and do not want to wait for the releases, you can use the setup described below.
 
 ### Clone and set up the repository
-This repository is not a pure git repository. It is a datalad repository which uses git for code and other small text files and git-annex for data files and binary files (for this repository mainly pdf files). The files stored in git-annex are not part of this repository but are stored in a gin repository at [gin.hemio.de](https://gin.hemio.de/jguetschow/UNFCCC_non-AnnexI_data/).
+This repository is not a pure git repository. It is a datalad repository which uses git for code and other small text files and git-annex for data files and binary files (for this repository mainly pdf files). Datalad uses the concept of *siblings* which are clones of the original repository. However, only the metadata is available in all siblings, the actual data which is stored in git-annex might only be available from some siblings. Here, we have a gin repository at [gin.hemio.de](https://gin.hemio.de/jguetschow/UNFCCC_non-AnnexI_data/) which contains all metadata and data as the main sibling we're working with. It is also set up as a *common data source* which can be accessed by everyone without a github or gin.hemio.de account.
 
 To use the repository you need to have datalad installed. To clone the repository you can use the github url, but also the gin url.
 
-`datalad clone git@github.com:JGuetschow/UNFCCC_non-AnnexI_data.git <directory_name>
-`
-clones the repository into the folder *\<directory_name\>*. You can also clone via `git clone`. This avoids error messages regarding git-annex. Cloning works from any sibling.
+`datalad clone git@github.com:JGuetschow/UNFCCC_non-AnnexI_data.git <directory_name>`
 
-The data itself (meaning all binary and csv files) are not downloaded automatically. Only symlinks are created on clone. Needed files can be obained using
+or
+
+`datalad clone git@gin.hemio.de:/jguetschow/UNFCCC_non-AnnexI_data.git <directory_name>`
+
+clones the repository into the folder *\<directory_name\>*. You can also clone via `git clone`. This avoids error messages regarding git-annex. Cloning works from any sibling. If you plan to contribute to the repository you will need to push to gin and for that you need an account. Currently you cannot create an account yourself, so please contact the maintainers to obtain an account. If you are just interested in using the data you can wither clone from github, or from gin via https:
+
+`datalad clone https://gin.hemio.de:/jguetschow/UNFCCC_non-AnnexI_data.git <directory_name>`
+
+The data itself (meaning all binary and csv files) are not downloaded automatically. Only symlinks are created on clone. Needed files can be obtained using
 
 `datalad get <filename>`
 
-where \<filename\> can also be a folder to get all files within that folder. Datalad will look for a sibling that is accessible to you and provides the necessary data. In general that could also be the computer of another contributor, if that computer is accessible to you (which will normally not be the case). **NOTE: If you push to the github repository using datalad your local clone will automatically become a sibling and of your machine is accessible from the outside it will also serve data to others.**
+where \<filename\> can also be a folder to get all files within that folder. Datalad will look for a sibling that is accessible to you and provides the necessary data. In general that could also be the computer of another contributor, if that computer is accessible to you (which will normally not be the case). **NOTE: If you push to the github repository using datalad your local clone will automatically become a sibling and if your machine is accessible from the outside it will also serve data to others.**
 
 For more detailed information on datalad we refer to the [datalad handbook](http://handbook.datalad.org/en/latest/index.html)
 
-The code is best run in a virtual environment. All python dependencies will be automatically installed when building the virtual environment using `make venv`. If you don't wat to use a virtual environment you can find the dependencies in file `code/requirements.txt`. As an external dependencies you need *firefox-geckodriver* and *git-annex \> XXX (2021 works, some 2020 versions also)*.
+The code is best run in a virtual environment. All python dependencies will be automatically installed when building the virtual environment using `make venv`. If you don't want to use a virtual environment you can find the dependencies in file `code/requirements.txt`. As an external dependencies you need *firefox-geckodriver* and *git-annex \> XXX (2021 works, some 2020 versions also)*.
 
 The code has not been tested under Windows and Mac OS.
 
@@ -117,13 +121,13 @@ See section [Contributing] below.
 
 
 ## Contributing
-The idea behind this data package is that several people contribute to extracting the data from pdf files such that for each user the work is less than for individual data reading and in the same time data quality improves through institutionalized data checking. You can contribute in defferent ways.
+The idea behind this data package is that several people contribute to extracting the data from pdf files such that for each user the work is less than for individual data reading and in the same time data quality improves through institutionalized data checking. You can contribute in different ways.
 
 ### Check and propose submissions
-The easiest way to contribute to the repository is via anlysis of submissions for data coverage. Before selecting a submission for analysis check that it is not yet listed as analyzed in the submission overview issues.
+The easiest way to contribute to the repository is via analysis of submissions for data coverage. Before selecting a submission for analysis check that it is not yet listed as analyzed in the submission overview issues.
 
 ### Organize machine readable data
-We usually read the data from the pdf submissions. However, the authors of the submission of course have the data in machine readable format. It's of great help for the data reading process if the data is available in machine readable format as it minimizes errors and is just much less work compared to pdf reading. So if you have good connections to authors of country submissions or the underlying data asking them to publish the data would be of great help. Publishing the dat is the optimal solution as it allows us to integrate it in this dataset. If you can obtain the data unofficially it still helps as it would allow for easy checking of results read from pdfs. Datasets created from machine readable data not publicly available can be added to the *legacy\_data* folder.
+We usually read the data from the pdf submissions. However, the authors of the submission of course have the data in machine readable format. It's of great help for the data reading process if the data is available in machine readable format as it minimizes errors and is just much less work compared to pdf reading. So if you have good connections to authors of country submissions or the underlying data asking them to publish the data would be of great help. Publishing the data is the optimal solution as it allows us to integrate it in this dataset. If you can obtain the data unofficially it still helps as it would allow for easy checking of results read from pdfs. Datasets created from machine readable data not publicly available can be added to the *legacy\_data* folder.
 
 ### Read data
 Read data from pdfs (or machine readable format) in a reproducable way. We read data using tools like [camelot](https://github.com/atlanhq/camelot). This enables a reproducable reading process where all parameters needed (page numbers, table boundaries etc) are defined in a script that reads the data from pdf and saves it in the PRIMAP2 interchange and native format. If you want to contribute through data reading, check out the country pages in the discussion section and the issues already created for submission selected for reading. If you start data reading for a submission please leave comment in the corresponding issue and issign the issue to yourself. If there is no issue for the submission, please add it using the template (TODO create issue template). When reading the data, please consider the data requirements when reading the data.
