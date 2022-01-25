@@ -19,6 +19,7 @@ Status can be
 * **read**:  data has been read
 * **legacy**: data is available in the repository but not reproduceable
 * **no data**: there is no data in the submission
+* **reading**: data reading is ongoing
 
 Each entry has the following form
 
