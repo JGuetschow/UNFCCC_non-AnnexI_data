@@ -1,0 +1,186 @@
+## parameters for conversion to IPCC2006 categories
+filter_remove_IPCC2006 = {
+    "filter_cats": { # filter cats that have no 1:1 match for IPCC2006 or are additional subsectors
+        "category (IPCC2006_PRIMAP)": [
+            # refrigeration and air conditioning subsectors don't match IPCC2006
+            '2.F.1.a', '2.F.1.b', '2.F.1.c', '2.F.1.d', '2.F.1.e', '2.F.1.f',
+            # additional subsectors for other cattle in enteric fermentation
+            '3.A.1.b.i', '3.A.1.b.ii', '3.A.1.b.iii', '3.A.1.b.iv', '3.A.1.b.v',
+            # additional subcategories for swine in enteric fermentation
+            '3.A.3.a', '3.A.3.b', '3.A.3.c',
+            # other animals in enteric fermentation not fitting the IPCC2006 other animals
+            '3.A.4',
+            # need to be summed to '3.A.4.j'
+            '3.A.4.f', '3.A.4.g', '3.A.4.g.i', '3.A.4.g.ii',
+            # additional subsectors for other cattle in enteric fermentation
+            '3.B.1.b.i', '3.B.1.b.ii', '3.B.1.b.iii', '3.B.1.b.iv', '3.B.1.b.v',
+            # additional subcategories for swine in enteric fermentation
+            '3.B.3.a', '3.B.3.b', '3.B.3.c',
+            # other animals in enteric fermentation not fitting the IPCC2006 other animals
+            '3.B.4',
+            # need to be summed to '3.A.4.j'
+            '3.B.4.f', '3.B.4.g', '3.B.4.g.i', '3.B.4.g.ii',
+            # subsectors of indirect N2O from manure management
+            '3.B.5.a', '3.B.5.b', '3.B.5.c', '3.B.5.d', '3.B.5.d.i', '3.B.5.d.ii',
+            '3.B.5.d.iii', '3.B.5.d.iv', '3.B.5.d.v', '3.B.5.d.vi', '3.B.5.d.vii',
+            # subsectors of rice cultivation
+            '3.C.1', '3.C.2', '3.C.3', '3.C.4',
+            # no direct represenation of "agricultural soils" in IPCC 2006
+            '3.D',
+            # subsectors of 3.D.1. not matching subsectors of 3.C.4 (direct emissions from managed soils)
+            # '3.D.1.a.': '3.C.1.a', '3.D.1.b.': '3.C.1.b', '3.D.1.c.': '3.A.4.c', '3.D.1.d.': '3.C.4.d',
+            '3.D.1.a', '3.D.1.b', '3.D.1.b.i', '3.D.1.b.ii', '3.D.1.b.iii', '3.D.1.c',
+            '3.D.1.d', '3.D.1.e', '3.D.1.f', '3.D.1.g',
+            # additional subsector level of 3.D.2.a (3.C.5.a Atmospheric deposition)
+            '3.D.2.a.i', '3.D.2.a.ii', '3.D.2.a.ii.1', '3.D.2.a.ii.2', '3.D.2.a.ii.3', '3.D.2.a.iii',
+            # additional subsector level of 3.D.2.b (3.C.5.b Nitrongen leaching and runoff)
+            '3.D.2.b.i', '3.D.2.b.ii', '3.D.2.b.ii.1', '3.D.2.b.ii.2', '3.D.2.b.ii.3', '3.D.2.b.iii',
+            '3.D.2.b.iv', '3.D.2.b.v',
+            # additional subsector level of 3.F (3.C.1.b Biomass burning in cropland)
+            '3.F.1', '3.F.2', '3.F.3',
+            # additional subsector level of 3.G (3.C.2 Liming)
+            '3.G.1', '3.G.2',
+            # additional subsector levels of 4.A.1 (3.A.1.a Forest land remaining forest land)
+            '4.A.1.a', '4.A.1.a.i', '4.A.1.a.i.1', '4.A.1.a.i.1.a', '4.A.1.a.i.1.b', '4.A.1.a.i.1.c',
+            '4.A.1.a.i.1.d', '4.A.1.a.i.1.e', '4.A.1.a.i.1.f', '4.A.1.a.i.1.g', '4.A.1.a.i.1.h', 
+            '4.A.1.a.i.1.i', '4.A.1.a.i.1.j', '4.A.1.a.i.1.k', '4.A.1.a.i.1.l', '4.A.1.a.i.2', 
+            '4.A.1.a.i.2.a', '4.A.1.a.i.2.b', '4.A.1.a.i.2.c', '4.A.1.a.i.2.d', '4.A.1.a.i.2.e',
+            '4.A.1.a.i.2.f', '4.A.1.a.i.2.g', '4.A.1.a.i.2.h', '4.A.1.a.i.2.i', '4.A.1.a.i.2.j',
+            '4.A.1.a.i.2.k', '4.A.1.a.i.2.l', '4.A.1.a.i.3', '4.A.1.a.i.3.a', '4.A.1.a.i.3.b',
+            '4.A.1.a.i.3.c', '4.A.1.a.i.3.d', '4.A.1.a.i.3.e', '4.A.1.a.i.3.f', '4.A.1.a.i.3.g',
+            '4.A.1.a.i.3.h', '4.A.1.a.i.3.i', '4.A.1.a.i.3.j', '4.A.1.a.i.3.k', '4.A.1.a.i.3.l',
+            '4.A.1.a.ii', '4.A.1.a.ii.1', '4.A.1.a.ii.2', '4.A.1.a.ii.3', '4.A.1.a.ii.4',
+            '4.A.1.a.ii.5', '4.A.1.a.ii.6', '4.A.1.a.ii.7', '4.A.1.b', '4.A.1.b.i', '4.A.1.b.i.1',
+            '4.A.1.b.i.2', '4.A.1.b.i.3', '4.A.1.b.i.4', '4.A.1.b.ii', '4.A.1.b.ii.1', '4.A.1.b.ii.2',
+            '4.A.1.b.iii', '4.A.1.b.iii.1', '4.A.1.b.iii.1.a', '4.A.1.b.iii.1.b', '4.A.1.b.iii.2',
+            '4.A.1.b.iv', '4.A.1.c', '4.A.1.c.i', '4.A.1.c.ii',
+            # additional subsector level in land converted to forest land
+            '4.A.2.a.i', '4.A.2.a.ii', '4.A.2.b.i', '4.A.2.b.ii', '4.A.2.c.i', '4.A.2.c.ii',
+            '4.A.2.d.i', '4.A.2.d.ii', '4.A.2.e.i', '4.A.2.e.ii',
+            # subsectors of solid waste disposal might not match
+            '5.A.1', '5.A.2', '5.A.3',
+        ],
+    },
+}
+
+
+cat_mapping = { # categories not listed here have the same code as in IPCC 2006 specifications
+    '3': 'M.AG',
+    '3.A': '3.A.1',
+    '3.A.1': '3.A.1.a',
+    '3.A.1.a': '3.A.1.a.i',
+    '3.A.1.b': '3.A.1.a.ii',
+    '3.A.2': '3.A.1.c',
+    '3.A.3': '3.A.1.h',
+    '3.A.4.a': '3.A.1.b',
+    '3.A.4.b': '3.A.1.d',
+    '3.A.4.c': '3.A.1.f',
+    '3.A.4.d': '3.A.1.g',
+    '3.A.4.e': '3.A.1.i',
+    '3.B': '3.A.2',
+    '3.B.1': '3.A.2.a',
+    '3.B.1.a': '3.A.2.a.i',
+    '3.B.1.b': '3.A.2.a.ii',
+    '3.B.2': '3.A.2.c',
+    '3.B.3': '3.A.2.h',
+    '3.B.4.a': '3.A.2.b',
+    '3.B.4.b': '3.A.2.d',
+    '3.B.4.c': '3.A.2.f',
+    '3.B.4.d': '3.A.2.g',
+    '3.B.4.e': '3.A.2.i',
+    '3.B.5': '3.C.6',
+    '3.C': '3.C.7',
+    '3.D.1': '3.C.4', 
+    '3.D.2': '3.C.5',
+    '3.D.2.a': '3.C.5.a', # not in climate_categories
+    '3.D.2.b': '3.C.5.b', # not in climate_categories
+    '3.E': '3.C.1.c',
+    '3.F': '3.C.1.b',
+    '3.G': '3.C.2',
+    '3.H': '3.C.3',
+    '3.I': '3.C.8.a', # merge this with cat below
+    '3.J': '3.C.8.b', # merge with cat above
+    '4': 'M.LULUCF',
+    '4.A': '3.B.1',
+    '4.A.1': '3.B.1.a',
+    '4.A.2': '3.B.1.b',
+    '4.A.2.a': '3.B.1.b.i',
+    '4.A.2.b': '3.B.1.b.ii',
+    '4.A.2.c': '3.B.1.b.iii',
+    '4.A.2.d': '3.B.1.b.iv',
+    '4.A.2.e': '3.B.1.b.v',
+    '4.B': '3.B.2',
+    '4.B.1': '3.B.2.a',
+    '4.B.2': '3.B.2.b',
+    '4.B.2.a': '3.B.2.b.i',
+    '4.B.2.b': '3.B.2.b.ii',
+    '4.B.2.c': '3.B.2.b.iii',
+    '4.B.2.d': '3.B.2.b.iv',
+    '4.B.2.e': '3.B.2.b.v',
+    '4.C': '3.B.3',
+    '4.C.1': '3.B.3.a',
+    '4.C.2': '3.B.3.b',
+    '4.C.2.a': '3.B.3.b.i',
+    '4.C.2.b': '3.B.3.b.ii',
+    '4.C.2.c': '3.B.3.b.iii',
+    '4.C.2.d': '3.B.3.b.iv',
+    '4.C.2.e': '3.B.3.b.v',
+    '4.D': '3.B.4',
+    '4.D.1': '3.B.4.a',
+    '4.D.2': '3.B.4.b',
+    '4.D.2.a': '3.B.4.b.i',
+    '4.D.2.b': '3.B.4.b.ii',
+    '4.D.2.c': '3.B.4.b.iii',
+    '4.D.2.d': '3.B.4.b.iv',
+    '4.D.2.e': '3.B.4.b.v',
+    '4.E': '3.B.5',
+    '4.E.1': '3.B.5.a',
+    '4.E.2': '3.B.5.b',
+    '4.E.2.a': '3.B.5.b.i',
+    '4.E.2.b': '3.B.5.b.ii',
+    '4.E.2.c': '3.B.5.b.iii',
+    '4.E.2.d': '3.B.5.b.iv',
+    '4.E.2.e': '3.B.5.b.v',
+    '4.F': '3.B.6',
+    '4.F.1': '3.B.6.a',
+    '4.F.2': '3.B.6.b',
+    '4.F.2.a': '3.B.6.b.i',
+    '4.F.2.b': '3.B.6.b.ii',
+    '4.F.2.c': '3.B.6.b.iii',
+    '4.F.2.d': '3.B.6.b.iv',
+    '4.F.2.e': '3.B.6.b.v',
+    '4.G': '3.D.1',
+    '4.H': '3.D.2',
+    '5': '4',
+    '5.A': '4.A',
+    '5.B': '4.B',
+    '5.C': '4.C',
+    '5.C.1': '4.C.1',
+    '5.C.2': '4.C.2',
+    '5.D': '4.D',
+    '5.D.1': '4.D.1',
+    '5.D.2': '4.D.2',
+    '5.E': '4.E',
+}
+
+# comments
+# '2.F.1.a.': included in '2.F.1.a.3', # not in climate categories
+# '2.F.1.b.': included in '2.F.1.a.2', # not in climate categories
+# '2.F.1.c.': included in '2.F.1.a.1', # not in climate categories 
+# '2.F.1.d.': included in 2.F.1.a (transport refigeration)
+# '2.F.1.e.', includeded in 2.F.1.a (stationary air conditioning)
+# '2.F.1.f.': 2.F.1.b, (mobile air conditioning) 
+#    '3.A.4.f.': included in '3.A.1.j',
+# '3.A.4.g.': included in '3.A.1.j',
+# '3.A.4.g.i.',
+# '3.A.4.g.ii.',
+
+aggregate_cats = {
+    '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
+    '3.B': {'sources': ['3.B.1', '3.B.2', '3.B.3', '3.B.4', '3.B.5', '3.B.6'], 'name': 'Land'},
+    '3.C.1': {'sources': ['3.C.1.b','3.C.1.c'], 'name': 'Emissions from Biomass Burning'},
+    '3.C.8': {'sources': ['3.C.8.a', '3.C.8.b'], 'name': 'Other'},
+    '3.C': {'sources': ['3.C.1', '3.C.2', '3.C.3', '3.C.4', '3.C.5', '3.C.6', '3.C.7', '3.C.8'], 'name': 'Aggregate sources and non-CO2 emissions sources on land'},
+    '3.D': {'sources': ['3.D.1', '3.D.2'], 'name': 'Other'},
+    '3': {'sources': ['3.A', '3.B', '3.C', '3.D'], 'name': 'AFOLU'},
+}
