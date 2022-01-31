@@ -1,0 +1,23 @@
+attrs:
+  references: https://unfccc.int/documents/267936, https://snichile.mma.gob.cl/wp-content/uploads/2021/03/Inventario_Nacional_de_GEI-1990-2018.xlsx
+  rights: ''
+  contact: mail@johannes-guetschow.de.de
+  title: 'Chile: BUR4'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  cat: category (IPCC2006_1996_Chile_NIR)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y-%m-%d'
+dimensions:
+  '*':
+  - source
+  - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - entity
+  - unit
+  - category (IPCC2006_1996_Chile_NIR)
+additional_coordinates:
+  orig_cat_name: category (IPCC2006_1996_Chile_NIR)
+data_file: CHL_BUR4_2021_IPCC2006_1996_Chile_NIR.csv
