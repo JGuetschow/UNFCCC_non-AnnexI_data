@@ -1,9 +1,10 @@
 # this script reads data from Chiles 2020 national inventory which is underlying BUR4
 # Data is read from the xlsx file
 
+import os
+import sys
 import pandas as pd
 import primap2 as pm2
-import re
 from pathlib import Path
 
 from config_CHL_BUR4 import cat_mapping, filter_remove_IPCC2006, aggregate_cats
@@ -146,6 +147,12 @@ compression = dict(zlib=True, complevel=9)
 # ###
 # start data reading
 # ###
+
+# change working directory to script directory for proper folder names
+script_path = os.path.abspath(sys.argv[0])
+script_dir_name = os.path.dirname(script_path)
+os.chdir(script_dir_name)
+
 df_all = None
 
 for year in years_to_read:
