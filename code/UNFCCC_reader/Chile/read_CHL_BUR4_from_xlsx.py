@@ -1,4 +1,4 @@
-# this script reads data from Chiles 2020 national inventory which is underlying BUR4
+# this script reads data from Chile's 2020 national inventory which is underlying BUR4
 # Data is read from the xlsx file
 
 import os
