@@ -1,0 +1,24 @@
+attrs:
+  references: http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=4856&fileSeq=2
+  rights: XXXX
+  contact: johannes.guetschow@pik-potsdam.de
+  title: National Greenhouse Gas Inventory Report of Korea - 2020
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: ''
+  cat: category (IPCC1996_KOR_INV)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - source
+  - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - entity
+  - unit
+  - category (IPCC1996_KOR_INV)
+additional_coordinates:
+  orig_cat_name: category (IPCC1996_KOR_INV)
+  cat_name_translation: category (IPCC1996_KOR_INV)
+data_file: KOR_BUR4_2021_IPCC1996_KOR_INV.csv
