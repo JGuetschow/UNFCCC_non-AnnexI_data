@@ -107,6 +107,11 @@ compression = dict(zlib=True, complevel=9)
 # start data reading
 # ###
 
+# change working directory to script directory for proper folder names
+script_path = os.path.abspath(sys.argv[0])
+script_dir_name = os.path.dirname(script_path)
+os.chdir(script_dir_name)
+
 df_all = None
 
 for sheet in sheets_to_read:
