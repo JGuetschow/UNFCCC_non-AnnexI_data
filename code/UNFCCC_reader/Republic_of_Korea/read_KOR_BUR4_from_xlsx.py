@@ -70,10 +70,10 @@ coords_terminologies = {
 }
 
 coords_defaults = {
-    "source": "Korea-GHG-Inventory",
+    "source": "KOR-GHG-Inventory",
     "provenance": "measured",
     "area": "KOR",
-    "scenario": "Report_2020",
+    "scenario": "BUR4",
 }
 
 coords_value_mapping = {
@@ -111,7 +111,7 @@ df_all = None
 
 for sheet in sheets_to_read:
     # read current sheet (one sheet per gas)
-    df_current = pd.read_excel(inventory_file, sheet_name=sheet, skiprows=3, nrows=143, usecols=cols_to_read,
+    df_current = pd.read_excel(input_folder / inventory_file, sheet_name=sheet, skiprows=3, nrows=143, usecols=cols_to_read,
                                engine="openpyxl")
     # drop all rows where the index cols (category code and name) are both NaN
     # as without one of them there is no category information
@@ -152,7 +152,7 @@ data_if = pm2.pm2io.convert_wide_dataframe_if(
     #filter_remove=filter_remove,
     #filter_keep=filter_keep,
     meta_data=meta_data,
-    convert_nan=True
+    convert_str=True
     )
 
 filter_data(data_if, filter_remove=filter_remove)
@@ -160,6 +160,8 @@ filter_data(data_if, filter_remove=filter_remove)
 # ###
 # save data to IF and native format
 # ###
+if not output_folder.exists():
+    output_folder.mkdir()
 pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
 
 data_pm2 = pm2.pm2io.from_interchange_format(data_if)
