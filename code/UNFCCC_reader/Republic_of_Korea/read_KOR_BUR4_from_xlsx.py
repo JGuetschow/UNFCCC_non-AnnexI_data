@@ -91,12 +91,12 @@ filter_remove = {
 filter_keep = {}
 
 meta_data = {
-    "references": "http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=4856&fileSeq=2",
-    "rights": "XXXX",
-    "contact": "johannes.guetschow@pik-potsdam.de",
-    "title": "National Greenhouse Gas Inventory Report of Korea - 2020",
+    "references": "https://unfccc.int/documents/418616, http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=4856&fileSeq=2",
+    "rights": "",
+    "contact": "mail@johannes-guetschow.de.de",
+    "title": "Republic of Korea: BUR4 / National Greenhouse Gas Inventory Report 2020",
     "comment": "Read fom xlsx file by Johannes Gütschow",
-    "institution": "",
+    "institution": "United Nations Framework Convention on Climate Change (UNFCCC)",
 }
 
 cols_for_space_stripping = []
@@ -116,7 +116,7 @@ df_all = None
 
 for sheet in sheets_to_read:
     # read current sheet (one sheet per gas)
-    df_current = pd.read_excel(input_folder / inventory_file, sheet_name=sheet, skiprows=3, nrows=143, usecols=cols_to_read,
+    df_current = pd.read_excel(input_folder / inventory_file, sheet_name=sheet, skiprows=3, nrows=144, usecols=cols_to_read,
                                engine="openpyxl")
     # drop all rows where the index cols (category code and name) are both NaN
     # as without one of them there is no category information

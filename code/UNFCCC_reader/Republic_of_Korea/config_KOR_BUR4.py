@@ -143,6 +143,11 @@ original_names = [
     'b. 국제 해운',
     '2. 다국적 작전',
     '* 참고 : NO = 배출활동 및 공정이 없는 경우, NE = 산정하지 아니하는 경우, NA = 자연적, 이론적으로 발생하지 않는 활동 및 공정의 경우, IE = 다른 항목에 포함하여 보고하는 경우, C = 기밀정보인 경우',
+    '3. 타토지로 전용된 농경지', # start of new codes in 2021 inventory
+    '4. 농경지로의 전용에 따른 N2O 배출',
+    '5. 농경지에서 농업용 석회시용으로 인한 CO2 배출',
+    '6. 농경지에서 바이오매스 연소에 의한 배출',
+    'G. 기타',
 ]
 translations = [
     ['Total emissions', 'M.0.EL'],
@@ -289,6 +294,11 @@ translations = [
     ['b. International shipping', 'M.1.B'],
     ['2. Multinational operations', 'M.2'],
     ['', '\IGNORE'],
+    ['3. Farmland converted to Tato land', '5.B.3'],  # new codes in 2021 inventory start here
+    ['4. N2O emission due to conversion to agricultural land', '5.B.4'],
+    ['5. CO2 emission from agricultural lime application in agricultural land', '5.B.5'],
+    ['6. Emissions from burning biomass on agricultural land', '5.B.6'],
+    ['G. Others', '5.G'],
 ]
 cat_name_translations = dict(zip(original_names, [cat[0] for cat in translations]))
 cat_codes = dict(zip(original_names, [cat[1] for cat in translations]))
