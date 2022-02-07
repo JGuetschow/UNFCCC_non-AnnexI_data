@@ -2,3 +2,4 @@
 venv
 geckodriver.log
 __pycache__
+/JG_test_code/
