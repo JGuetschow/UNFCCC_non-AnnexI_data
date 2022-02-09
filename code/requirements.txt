@@ -4,4 +4,4 @@ pandas
 selenium
 primap2
 countrynames
-json
+datalad
