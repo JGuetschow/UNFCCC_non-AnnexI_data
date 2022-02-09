@@ -5,7 +5,8 @@ import re
 
 from pathlib import Path
 from bs4 import BeautifulSoup
-from selenium import webdriver
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
 from random import randrange
 
 root = Path(__file__).parents[2]
@@ -17,11 +18,6 @@ Based on `process_bur` from national-inventory-submissions
 (https://github.com/openclimatedata/national-inventory-submisions)
 """
 
-# TODO for NC
-## link is just /documents/XXXXX (but already dealt with in code below)
-## url is https://unfccc.int/non-annex-I-NCs
-## pattern needs NC instead of BUR
-
 print("Fetching BUR submissions ...")
 
 url = "https://unfccc.int/BURs"
@@ -29,16 +25,16 @@ url = "https://unfccc.int/BURs"
 #print(url)
 
 # set options for headless mode
-options = webdriver.firefox.options.Options()
+profile_path = ".firefox"
+options = Options()
 options.add_argument('-headless')
 
 # create profile for headless mode and automatic downloading
-profile = webdriver.FirefoxProfile()
+options.set_preference('profile', profile_path)
 
 # set up selenium driver
-driver = webdriver.Firefox(options=options, firefox_profile=profile)
+driver = Firefox(options=options)
 driver.get(url)
-
 
 html = BeautifulSoup(driver.page_source, "html.parser")
 table = html.find_all("table")[1]

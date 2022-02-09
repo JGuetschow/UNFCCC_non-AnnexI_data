@@ -4,7 +4,8 @@ import shutil
 import time
 import os
 from datetime import date
-from selenium import webdriver
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
 from random import randrange
 
 from pathlib import Path
@@ -20,6 +21,8 @@ based on download_bur from national-inventory-submissions
 # download directly via selenium see link below
 # https://sqa.stackexchange.com/questions/2197/
 # how-to-download-a-file-using-seleniums-webdriver
+# for automatic downloading see https://stackoverflow.com/questions/70740163/
+# python-selenium-firefox-driver-dismiss-open-save-file-popup
 ###############
 
 submissions = pd.read_csv(root / "downloaded_data" / "UNFCCC" /
@@ -37,18 +40,19 @@ if not download_path.exists():
     download_path.mkdir(parents=True)
 
 # set options for headless mode
-options = webdriver.firefox.options.Options()
-# options.add_argument('-headless')
+profile_path = ".firefox"
+options = Options()
+#options.add_argument('-headless')
 
-# create profile for headless mode 
-profile = webdriver.FirefoxProfile()
-profile.set_preference('browser.download.folderList', 2)
+# create profile for headless mode and automatic downloading
+options.set_preference('profile', profile_path)
+options.set_preference('browser.download.folderList', 2)
 
 # set up selenium driver
-driver = webdriver.Firefox(options=options, firefox_profile=profile)
-
+driver = Firefox(options=options)
 # visit the main data page once to create cookies
 driver.get(url)
+
 time.sleep(20)
 
 # get the session id cookie
