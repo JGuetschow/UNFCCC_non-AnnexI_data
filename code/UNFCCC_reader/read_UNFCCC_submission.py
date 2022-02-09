@@ -69,7 +69,7 @@ if script_name:
         message=f"Read data for {country}, {submission}.",
         inputs=input_files,
         outputs=output_files,
-        dry_run='basic'
+        dry_run=None
     )
 else:
     # no code found.
