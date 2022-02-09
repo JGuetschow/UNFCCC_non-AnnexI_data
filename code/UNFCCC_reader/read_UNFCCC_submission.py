@@ -43,6 +43,7 @@ if script_name:
         for file in input_files:
             print(file)
         print("")
+    input_files = [file.as_posix() for file in input_files]
 
     # get possible output files
     output_files = get_possible_outputs(country, submission)
@@ -54,14 +55,16 @@ if script_name:
         for file in output_files:
             print(file)
         print("")
+    output_files = [file.as_posix() for file in output_files]
 
     print(f"Run the script using datalad run via the python api")
     datalad.api.run(
-        cmd=f"./venv/bin/python3.8 {script_name}",
+        cmd=f"./venv/bin/python3.8 {script_name.as_posix()}",
         dataset=rootpath,
         message=f"Read data for {country}, {submission}.",
         inputs=input_files,
         outputs=output_files,
+        dry_run=True
     )
 else:
     # no code found.
