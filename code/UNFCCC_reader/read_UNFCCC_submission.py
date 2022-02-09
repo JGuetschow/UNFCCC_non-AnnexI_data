@@ -43,6 +43,10 @@ if script_name:
         for file in input_files:
             print(file)
         print("")
+    # make input files absolute to avoid datalad confusions when
+    # root directory is via symlink
+    input_files = [rootpath / file for file in input_files]
+    # convert file path's to str
     input_files = [file.as_posix() for file in input_files]
 
     # get possible output files
@@ -55,6 +59,7 @@ if script_name:
         for file in output_files:
             print(file)
         print("")
+    # convert file path's to str
     output_files = [file.as_posix() for file in output_files]
 
     print(f"Run the script using datalad run via the python api")
