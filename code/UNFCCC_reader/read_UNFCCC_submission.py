@@ -64,7 +64,7 @@ if script_name:
 
     print(f"Run the script using datalad run via the python api")
     datalad.api.run(
-        cmd=f"./venv/bin/python3.8 {script_name.as_posix()}",
+        cmd=f"./venv/bin/python3 {script_name.as_posix()}",
         dataset=rootpath,
         message=f"Read data for {country}, {submission}.",
         inputs=input_files,
