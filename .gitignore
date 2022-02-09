@@ -3,3 +3,5 @@ venv
 geckodriver.log
 __pycache__
 /JG_test_code/
+dodo.py
+.doit.db
