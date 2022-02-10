@@ -1,23 +1,26 @@
-# this script takes submission and country as input (from make) and
+# this script takes submission and country as input (from doit) and
 # runs the appropriate script to extract the submission data
 
 import sys
 import datalad.api
 from pathlib import Path
+import argparse
 from get_submissions_info import get_code_file
 from get_submissions_info import get_possible_inputs
 from get_submissions_info import get_possible_outputs
 
 
-if len(sys.argv) > 3:
-    raise TypeError('Too many arguments given. '
-                    'Need exactly two arguments (country, submission)')
-elif len(sys.argv) < 3:
-    raise TypeError('Too few arguments given. '
-                    'Need exactly two arguments (country, submission)')
 
-country = sys.argv[1]
-submission = sys.argv[2]
+# Find the right function and possible input and output files and
+# read the data using datalad run.
+parser = argparse.ArgumentParser()
+parser.add_argument('--country', help='Country name or code')
+parser.add_argument('--submission', help='Submission to read')
+
+args = parser.parse_args()
+
+country = args.country
+submission = args.submission
 
 codepath = Path(__file__).parent
 rootpath = codepath / ".." / ".."
@@ -29,7 +32,7 @@ print("")
 
 # get the correct script
 script_name = get_code_file(country, submission)
-if script_name:
+if script_name is not None:
     print(f"Found code file {script_name}")
     print("")
 
@@ -69,10 +72,12 @@ if script_name:
         message=f"Read data for {country}, {submission}.",
         inputs=input_files,
         outputs=output_files,
-        dry_run=None
+        dry_run=None,
+        explicit=True,
     )
 else:
     # no code found.
     print(f"No code found to read {submission} from {country}")
-    # TODO write info on available submissions and data
+    print(f"Use 'doit country_info --country={country} to get "
+          f"a list of available submissions and datasets.")
 

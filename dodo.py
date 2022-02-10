@@ -1,4 +1,5 @@
 # define tasks for UNFCCC data repository
+from doit import get_var
 
 # Tasks for getting submissions and downloading them
 def task_update_bur():
@@ -61,10 +62,16 @@ def task_download_ndc():
 # read UNFCCC submissions.
 # datalad run is called from within the read_UNFCCC_submission.py script
 # add parameters and pass them to script
+read_config = {
+    "country": get_var('country', None),
+    "submission": get_var('submission', None),
+}
+
 def task_read_unfccc_submission():
     """ Read submission for a country (if code exists) """
     return {
-        'actions': ['./venv/bin/python code/UNFCCC_downloader/read_UNFCCC_submission.py'],
+        'actions': [f"./venv/bin/python code/UNFCCC_reader/read_UNFCCC_submission.py "
+                    f"--country={read_config['country']} --submission={read_config['submission']}"],
         'verbosity': 2,
         'params': [{'name': 'country',
                     'short': 'c',
@@ -81,4 +88,14 @@ def task_read_unfccc_submission():
                     'type': str,
                     },
                    ],
+    }
+
+
+def task_country_info():
+    """ Print information on submissions and datasets
+    available for given country"""
+    return {
+        'actions': [f"./venv/bin/python code/UNFCCC_reader/country_info.py "
+                    f"--country={read_config['country']}"],
+        'verbosity': 2,
     }

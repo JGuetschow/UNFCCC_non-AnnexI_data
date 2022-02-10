@@ -45,33 +45,39 @@ def get_country_submissions(
         print(f"Country name {country_name} maps to ISO code {country_code}")
 
     country_submissions = {}
+    if print_sub:
+        print(f"#" * 80)
+        print(f"The following submissions are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
             if print_sub:
                 print("")
-                print("#" * 80)
+                print("-" * 80)
                 print(f"Data folder {item.name}")
+                print("-" * 80)
             with open(item / "folder_mapping.json", "r") as mapping_file:
                 folder_mapping = json.load(mapping_file)
-            country_folders = folder_mapping[country_code]
-            if isinstance(country_folders, str):
-                # only one folder
-                country_folders = [country_folders]
+            if country_code in folder_mapping:
+                country_folders = folder_mapping[country_code]
+                if isinstance(country_folders, str):
+                    # only one folder
+                    country_folders = [country_folders]
 
-            submission_folders = []
-            for country_folder in country_folders:
-                current_folder = item / country_folder
-                if print_sub:
-                    print("-" * 80)
-                    print(f"Submissions in folder {country_folder}:")
+                submission_folders = []
+                for country_folder in country_folders:
+                    current_folder = item / country_folder
+                    if print_sub:
+                        print(f"Submissions in folder {country_folder}:")
 
-                for submission_folder in current_folder.iterdir():
-                    if submission_folder.is_dir():
-                        if print_sub:
-                            print(submission_folder.name)
-                        submission_folders.append(submission_folder.name)
+                    for submission_folder in current_folder.iterdir():
+                        if submission_folder.is_dir():
+                            if print_sub:
+                                print(submission_folder.name)
+                            submission_folders.append(submission_folder.name)
 
-            country_submissions[item.name] = submission_folders
+                country_submissions[item.name] = submission_folders
+            else:
+                print(f"No submissions available for {country_name}.")
 
     return country_submissions
 
@@ -455,8 +461,10 @@ def get_code_file(
                         print(f"Found code file {file.relative_to(rootpath)}")
                 code_file_path = file
 
-    return code_file_path.relative_to(rootpath)
-
+    if code_file_path is not None:
+        return code_file_path.relative_to(rootpath)
+    else:
+        return None
 
 def create_folder_mapping(
         folder: str,
