@@ -15,7 +15,9 @@ def task_update_bur():
 def task_download_bur():
     """ Download BUR submissions """
     return {
-        'file_dep': ['downloaded_data/UNFCCC/submissions-bur.csv'],
+        #'file_dep': ['downloaded_data/UNFCCC/submissions-bur.csv'],
+        # deactivate file_dep fow now as it will always run fetch submissions
+        # before download
         'actions': ['datalad run -m "Download BUR submissions" '
                     '-i downloaded_data/UNFCCC/submissions-bur.csv '
                     './venv/bin/python code/UNFCCC_downloader/download_bur.py'],
@@ -37,7 +39,9 @@ def task_update_nc():
 def task_download_nc():
     """ Download NC submissions """
     return {
-        'file_dep': ['downloaded_data/UNFCCC/submissions-nc.csv'],
+        #'file_dep': ['downloaded_data/UNFCCC/submissions-nc.csv'],
+        # deactivate file_dep fow now as it will always run fetch submissions
+        # before download
         'actions': ['datalad run -m "Download NC submissions" '
                     '-i downloaded_data/UNFCCC/submissions-nc.csv '
                     './venv/bin/python code/UNFCCC_downloader/download_nc.py'],
@@ -53,10 +57,11 @@ def task_download_ndc():
         'verbosity': 2,
     }
 
+
 # read UNFCCC submissions.
 # datalad run is called from within the read_UNFCCC_submission.py script
 # add parameters and pass them to script
-def task_read_UNFCCC_submission():
+def task_read_unfccc_submission():
     """ Read submission for a country (if code exists) """
     return {
         'actions': ['./venv/bin/python code/UNFCCC_downloader/read_UNFCCC_submission.py'],
