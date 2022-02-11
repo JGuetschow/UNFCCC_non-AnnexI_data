@@ -14,8 +14,8 @@ from primap2.pm2io._data_reading import filter_data
 # configuration
 # ###
 
-input_folder = Path('..') / '..' / '..' / 'downloaded_data' / 'non-UNFCCC' / 'Republic_of_Korea' / '2021_Inventory'
-output_folder = Path('..') / '..' / '..' / 'extracted_data' / 'Republic_of_Korea'
+input_folder = Path('..') / '..' / '..' / 'downloaded_data' / 'non-UNFCCC' / 'Republic_of_Korea' / '2021-Inventory'
+output_folder = Path('..') / '..' / '..' / 'extracted_data' / 'non-UNFCCC' / 'Republic_of_Korea'
 
 output_filename = 'KOR_INV2021_2021_'
 
