@@ -473,7 +473,8 @@ def create_folder_mapping(
     """
     Create a mapping from 3 letter ISO country codes to folders
     based on the subfolders of the given folder. The mapping is
-    stored in 'folder_mapping.json' in the given folder.
+    stored in 'folder_mapping.json' in the given folder. Folder
+    must be given relative to the repository root
 
     Parameters
     ----------
@@ -489,6 +490,11 @@ def create_folder_mapping(
         Nothing
 
     """
+    codepath = Path(__file__).parent
+    rootpath = codepath / ".." / ".."
+    rootpath = rootpath.resolve()
+    folder = rootpath / folder
+
     if extracted:
         folder_mapping = {}
     else:
