@@ -8,8 +8,9 @@ from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from random import randrange
+from unfccc_submission_info import get_unfccc_submission_info
 
-root = Path(__file__).parents[2]
+root = Path(__file__).absolute().parents[2]
 
 """
 Download UNFCCC Biennial Update Report submissions
@@ -68,57 +69,14 @@ pattern = re.compile(r"BUR ?\d")
 for target in targets:
     time.sleep(randrange(5, 15))
     url = target["url"]
-    #subpage = requests.get(url, timeout=15.5)
-    driver.get(url)
-    html = BeautifulSoup(driver.page_source, "html.parser")
-    title = html.find("h1").contents[0]
-    match = pattern.search(title)
-    if match:
-        kind = match.group(0).replace(" ", "")
-    else:
-        kind = None
 
+    submission_info = get_unfccc_submission_info(url, driver, 10)
 
-    h2 = html.find("h2", text="Versions")
-    if h2:
-        div = h2.findNext("div")
-        links = div.findAll("a")
-        try:
-            country = (
-                html.find("h2", text="Countries").findNext("div").findNext("div").text
-            )
-        except AttributeError:
-            country = (
-                html.find("h2", text="Corporate Author")
-                .findNext("div")
-                .findNext("div")
-                .text
-            )
-        doctype = (
-            html.find("h2", text="Document Type").findNext("div").findNext("div").text
-        )
-        for link in links:
-            url = link.attrs["href"]
-            if not kind:
-                match = pattern.search(url.upper())
-                if match:
-                    kind = match.group(0)
-                else:
-                    if ("NIR" in doctype) or ("NIR" in title):
-                        kind = "NIR"
-                    elif "NC" in title:
-                        kind = "NC"
-            downloads.append(
-                {
-                    "Kind": kind,
-                    "Country": country,
-                    "Title": title,
-                    "URL": url,
-                }
-            )
-        print("\t".join([kind, country, title, url]))
+    if submission_info:
+        downloads = downloads + submission_info
     else:
-        no_downloads.append((title, url))
+        no_downloads.append({target["title"], url})
+
 
 if len(no_downloads) > 0:
     print("No downloads for ", no_downloads)
