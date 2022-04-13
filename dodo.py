@@ -117,7 +117,7 @@ def task_download_annexi():
         # deactivate file_dep fow now as it will always run fetch submissions
         # before download
         'actions': [f"datalad run -m 'Download AnnexI submissions for "
-                    f"{update_aI_config['category']}{update_aI_config['year']}'"
+                    f"{update_aI_config['category']}{update_aI_config['year']}' "
                     f"-i downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv "
                     f"./venv/bin/python code/UNFCCC_downloader/download_annexI.py "
                     f"--category={update_aI_config['category']} --year={update_aI_config['year']}"],
