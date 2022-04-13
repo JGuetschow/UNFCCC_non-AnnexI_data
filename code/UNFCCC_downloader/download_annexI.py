@@ -128,7 +128,7 @@ for idx, submission in items.iterrows():
         while not local_filename.exists() and i < 10:
             # for i = 0 and i = 5 try to get a new session ID
             if i == 1 or i == 5:
-                driver = webdriver.Firefox(options=options)
+                driver = Firefox(options=options)
     
                 # visit the main data page once to create cookies
                 driver.get(url)
