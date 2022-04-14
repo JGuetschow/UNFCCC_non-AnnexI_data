@@ -4,6 +4,7 @@ import re
 from random import randrange
 from typing import Dict, List
 from selenium.webdriver import Firefox
+from selenium.common.exceptions import WebDriverException
 from bs4 import BeautifulSoup
 
 
@@ -22,7 +23,7 @@ def get_unfccc_submission_info(
             html = BeautifulSoup(driver.page_source, "html.parser")
             title = html.find("h1").contents[0]
             break
-        except AttributeError:
+        except (AttributeError, WebDriverException):
             print(f"Error fetching {url}")
             print("Retrying ...")
             time.sleep(randrange(5, 15))
