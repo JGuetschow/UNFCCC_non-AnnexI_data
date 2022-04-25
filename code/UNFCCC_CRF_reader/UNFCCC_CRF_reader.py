@@ -1,12 +1,7 @@
-import pandas as pd
-
-
-def read_crf_tables(
-
-)->pd.DataFrame:
-    """
-    Read given tables from file and return result as pandas dataframe
-    """
+import re
+from typing import Dict, Union, List, Optional, Union
+from pathlib import Path
+from treelib import Tree
 
 # functions:
 # * production functions
@@ -18,4 +13,9 @@ def read_crf_tables(
 #    (and a if desired only a single year) and write
 #    output files with missing sectors etc
 # **
+
+
+
+
+
 

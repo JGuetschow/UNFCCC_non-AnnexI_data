@@ -5,3 +5,4 @@ selenium
 primap2
 countrynames
 datalad
+treelib
