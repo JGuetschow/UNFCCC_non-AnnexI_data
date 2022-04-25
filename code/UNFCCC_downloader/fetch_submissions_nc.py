@@ -9,7 +9,7 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from random import randrange
 
-root = Path(__file__).parents[2]
+root = Path(__file__).absolute().parents[2]
 
 """
 Download UNFCCC Biennial Update Report submissions

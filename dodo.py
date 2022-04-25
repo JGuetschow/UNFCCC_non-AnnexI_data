@@ -54,7 +54,7 @@ def task_download_bur():
         # before download
         'actions': ['datalad run -m "Download BUR submissions" '
                     '-i downloaded_data/UNFCCC/submissions-bur.csv '
-                    './venv/bin/python code/UNFCCC_downloader/download_bur.py'],
+                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=BUR.py'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -72,6 +72,8 @@ def task_update_nc():
     }
 
 
+
+
 def task_download_nc():
     """ Download NC submissions """
     return {
@@ -80,7 +82,45 @@ def task_download_nc():
         # before download
         'actions': ['datalad run -m "Download NC submissions" '
                     '-i downloaded_data/UNFCCC/submissions-nc.csv '
-                    './venv/bin/python code/UNFCCC_downloader/download_nc.py'],
+                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=NC'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+# annexI data: one update call for all data types (as they are on one page)
+# but for each year separately.
+# downloading is per year and
+update_aI_config = {
+    "year": get_var('year', None),
+    "category": get_var('category', None),
+}
+
+
+def task_update_annexi():
+    """ Update list of AnnexI submissions """
+    return {
+        'targets': [f"downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv"],
+        'actions': [f"datalad run -m 'Fetch AnnexI submissions for {update_aI_config['year']}' "
+                    "--explicit "
+                    f"-o downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv "
+                    f"./venv/bin/python code/UNFCCC_downloader/fetch_submissions_annexI.py "
+                    f"--year={update_aI_config['year']}"],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+
+def task_download_annexi():
+    """ Download AnnexI submissions """
+    return {
+        #'file_dep': ['downloaded_data/UNFCCC/submissions-nc.csv'],
+        # deactivate file_dep fow now as it will always run fetch submissions
+        # before download
+        'actions': [f"datalad run -m 'Download AnnexI submissions for "
+                    f"{update_aI_config['category']}{update_aI_config['year']}' "
+                    f"-i downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv "
+                    f"./venv/bin/python code/UNFCCC_downloader/download_annexI.py "
+                    f"--category={update_aI_config['category']} --year={update_aI_config['year']}"],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -102,6 +142,7 @@ read_config = {
     "country": get_var('country', None),
     "submission": get_var('submission', None),
 }
+
 
 def task_read_unfccc_submission():
     """ Read submission for a country (if code exists) """
