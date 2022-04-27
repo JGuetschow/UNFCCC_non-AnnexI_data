@@ -49,7 +49,7 @@ if script_name is not None:
     # make input files absolute to avoid datalad confusions when
     # root directory is via symlink
     input_files = [rootpath / file for file in input_files]
-    # convert file path's to str
+    # convert file's path to str
     input_files = [file.as_posix() for file in input_files]
 
     # get possible output files

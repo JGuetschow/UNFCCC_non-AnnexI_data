@@ -4,7 +4,7 @@
 from typing import List, Dict
 from pathlib import Path
 import json
-import countrynames
+import pycountry
 #import os
 
 
@@ -36,10 +36,17 @@ def get_country_submissions(
     data_folder = codepath / ".." / ".." / "downloaded_data"
 
     # obtain country code
-    country_code = countrynames.to_code_3(country_name)
-    if country_code is None:
+    #country_code = countrynames.to_code_3(country_name)
+    try:
+        country = pycountry.countries.search_fuzzy(country_name)
+    except:
         raise ValueError(f"Country name {country_name} can not be mapped to "
                          f"any country code")
+    if len(country) > 1:
+        raise ValueError(f"Country name {country_name} has {len(country)} "
+                         f"possible results for country codes.")
+
+    country_code = country[0].alpha_3
 
     if print_sub:
         print(f"Country name {country_name} maps to ISO code {country_code}")
