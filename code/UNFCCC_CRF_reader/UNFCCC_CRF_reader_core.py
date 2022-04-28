@@ -6,6 +6,7 @@ well as for test-reading to check for new categories etc.
 
 import re
 import json
+import numpy as np
 import pandas as pd
 import xarray as xr
 import primap2 as pm2
@@ -15,7 +16,8 @@ from operator import itemgetter
 from collections import Counter
 from typing import Dict, List, Optional, Tuple, Union
 from datetime import datetime
-import crf_specifications as crf
+from . import crf_specifications as crf
+from .utils import downloaded_data_path
 
 
 ### reading functions
@@ -121,8 +123,8 @@ def convert_crf_table_to_pm2if(
 
     meta_data = {
         "references": f"https://unfccc.int/ghg-inventories-annex-i-parties/{submission_year}",
-        "rights": "XXXX",
-        "contact": "johannes.guetschow@pik-potsdam.de",
+        "rights": "",
+        "contact": "mail@johannes-guetschow.de",
         "title": f"Data submitted in {submission_year} to the UNFCCC in the common reporting format (CRF)",
         "comment": "Read fom xlsx file by Johannes Gütschow",
         "institution": "United Nations Framework Convention on Climate Change (www.unfccc.int)",
@@ -200,67 +202,11 @@ def read_crf_table(
         country_codes = [country_codes]
 
     # get file names and locations
-    # we're filtering for country and submission year here but in the repository setup
-    # we should only have files for one country and submission in the folder. But the
-    # function can also be used on a given folder and then the filter is useful.
-    input_files = []
-    if folder is None:
-        root = Path(__file__).parents[3]
-        #root = Path(os.getcwd()).parents
-        data_folder = root / "downloaded_data" / "UNFCCC"
-        submission_folder = f"CRF{submission_year}"
-
-        with open(data_folder / "folder_mapping.json", "r") as mapping_file:
-            folder_mapping = json.load(mapping_file)
-
-        # use country default folders
-        country_folders = []
-        for country_code in country_codes:
-            if country_code in folder_mapping:
-                new_country_folders = folder_mapping[country_code]
-                if isinstance(new_country_folders, str):
-                    # only one folder
-                    country_folders = country_folders + \
-                                      [data_folder / new_country_folders / submission_folder]
-                else:
-                    country_folders = country_folders + \
-                                      [data_folder / folder / submission_folder
-                                       for folder in new_country_folders]
-            else:
-                raise ValueError(f"No data folder found for country {country_code}. "
-                                 f"Check if folder mapping is up to date.")
-    else:
-        country_folders = [folder]
-
-    file_filter_template = {}
-    file_filter_template["submission_year"] = submission_year
-    file_filter_template["party"] = country_codes
-    if data_year is not None:
-        file_filter_template["data_year"] = data_year
-
-    for input_folder in country_folders:
-        input_folder = Path(input_folder)
-        if input_folder.exists():
-            # if desired find the latest date and only read that
-            # has to be done per country
-            if date == "latest":
-                for country in country_codes:
-                    file_filter = file_filter_template.copy()
-                    file_filter["party"] = country
-                    dates = get_submission_dates(folder, file_filter)
-                    file_filter["date"] = find_latest_date(dates)
-                    input_files = input_files + \
-                                  filter_filenames(input_folder.glob("*.xlsx"),
-                                                   **file_filter)
-            else:
-                file_filter = file_filter_template.copy()
-                if date is not None:
-                    file_filter["date"] = date
-                input_files = input_files + \
-                              filter_filenames(input_folder.glob("*.xlsx"),
-                                               **file_filter)
-        else:
-            raise ValueError(f"Folder {input_folder} does not exist")
+    input_files = get_crf_files(country_codes=country_codes,
+                                submission_year=submission_year,
+                                data_year=data_year,
+                                date=date,
+                                folder=folder)
 
     # get specification
     try:
@@ -533,6 +479,106 @@ def read_crf_table_from_file(
             df_long.insert(2, column=col, value=table_spec["coords_defaults"][col])
 
     return df_long, unknown_categories, info_last_row
+
+
+def get_crf_files(
+        country_codes: Union[str, List[str]],
+        submission_year: int,
+        data_year: Optional[Union[int, List[int]]] = None,
+        date: Optional[str] = None,
+        folder: Optional[str] = None,
+) -> List[Path]:
+    """
+    Finds all files according to given parameters
+
+    Parameters
+    __________
+
+    country_codes: str or list[str]
+        ISO 3-letter country code or list of country codes
+
+    submission_year: int
+        Year of the submission of the data
+
+    data_year: int or List of int (optional)
+        if int a single data year will be read. if a list of ints is given these
+        years will be read. If no nothing is given all data years will be read
+
+    date: str (optional, default is "latest")
+        readonly submission from the given date
+
+    folder: str (optional)
+        Folder that contains the xls files. If not given fodlers are determined by the
+        submissions_year and country_code variables
+
+    Returns
+    _______
+        List[Path]: list of Path objects for the files
+    """
+    if isinstance(country_codes, str):
+        country_codes = [country_codes]
+    input_files = []
+    # get file names and locations
+    # we're filtering for country and submission year here but in the repository setup
+    # we should only have files for one country and submission in the folder. But the
+    # function can also be used on a given folder and then the filter is useful.
+    if folder is None:
+        data_folder = downloaded_data_path
+        submission_folder = f"CRF{submission_year}"
+
+        with open(data_folder / "folder_mapping.json", "r") as mapping_file:
+            folder_mapping = json.load(mapping_file)
+
+        # use country default folders
+        country_folders = []
+        for country_code in country_codes:
+            if country_code in folder_mapping:
+                new_country_folders = folder_mapping[country_code]
+                if isinstance(new_country_folders, str):
+                    # only one folder
+                    country_folders = country_folders + \
+                                      [data_folder / new_country_folders / submission_folder]
+                else:
+                    country_folders = country_folders + \
+                                      [data_folder / folder / submission_folder
+                                       for folder in new_country_folders]
+            else:
+                raise ValueError(f"No data folder found for country {country_code}. "
+                                 f"Check if folder mapping is up to date.")
+    else:
+        country_folders = [folder]
+
+    file_filter_template = {}
+    file_filter_template["submission_year"] = submission_year
+    file_filter_template["party"] = country_codes
+    if data_year is not None:
+        file_filter_template["data_year"] = data_year
+
+    for input_folder in country_folders:
+        input_folder = Path(input_folder)
+        if input_folder.exists():
+            # if desired find the latest date and only read that
+            # has to be done per country
+            if date == "latest":
+                for country in country_codes:
+                    file_filter = file_filter_template.copy()
+                    file_filter["party"] = country
+                    dates = get_submission_dates(folder, file_filter)
+                    file_filter["date"] = find_latest_date(dates)
+                    input_files = input_files + \
+                                  filter_filenames(input_folder.glob("*.xlsx"),
+                                                   **file_filter)
+            else:
+                file_filter = file_filter_template.copy()
+                if date is not None:
+                    file_filter["date"] = date
+                input_files = input_files + \
+                              filter_filenames(input_folder.glob("*.xlsx"),
+                                               **file_filter)
+        else:
+            raise ValueError(f"Folder {input_folder} does not exist")
+
+    return input_files
 
 
 def get_info_from_crf_filename(
@@ -814,6 +860,51 @@ def filter_category(
     return new_mapping
 
 
+def get_latest_date_for_country(
+        country_code: str,
+        submission_year: int,
+)->str:
+    """
+    Find the latest submission date for a country
+
+    Parameters
+    __________
+    country: str
+        3-letter country code
+
+    submission_year: int
+        Year of the submission to find the l;atest date for
+
+    Returns
+    _______
+        str: string with date
+    """
+
+    with open(downloaded_data_path / "folder_mapping.json", "r") as mapping_file:
+        folder_mapping = json.load(mapping_file)
+
+    if country_code in folder_mapping:
+        file_filter = {}
+        file_filter["party"] = country_code
+        file_filter["submission_year"] = submission_year
+        country_folders = folder_mapping[country_code]
+        if isinstance(country_folders, str):
+            # only one folder
+            submission_date = find_latest_date(get_submission_dates(
+                downloaded_data_path / country_folders / f"CRF{submission_year}", file_filter))
+        else:
+            dates = []
+            for folder in country_folders:
+                dates = dates + get_submission_dates(
+                    downloaded_data_path / folder / f"CRF{submission_year}", file_filter)
+            submission_date = find_latest_date(dates)
+    else:
+        raise ValueError(f"No data folder found for country {country_code}. "
+                         f"Check if folder mapping is up to date.")
+
+    return submission_date
+
+
 def get_submission_dates(
         folder: Path,
         file_filter: Dict[str, Union[str, int, List]],
@@ -840,6 +931,7 @@ def get_submission_dates(
                          f"the function's purpose is to return available dates.")
 
     if folder.exists():
+        print(folder)
         files = filter_filenames(folder.glob("*.xlsx"), **file_filter)
     else:
         raise ValueError(f"Folder {folder} does not exist")
@@ -903,7 +995,10 @@ def find_latest_date(
         str: latest date
     """
 
-    dates_datetime = [[date, datetime.strptime(date, "%d%m%Y")] for date in dates]
-    dates_datetime = sorted(dates_datetime, key=itemgetter(1))
+    if len(dates) > 0:
+        dates_datetime = [[date, datetime.strptime(date, "%d%m%Y")] for date in dates]
+        dates_datetime = sorted(dates_datetime, key=itemgetter(1))
+    else:
+        raise ValueError(f"Passed list of dates is empty")
 
     return dates_datetime[-1][0]

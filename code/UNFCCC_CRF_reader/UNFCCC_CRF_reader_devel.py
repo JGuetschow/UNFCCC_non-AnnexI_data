@@ -52,9 +52,11 @@ def save_unknown_categories_info(
                     countries_cat = f"{countries_cat}; {country} ({years_country})"
             processed_cats.append([table, cat, countries_cat])
 
-    folder = file.parents[0]
-    if not folder.exists:
-        folder.mkdir()
+
+    if not file.parents[1].exists():
+        file.parents[1].mkdir()
+    if not file.parents[0].exists():
+        file.parents[0].mkdir()
     df_processed_cats = pd.DataFrame(processed_cats, columns=["Table", "Category", "Countries"])
     df_processed_cats.to_csv(file, index=False)
 
@@ -103,8 +105,9 @@ def save_last_row_info(
                     cats_country = f"{cats_country}; {cat} ({years_category})"
             processed_last_row_info.append([table, country, cats_country])
 
-    folder = file.parents[0]
-    if not folder.exists:
-        folder.mkdir()
+    if not file.parents[1].exists():
+        file.parents[1].mkdir()
+    if not file.parents[0].exists():
+        file.parents[0].mkdir()
     df_processed_lost_row_info = pd.DataFrame(processed_last_row_info, columns=["Table", "Country", "Categories"])
     df_processed_lost_row_info.to_csv("test_last_row_info.csv", index=False)

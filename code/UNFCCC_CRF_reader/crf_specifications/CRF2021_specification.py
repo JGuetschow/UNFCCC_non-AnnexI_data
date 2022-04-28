@@ -1717,7 +1717,7 @@ CRF2021 = {
         "sector_mapping": [
             ['Total actual emissions of halocarbons (by chemical) and SF6', ['2']],
             ['B. Chemical industry', ['2.B']],
-            ['9. Flurochemical production', ['2.9']],
+            ['9. Flurochemical production', ['2.B.9']],
             ['By-product emissions', ['2.B.9.a']],
             ['Fugitive emissions', ['2.B.9.b']],
             ['10. Other', ['2.B.10']],

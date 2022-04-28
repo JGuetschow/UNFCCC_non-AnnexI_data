@@ -32,6 +32,7 @@ print("")
 
 # get the correct script
 script_name = get_code_file(country, submission)
+
 if script_name is not None:
     print(f"Found code file {script_name}")
     print("")

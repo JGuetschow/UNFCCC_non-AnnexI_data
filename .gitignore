@@ -4,3 +4,4 @@ geckodriver.log
 __pycache__
 /JG_test_code/
 .doit.db
+log

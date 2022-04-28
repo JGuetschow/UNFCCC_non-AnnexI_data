@@ -72,8 +72,6 @@ def task_update_nc():
     }
 
 
-
-
 def task_download_nc():
     """ Download NC submissions """
     return {
@@ -143,12 +141,30 @@ read_config = {
     "submission": get_var('submission', None),
 }
 
-
 def task_read_unfccc_submission():
-    """ Read submission for a country (if code exists) """
+    """ Read submission for a country (if code exists) (not for CRF)"""
     return {
         'actions': [f"./venv/bin/python code/UNFCCC_reader/read_UNFCCC_submission.py "
                     f"--country={read_config['country']} --submission={read_config['submission']}"],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+# read UNFCCC submissions.
+# datalad run is called from within the read_UNFCCC_submission.py script
+read_config_crf = {
+    "country": get_var('country', None),
+    "submission_year": get_var('submission_year', None),
+    "submission_date": get_var('submission_date', None),
+}
+
+def task_read_unfccc_crf_submission():
+    """ Read CRF submission for a country """
+    return {
+        'actions': [f"./venv/bin/python code/UNFCCC_CRF_reader/read_UNFCCC_CRF_submission_datalad.py "
+                    f"--country={read_config_crf['country']} "
+                    f"--submission_year={read_config_crf['submission_year']} "
+                    f"--submission_date={read_config['submission_date']}"],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }

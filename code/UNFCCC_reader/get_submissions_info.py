@@ -35,18 +35,7 @@ def get_country_submissions(
     codepath = Path(__file__).parent
     data_folder = codepath / ".." / ".." / "downloaded_data"
 
-    # obtain country code
-    #country_code = countrynames.to_code_3(country_name)
-    try:
-        country = pycountry.countries.search_fuzzy(country_name)
-    except:
-        raise ValueError(f"Country name {country_name} can not be mapped to "
-                         f"any country code")
-    if len(country) > 1:
-        raise ValueError(f"Country name {country_name} has {len(country)} "
-                         f"possible results for country codes.")
-
-    country_code = country[0].alpha_3
+    country_code = get_country_code(country_name)
 
     if print_sub:
         print(f"Country name {country_name} maps to ISO code {country_code}")
@@ -122,10 +111,7 @@ def get_country_datasets(
 
 
     # obtain country code
-    country_code = countrynames.to_code_3(country_name)
-    if country_code is None:
-        raise ValueError(f"Country name {country_name} can not be mapped to "
-                         f"any country code")
+    country_code = get_country_code(country_name)
 
     if print_ds:
         print(f"Country name {country_name} maps to ISO code {country_code}")
@@ -270,6 +256,43 @@ def get_country_datasets(
     return all_data
 
 
+def get_country_code(
+        country_name: str,
+)->str:
+    """
+    obtain country code. If the input is a code it will be returned, if the input
+    is not a three letter code a search will be performed
+
+    Parameters
+    __________
+    country_name: str
+        Country code or name to get the three-letter code for.
+
+    """
+    try:
+        # check if it's a 3 letter code
+        country = pycountry.countries.get(alpha_3=country_name)
+        country_code = country.alpha_3
+    except:
+        try:
+            country = pycountry.countries.search_fuzzy(country_name)
+        except:
+            raise ValueError(f"Country name {country_name} can not be mapped to "
+                             f"any country code")
+        if len(country) > 1:
+            country_code = None
+            for current_country in country:
+                if current_country.name == country_name:
+                    country_code = current_country.alpha_3
+            if country_code is None:
+                raise ValueError(f"Country name {country_name} has {len(country)} "
+                                 f"possible results for country codes.")
+
+        country_code = country[0].alpha_3
+
+    return country_code
+
+
 def get_possible_inputs(
         country_name: str,
         submission: str,
@@ -302,10 +325,7 @@ def get_possible_inputs(
     data_folder = rootpath / "downloaded_data"
 
     # obtain country code
-    country_code = countrynames.to_code_3(country_name)
-    if country_code is None:
-        raise ValueError(f"Country name {country_name} can not be mapped to "
-                         f"any country code")
+    country_code = get_country_code(country_name)
 
     if print_info:
         print(f"Country name {country_name} maps to ISO code {country_code}")
@@ -371,11 +391,7 @@ def get_possible_outputs(
     data_folder = rootpath / "extracted_data"
 
     # obtain country code
-    country_code = countrynames.to_code_3(country_name)
-    if country_code is None:
-        raise ValueError(f"Country name {country_name} can not be mapped to "
-                         f"any country code")
-
+    country_code = get_country_code(country_name)
     if print_info:
         print(f"Country name {country_name} maps to ISO code {country_code}")
 
@@ -436,11 +452,13 @@ def get_code_file(
     rootpath = rootpath.resolve()
     code_file_path = None
 
+    # CRF is an exception as it's read using the UNFCCC_CRF_reader module
+    # so we return the path to that.
+    if submission[0:3] == "CRF":
+        return rootpath / "UNFCCC_CRF_reader"
+
     # obtain country code
-    country_code = countrynames.to_code_3(country_name)
-    if country_code is None:
-        raise ValueError(f"Country name {country_name} can not be mapped to "
-                         f"any country code")
+    country_code = get_country_code(country_name)
 
     if print_info:
         print(f"Country name {country_name} maps to ISO code {country_code}")
@@ -472,6 +490,7 @@ def get_code_file(
         return code_file_path.relative_to(rootpath)
     else:
         return None
+
 
 def create_folder_mapping(
         folder: str,
@@ -514,7 +533,18 @@ def create_folder_mapping(
 
     for item in folder.iterdir():
         if item.is_dir():
-            ISO3 = countrynames.to_code_3(item.name)
+            try:
+                country = pycountry.countries.search_fuzzy(item.name.replace("_", " "))
+                if len(country) > 1:
+                    ISO3 = None
+                    for current_country in country:
+                        if current_country.name == item.name.replace("_", " "):
+                            ISO3 = current_country.alpha_3
+                else:
+                    ISO3 = country[0].alpha_3
+            except:
+                ISO3 = None
+
             if ISO3 is None:
                 if item.name not in known_folders:
                     print(folder_mapping.values())
