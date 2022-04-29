@@ -3,7 +3,7 @@ This script is a wrapper around the read_crf_for_country
 function such that it can be called from datalad
 """
 
-from . import read_crf_for_country
+from UNFCCC_CRF_reader_prod import read_crf_for_country
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -17,8 +17,11 @@ country = args.country
 submission_year = args.submission_year
 submission_date = args.submission_date
 
+if submission_date == 'None':
+    submission_date = None
+
 read_crf_for_country(
     country,
-    submission_year=submission_year,
+    submission_year=int(submission_year),
     submission_date=submission_date)
 

@@ -164,7 +164,7 @@ def task_read_unfccc_crf_submission():
         'actions': [f"./venv/bin/python code/UNFCCC_CRF_reader/read_UNFCCC_CRF_submission_datalad.py "
                     f"--country={read_config_crf['country']} "
                     f"--submission_year={read_config_crf['submission_year']} "
-                    f"--submission_date={read_config['submission_date']}"],
+                    f"--submission_date={read_config_crf['submission_date']}"],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }

@@ -16,8 +16,8 @@ from operator import itemgetter
 from collections import Counter
 from typing import Dict, List, Optional, Tuple, Union
 from datetime import datetime
-from . import crf_specifications as crf
-from .utils import downloaded_data_path
+import crf_specifications as crf
+from util import downloaded_data_path
 
 
 ### reading functions
@@ -931,7 +931,6 @@ def get_submission_dates(
                          f"the function's purpose is to return available dates.")
 
     if folder.exists():
-        print(folder)
         files = filter_filenames(folder.glob("*.xlsx"), **file_filter)
     else:
         raise ValueError(f"Folder {folder} does not exist")

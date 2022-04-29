@@ -4,7 +4,7 @@ from doit in the current setup where doit runs on system python and
 not in the venv.
 """
 
-from . import read_crf_for_country_datalad
+from UNFCCC_CRF_reader_prod import read_crf_for_country_datalad
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -18,7 +18,10 @@ country = args.country
 submission_year = args.submission_year
 submission_date = args.submission_date
 
+if submission_date == "None":
+        submission_date = None
+
 read_crf_for_country_datalad(
         country,
-        submission_year=submission_year,
+        submission_year=int(submission_year),
         submission_date=submission_date)

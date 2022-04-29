@@ -1,7 +1,8 @@
 from pathlib import Path
 
 # 4 for use from nbs, fix
-root_path = Path(__file__).parents[3].absolute()
+root_path = Path(__file__).parents[2].absolute()
+root_path = root_path.resolve()
 log_path = root_path / "log"
 code_path = root_path / "code"
 downloaded_data_path = root_path / "downloaded_data" / "UNFCCC"

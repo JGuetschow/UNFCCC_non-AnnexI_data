@@ -13,20 +13,21 @@ from datetime import date
 from pathlib import Path
 from typing import Optional
 
-from . import crf_specifications as crf
+#from . import crf_specifications as crf
+import crf_specifications as crf
 
-from .UNFCCC_CRF_reader_core import read_crf_table
-from .UNFCCC_CRF_reader_core import convert_crf_table_to_pm2if
-from .UNFCCC_CRF_reader_core import get_latest_date_for_country
-from .UNFCCC_CRF_reader_core import get_crf_files
-from .UNFCCC_CRF_reader_devel import save_unknown_categories_info
-from .UNFCCC_CRF_reader_devel import save_last_row_info
+from UNFCCC_CRF_reader_core import read_crf_table
+from UNFCCC_CRF_reader_core import convert_crf_table_to_pm2if
+from UNFCCC_CRF_reader_core import get_latest_date_for_country
+from UNFCCC_CRF_reader_core import get_crf_files
+from UNFCCC_CRF_reader_devel import save_unknown_categories_info
+from UNFCCC_CRF_reader_devel import save_last_row_info
 
-from .utils import code_path, log_path, \
+from util import code_path, log_path, \
     custom_country_mapping, extracted_data_path, root_path
 
 import sys
-sys.path.append('../UNFCCC_reader')
+sys.path.append(code_path.name)
 from UNFCCC_reader.get_submissions_info import get_country_code
 
 
@@ -187,7 +188,7 @@ def read_crf_for_country(
         pm2.pm2io.write_interchange_format(output_folder / output_filename,
                                            ds_all.pr.to_interchange_format())
 
-        # write data in native PRIAMP2 formart
+        # write data in native PRIAMP2 format
         encoding = {var: compression for var in ds_all.data_vars}
         ds_all.pr.to_netcdf(output_folder / (output_filename + ".nc"),
                               encoding=encoding)
@@ -274,9 +275,10 @@ def read_crf_for_country_datalad(
 
     print(f"Run the script using datalad run via the python api")
     script = code_path / "UNFCCC_CRF_reader" / "read_UNFCCC_CRF_submission.py"
+    #try:
     datalad.api.run(
-        cmd=f"./venv/bin/python3 {script.name} --country={country} "
-            f"--submission_year={submission_year} --submission_date=={submission_date}",
+        cmd=f"./venv/bin/python3 {script.as_posix()} --country={country} "
+            f"--submission_year={submission_year} --submission_date={submission_date}",
         dataset=root_path,
         message=f"Read data for {country}, CRF{submission_year}, {submission_date}.",
         inputs=input_files,
@@ -284,7 +286,15 @@ def read_crf_for_country_datalad(
         dry_run=None,
         explicit=True,
     )
+    #except IncompleteResultsError as exce:
+    #    print(f"Code did not run successfully:")
+    #    print(exce.failed)
 
+
+# function to read all available data (or list of countries?)
+# make sure it works when not all countries have submitted data
+# give option to only read new data (no output yet), but also option to
+# read all data, e.g. when specifications have changed
 
 
 def get_country_name(
