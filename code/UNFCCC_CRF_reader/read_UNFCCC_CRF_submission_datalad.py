@@ -11,17 +11,23 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--country', help='Country name or code')
 parser.add_argument('--submission_year', help='Submission round to read')
 parser.add_argument('--submission_date', help='Date of submission to read', default=None)
+parser.add_argument('--re_read', help='Read data also if already read before',
+                    action='store_true')
 
 args = parser.parse_args()
 
 country = args.country
 submission_year = args.submission_year
 submission_date = args.submission_date
+re_read = args.re_read
+
 
 if submission_date == "None":
-        submission_date = None
+    submission_date = None
 
 read_crf_for_country_datalad(
-        country,
-        submission_year=int(submission_year),
-        submission_date=submission_date)
+    country,
+    submission_year=int(submission_year),
+    submission_date=submission_date,
+    re_read=re_read
+)

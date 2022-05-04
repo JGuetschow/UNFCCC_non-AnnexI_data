@@ -17,7 +17,7 @@ from collections import Counter
 from typing import Dict, List, Optional, Tuple, Union
 from datetime import datetime
 import crf_specifications as crf
-from util import downloaded_data_path
+from util import downloaded_data_path, NoCRFFilesError
 
 
 ### reading functions
@@ -207,6 +207,12 @@ def read_crf_table(
                                 data_year=data_year,
                                 date=date,
                                 folder=folder)
+    if input_files == []:
+        raise NoCRFFilesError(f"No files found for {country_codes}, "
+                              f"submission_year={submission_year}, "
+                              f"data_year={data_year}, "
+                              f"date={date}, "
+                              f"folder={folder}.")
 
     # get specification
     try:

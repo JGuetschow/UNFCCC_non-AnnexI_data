@@ -150,21 +150,41 @@ def task_read_unfccc_submission():
         'setup': ['setup_venv'],
     }
 
+
 # read UNFCCC submissions.
 # datalad run is called from within the read_UNFCCC_submission.py script
 read_config_crf = {
     "country": get_var('country', None),
     "submission_year": get_var('submission_year', None),
     "submission_date": get_var('submission_date', None),
+    "re_read": get_var('re_read', False),
+    "countries": get_var('countries', None),
 }
 
 def task_read_unfccc_crf_submission():
-    """ Read CRF submission for a country """
+    """ Read CRF submission for a country (will re-read if data already present)"""
     return {
         'actions': [f"./venv/bin/python code/UNFCCC_CRF_reader/read_UNFCCC_CRF_submission_datalad.py "
                     f"--country={read_config_crf['country']} "
                     f"--submission_year={read_config_crf['submission_year']} "
-                    f"--submission_date={read_config_crf['submission_date']}"],
+                    f"--submission_date={read_config_crf['submission_date']} "],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+
+def task_read_new_unfccc_crf_for_year():
+    """ Read CRF submission for all countries for given submission year. by default only reads
+    data not present yet. Only reads the latest updated submission for each country."""
+    actions = [f"./venv/bin/python code/UNFCCC_CRF_reader/read_new_UNFCCC_CRF_for_year_datalad.py "
+               f"--submission_year={read_config_crf['submission_year']} "]
+    if read_config_crf["countries"] is not None:
+            actions[0] = actions[0] + f"--countries={read_config_crf['countries']} "
+    if read_config_crf["re_read"]:
+        actions[0] = actions[0] + "--re_read"
+    return {
+        #'basename': "Read_CRF_year",
+        'actions': actions,
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
