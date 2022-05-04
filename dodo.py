@@ -202,8 +202,10 @@ def task_read_new_unfccc_crf_for_year():
                f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
                f"--folder=extracted_data/UNFCCC"
                ]
-    if read_config_crf["countries"] is not None:
-            actions[0] = actions[0] + f"--countries={read_config_crf['countries']} "
+    # specifying countries is currently disabled duo to problems with command line
+    # list arguments
+    #if read_config_crf["countries"] is not None:
+    #        actions[0] = actions[0] + f"--countries={read_config_crf['countries']} "
     if read_config_crf["re_read"]:
         actions[0] = actions[0] + "--re_read"
     return {

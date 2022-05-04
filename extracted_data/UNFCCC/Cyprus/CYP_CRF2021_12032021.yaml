@@ -1,0 +1,26 @@
+attrs:
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/2021
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Data submitted in 2021 to the UNFCCC in the common reporting format (CRF)
+    by Cyprus. Submission date: 12032021'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRF2013_2021)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - type
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - type
+  - area (ISO3)
+  - source
+  - scenario (PRIMAP)
+  - category (CRF2013_2021)
+  - provenance
+  - entity
+  - unit
+data_file: CYP_CRF2021_12032021.csv

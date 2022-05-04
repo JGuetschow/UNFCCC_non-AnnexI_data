@@ -1825,35 +1825,7 @@ CRF2021 = {
             ['\C-LUX\ Bulls', ['3.A.1.C-LUX-a'], 6],
             ['\C-LUX\ Calves', ['3.A.1.C-LUX-b'], 6],
             ['\C-LUX\ Young Cattle', ['3.A.1.C-LUX-c'], 6],
-            ['\C-LUX\ Suckler Cows', ['3.A.1.C-LUX-d'], 6], ['3. Total agriculture', ['3'], 0],
-            # I. Livestock
-            ['I. Livestock', ['M.3.LV'], 1],
-            # A. Enteric fermentation
-            ['A. Enteric fermentation', ['3.A'], 2],
-            ['1. Cattle(1)', ['3.A.1'], 3],
-            ['Option A:', ['\IGNORE'], 4],
-            ['Dairy cattle', ['3.A.1.Aa'], 5],
-            ['Non-dairy cattle', ['3.A.1.Ab'], 5],
-            ['Option B:', ['\IGNORE'], 4],
-            ['Mature dairy cattle', ['3.A.1.Ba'], 5],
-            ['Other mature cattle', ['3.A.1.Bb'], 5],
-            ['Growing cattle', ['3.A.1.Bc'], 5],
-            ['Option C (country-specific):', ['\IGNORE'], 4],
-            # all countries not specified explcitly
-            ['\C!-AUS-MLT-LUX-POL-SVN-USA\ Other (as specified in table 3(I).A)', ['3.A.1.C'], 5],
-            # Australia
-            ['\C-AUS\ Other (as specified in table 3(I).A)', ['3.A.1.C'], 5],
-            ['\C-AUS\ Dairy Cattle', ['3.A.1.C-AUS-a'], 6],
-            ['\C-AUS\ Beef Cattle - Pasture', ['3.A.1.C-AUS-b'], 6],
-            ['\C-AUS\ Beef Cattle - Feedlot', ['3.A.1.C-AUS-c'], 6],
-            # malta
-            ['\C-MLT\ Other (as specified in table 3(I).A)', ['3.A.1.C'], 5],
-            ['\C-MLT\ dairy cows', ['3.A.1.C-MLT-a'], 6],
-            ['\C-MLT\ non-lactating cows', ['3.A.1.C-MLT-b'], 6],
-            ['\C-MLT\ bulls', ['3.A.1.C-MLT-c'], 6],
-            ['\C-MLT\ calves', ['3.A.1.C-MLT-d'], 6],
-            ['\C-LUX\ Bulls under 2 years', ['3.A.1.C-LUX-e'], 6],
-            ['\C-LUX\ Dairy Cows', ['3.A.1.C-LUX-f'], 6],
+            ['\C-LUX\ Suckler Cows', ['3.A.1.C-LUX-d'], 6],
             # Poland
             ['\C-POL\ Other (as specified in table 3(I).A)', ['3.A.1.C'], 5],
             ['\C-POL\ Bulls (older than 2 years)', ['3.A.1.C-POL-a'], 6],
@@ -1907,7 +1879,7 @@ CRF2021 = {
             ['Other mature cattle', ['3.B.1.Bb'], 5],
             ['Growing cattle', ['3.B.1.Bc'], 5],
             ['Option C (country-specific):', ['\IGNORE'], 4],
-            # all countries not specified explcitly
+            # all countries not specified explicitly
             ['\C!-AUS-MLT-LUX-POL-SVN-USA\ Other (as specified in table 3(I).B)', ['3.B.1.C'], 5],
             # Australia
             ['\C-AUS\ Other (as specified in table 3(I).B)', ['3.B.1.C'], 5],

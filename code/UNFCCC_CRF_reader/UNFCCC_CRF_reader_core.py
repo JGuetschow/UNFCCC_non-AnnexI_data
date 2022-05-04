@@ -10,14 +10,15 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 import primap2 as pm2
+import pycountry
 from pathlib import Path
 from treelib import Tree
 from operator import itemgetter
 from collections import Counter
 from typing import Dict, List, Optional, Tuple, Union
-from datetime import datetime
+from datetime import datetime, timedelta
 import crf_specifications as crf
-from util import downloaded_data_path, NoCRFFilesError
+from util import downloaded_data_path, NoCRFFilesError, custom_country_mapping
 
 
 ### reading functions
@@ -207,6 +208,32 @@ def read_crf_table(
                                 data_year=data_year,
                                 date=date,
                                 folder=folder)
+    # nasty fix for cases where exporting ran overnight and not all files have the same date
+    if (date is not None) and (len(country_codes)==1):
+        if isinstance(data_year, list):
+            expected_files = len(data_year)
+        elif isinstance(data_year, int):
+            expected_files = 1
+        else:
+            expected_files = submission_year - 1990 - 1
+        if len(input_files) < expected_files:
+            print(f"Found only {len(input_files)} input files for {country_codes}. "
+                  f"Expected {expected_files}.")
+            print(f"Possibly exporting run overnight and some files have the previous day as date.")
+            date_datetime = datetime.strptime(date, "%d%m%Y")
+            date_datetime = date_datetime - timedelta(days=1)
+            prv_date = date_datetime.strftime("%d%m%Y")
+            more_input_files = get_crf_files(country_codes=country_codes,
+                                             submission_year=submission_year,
+                                             data_year=data_year,
+                                             date=prv_date,
+                                             folder=folder)
+            if len(more_input_files) > 0:
+                print(f"Found {len(more_input_files)} additional input files.")
+                input_files = input_files + more_input_files
+            else:
+                print(f"Found no additional input files")
+
     if input_files == []:
         raise NoCRFFilesError(f"No files found for {country_codes}, "
                               f"submission_year={submission_year}, "
@@ -796,6 +823,7 @@ def create_category_tree(
                 {
                     "id": last_cat_info["id"],
                     "tag": last_cat_info["category"],
+                    "level": last_cat_info["level"]
                 }
             )
             # add the category as new node
@@ -1007,3 +1035,20 @@ def find_latest_date(
         raise ValueError(f"Passed list of dates is empty")
 
     return dates_datetime[-1][0]
+
+
+def get_country_name(
+        country_code: str,
+) -> str:
+    """get country name from code """
+    if country_code in custom_country_mapping:
+        country_name = custom_country_mapping[country_code]
+    else:
+        try:
+            country = pycountry.countries.get(alpha_3=country_code)
+            country_name = country.name
+        except:
+            raise ValueError(f"Country code {country_code} can not be mapped to "
+                             f"any country")
+
+    return country_name

@@ -20,6 +20,7 @@ from UNFCCC_CRF_reader_core import read_crf_table
 from UNFCCC_CRF_reader_core import convert_crf_table_to_pm2if
 from UNFCCC_CRF_reader_core import get_latest_date_for_country
 from UNFCCC_CRF_reader_core import get_crf_files
+from UNFCCC_CRF_reader_core import get_country_name
 from UNFCCC_CRF_reader_devel import save_unknown_categories_info
 from UNFCCC_CRF_reader_devel import save_last_row_info
 
@@ -149,7 +150,7 @@ def read_crf_for_country(
                 entity_mapping = None
             ds_table_if = convert_crf_table_to_pm2if(
                 ds_table,
-                2021,
+                submission_year,
                 meta_data_input={"title": f"Data submitted in {submission_year} to the UNFCCC "
                                           f"in the common reporting format (CRF) by {country_name}. "
                                           f"Submission date: {submission_date}"},
@@ -192,8 +193,6 @@ def read_crf_for_country(
 
             if not output_folder.exists():
                 output_folder.mkdir()
-                # folder mapping has to be updated !!!
-                # if we do it here we will do it a lot of times when reading several countries at once
 
             # write data in interchange format
             pm2.pm2io.write_interchange_format(output_folder / output_filename,
@@ -395,10 +394,13 @@ def read_new_crf_for_year_datalad(
             pass
 
     print(f"Run the script using datalad run via the python api")
-    script = code_path / "UNFCCC_CRF_reader" / "read_new_UNFCCC_CRF_for year.py"
+    script = code_path / "UNFCCC_CRF_reader" / "read_new_UNFCCC_CRF_for_year.py"
 
-    cmd = f"./venv/bin/python3 {script.as_posix()} --countries={countries} "\
+    #cmd = f"./venv/bin/python3 {script.as_posix()} --countries={countries} "\
+    #      f"--submission_year={submission_year}"
+    cmd = f"./venv/bin/python3 {script.as_posix()} " \
           f"--submission_year={submission_year}"
+    print(f"!!!!!!!!!!!!!!!!!!!!func: re_read={re_read}")
     if re_read:
         cmd = cmd + " --re_read"
     datalad.api.run(
@@ -495,23 +497,6 @@ def get_input_and_output_files_for_country(
     country_info["output"] = output_files
 
     return country_info
-
-
-def get_country_name(
-        country_code: str,
-) -> str:
-    """get country name from code """
-    if country_code in custom_country_mapping:
-        country_name = custom_country_mapping(country_code)
-    else:
-        try:
-            country = pycountry.countries.get(alpha_3=country_code)
-            country_name = country.name
-        except:
-            raise ValueError(f"Country code {country_code} can not be mapped to "
-                             f"any country")
-
-    return country_name
 
 
 def submission_has_been_read(
