@@ -29,3 +29,6 @@ all_crf_countries = [
     'PRT', 'ROU', 'RUS', 'SVK', 'SVN',
     'SWE', 'TUR', 'UKR', 'USA', # 49
 ]
+
+class NoCRFFilesError(Exception):
+    pass

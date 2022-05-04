@@ -11,7 +11,7 @@ import pycountry
 import datalad.api
 from datetime import date
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Dict, Union
 
 #from . import crf_specifications as crf
 import crf_specifications as crf
@@ -119,27 +119,13 @@ def read_crf_for_country(
         submission_date = get_latest_date_for_country(country_code, submission_year)
 
     # check if data has been read already
-    output_folder = extracted_data_path / country_name.replace(" ", "_")
-    output_filename = f"{country_code}_CRF{submission_year}_{submission_date}"
-    read_data = True
-    print(f"re_read: {re_read}")
-    if not re_read:
-        print("test")
-        if output_folder.exists():
-            existing_files = output_folder.glob(f"{output_filename}.*")
-            existing_suffixes= [file.suffix for file in existing_files]
-            if all(suffix in existing_suffixes for suffix in [".nc", ".yaml", ".csv"]):
-                print(f"Data already available for {country_code}, "
-                      f"CRF{submission_year}, version {submission_date}. "
-                      "Skipping.")
-            else:
-                print(f"Partial data available for {country_code}, "
-                      f"CRF{submission_year}, version {submission_date}. "
-                      "Reading for completion. Please check if all files "
-                      "have been written.")
+    read_data = not submission_has_been_read(
+        country_code, country_name, submission_year=submission_year,
+        submission_date=submission_date, verbose=True,
+    )
 
     ds_all = None
-    if read_data:
+    if read_data or re_read:
         unknown_categories = []
         last_row_info = []
         for table in tables:
@@ -245,67 +231,15 @@ def read_crf_for_country_datalad(
 
     """
 
-    # get the country code and name
-    # both could be given as input, so we need this two step process
-    if country in custom_country_mapping:
-        country_code = country
-    else:
-        country_code = get_country_code(country)
-    # now get the country name
-    country_name = get_country_name(country_code)
+    # get all the info for the country
+    country_info = get_input_and_output_files_for_country(
+        country, submission_year=submission_year, verbose=True)
 
     print(f"Attempting to read data for CRF{submission_year} from {country}.")
     print("#"*80)
     print("")
-
     print(f"Using the UNFCCC_CRF_reader")
     print("")
-
-    # determine latest data
-    if submission_date is None:
-        print(f"No submission date given, find latest date.")
-        submission_date = get_latest_date_for_country(country_code, submission_year)
-    else:
-        print(f"Using given submissions date {submission_date}")
-
-    if submission_date is None:
-        # there is no data. Raise an exception
-        raise NoCRFFilesError(f"No submissions found for {country_code}, "
-                              f"submission_year={submission_year}, "
-                              f"date={date}")
-    else:
-        print(f"Latest submission date for CRF{submission_year} is {submission_date}")
-
-    # get possible input files
-    input_files = get_crf_files(country_codes=country_code,
-                                submission_year=submission_year,
-                                date=submission_date)
-    if not input_files:
-        raise NoCRFFilesError(f"No possible input files found for {country}, CRF{submission_year}, "
-                              f"v{submission_date}. Are they already submitted and included in the "
-                              f"repository?")
-    else:
-        print(f"Found the following input_files:")
-        for file in input_files:
-            print(file.name)
-        print("")
-
-    # convert file's path to str
-    input_files = [file.as_posix() for file in input_files]
-
-    # get output file
-    output_folder = extracted_data_path / country_name.replace(" ", "_")
-    output_files = [output_folder / f"{country_code}_CRF{submission_year}"
-                    f"_{submission_date}.{suffix}" for suffix
-                    in ['yaml', 'csv', 'nc']]
-    print(f"The following files are considered as output_files:")
-    for file in output_files:
-        print(file)
-    print("")
-
-    # convert file paths to str
-    output_files = [file.as_posix() for file in output_files]
-
     print(f"Run the script using datalad run via the python api")
     script = code_path / "UNFCCC_CRF_reader" / "read_UNFCCC_CRF_submission.py"
 
@@ -314,8 +248,8 @@ def read_crf_for_country_datalad(
             f"--submission_year={submission_year} --submission_date={submission_date}",
         dataset=root_path,
         message=f"Read data for {country}, CRF{submission_year}, {submission_date}.",
-        inputs=input_files,
-        outputs=output_files,
+        inputs=country_info["input"],
+        outputs=country_info["output"],
         dry_run=None,
         explicit=True,
     )
@@ -418,72 +352,56 @@ def read_new_crf_for_year_datalad(
 
     """
 
+    if countries is not None:
+        print(f"Reading CRF{submission_year} for countries {countries} using UNFCCC_CRF_reader.")
+    else:
+        print(f"Reading CRF{submission_year} for all countries using UNFCCC_CRF_reader.")
+        countries = all_crf_countries
+    print("#" * 80)
+    print("")
+    if re_read:
+        print("Re-reading all latest submissions.")
+    else:
+        print("Only reading new submissions not read yet.")
+
+
     input_files = []
     output_files = []
     # loop over countries to collect input and output files
+    print("Collect input and output files to pass to datalad")
     for country in countries:
-        # get the country code and name
-        # both could be given as input, so we need this two step process
-        if country in custom_country_mapping:
-            country_code = country
-        else:
-            country_code = get_country_code(country)
-        # now get the country name
-        country_name = get_country_name(country_code)
-
-        print(f"Attempting to read data for CRF{submission_year} from {country}.")
-        print("#"*80)
-        print("")
-
-        print(f"Using the UNFCCC_CRF_reader")
-        print("")
-
-        # get possible input files
-        new_input_files = get_crf_files(country_codes=country_code,
-                                    submission_year=submission_year,
-                                    date=submission_date)
-        new_input
-        if not input_files:
-            if submission_date is not None:
-                print(f"No possible input files found for {country}, CRF{submission_year}, "
-                      f"v{submission_date}. Are they already submitted and included in the "
-                      f"repository?")
+        try:
+            country_info = get_input_and_output_files_for_country(
+                country, submission_year=submission_year, verbose=False)
+            # check if the submission has been read already
+            if re_read:
+                input_files = input_files + country_info["input"]
+                output_files = output_files + country_info["output"]
             else:
-                print(f"No possible input files found for {country}, CRF{submission_year}. "
-                      f"Are they already submitted and included in the repository?")
-        else:
-            print(f"Found the following input_files:")
-            for file in input_files:
-                print(file.name)
-            print("")
-
-    # convert file's path to str
-    input_files = [file.as_posix() for file in input_files]
-
-    # get output file
-    if submission_date is None:
-        submission_date = get_latest_date_for_country(country_code, submission_year)
-
-    output_folder = extracted_data_path / country_name.replace(" ", "_")
-    output_files = [output_folder / f"{country_code}_CRF{submission_year}"
-                    f"_{submission_date}.{suffix}" for suffix
-                    in ['yaml', 'csv', 'nc']]
-    print(f"The following files are considered as output_files:")
-    for file in output_files:
-        print(file)
-    print("")
-
-    # convert file paths to str
-    output_files = [file.as_posix() for file in output_files]
+                data_read = submission_has_been_read(
+                    country_info["code"], country_info["name"],
+                    submission_year=submission_year,
+                    submission_date=country_info["date"],
+                    verbose=False,
+                )
+                if not data_read:
+                    input_files = input_files + country_info["input"]
+                    output_files = output_files + country_info["output"]
+        except:
+            # no error handling here as that is done in the function that does the actual reading
+            pass
 
     print(f"Run the script using datalad run via the python api")
-    script = code_path / "UNFCCC_CRF_reader" / "read_UNFCCC_CRF_submission.py"
+    script = code_path / "UNFCCC_CRF_reader" / "read_new_UNFCCC_CRF_for year.py"
 
+    cmd = f"./venv/bin/python3 {script.as_posix()} --countries={countries} "\
+          f"--submission_year={submission_year}"
+    if re_read:
+        cmd = cmd + " --re_read"
     datalad.api.run(
-        cmd=f"./venv/bin/python3 {script.as_posix()} --country={country} "
-            f"--submission_year={submission_year} --submission_date={submission_date}",
+        cmd=cmd,
         dataset=root_path,
-        message=f"Read data for {country}, CRF{submission_year}, {submission_date}.",
+        message=f"Read data for {countries}, CRF{submission_year}. Re-reading: {re_read}",
         inputs=input_files,
         outputs=output_files,
         dry_run=None,
@@ -495,6 +413,85 @@ def read_new_crf_for_year_datalad(
 # make sure it works when not all countries have submitted data
 # give option to only read new data (no output yet), but also option to
 # read all data, e.g. when specifications have changed
+
+def get_input_and_output_files_for_country(
+        country: str,
+        submission_year: int,
+        submission_date: Optional[str]=None,
+        verbose: Optional[bool]=True,
+) -> Dict[str, Union[List, str]]:
+    """
+    Get input and output files for a given country
+    """
+
+    country_info = {}
+
+    if country in custom_country_mapping:
+        country_code = country
+    else:
+        country_code = get_country_code(country)
+    # now get the country name
+    country_name = get_country_name(country_code)
+    country_info["code"] = country_code
+    country_info["name"] = country_name
+
+    # determine latest data
+    print(f"Determining input and output files for {country}")
+    if submission_date is None:
+        if verbose:
+            print(f"No submission date given, find latest date.")
+        submission_date = get_latest_date_for_country(country_code, submission_year)
+    else:
+        if verbose:
+            print(f"Using given submissions date {submission_date}")
+
+    if submission_date is None:
+        # there is no data. Raise an exception
+        raise NoCRFFilesError(f"No submissions found for {country_code}, "
+                              f"submission_year={submission_year}, "
+                              f"date={date}")
+    else:
+        if verbose:
+            print(f"Latest submission date for CRF{submission_year} is {submission_date}")
+    country_info["date"] = submission_date
+
+    # get possible input files
+    input_files = get_crf_files(country_codes=country_code,
+                                submission_year=submission_year,
+                                date=submission_date)
+    if not input_files:
+        raise NoCRFFilesError(f"No possible input files found for {country}, CRF{submission_year}, "
+                              f"v{submission_date}. Are they already submitted and included in the "
+                              f"repository?")
+    elif verbose:
+        print(f"Found the following input_files:")
+        for file in input_files:
+            print(file.name)
+        print("")
+
+
+    # convert file's path to str
+    input_files = [file.as_posix() for file in input_files]
+    country_info["input"] = input_files
+
+    # get output file
+    output_folder = extracted_data_path / country_name.replace(" ", "_")
+    output_files = [output_folder / f"{country_code}_CRF{submission_year}"
+                                    f"_{submission_date}.{suffix}" for suffix
+                    in ['yaml', 'csv', 'nc']]
+    if verbose:
+        print(f"The following files are considered as output_files:")
+        for file in output_files:
+            print(file)
+        print("")
+
+    # check if output data present
+
+    # convert file paths to str
+    output_files = [file.as_posix() for file in output_files]
+    country_info["output"] = output_files
+
+    return country_info
 
 
 def get_country_name(
@@ -512,3 +509,39 @@ def get_country_name(
                              f"any country")
 
     return country_name
+
+
+def submission_has_been_read(
+        country_code: str,
+        country_name: str,
+        submission_year: int,
+        submission_date: str,
+        verbose: Optional[bool]=True,
+) -> bool:
+    """
+    Check if a CRF submission has already been read
+    """
+    output_folder = extracted_data_path / country_name.replace(" ", "_")
+    output_filename = f"{country_code}_CRF{submission_year}_{submission_date}"
+    if output_folder.exists():
+        existing_files = output_folder.glob(f"{output_filename}.*")
+        existing_suffixes = [file.suffix for file in existing_files]
+        if all(suffix in existing_suffixes for suffix in [".nc", ".yaml", ".csv"]):
+            has_been_read = True
+            if verbose:
+                print(f"Data already available for {country_code}, "
+                      f"CRF{submission_year}, version {submission_date}.")
+        else:
+            has_been_read = False
+            if verbose:
+                print(f"Partial data available for {country_code}, "
+                      f"CRF{submission_year}, version {submission_date}. "
+                      "Please check if all files have been written after "
+                      "reading.")
+    else:
+        has_been_read = False
+        if verbose:
+            print(f"No read data available for {country_code}, "
+                  f"CRF{submission_year}, version {submission_date}. ")
+
+    return has_been_read

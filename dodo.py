@@ -145,7 +145,10 @@ def task_read_unfccc_submission():
     """ Read submission for a country (if code exists) (not for CRF)"""
     return {
         'actions': [f"./venv/bin/python code/UNFCCC_reader/read_UNFCCC_submission.py "
-                    f"--country={read_config['country']} --submission={read_config['submission']}"],
+                    f"--country={read_config['country']} --submission={read_config['submission']}",
+                    f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+                    f"--folder=extracted_data/UNFCCC"
+                    ],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
