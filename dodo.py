@@ -33,6 +33,7 @@ def task_map_folders():
         'setup': ['setup_venv'],
     }
 
+
 # Tasks for getting submissions and downloading them
 def task_update_bur():
     """ Update list of BUR submissions """
@@ -54,7 +55,10 @@ def task_download_bur():
         # before download
         'actions': ['datalad run -m "Download BUR submissions" '
                     '-i downloaded_data/UNFCCC/submissions-bur.csv '
-                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=BUR.py'],
+                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=BUR.py',
+                    f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+                    f"--folder=downloaded_data/UNFCCC"
+                    ],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -80,7 +84,10 @@ def task_download_nc():
         # before download
         'actions': ['datalad run -m "Download NC submissions" '
                     '-i downloaded_data/UNFCCC/submissions-nc.csv '
-                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=NC'],
+                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=NC',
+                    f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+                    f"--folder=downloaded_data/UNFCCC"
+                    ],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -118,7 +125,10 @@ def task_download_annexi():
                     f"{update_aI_config['category']}{update_aI_config['year']}' "
                     f"-i downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv "
                     f"./venv/bin/python code/UNFCCC_downloader/download_annexI.py "
-                    f"--category={update_aI_config['category']} --year={update_aI_config['year']}"],
+                    f"--category={update_aI_config['category']} --year={update_aI_config['year']}",
+                    f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+                    f"--folder=downloaded_data/UNFCCC"
+                    ],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -128,7 +138,10 @@ def task_download_ndc():
     """ Download NDC submissions """
     return {
         'actions': ['datalad run -m "Download NDC submissions" '
-                    './venv/bin/python code/UNFCCC_downloader/download_ndc.py'],
+                    './venv/bin/python code/UNFCCC_downloader/download_ndc.py',
+                    f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+                    f"--folder=downloaded_data/UNFCCC"
+                    ],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -141,6 +154,8 @@ read_config = {
     "submission": get_var('submission', None),
 }
 
+
+# TODO: make individual task for non-UNFCCC submissions
 def task_read_unfccc_submission():
     """ Read submission for a country (if code exists) (not for CRF)"""
     return {
@@ -170,7 +185,10 @@ def task_read_unfccc_crf_submission():
         'actions': [f"./venv/bin/python code/UNFCCC_CRF_reader/read_UNFCCC_CRF_submission_datalad.py "
                     f"--country={read_config_crf['country']} "
                     f"--submission_year={read_config_crf['submission_year']} "
-                    f"--submission_date={read_config_crf['submission_date']} "],
+                    f"--submission_date={read_config_crf['submission_date']} ",
+                    f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+                    f"--folder=extracted_data/UNFCCC"
+                    ],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -180,7 +198,10 @@ def task_read_new_unfccc_crf_for_year():
     """ Read CRF submission for all countries for given submission year. by default only reads
     data not present yet. Only reads the latest updated submission for each country."""
     actions = [f"./venv/bin/python code/UNFCCC_CRF_reader/read_new_UNFCCC_CRF_for_year_datalad.py "
-               f"--submission_year={read_config_crf['submission_year']} "]
+               f"--submission_year={read_config_crf['submission_year']} ",
+               f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+               f"--folder=extracted_data/UNFCCC"
+               ]
     if read_config_crf["countries"] is not None:
             actions[0] = actions[0] + f"--countries={read_config_crf['countries']} "
     if read_config_crf["re_read"]:

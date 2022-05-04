@@ -211,6 +211,7 @@ def read_crf_for_country_datalad(
         country: str,
         submission_year: int,
         submission_date: Optional[str]=None,
+        re_read: Optional[bool]=True
 ) -> None:
     """
     Wrapper around read_crf_for_country which takes care of selecting input
@@ -243,9 +244,12 @@ def read_crf_for_country_datalad(
     print(f"Run the script using datalad run via the python api")
     script = code_path / "UNFCCC_CRF_reader" / "read_UNFCCC_CRF_submission.py"
 
+    cmd = f"./venv/bin/python3 {script.as_posix()} --country={country} "\
+          f"--submission_year={submission_year} --submission_date={submission_date}"
+    if re_read:
+        cmd = cmd + f" --re_read"
     datalad.api.run(
-        cmd=f"./venv/bin/python3 {script.as_posix()} --country={country} "
-            f"--submission_year={submission_year} --submission_date={submission_date}",
+        cmd=cmd,
         dataset=root_path,
         message=f"Read data for {country}, CRF{submission_year}, {submission_date}.",
         inputs=country_info["input"],
@@ -333,7 +337,6 @@ def read_new_crf_for_year_datalad(
         re_read: Optional[bool] = False,
 ) -> None:
     """
-    TODO: this is just a copy of the one country function
     Wrapper around read_crf_for_year_datalad which takes care of selecting input
     and output files and using datalad run to trigger the data reading
 
