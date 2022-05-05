@@ -1826,6 +1826,8 @@ CRF2021 = {
             ['\C-LUX\ Calves', ['3.A.1.C-LUX-b'], 6],
             ['\C-LUX\ Young Cattle', ['3.A.1.C-LUX-c'], 6],
             ['\C-LUX\ Suckler Cows', ['3.A.1.C-LUX-d'], 6],
+            ['\C-LUX\ Bulls under 2 years', ['3.A.1.C-LUX-e'], 6],
+            ['\C-LUX\ Dairy Cows', ['3.A.1.C-LUX-f'], 6],
             # Poland
             ['\C-POL\ Other (as specified in table 3(I).A)', ['3.A.1.C'], 5],
             ['\C-POL\ Bulls (older than 2 years)', ['3.A.1.C-POL-a'], 6],

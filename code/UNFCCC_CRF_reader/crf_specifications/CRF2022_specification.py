@@ -917,6 +917,7 @@ CRF2022 = {
             ['Fuel oil B', ['1.A.3.d', 'FuelOilB'], 3],  # JPN
             ['Fuel oil C', ['1.A.3.d', 'FuelOilC'], 3],  # JPN
             ['Diesel Oil', ['1.A.3.d', 'OLDiesel'], 3],  # FIN
+            ['Other Liquid Fuels', ['1.A.3.d', 'OLOther'], 3],  # ROU, new in 2022
             ['Gaseous fuels', ['1.A.3.d', 'Gaseous'], 2],
             ['Biomass(6)', ['1.A.3.d', 'Biomass'], 2],
             ['Other fossil fuels (please specify)(4)', ['1.A.3.d', 'OtherFF'], 2],
@@ -1002,7 +1003,13 @@ CRF2022 = {
             ['Gaseous Fuels', ['1.A.3.e.ii.4', 'Gaseous'], 4],
             ['Other Fossil Fuels', ['1.A.3.e.ii.4', 'OtherFF'], 4],
             ['Biomass', ['1.A.3.e.ii.4', 'Biomass'], 4],
-
+            # ROU, new in 2022
+            ['Other', ['1.A.3.e.ii.3', 'Total'], 3],
+            ['Liquid Fuels', ['1.A.3.e.ii.3', 'Liquid'], 4],
+            ['Solid Fuels', ['1.A.3.e.ii.3', 'Solid'], 4],
+            ['Gaseous Fuels', ['1.A.3.e.ii.3', 'Gaseous'], 4],
+            ['Other Fossil Fuels', ['1.A.3.e.ii.3', 'OtherFF'], 4],
+            ['Biomass', ['1.A.3.e.ii.3', 'Biomass'], 4],
         ],
         "entity_mapping": {
             'EMISSIONS CH4': "CH4",
@@ -1393,7 +1400,11 @@ CRF2022 = {
             ['Gaseous Fuels', ['1.A.5.b.iii', 'Gaseous'], 3],
             ['Other Fossil Fuels', ['1.A.5.b.iii', 'OtherFF'], 3],
             ['Biomass', ['1.A.5.b.iii', 'Biomass'], 3],
-            # ESP, FIN
+            # CZE, new in 2022
+            ['i. Mobile (aviation component)', ['1.A.5.b.vi', 'Total'], 2],
+            ['Liquid Fuels', ['1.A.5.b.vi', 'Liquid'], 3],
+            ['iii. Mobile (other)', ['1.A.5.b.iv', 'Total'], 2],
+            ['Liquid Fuels', ['1.A.5.b.iv', 'Liquid'], 3],
             # Information Item
             ['Information item:(15)', ['\IGNORE', '\IGNORE'], 0],
             ['Waste incineration with energy recovery included as:', ['\IGNORE', '\IGNORE'], 1],
@@ -1440,6 +1451,7 @@ CRF2022 = {
             ['SO2 scrubbing', ['1.B.1.c.iii'], 1],  # SVN
             ['Flaring of coke oven gas', ['1.B.1.c.iv'], 1],  # KAZ
             ['Emisson from Coke Oven Gas Subsystem', ['1.B.1.c.iv'], 1],  # POL
+            ['Other', ['1.B.1.c.v'], 1],  # ROU, new in 2022
         ],
         "entity_mapping": {
             'EMISSIONS CH4 Emissions(3)': 'CH4',
@@ -1508,6 +1520,7 @@ CRF2022 = {
             ['Petrol distribution', ['1.B.2.d.viii'], 1],  # IRL
             ['Natural Gas Transport', ['1.B.2.d.ix'], 1],  # BLR
             ['Natural gas exploration - N2O emissions', ['1.B.2.d.x'], 1],  # GBR, GBK
+            ['flue gas desulfurisation', ['1.B.2.d.xi'], 1],  # GBR, GBK, new in 2022
         ],
         "entity_mapping": {
             'EMISSIONS CH4 (4) Amount captured': 'CH4',
@@ -1837,6 +1850,8 @@ CRF2022 = {
             ['\C-LUX\ Calves', ['3.A.1.C-LUX-b'], 6],
             ['\C-LUX\ Young Cattle', ['3.A.1.C-LUX-c'], 6],
             ['\C-LUX\ Suckler Cows', ['3.A.1.C-LUX-d'], 6],
+            ['\C-LUX\ Bulls under 2 years', ['3.A.1.C-LUX-e'], 6],
+            ['\C-LUX\ Dairy Cows', ['3.A.1.C-LUX-f'], 6],
             # Poland
             ['\C-POL\ Other (as specified in table 3(I).A)', ['3.A.1.C'], 5],
             ['\C-POL\ Bulls (older than 2 years)', ['3.A.1.C-POL-a'], 6],
@@ -2270,6 +2285,7 @@ CRF2022 = {
             ['Sludge spreading', ['5.E.7']],  # ESP
             ['Accidental combustion', ['5.E.3']],  # ESP
             ['Other waste', ['5.E.5']],  # CZE
+            ['5.E.1 Industrial Wastewater', ['5.E.8']],  # CAN, new in 2022
             ['Memo item:(2)', ['\IGNORE']],
             ['Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
             ['Annual change in total long-term C storage', ['M.Memo.ACLT']],
@@ -2377,6 +2393,8 @@ CRF2022 = {
             ['Industrial solid waste and constr. waste', ['5.B.2.b.x'], 2],  # FIN
             ['Municipal sludge', ['5.B.2.b.xi'], 2],  # FIN
             ['Industrial sludge', ['5.B.2.b.xii'], 2],  # FIN
+            ['Livestock manure co-digested', ['5.B.2.b.xiii'], 2],  # DEU, new in 2022
+            ['Waste water', ['5.B.2.b.xiv'], 2],  # NOR, new in 2022
         ],
         "entity_mapping": {
             'EMISSIONS CH4 Emissions(2)': 'CH4',
