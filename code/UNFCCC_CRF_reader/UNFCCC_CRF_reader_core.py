@@ -252,7 +252,7 @@ def read_crf_table(
     unknown_rows = []
     last_row_info = []
     for file in input_files:
-        file_info = get_info_from_crf_filename(file)
+        file_info = get_info_from_crf_filename(file.name)
         try:
             int(file_info["data_year"])
             df_this_file, unknown_rows_this_file, last_row_info_this_file = \
