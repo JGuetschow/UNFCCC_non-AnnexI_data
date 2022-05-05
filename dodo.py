@@ -55,7 +55,7 @@ def task_download_bur():
         # before download
         'actions': ['datalad run -m "Download BUR submissions" '
                     '-i downloaded_data/UNFCCC/submissions-bur.csv '
-                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=BUR.py',
+                    './venv/bin/python code/UNFCCC_downloader/download_non-annexI.py --category=BUR',
                     f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
                     f"--folder=downloaded_data/UNFCCC"
                     ],
