@@ -768,7 +768,8 @@ CRF2022 = {
             ['Other', ['1.A.3.b.iii', 'OLOther'], 4],  # UKR (and probably others)
             ['Other Liquid Fuels', ['1.A.3.b.iii', 'OLOther'], 4],  # CYP
             ['Other motor fuels', ['1.A.3.b.iii', 'OMotorFuels'], 4],  # RUS
-            ['LNG', ['1.A.3.b.iii', 'LNG'], 4],  ## USA
+            ['LNG', ['1.A.3.b.iii', 'LNG'], 4],  # USA
+            ['GTL', ['1.A.3.b.iii', 'GTL'], 4],  # MCO, new in 2022
             ['Gaseous fuels', ['1.A.3.b.iii', 'Gaseous'], 3],
             ['Biomass(6)', ['1.A.3.b.iii', 'Biomass'], 3],
             ['Other fossil fuels (please specify)(4)', ['1.A.3.b.iii', 'OtherFF'], 3],
@@ -783,7 +784,6 @@ CRF2022 = {
             ['Fossil part of biodiesel', ['1.A.3.b.iii', 'OFFBiodieselFC'], 4],  # DNM, BEL, HUN. LVA, ESP
             ['Fossil part of biogasoline', ['1.A.3.b.iii', 'OFFBiogasolineFC'], 4],  # BEL
             ['Fossil part of biofuel', ['1.A.3.b.iii', 'OFFBiofuelFC'], 4],  # IRL
-            ['GTL', ['1.A.3.b.iii', 'GTL'], 4],  # MCO, new in 2022
             # iv. Motorcycles
             ['iv. Motorcycles', ['1.A.3.b.iv', 'Total'], 2],
             ['Gasoline', ['1.A.3.b.iv', 'Gasoline'], 3],
@@ -945,13 +945,6 @@ CRF2022 = {
             ['Biomass(6)', ['1.A.3.e.i', 'Biomass'], 3],
             # ii other
             ['ii. Other (please specify)', ['1.A.3.e.ii', 'Total'], 2],
-            ## temp
-            # ['Liquid fuels', ['1.A.3.e.ii', 'Liquid'], False],
-            # ['Solid fuels', ['1.A.3.e.ii', 'Solid'], False],
-            # ['Gaseous fuels', ['1.A.3.e.ii', 'Gaseous'], False],
-            # ['Other fossil fuels(4)', ['1.A.3.e.ii', 'OtherFF'], False],
-            # ['Biomass(6)', ['1.A.3.e.ii', 'Biomass'], False],
-            ## end temp
             # UKR, SWE
             ['Off-road vehicles and other machinery', ['1.A.3.e.ii.1', 'Total'], 3],
             ['Liquid Fuels', ['1.A.3.e.ii.1', 'Liquid'], 4],
