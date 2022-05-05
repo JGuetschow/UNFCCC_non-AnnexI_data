@@ -313,8 +313,9 @@ def read_new_crf_for_year(
         except NoCRFFilesError:
             print(f"No data for country {country}, {submission_year}")
             read_countries[country] = "no data"
-        except:
+        except Exception as ex:
             print(f"Data for country {country}, {submission_year} could not be read")
+            print(f"The following error occurred: {ex}")
             read_countries[country]= "failed"
 
     # print overview
@@ -400,7 +401,7 @@ def read_new_crf_for_year_datalad(
     #      f"--submission_year={submission_year}"
     cmd = f"./venv/bin/python3 {script.as_posix()} " \
           f"--submission_year={submission_year}"
-    print(f"!!!!!!!!!!!!!!!!!!!!func: re_read={re_read}")
+
     if re_read:
         cmd = cmd + " --re_read"
     datalad.api.run(
