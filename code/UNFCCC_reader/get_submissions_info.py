@@ -7,6 +7,9 @@ import json
 import pycountry
 #import os
 
+import sys
+sys.path.append(code_path.name)
+from UNFCCC_CRF_reader.util import custom_country_mapping
 
 def get_country_submissions(
         country_name: str,
@@ -521,13 +524,15 @@ def create_folder_mapping(
     rootpath = rootpath.resolve()
     folder = rootpath / folder
 
-    if extracted:
-        folder_mapping = {}
-    else:
+    folder_mapping = custom_country_mapping
+    if not extracted:
         folder_mapping = {
-            'VEN': 'Venezeula_(Bolivarian_Republic_of)',
-            'FSM': 'Micronesia_(Federated_State_of)',
-            'MKD': 'The_Republic_of_North_Macedonia',
+            **folder_mapping,
+            **{
+                'VEN': 'Venezeula_(Bolivarian_Republic_of)',
+                'FSM': 'Micronesia_(Federated_State_of)',
+                'MKD': 'The_Republic_of_North_Macedonia',
+            }
         }
     known_folders = list(folder_mapping.values())
 

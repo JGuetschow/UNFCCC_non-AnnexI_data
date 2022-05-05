@@ -252,16 +252,21 @@ def read_crf_table(
     unknown_rows = []
     last_row_info = []
     for file in input_files:
-        df_this_file, unknown_rows_this_file, last_row_info_this_file = \
-            read_crf_table_from_file(file, table, crf_spec[table])
-        if df_all is None:
-            df_all = df_this_file.copy(deep=True)
-            unknown_rows = unknown_rows_this_file
-            last_row_info = last_row_info_this_file
-        else:
-            df_all = pd.concat([df_this_file, df_all])
-            unknown_rows = unknown_rows + unknown_rows_this_file
-            last_row_info = last_row_info + last_row_info_this_file
+        file_info = get_info_from_crf_filename(file)
+        try:
+            int(file_info["data_year"])
+            df_this_file, unknown_rows_this_file, last_row_info_this_file = \
+                read_crf_table_from_file(file, table, crf_spec[table])
+            if df_all is None:
+                df_all = df_this_file.copy(deep=True)
+                unknown_rows = unknown_rows_this_file
+                last_row_info = last_row_info_this_file
+            else:
+                df_all = pd.concat([df_this_file, df_all])
+                unknown_rows = unknown_rows + unknown_rows_this_file
+                last_row_info = last_row_info + last_row_info_this_file
+        except:
+            print(f"Year could not be converted to int for file {file}. Skipping file.")
 
     return df_all, unknown_rows, last_row_info
 

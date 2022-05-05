@@ -853,9 +853,9 @@ CRF2022 = {
             ['Gaseous Fuels', ['1.A.3.b.v.8', 'Gaseous'], 4],
             ['Other Liquid Fuels', ['1.A.3.b.v.9', 'Total'], 3],
             ['Other Liquid Fuels (please specify)', ['1.A.3.b.v.9', 'OtherLiquid'], 4],
-            ['Other Kerosene', ['1.A.3.b.v.9', 'OtherLiquid'], 5],
-            ['Heating and Other Gasoil', ['1.A.3.b.v.9', 'OtherLiquid'], 5],
-            ['Biomass', ['1.A.3.b.v.9', 'Total'], 3],
+            ['Other Kerosene', ['1.A.3.b.v.9', 'Kerosene'], 5],
+            ['Heating and Other Gasoil', ['1.A.3.b.v.9', 'HeatingGasoil'], 5],
+            ['Biomass', ['1.A.3.b.v.10', 'Total'], 3],
             ['Biomass', ['1.A.3.b.v.10', 'Biomass'], 4],
             # DEU
             ['CO2 from lubricant co-incineration in 2-stroke road vehicles', ['1.A.3.b.v.7', 'Total'], 3],
@@ -2268,7 +2268,7 @@ CRF2022 = {
             ['2. Industrial wastewater', ['5.D.2']],
             ['3. Other (as specified in table 5.D)', ['5.D.3']],
             ['E. Other (please specify)', ['5.E']],
-            ['Other', ['5.E']],  # EST, NOR
+            ['Other', ['5.E.5']],  # EST, NOR
             ['Recycling activities', ['5.E.1']],  # NLD
             ['Mechanical-Biological Treatment MBT', ['5.E.2']],  # DEU
             ['Accidental fires', ['5.E.3']],  # DEU, DKE, DNK, DNM
