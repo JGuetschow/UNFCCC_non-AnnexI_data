@@ -410,7 +410,7 @@ def read_new_crf_for_year_datalad(
         inputs=input_files,
         outputs=output_files,
         dry_run=None,
-        explicit=True,
+        #explicit=True,
     )
 
 

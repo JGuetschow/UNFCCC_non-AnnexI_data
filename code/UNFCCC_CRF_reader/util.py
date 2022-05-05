@@ -14,7 +14,7 @@ custom_country_mapping = {
     "FRK": "France",
     "DKE": "Denmark",
     "DNM": "Denmark",
-    "GBK": "United Kingdom",
+    "GBK": "United Kingdom of Great Britain and Northern Ireland",
 }
 
 all_crf_countries = [
