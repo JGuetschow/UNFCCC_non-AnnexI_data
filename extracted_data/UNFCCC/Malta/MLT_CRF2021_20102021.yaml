@@ -1,0 +1,26 @@
+attrs:
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/2021
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Data submitted in 2021 to the UNFCCC in the common reporting format (CRF)
+    by Malta. Submission date: 20102021'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRF2013_2021)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - type
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - type
+  - category (CRF2013_2021)
+  - scenario (PRIMAP)
+  - area (ISO3)
+  - source
+  - entity
+  - unit
+data_file: MLT_CRF2021_20102021.csv
