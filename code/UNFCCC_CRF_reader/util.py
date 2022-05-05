@@ -8,6 +8,8 @@ code_path = root_path / "code"
 downloaded_data_path = root_path / "downloaded_data" / "UNFCCC"
 extracted_data_path = root_path / "extracted_data" / "UNFCCC"
 
+# TODO: move this to a more general location as we can't import it
+# to get_submissions_info
 custom_country_mapping = {
     "EUA": "European Union",
     "EUC": "European Union",

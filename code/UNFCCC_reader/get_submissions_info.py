@@ -7,9 +7,23 @@ import json
 import pycountry
 #import os
 
-import sys
-sys.path.append(code_path.name)
-from UNFCCC_CRF_reader.util import custom_country_mapping
+root_path = Path(__file__).parents[2].absolute()
+root_path = root_path.resolve()
+code_path = root_path / "code"
+# beware, folders below are different than for CRF reader
+downloaded_data_path = root_path / "downloaded_data"
+extracted_data_path = root_path / "extracted_data"
+legacy_data_path = root_path / "legacy_data"
+
+# TODO: move this to general util package
+custom_country_mapping = {
+    "EUA": "European Union",
+    "EUC": "European Union",
+    "FRK": "France",
+    "DKE": "Denmark",
+    "DNM": "Denmark",
+    "GBK": "United Kingdom of Great Britain and Northern Ireland",
+}
 
 def get_country_submissions(
         country_name: str,
@@ -35,8 +49,7 @@ def get_country_submissions(
 
     """
 
-    codepath = Path(__file__).parent
-    data_folder = codepath / ".." / ".." / "downloaded_data"
+    data_folder = downloaded_data_path
 
     country_code = get_country_code(country_name)
 
@@ -105,12 +118,8 @@ def get_country_datasets(
 
     """
 
-    codepath = Path(__file__).parent
-    #codepath = Path(os.getcwd()) / ".." / "code" / "UNFCCC_reader"
-    rootpath = codepath / ".." / ".."
-    rootpath = rootpath.resolve()
-    data_folder = rootpath / "extracted_data"
-    data_folder_legacy = rootpath / "legacy_data"
+    data_folder = extracted_data_path
+    data_folder_legacy = legacy_data_path
 
 
     # obtain country code
@@ -321,11 +330,7 @@ def get_possible_inputs(
         returns a list pathlib Path objects for the input files
     """
 
-    codepath = Path(__file__).parent
-    #codepath = Path(os.getcwd()) / ".." / "code" / "UNFCCC_reader"
-    rootpath = codepath / ".." / ".."
-    rootpath = rootpath.resolve()
-    data_folder = rootpath / "downloaded_data"
+    data_folder = downloaded_data_path
 
     # obtain country code
     country_code = get_country_code(country_name)
@@ -349,7 +354,7 @@ def get_possible_inputs(
                     input_folder = item / country_folder / submission
                     if input_folder.exists():
                         for filepath in input_folder.glob("*"):
-                            input_files.append(filepath.relative_to(rootpath))
+                            input_files.append(filepath.relative_to(root_path))
 
     if print_info:
         if input_files:
@@ -387,11 +392,7 @@ def get_possible_outputs(
         returns a list pathlib Path objects for the input files
     """
 
-    codepath = Path(__file__).parent
-    #codepath = Path(os.getcwd()) / ".." / "code" / "UNFCCC_reader"
-    rootpath = codepath / ".." / ".."
-    rootpath = rootpath.resolve()
-    data_folder = rootpath / "extracted_data"
+    data_folder = extracted_data_path
 
     # obtain country code
     country_code = get_country_code(country_name)
@@ -412,7 +413,7 @@ def get_possible_outputs(
                 output_folder = item / country_folder
                 if output_folder.exists():
                     for filepath in output_folder.glob(country_code + "_" + submission + "*"):
-                        output_files.append(filepath.relative_to(rootpath))
+                        output_files.append(filepath.relative_to(root_path))
 
     if print_info:
         if output_files:
@@ -449,16 +450,12 @@ def get_code_file(
         returns a pathlib Path object for the code file
     """
 
-    codepath = Path(__file__).parent
-    #codepath = Path(os.getcwd()) / ".." / "code" / "UNFCCC_reader"
-    rootpath = codepath / ".." / ".."
-    rootpath = rootpath.resolve()
     code_file_path = None
 
     # CRF is an exception as it's read using the UNFCCC_CRF_reader module
     # so we return the path to that.
     if submission[0:3] == "CRF":
-        return rootpath / "UNFCCC_CRF_reader"
+        return root_path / "UNFCCC_CRF_reader"
 
     # obtain country code
     country_code = get_country_code(country_name)
@@ -466,7 +463,7 @@ def get_code_file(
     if print_info:
         print(f"Country name {country_name} maps to ISO code {country_code}")
 
-    with open(codepath / "folder_mapping.json", "r") as mapping_file:
+    with open(code_path / "folder_mapping.json", "r") as mapping_file:
         folder_mapping = json.load(mapping_file)
 
     if country_code not in folder_mapping:
@@ -474,7 +471,7 @@ def get_code_file(
             print("No code available")
             print("")
     else:
-        country_folder = codepath / folder_mapping[country_code]
+        country_folder = code_path / folder_mapping[country_code]
         code_file_name_candidate = "read_" + country_code + "_" + submission + "*"
 
         for file in country_folder.iterdir():
@@ -486,11 +483,11 @@ def get_code_file(
                                      f"'read_ISO3_submission_XXX.YYY'.")
                 else:
                     if print_info:
-                        print(f"Found code file {file.relative_to(rootpath)}")
+                        print(f"Found code file {file.relative_to(root_path)}")
                 code_file_path = file
 
     if code_file_path is not None:
-        return code_file_path.relative_to(rootpath)
+        return code_file_path.relative_to(root_path)
     else:
         return None
 
@@ -519,10 +516,8 @@ def create_folder_mapping(
         Nothing
 
     """
-    codepath = Path(__file__).parent
-    rootpath = codepath / ".." / ".."
-    rootpath = rootpath.resolve()
-    folder = rootpath / folder
+
+    folder = root_path / folder
 
     folder_mapping = custom_country_mapping
     if not extracted:
@@ -535,6 +530,7 @@ def create_folder_mapping(
             }
         }
     known_folders = list(folder_mapping.values())
+    print(f"known_folders: {known_folders}")
 
     for item in folder.iterdir():
         if item.is_dir():
