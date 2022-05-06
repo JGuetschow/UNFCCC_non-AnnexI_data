@@ -5,6 +5,8 @@ Currently it only checks the extracted_data folder and not if new
 submission are available in the downloaded data folder.
 """
 
+# TODO: sort importing and move to datasets folder
+
 import argparse
 import sys
 import primap2 as pm2
@@ -19,11 +21,11 @@ downloaded_data_path = root_path / "downloaded_data" / "UNFCCC"
 extracted_data_path = root_path / "extracted_data" / "UNFCCC"
 dataset_path = root_path / "datasets" / "UNFCCC"
 
-sys.path.append(code_path.name)
+#sys.path.append(code_path.name)
 
-from UNFCCC_CRF_reader.util import all_crf_countries
-from UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import get_input_and_output_files_for_country
-from UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import submission_has_been_read
+from util import all_crf_countries
+from UNFCCC_CRF_reader_prod import get_input_and_output_files_for_country
+from UNFCCC_CRF_reader_prod import submission_has_been_read
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--submission_year', help='Submission round to read', type=int)
@@ -50,12 +52,14 @@ for country in all_crf_countries:
         )
         if not data_read:
             print(f"Latest submission for {country} has not been read yet.")
+            # TODO: make sure an older one is read if present. currently none is included at all
             outdated_countries.append(country)
 
         # read the native format file
-        input_files = [file for file in country_info["input"] if file.suffix == ".nc"]
+        #print(country_info["output"])
+        input_files = [file for file in country_info["output"] if Path(file).suffix == ".nc"]
 
-        ds_country = pm2.open_dataset(input_files[0].as_posix())
+        ds_country = pm2.open_dataset(input_files[0])
 
         # combine per table DS
         if ds_all_CRF is None:
