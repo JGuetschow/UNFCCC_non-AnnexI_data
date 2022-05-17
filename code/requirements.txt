@@ -4,4 +4,6 @@ pandas
 selenium
 primap2
 countrynames
+pycountry
 datalad
+treelib
