@@ -52,7 +52,7 @@ for country in all_crf_countries:
         )
         if not data_read:
             print(f"Latest submission for {country} has not been read yet.")
-            # TODO: make sure an older one is read if present. currently none is included at all
+            # TODO: make sure an older submission is read if present. currently none is included at all
             outdated_countries.append(country)
 
         # read the native format file
