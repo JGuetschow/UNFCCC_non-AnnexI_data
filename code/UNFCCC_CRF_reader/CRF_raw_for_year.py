@@ -6,6 +6,7 @@ submission are available in the downloaded data folder.
 """
 
 # TODO: sort importing and move to datasets folder
+# TODO: integrate into doit
 
 import argparse
 import sys
