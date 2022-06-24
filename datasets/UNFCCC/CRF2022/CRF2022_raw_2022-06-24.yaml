@@ -10,16 +10,16 @@ attrs:
   sec_cats:
   - type
   title: 'Data submitted in 2022 to the UNFCCC in the common reporting format (CRF)
-    by Austria. Submission date: 13042022'
+    by Australia. Submission date: 26052022'
 time_format: '%Y'
 dimensions:
   '*':
   - time
-  - type
-  - area (ISO3)
   - scenario (PRIMAP)
   - provenance
+  - type
   - category (CRF2013_2022)
+  - area (ISO3)
   - source
   - entity
   - unit
