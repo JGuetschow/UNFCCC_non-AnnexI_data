@@ -2279,6 +2279,7 @@ CRF2022 = {
             ['Accidental combustion', ['5.E.3']],  # ESP
             ['Other waste', ['5.E.5']],  # CZE
             ['5.E.1 Industrial Wastewater', ['5.E.8']],  # CAN, new in 2022
+            ['Accidental Fires at SWDS', ['5.E.9']],  # AUS, new in 2022
             ['Memo item:(2)', ['\IGNORE']],
             ['Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
             ['Annual change in total long-term C storage', ['M.Memo.ACLT']],
