@@ -17,10 +17,10 @@ dimensions:
   - time
   - type
   - area (ISO3)
-  - source
   - scenario (PRIMAP)
-  - category (CRF2013_2022)
   - provenance
+  - category (CRF2013_2022)
+  - source
   - entity
   - unit
 data_file: SVK_CRF2022_06042022.csv
