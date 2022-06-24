@@ -7,3 +7,4 @@ countrynames
 pycountry
 datalad
 treelib
+unfccc_di_api

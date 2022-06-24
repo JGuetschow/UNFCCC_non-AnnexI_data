@@ -415,11 +415,6 @@ def read_new_crf_for_year_datalad(
     )
 
 
-# function to read all available data (or list of countries?)
-# make sure it works when not all countries have submitted data
-# give option to only read new data (no output yet), but also option to
-# read all data, e.g. when specifications have changed
-
 def get_input_and_output_files_for_country(
         country: str,
         submission_year: int,
