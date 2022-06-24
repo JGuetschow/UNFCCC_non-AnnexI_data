@@ -181,14 +181,18 @@ read_config_crf = {
 
 def task_read_unfccc_crf_submission():
     """ Read CRF submission for a country (will re-read if data already present)"""
+    actions =  [
+        f"./venv/bin/python code/UNFCCC_CRF_reader/read_UNFCCC_CRF_submission_datalad.py "
+        f"--country={read_config_crf['country']} "
+        f"--submission_year={read_config_crf['submission_year']} "
+        f"--submission_date={read_config_crf['submission_date']} ",
+        f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
+        f"--folder=extracted_data/UNFCCC"
+        ],
+    if read_config_crf["re_read"]:
+        actions[0] = actions[0] + " --re_read"
     return {
-        'actions': [f"./venv/bin/python code/UNFCCC_CRF_reader/read_UNFCCC_CRF_submission_datalad.py "
-                    f"--country={read_config_crf['country']} "
-                    f"--submission_year={read_config_crf['submission_year']} "
-                    f"--submission_date={read_config_crf['submission_date']} ",
-                    f"./venv/bin/python code/UNFCCC_reader/folder_mapping.py "
-                    f"--folder=extracted_data/UNFCCC"
-                    ],
+        'actions': actions,
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
