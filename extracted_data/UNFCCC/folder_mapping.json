@@ -22,6 +22,7 @@
     "GBR": "United_Kingdom",
     "USA": "United_States",
     "TUR": "Turkey",
+    "NOR": "Norway",
     "AUT": "Austria",
     "UKR": "Ukraine",
     "FIN": "Finland",
@@ -39,11 +40,14 @@
     "CHL": "Chile",
     "AUS": "Australia",
     "POL": "Poland",
+    "HUN": "Hungary",
     "SVK": "Slovakia",
+    "EST": "Estonia",
     "ITA": "Italy",
     "PRT": "Portugal",
     "HRV": "Croatia",
     "RUS": "Russian_Federation",
+    "ROU": "Romania",
     "LUX": "Luxembourg",
     "IRL": "Ireland"
 }
