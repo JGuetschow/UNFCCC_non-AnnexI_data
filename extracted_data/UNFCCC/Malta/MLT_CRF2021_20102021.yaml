@@ -15,12 +15,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - provenance
-  - type
-  - category (CRF2013_2021)
-  - scenario (PRIMAP)
-  - area (ISO3)
   - source
+  - area (ISO3)
+  - provenance
+  - scenario (PRIMAP)
+  - category (CRF2013_2021)
+  - type
   - entity
   - unit
 data_file: MLT_CRF2021_20102021.csv
