@@ -9,7 +9,7 @@ import pycountry
 
 root_path = Path(__file__).parents[2].absolute()
 root_path = root_path.resolve()
-code_path = root_path / "code"
+code_path = root_path / "code" / "UNFCCC_reader"
 # beware, folders below are different than for CRF reader
 downloaded_data_path = root_path / "downloaded_data"
 extracted_data_path = root_path / "extracted_data"
