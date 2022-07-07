@@ -533,7 +533,7 @@ def create_folder_mapping(
     print(f"known_folders: {known_folders}")
 
     for item in folder.iterdir():
-        if item.is_dir():
+        if item.is_dir() and not item.match("__pycache__"):
             try:
                 country = pycountry.countries.search_fuzzy(item.name.replace("_", " "))
                 if len(country) > 1:
