@@ -7,3 +7,5 @@ countrynames
 pycountry
 datalad
 treelib
+camelot-py
+opencv-python

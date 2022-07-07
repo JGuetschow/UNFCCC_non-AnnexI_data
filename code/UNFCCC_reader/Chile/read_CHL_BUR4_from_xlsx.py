@@ -16,7 +16,9 @@ from primap2.pm2io._data_reading import filter_data
 # ###
 
 input_folder = Path('..') / '..' / '..' / 'downloaded_data' / 'UNFCCC' / 'Chile' / 'BUR4'
-output_folder = Path('..') / '..' / '..' / 'extracted_data' / 'UNFCCC', 'Chile'
+output_folder = Path('..') / '..' / '..' / 'extracted_data' / 'UNFCCC' / 'Chile'
+if not output_folder.exists():
+    output_folder.mkdir()
 
 output_filename = 'CHL_BUR4_2021_'
 

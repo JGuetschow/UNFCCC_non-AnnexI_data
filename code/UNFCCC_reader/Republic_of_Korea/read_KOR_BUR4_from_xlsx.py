@@ -1,4 +1,4 @@
-# this script reads data from Chile's 2020 national inventory which is underlying BUR4
+# this script reads data from Korea's BUR4
 # Data is read from the xlsx file
 
 import os
@@ -16,6 +16,8 @@ from primap2.pm2io._data_reading import filter_data
 
 input_folder = Path('..') / '..' / '..' / 'downloaded_data' / 'non-UNFCCC' / 'Republic_of_Korea' / '2020_Inventory'
 output_folder = Path('..') / '..' / '..' / 'extracted_data' / 'UNFCCC' / 'Republic_of_Korea'
+if not output_folder.exists():
+    output_folder.mkdir()
 
 output_filename = 'KOR_BUR4_2021_'
 
