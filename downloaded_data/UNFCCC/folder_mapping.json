@@ -1,10 +1,7 @@
 {
     "GHA": "Ghana",
     "STP": "Sao_Tome_and_Principe",
-    "PRK": [
-        "Republic_of_Korea",
-        "Democratic_People's_Republic_of_Korea"
-    ],
+    "KOR": "Republic_of_Korea",
     "MWI": "Malawi",
     "SAU": "Saudi_Arabia",
     "SDN": "Sudan",
@@ -111,6 +108,7 @@
     "YEM": "Yemen",
     "KEN": "Kenya",
     "MDV": "Maldives",
+    "PRK": "Democratic_People's_Republic_of_Korea",
     "JPN": "Japan",
     "CYP": "Cyprus",
     "BIH": "Bosnia_and_Herzegovina",

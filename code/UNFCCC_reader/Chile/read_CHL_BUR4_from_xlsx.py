@@ -15,8 +15,14 @@ from primap2.pm2io._data_reading import filter_data
 # configuration
 # ###
 
-input_folder = Path('..') / '..' / '..' / 'downloaded_data' / 'UNFCCC' / 'Chile' / 'BUR4'
-output_folder = Path('..') / '..' / '..' / 'extracted_data' / 'UNFCCC' / 'Chile'
+# folders and files
+root_path = Path(__file__).parents[3].absolute()
+root_path = root_path.resolve()
+downloaded_data_path = root_path / "downloaded_data"
+extracted_data_path = root_path / "extracted_data"
+
+input_folder = downloaded_data_path / 'UNFCCC' / 'Chile' / 'BUR4'
+output_folder = extracted_data_path / 'UNFCCC' / 'Chile'
 if not output_folder.exists():
     output_folder.mkdir()
 

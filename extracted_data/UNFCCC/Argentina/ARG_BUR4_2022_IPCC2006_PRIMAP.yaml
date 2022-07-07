@@ -1,0 +1,25 @@
+attrs:
+  references: https://unfccc.int/documents/419772
+  rights: XXXX
+  contact: mail@johannes-guetschow.de
+  title: Cuarto Informe Bienal de Actualización de la República Argentina a la Convención
+    Marco delas Naciones Unidas Sobre el Cambio Climático
+  comment: Read fom pdf file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - source
+  - scenario (PRIMAP)
+  - provenance
+  - entity
+  - unit
+additional_coordinates:
+  orig_cat_name: category (IPCC2006_PRIMAP)
+data_file: ARG_BUR4_2022_IPCC2006_PRIMAP.csv
