@@ -4,6 +4,7 @@ import pandas as pd
 import pycountry
 import itertools
 import json
+import copy
 from datetime import date
 from typing import Optional, Dict
 from pathlib import Path
@@ -326,7 +327,6 @@ def convert_DI_data_to_pm2_if(
         data_temp,
         **pm2if_specifications,
     )
-
 
     if filename != "":
         print(f"Save data to {filename + '.csv/.yaml'}")
