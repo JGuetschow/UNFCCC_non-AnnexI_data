@@ -71,7 +71,7 @@ def convert_crf_table_to_pm2if(
         "category": "category",
         "entity": "entity",
         "unit": "unit",
-        "sec_cats__type": "type",
+        "sec_cats__class": "class",
         "area": "country",
         "data": "data",
     }
@@ -84,7 +84,7 @@ def convert_crf_table_to_pm2if(
         "area": "ISO3",
         "category": f"CRF2013_{submission_year}",
         "scenario": "PRIMAP",
-        "type": "CRF2013",
+        "class": "CRF2013",
     }
 
     coords_defaults = {

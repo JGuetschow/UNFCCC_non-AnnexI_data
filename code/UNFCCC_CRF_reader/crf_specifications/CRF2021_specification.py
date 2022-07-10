@@ -77,7 +77,7 @@ CRF2021 = {
             ['e. Other transportation', ['1.A.3.e']],
         ],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table1s2": {
@@ -125,7 +125,7 @@ CRF2021 = {
             ['For storage in other countries', ['M.Memo.CO2Cap.Exp']],
         ],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table1.A(a)s1": {
@@ -138,7 +138,7 @@ CRF2021 = {
             # data does not seem to have the nan rows)
             "header": ['group', 'entity', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category", "type"],
+            "categories": ["category", "class"],
             "cols_to_ignore": [
                 'AGGREGATE ACTIVITY DATA Consumption',
                 'AGGREGATE ACTIVITY DATA Consumption',
@@ -317,7 +317,7 @@ CRF2021 = {
             # data does not seem to have the nan rows)
             "header": ['group', 'entity', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category", "type"],
+            "categories": ["category", "class"],
             "cols_to_ignore": [
                 'AGGREGATE ACTIVITY DATA Consumption',
                 'AGGREGATE ACTIVITY DATA Consumption',
@@ -663,7 +663,7 @@ CRF2021 = {
             "lastrow": 115,
             "header": ['group', 'entity', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category", "type"],
+            "categories": ["category", "class"],
             "cols_to_ignore": [
                 'AGGREGATE ACTIVITY DATA Consumption',
                 'AGGREGATE ACTIVITY DATA Consumption',
@@ -724,7 +724,7 @@ CRF2021 = {
             ['fossil part of biodiesel', ['1.A.3.b.i', 'OFFBiodieselFC'], 4],  # DKE, DNK, HRV
             ['Fossil part of biodiesel', ['1.A.3.b.i', 'OFFBiodieselFC'], 4],  # DNM, BEL, HUN, LVA, ESP
             ['Fossil part of biogasoline', ['1.A.3.b.i', 'OFFBiogasolineFC'], 4],  # BEL
-            ['Natural Gas', ['1.A.3.b.i.', 'OFFNaturalGas'], 4],  # USA
+            ['Natural Gas', ['1.A.3.b.i', 'OFFNaturalGas'], 4],  # USA
             ['Fossil part of biofuel', ['1.A.3.b.i', 'OFFBiofuelFC'], 4],  # IRL
             ['Other', ['1.A.3.b.i', 'OFFOther'], 4],  # MLT
             # ii. Light duty trucks
@@ -1006,7 +1006,7 @@ CRF2021 = {
             "lastrow": 127,
             "header": ['group', 'entity', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category", "type"],
+            "categories": ["category", "class"],
             "cols_to_ignore": [
                 'AGGREGATE ACTIVITY DATA Consumption',
                 'AGGREGATE ACTIVITY DATA Consumption',
@@ -1435,7 +1435,7 @@ CRF2021 = {
             'EMISSIONS CO2 Emissions': 'CO2',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table1.B.2": {
@@ -1504,7 +1504,7 @@ CRF2021 = {
             'EMISSIONS N2O Amount captured': 'N2O',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table1.C": {
@@ -1545,7 +1545,7 @@ CRF2021 = {
             'EMISSIONS CO2(2)': 'CO2',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table1.D": {
@@ -1555,7 +1555,7 @@ CRF2021 = {
             "lastrow": 20,
             "header": ['group', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category", "type"],
+            "categories": ["category", "class"],
             "cols_to_ignore": [],
             "stop_cats": ["", np.nan],
             "unit_info": unit_info["default"],
@@ -1565,7 +1565,7 @@ CRF2021 = {
         ],
         "entity_mapping": [],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # TODO
     "Table2(I)s1": {
@@ -1613,7 +1613,7 @@ CRF2021 = {
             'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table2(I)s2": {
@@ -1659,7 +1659,7 @@ CRF2021 = {
             'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table2(I).A-Hs1": {
@@ -1679,7 +1679,7 @@ CRF2021 = {
         ],
         "entity_mapping": [],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # TODO
     "Table2(I).A-Hs2": {
@@ -1699,7 +1699,7 @@ CRF2021 = {
         ],
         "entity_mapping": [],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # TODO
     "Table2(II)": {
@@ -1776,7 +1776,7 @@ CRF2021 = {
             'c-C4F8': 'cC4F8',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table3s1": {  # Agriculture summary sheet 1
@@ -1947,7 +1947,7 @@ CRF2021 = {
             ['5. Indirect N2O emissions', ['3.B.5'], 3],
         ],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table3s2": {  # Agriculture summary sheet 2
@@ -1989,7 +1989,7 @@ CRF2021 = {
             ['NOx from Livestock', ['3.J.9']],
         ],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table3.C": {  # rice cultivation details
@@ -2031,7 +2031,7 @@ CRF2021 = {
             'EMISSIONS CH4': 'CH4',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table3.D": {  # direct and indirect N2O from soils
@@ -2052,7 +2052,7 @@ CRF2021 = {
         },
         "sector_mapping": [
             ['a. Direct N2O emissions from managed soils', ['3.D.a']],
-            ['1. Inorganic N fertilizers(3)', ['3.D.a,1']],
+            ['1. Inorganic N fertilizers(3)', ['3.D.a.1']],
             ['2. Organic N fertilizers(3)', ['3.D.a.2']],
             ['a. Animal manure applied to soils', ['3.D.a.2.a']],
             ['b. Sewage sludge applied to soils', ['3.D.a.2.b']],
@@ -2070,7 +2070,7 @@ CRF2021 = {
             'EMISSIONS N2O': 'N2O',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table3.E": {  # savanna burning details
@@ -2122,7 +2122,7 @@ CRF2021 = {
             'EMISSIONS (2) N2O': 'N2O',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table3.F": {  # field burning details
@@ -2142,7 +2142,7 @@ CRF2021 = {
         ],
         "entity_mapping": [],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # TODO
     "Table3.G-I": {  # liming, urea, carbon containing fertilizer
@@ -2162,7 +2162,7 @@ CRF2021 = {
         ],
         "entity_mapping": [],
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # TODO
     "Table4": {  # LULUCF overview
@@ -2218,7 +2218,7 @@ CRF2021 = {
             'Net CO2 emissions/removals(1), (2)': 'CO2',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     # TODO: all other LULUCF tables
@@ -2270,7 +2270,7 @@ CRF2021 = {
             'CO2(1)': 'CO2',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested; memo items not read because of empty lines
     "Table5.A": {  # solid waste disposal
@@ -2294,18 +2294,18 @@ CRF2021 = {
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
-            ['1. Managed waste disposal sites', ['5.1']],
-            ['a. Anaerobic', ['5.1.a']],
-            ['b. Semi-aerobic', ['5.1.b']],
-            ['2. Unmanaged waste disposal sites', ['5.2']],
-            ['3. Uncategorized waste disposal sites', ['5.3']],
+            ['1. Managed waste disposal sites', ['5.A.1']],
+            ['a. Anaerobic', ['5.A.1.a']],
+            ['b. Semi-aerobic', ['5.A.1.b']],
+            ['2. Unmanaged waste disposal sites', ['5.A.2']],
+            ['3. Uncategorized waste disposal sites', ['5.A.3']],
         ],
         "entity_mapping": {
             'EMISSIONS SINK CATEGORIES CH4 Emissions(2)': 'CH4',
             'EMISSIONS SINK CATEGORIES CO2(4) Amount of CH4 for energy recovery(3)': 'CO2',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table5.B": {  # Biological treatment of solid waste
@@ -2374,7 +2374,7 @@ CRF2021 = {
             'EMISSIONS N2O Amount of CH4 for energy recovery(3)': 'N2O',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table5.C": {  # Waste incineration and open burning
@@ -2458,7 +2458,7 @@ CRF2021 = {
             'EMISSIONS Amount of wastes (incinerated/open burned) N2O': 'N2O',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
     "Table5.D": {  # Waste incineration and open burning
@@ -2496,7 +2496,7 @@ CRF2021 = {
             'EMISSIONS N2O(3) Amount of CH4 for Energy Recovery(5)': 'N2O',
         },
         "coords_defaults": {
-            "type": "Total",
+            "class": "Total",
         },
     },  # tested
 }
