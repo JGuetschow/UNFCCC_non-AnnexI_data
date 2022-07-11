@@ -15,12 +15,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - class
   - source
-  - provenance
+  - scenario (PRIMAP)
+  - class
   - area (ISO3)
   - category (CRF2013_2021)
-  - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
 data_file: BEL_CRF2021_13042021.csv

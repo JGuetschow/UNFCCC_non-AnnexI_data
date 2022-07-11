@@ -3,7 +3,7 @@ attrs:
   rights: ''
   contact: mail@johannes-guetschow.de
   title: 'Data submitted in 2021 to the UNFCCC in the common reporting format (CRF)
-    by Spain. Submission date: 30092021'
+    by European Union. Submission date: 26052021'
   comment: Read fom xlsx file by Johannes Gütschow
   institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
   cat: category (CRF2013_2021)
@@ -23,4 +23,4 @@ dimensions:
   - provenance
   - entity
   - unit
-data_file: ESP_CRF2021_30092021.csv
+data_file: EUA_CRF2021_26052021.csv
