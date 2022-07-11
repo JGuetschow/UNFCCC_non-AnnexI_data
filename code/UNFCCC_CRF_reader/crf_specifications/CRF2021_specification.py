@@ -76,6 +76,9 @@ CRF2021 = {
             ['d. Domestic navigation', ['1.A.3.d']],
             ['e. Other transportation', ['1.A.3.e']],
         ],
+        "entity_mapping": {
+            "NOX": "NOx",
+        },
         "coords_defaults": {
             "class": "Total",
         },
@@ -124,6 +127,9 @@ CRF2021 = {
             ['For domestic storage', ['M.Memo.CO2Cap.Dom']],
             ['For storage in other countries', ['M.Memo.CO2Cap.Exp']],
         ],
+        "entity_mapping": {
+            "NOX": "NOx",
+        },
         "coords_defaults": {
             "class": "Total",
         },
@@ -1117,7 +1123,7 @@ CRF2021 = {
             ['Gasoil', ['1.A.4.c.ii', 'Gasoil'], 4],  # FIN
             ['Marine gasoil', ['1.A.4.c.ii', 'MarineGasoil'], 4],  # NOR
             ['heavy fuel oil', ['1.A.4.c.ii', 'HeavyFuelOil'], 4],  # NOR
-            ['Other motor fuels', ['1.A.4.c.ii', 'OMotorFuel'], 4],  # RUS
+            ['Other motor fuels', ['1.A.4.c.ii', 'OMotorFuels'], 4],  # RUS
             ['Biodiesel (5 percent fossil portion)', ['1.A.4.c.ii', 'OLBiodieselFC'], 4],  # CAN
             ['Gaseous fuels', ['1.A.4.c.ii', 'Gaseous'], 3],
             ['Biomass(6)', ['1.A.4.c.ii', 'Biomass'], 3],

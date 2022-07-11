@@ -616,7 +616,16 @@ def get_crf_files(
         else:
             raise ValueError(f"Folder {input_folder} does not exist")
 
-    return input_files
+    # make sure no files is in the list twice (happens when multiple input folder
+    # contain the same submission which is possible when the country name is changed)
+    files_added = set()
+    unique_files = []
+    for file in input_files:
+        if file.name not in files_added:
+            unique_files.append(file)
+            files_added.add(file.name)
+
+    return unique_files
 
 
 def get_info_from_crf_filename(
