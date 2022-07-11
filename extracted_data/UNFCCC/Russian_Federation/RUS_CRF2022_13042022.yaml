@@ -16,11 +16,11 @@ dimensions:
   '*':
   - time
   - category (CRF2013_2022)
-  - class
-  - source
-  - area (ISO3)
-  - scenario (PRIMAP)
   - provenance
+  - area (ISO3)
+  - source
+  - scenario (PRIMAP)
+  - class
   - entity
   - unit
 data_file: RUS_CRF2022_13042022.csv
