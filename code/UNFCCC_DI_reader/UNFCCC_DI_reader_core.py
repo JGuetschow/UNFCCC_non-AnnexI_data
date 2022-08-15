@@ -5,19 +5,66 @@ import pycountry
 import itertools
 import json
 import copy
+import xarray as xr
 from datetime import date
 from typing import Optional, Dict
 from pathlib import Path
 
-from .UNFCCC_DI_reader_config import di_to_pm2if_template_nai
-from .UNFCCC_DI_reader_config import di_to_pm2if_template_ai
-from .UNFCCC_DI_reader_config import di_query_filters
-from util import NoDIDataError, extracted_data_path
+from UNFCCC_DI_reader_config import di_to_pm2if_template_nai
+from UNFCCC_DI_reader_config import di_to_pm2if_template_ai
+from UNFCCC_DI_reader_config import di_query_filters
+from util import NoDIDataError, extracted_data_path, get_country_name
 
+
+def read_UNFCCC_DI_for_party(
+        party_code: str,
+        category_groups: Optional[Dict]=None,
+        read_subsectors: bool=False,
+        date_str: Optional[str]=None,
+        pm2if_specifications: Optional[dict]=None,
+        default_gwp: Optional[str]=None,
+        debug: Optional[bool]=False,
+):
+    """
+    # TODO
+    """
+
+    # read the data
+    data_df = read_UNFCCC_DI_for_party_df(
+        party_code=party_code,
+        category_groups=category_groups,
+        read_subsectors=read_subsectors,
+        debug=debug,
+    )
+
+    # set date_str if not given
+    if date_str is None:
+        date_str = str(date.today())
+
+    # determine filename
+    filename = determine_filename(party_code, date_str)
+
+    # convert it to pm2 interchange format and save
+    data_if = convert_DI_data_to_pm2_if(
+        data=data_df,
+        pm2if_specifications=pm2if_specifications,
+        filename=filename,
+        default_gwp=default_gwp,
+        date_str=date_str,
+        debug=debug,
+    )
+
+    # convert to native pm2 format and save that
+    data_pm2 = convert_DI_IF_data_to_pm2(
+        data_di_if=data_if,
+        filename=filename,
+    )
+
+    return data_pm2
 
 
 def read_UNFCCC_DI_for_party_df(
-        party: str,
+        party_code: str,
         category_groups: Optional[Dict]=None,
         read_subsectors: bool=False,
         debug: Optional[bool]=False,
@@ -55,26 +102,26 @@ def read_UNFCCC_DI_for_party_df(
 
     # template for the query to the DI API
     query_template = {
-        "party_codes": [party],
+        "party_codes": [party_code],
         "normalize_gas_names": True
     }
 
-
     # find country group
-    if party in list(reader.non_annex_one_reader.parties["code"]):
+    if party_code in list(reader.non_annex_one_reader.parties["code"]):
         ai_country = False
-    elif party in list(reader.annex_one_reader.parties["code"]):
+    elif party_code in list(reader.annex_one_reader.parties["code"]):
         ai_country = True
         #di_data = reader.annex_one_reader.query(**query)
     else:
-        raise ValueError(f"Party code {party} found neither in AnnexI nor non-AnnexI "
+        raise ValueError(f"Party code {party_code} found neither in AnnexI nor "
+                         f"non-AnnexI "
                          f"party lists.")
 
     if category_groups is None:
         # no category defs given, so use default which is all categories,
         # all gases, but no other data
         if debug:
-            print(f"Using default config to read for party {party}")
+            print(f"Using default config to read for party {party_code}")
         if ai_country:
             all_gases = reader.annex_one_reader.gases["name"]
             query = query_template
@@ -168,11 +215,12 @@ def read_UNFCCC_DI_for_party_df(
 
     # if data has been collected print some information and save the data
     if di_data is None:
-        raise ValueError(f"No data collected for party {party} and category groups "
+        raise ValueError(f"No data collected for party {party_code} and category "
+                         f"groups "
                          f"{category_groups}")
     elif debug:
         # print some information on collected data
-        print(f"Collected data for party {party}")
+        print(f"Collected data for party {party_code}")
         print("### Categories ###")
         categories = di_data["category"].unique()
         categories.sort()
@@ -192,8 +240,9 @@ def read_UNFCCC_DI_for_party_df(
 def convert_DI_data_to_pm2_if(
         data: pd.DataFrame,
         pm2if_specifications: Optional[dict]=None,
-        filename: str = "",
+        filename: Optional[Path]=None,
         default_gwp: Optional[str]=None,
+        date_str: Optional[str]=None,
         debug: bool = False,
 ) -> pd.DataFrame:
     """
@@ -259,8 +308,9 @@ def convert_DI_data_to_pm2_if(
     # modify specifications
     #pm2if_specifications["filter_remove"].update(filter_activity_factors)
 
-    # set the scenario to today's date
-    date_str = str(date.today())
+    # set the scenario to today's date if not given explicitly
+    if date_str is None:
+        date_str = str(date.today())
     pm2if_specifications["coords_defaults"]["scenario"] = f"DI{date_str}"
 
     # set metadata
@@ -303,13 +353,12 @@ def convert_DI_data_to_pm2_if(
         data_temp.loc[row_idx_co2eq, "gas"] = data_temp.loc[row_idx_co2eq, "gas"] + \
                                               " (SARGWP100)"
 
-
     # combine numeric and string values
     nan_idx = data_temp["numberValue"].isna()
     data_temp.loc[nan_idx, "numberValue"] = data_temp.loc[nan_idx, "stringValue"]
     data_temp = data_temp.drop(columns=["stringValue"])
 
-    # Currently in primap2 data reading a column can only be used once.
+    # Currently in primap2 a data reading a column can only be used once.
     # We want to use the category column both for the primap2 "category"
     # column (which contains the code only) and an additional column which stores
     # the full name as available from the DI API. As a workaround we create a
@@ -328,14 +377,17 @@ def convert_DI_data_to_pm2_if(
         **pm2if_specifications,
     )
 
-    if filename != "":
-        print(f"Save data to {filename + '.csv/.yaml'}")
+    if filename is not None:
+        print(f"Save data to {filename.name + '.csv/.yaml'}")
         pm2.pm2io.write_interchange_format(filename, data_pm2if)
 
     return data_pm2if
 
 
-def convert_DI_IF_data_to_pm2(data_di_if: pd.DataFrame)-> xr.Dataset:
+def convert_DI_IF_data_to_pm2(
+        data_di_if: pd.DataFrame,
+        filename: Optional[Path]=None,
+)-> xr.Dataset:
     if_index_cols = set(itertools.chain(*data_di_if.attrs["dimensions"].values()))
     time_cols = set(data_di_if.columns.values) - if_index_cols
     data_di_if.dropna(subset=time_cols, inplace=True)
@@ -348,17 +400,31 @@ def convert_DI_IF_data_to_pm2(data_di_if: pd.DataFrame)-> xr.Dataset:
     #except ValueError: # better more specific error in primap2
     #    print()
 
+    if filename is not None:
+        compression = dict(zlib=True, complevel=9)
+
+        if not filename.parent.exists():
+            filename.parent.mkdir()
+
+         # write data in native PRIMAP2 format
+        encoding = {var: compression for var in data_pm2.data_vars}
+        data_pm2.pr.to_netcdf(filename.parent / (filename.name + ".nc"),
+                            encoding=encoding)
+
     return data_pm2
 
 
-def determine_filename(country_code, date_str)->Path:
+def determine_filename(
+        party_code: str,
+        date_str: str
+)->Path:
     """
-    Determine the filename for a dataset from given country code and data string.
+    Determine the filename for a dataset from given country code and date string.
 
 
     Parameters
     ----------
-    country_code: str
+    party_code: str
         ISO 3 letter code of the country
     date_str:
         formatted date string
@@ -373,20 +439,29 @@ def determine_filename(country_code, date_str)->Path:
     with open(extracted_data_path / "folder_mapping.json", "r") as mapping_file:
         folder_mapping = json.load(mapping_file)
 
-    if country_code in folder_mapping:
+    if party_code in folder_mapping:
         file_filter = {}
-        file_filter["party"] = country_code
-        country_folders = folder_mapping[country_code]
+        file_filter["party"] = party_code
+        country_folders = folder_mapping[party_code]
         if isinstance(country_folders, str):
             # only one folder
-            filename = Path(country_folders) / f"{country_code}_DI_{date_str}"
+            filename = Path(country_folders) / f"{party_code}_DI_{date_str}"
 
         else:
             raise ValueError("More than one output folder for country "
-                             f"{country_code}. This should not happen.")
+                             f"{party_code}. This should not happen.")
     else:
-        raise ValueError(f"No output data folder found for country {country_code}. "
-                         f"Check if folder mapping is up to date.")
+        # folder not in mapping. It will be created if not present yet
+        party_name = get_country_name(party_code)
+        country_folder = extracted_data_path / party_name.replace(" ", "_")
+        if country_folder.exists():
+           print(f"Output folder {party_name.replace(' ', '_')} for country "
+                 f"{party_code} exists but is not in folder mapping. Update "
+                 "folder mapping")
+        else:
+            country_folder.mkdir()
+
+        filename = Path(country_folder) / f"{party_code}_DI_{date_str}"
 
     return filename
 
