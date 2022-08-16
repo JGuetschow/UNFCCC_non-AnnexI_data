@@ -20,6 +20,7 @@ def read_UNFCCC_DI_for_party(
         party_code: str,
         category_groups: Optional[Dict]=None,
         read_subsectors: bool=False,
+        save_data: Optional[bool]=True,
         date_str: Optional[str]=None,
         pm2if_specifications: Optional[dict]=None,
         default_gwp: Optional[str]=None,
@@ -42,7 +43,10 @@ def read_UNFCCC_DI_for_party(
         date_str = str(date.today())
 
     # determine filename
-    filename = determine_filename(party_code, date_str)
+    if save_data:
+        filename = determine_filename(party_code, date_str)
+    else:
+        filename = None
 
     # convert it to pm2 interchange format and save
     data_if = convert_DI_data_to_pm2_if(

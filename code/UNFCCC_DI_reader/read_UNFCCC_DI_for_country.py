@@ -37,7 +37,7 @@ country_name = get_country_name(country_code)
 
 # get current date to pass on to other functions in case reading is done over night
 # and the date changes
-date_str = str(date.today())
+date_str = date.today().strftime('%Y-%m-%d')
 
 
 # TODO: this function: get output files and run datalad.

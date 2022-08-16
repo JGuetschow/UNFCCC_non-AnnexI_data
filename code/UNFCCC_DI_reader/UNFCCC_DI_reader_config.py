@@ -35,7 +35,7 @@ di_to_pm2if_template_nai = {
     # mapping of values e.g. gases to the primap2 format
     "coords_value_mapping": {
         "entity": {
-            "Aggregate GHGs (SARGWP100)": "KYOYOGHG (SARGWP100)",
+            "Aggregate GHGs (SARGWP100)": "KYOTOGHG (SARGWP100)",
             "Aggregate F-gases (SARGWP100)": "FGASES (SARGWP100)",
             "HFCs (SARGWP100)": "HFCS (SARGWP100)",
             "PFCs (SARGWP100)": "PFCS (SARGWP100)",
