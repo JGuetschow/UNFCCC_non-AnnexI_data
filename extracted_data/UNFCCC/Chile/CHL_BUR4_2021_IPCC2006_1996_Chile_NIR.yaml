@@ -8,16 +8,17 @@ attrs:
   cat: category (IPCC2006_1996_Chile_NIR)
   area: area (ISO3)
   scen: scenario (PRIMAP)
-time_format: '%Y-%m-%d'
+time_format: '%Y'
 dimensions:
   '*':
-  - source
-  - scenario (PRIMAP)
-  - provenance
+  - time
   - area (ISO3)
+  - category (IPCC2006_1996_Chile_NIR)
+  - source
+  - provenance
+  - scenario (PRIMAP)
   - entity
   - unit
-  - category (IPCC2006_1996_Chile_NIR)
 additional_coordinates:
   orig_cat_name: category (IPCC2006_1996_Chile_NIR)
 data_file: CHL_BUR4_2021_IPCC2006_1996_Chile_NIR.csv
