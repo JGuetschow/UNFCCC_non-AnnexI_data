@@ -13,10 +13,10 @@ dimensions:
   '*':
   - time
   - category (IPCC2006_1996_Chile_NIR)
-  - scenario (PRIMAP)
-  - provenance
   - area (ISO3)
   - source
+  - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
 additional_coordinates:
