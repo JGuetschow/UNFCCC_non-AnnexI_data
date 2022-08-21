@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - area (ISO3)
   - category (IPCC2006_1996_Chile_NIR)
-  - source
-  - provenance
   - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - source
   - entity
   - unit
 additional_coordinates:
