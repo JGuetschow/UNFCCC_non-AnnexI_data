@@ -1,0 +1,23 @@
+attrs:
+  references: http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=5240&fileSeq=1
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Republic of Korea: National Greenhouse Gas Inventory Report 2021'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory
+    and Research Center
+  cat: category (IPCC1996_KOR_INV)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - scenario (PRIMAP)
+  - category (IPCC1996_KOR_INV)
+  - provenance
+  - area (ISO3)
+  - entity
+  - unit
+data_file: KOR_2021-Inventory_2021_IPCC1996_KOR_INV.csv
