@@ -93,6 +93,12 @@ filter_remove = {
     "f1": {
         "category (IPCC1996_KOR_INV)": "\IGNORE",
     },
+    "livestock": { # temp until double cat name problem is solved
+        "category (IPCC1996_KOR_INV)": {
+            '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
+            '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
+        }
+    }
 }
 
 filter_keep = {}
@@ -169,6 +175,10 @@ data_if = pm2.pm2io.convert_wide_dataframe_if(
 
 filter_data(data_if, filter_remove=filter_remove)
 
+data_pm2 = pm2.pm2io.from_interchange_format(data_if)
+# convert back to IF to have units in the fixed format
+data_if = data_pm2.pr.to_interchange_format()
+
 # ###
 # save data to IF and native format
 # ###
@@ -176,6 +186,5 @@ if not output_folder.exists():
     output_folder.mkdir()
 pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
 
-data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 encoding = {var: compression for var in data_pm2.data_vars}
 data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)

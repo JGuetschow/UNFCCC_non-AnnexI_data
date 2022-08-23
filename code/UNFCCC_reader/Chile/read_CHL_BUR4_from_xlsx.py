@@ -208,6 +208,12 @@ data_if = pm2.pm2io.convert_long_dataframe_if(
     meta_data=meta_data
 )
 
+
+#conversion to PRIMAP2 native format
+data_pm2 = pm2.pm2io.from_interchange_format(data_if)
+# convert back to IF to have units in the fixed format
+data_if = data_pm2.pr.to_interchange_format()
+
 # ###
 # save data to IF and native format
 # ###
@@ -269,8 +275,12 @@ for cat_to_agg in aggregate_cats:
     else:
         print(f"no data to aggregate category {cat_to_agg}")
 
+#conversion to PRIMAP2 native format
+data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if_2006)
+# convert back to IF to have units in the fixed format
+data_if_2006 = data_pm2_2006.pr.to_interchange_format()
+
 pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies_2006["category"]), data_if_2006)
 
-data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if)
 encoding = {var: compression for var in data_pm2_2006.data_vars}
 data_pm2_2006.pr.to_netcdf(output_folder / (output_filename + coords_terminologies_2006["category"] + ".nc"), encoding=encoding)
