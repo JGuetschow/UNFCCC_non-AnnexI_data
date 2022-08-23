@@ -6,7 +6,7 @@ attrs:
   comment: Read fom xlsx file by Johannes Gütschow
   institution: Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory
     and Research Center
-  cat: category (IPCC1996_KOR_INV)
+  cat: category (IPCC2006_PRIMAP)
   area: area (ISO3)
   scen: scenario (PRIMAP)
 time_format: '%Y'
@@ -16,8 +16,8 @@ dimensions:
   - source
   - area (ISO3)
   - provenance
+  - category (IPCC2006_PRIMAP)
   - scenario (PRIMAP)
-  - category (IPCC1996_KOR_INV)
   - entity
   - unit
-data_file: KOR_2021-Inventory_2021_IPCC1996_KOR_INV.csv
+data_file: KOR_2021-Inventory_2021_IPCC2006_PRIMAP.csv
