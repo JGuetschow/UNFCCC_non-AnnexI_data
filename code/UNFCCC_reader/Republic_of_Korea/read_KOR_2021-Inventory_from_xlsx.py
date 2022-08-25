@@ -29,7 +29,7 @@ output_folder = extracted_data_path / 'non-UNFCCC' / 'Republic_of_Korea'
 if not output_folder.exists():
     output_folder.mkdir()
 
-output_filename = 'KOR_INV2021_2021_'
+output_filename = 'KOR_2021-Inventory_2021_'
 
 inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2019).xlsx'
 years_to_read = range(1990, 2019 + 1)
@@ -303,11 +303,17 @@ for cat_to_agg in aggregate_after_mapping:
     else:
         print(f"no data to aggregate category {cat_to_agg}")
 
+
+#conversion to PRIMAP2 native format
+data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if_2006)
+# convert back to IF to have units in the fixed format
+data_pm2_2006 = data_pm2_2006.reset_coords(["orig_cat_name", "cat_name_translation"],
+                                       drop=True)
+data_if_2006 = data_pm2_2006.pr.to_interchange_format()
 # save IPCC2006 data
 
 filter_data(data_if_2006, filter_remove=filter_remove_after_agg)
 pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies_2006["category"]), data_if_2006)
 
-data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if)
 encoding = {var: compression for var in data_pm2_2006.data_vars}
 data_pm2_2006.pr.to_netcdf(output_folder / (output_filename + coords_terminologies_2006["category"] + ".nc"), encoding=encoding)
