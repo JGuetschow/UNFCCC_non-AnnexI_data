@@ -2,11 +2,10 @@
 # Data is read from the xlsx file which has been exported from the google docs
 # spreadsheet which is linked in the BUR
 
-import os
-import sys
 import pandas as pd
 import primap2 as pm2
 from pathlib import Path
+
 
 
 from primap2.pm2io._data_reading import filter_data
@@ -20,9 +19,8 @@ downloaded_data_path = root_path / "downloaded_data"
 extracted_data_path = root_path / "extracted_data"
 
 
-input_folder = downloaded_data_path / 'non-UNFCCC' / 'Republic_of_Korea' / \
-               '2020-Inventory'
-output_folder = extracted_data_path / 'UNFCCC' / 'Republic_of_Korea'
+input_folder = downloaded_data_path / 'UNFCCC' / 'Colombia' / 'BUR3'
+output_folder = extracted_data_path / 'UNFCCC' / 'Colombia'
 if not output_folder.exists():
     output_folder.mkdir()
 
@@ -175,7 +173,7 @@ for year in years:
     if df_all is None:
         df_all = df_long_new
     else:
-        df_all = df_all.append(df_long_new)
+        df_all = pd.concat([df_all, df_long_new], axis=0, join='outer')
 
 df_all["category"] = df_all["category"].str[0]
 
