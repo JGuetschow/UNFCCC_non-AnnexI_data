@@ -9,3 +9,4 @@ datalad
 treelib
 camelot-py
 opencv-python
+ghostscript
