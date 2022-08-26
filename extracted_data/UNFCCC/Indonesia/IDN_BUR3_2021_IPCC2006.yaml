@@ -12,12 +12,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - area (ISO3)
-  - provenance
   - orig_cat_name
-  - source
-  - category (IPCC2006)
   - scenario (PRIMAP)
+  - area (ISO3)
+  - category (IPCC2006)
+  - source
+  - provenance
   - entity
   - unit
 data_file: IDN_BUR3_2021_IPCC2006.csv
