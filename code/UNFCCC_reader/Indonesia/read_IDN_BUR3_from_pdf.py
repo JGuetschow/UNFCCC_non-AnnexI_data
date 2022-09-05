@@ -289,21 +289,3 @@ encoding = {var: compression for var in data_pm2.data_vars}
 data_pm2.pr.to_netcdf(
     output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
     encoding=encoding)
-
-
-
-
-
-
-# convert back to IF to have units in the fixed format
-data_if = data_pm2.pr.to_interchange_format()
-
-# ###
-# save data to IF and native format
-# ###
-if not output_folder.exists():
-    output_folder.mkdir()
-pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
-
-encoding = {var: compression for var in data_pm2.data_vars}
-data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
