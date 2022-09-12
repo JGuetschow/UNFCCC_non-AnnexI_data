@@ -1,0 +1,85 @@
+attrs:
+  references: https://unfccc.saveoursky.org.tw/nir/tw_nir_2022.php
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 2022 Republic of China - National Greenhouse Gas Report
+  comment: Read fom pdf file and converted to PRIMAP2 format by Johannes Gütschow
+  institution: Republic of China - Environmental Protection Administration
+  cat: category (IPCC2006_PRIMAP)
+  scen: scenario (PRIMAP)
+  area: area (ISO3)
+time_format: '%Y'
+dimensions:
+  CH4 (AR4GWP100):
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+  CO2:
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+  HFCS (AR4GWP100):
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+  KYOTOGHG (AR4GWP100):
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+  N2O (AR4GWP100):
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+  NF3 (AR4GWP100):
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+  PFCS (AR4GWP100):
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+  SF6 (AR4GWP100):
+  - time
+  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: TWN_inventory_2022_IPCC2006_1996_Taiwan_Inv.csv

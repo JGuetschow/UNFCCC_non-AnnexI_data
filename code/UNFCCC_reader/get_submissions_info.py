@@ -38,6 +38,7 @@ custom_folders = {
     'Côte_d’Ivoire': 'CIV',
     'Democratic_Republic_of_the_Congo': "COD",
     'European_Union': 'EUA',
+    'Taiwan': 'TWN',
 }
 
 def get_country_submissions(
