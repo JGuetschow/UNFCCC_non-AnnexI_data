@@ -1,0 +1,23 @@
+attrs:
+  references: https://unfccc.int/documents/512231
+  rights: ''
+  contact: mail@johannes-guestchow.de
+  title: Mexico. Biennial update report (BUR). BUR3
+  comment: Read fom pdf by Johannes Gütschow
+  institution: UNFCCC
+  cat: category (IPCC2006)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - orig_cat_name
+  - provenance
+  - scenario (PRIMAP)
+  - area (ISO3)
+  - category (IPCC2006)
+  - source
+  - entity
+  - unit
+data_file: MEX_BUR3_2022_IPCC2006.csv
