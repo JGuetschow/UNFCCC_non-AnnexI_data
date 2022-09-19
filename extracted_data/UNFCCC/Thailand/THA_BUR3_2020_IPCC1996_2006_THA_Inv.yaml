@@ -12,108 +12,108 @@ time_format: '%Y'
 dimensions:
   CH4:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   CO:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   CO2 emissions:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   CO2 removals:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   HFCS (AR4GWP100):
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   KYOTOGHG (AR4GWP100):
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   N2O:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   NMVOC:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   NOx:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   PFCS (AR4GWP100):
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   SF6:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
   - unit
   SO2:
   - time
-  - area (ISO3)
   - provenance
   - scenario (PRIMAP)
+  - area (ISO3)
   - source
   - category (IPCC2006_PRIMAP)
   - entity
