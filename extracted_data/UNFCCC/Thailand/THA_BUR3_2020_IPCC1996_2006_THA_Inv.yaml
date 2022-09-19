@@ -12,110 +12,110 @@ time_format: '%Y'
 dimensions:
   CH4:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   CO:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   CO2 emissions:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   CO2 removals:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   HFCS (AR4GWP100):
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   KYOTOGHG (AR4GWP100):
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   N2O:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   NMVOC:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   NOx:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   PFCS (AR4GWP100):
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   SF6:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
   SO2:
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - scenario (PRIMAP)
   - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
 data_file: THA_BUR3_2020_IPCC1996_2006_THA_Inv.csv
