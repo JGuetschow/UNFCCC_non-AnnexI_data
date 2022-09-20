@@ -5,6 +5,7 @@ import pandas as pd
 import primap2 as pm2
 from pathlib import Path
 import camelot
+import copy
 
 from primap2.pm2io._data_reading import matches_time_format
 
@@ -337,6 +338,7 @@ cat_mapping = {
 aggregate_cats = {
     '2.A.4': {'sources': ['2.A.4.b', '2.A.4.d'],
               'name': 'Other Process uses of Carbonates'},
+    '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
     '3.C.1': {'sources': ['M.3.C.1.AG', 'M.3.C.1.LU'],
               'name': 'Emissions from Biomass Burning'},
     '3.C': {'sources': ['3.C.1', '3.C.2', '3.C.3', '3.C.4', '3.C.5', '3.C.6', '3.C.7'],
@@ -355,8 +357,8 @@ aggregate_cats = {
                  'name': 'Agriculture excluding livestock emissions'},
 }
 
-data_if_2006 = data_all_if.copy(deep=True)
-data_if_2006
+data_if_2006 = copy.deepcopy(data_all_if)
+data_if_2006.attrs = copy.deepcopy(data_all_if.attrs)
 
 # map categories
 data_if_2006 = data_if_2006.replace({'category (IPCC1996_2006_THA_Inv)': cat_mapping})
