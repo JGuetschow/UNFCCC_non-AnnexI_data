@@ -13,10 +13,10 @@ dimensions:
   '*':
   - time
   - category (IPCC2006_PRIMAP)
-  - provenance
-  - scenario (PRIMAP)
   - source
+  - provenance
   - area (ISO3)
+  - scenario (PRIMAP)
   - entity
   - unit
 data_file: MNE_BUR3_2022_IPCC2006_PRIMAP.csv
