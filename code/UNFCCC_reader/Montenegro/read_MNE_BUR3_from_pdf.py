@@ -45,13 +45,6 @@ regex_entity = r"^(.*)\s\("
 gwp_to_use = 'AR4GWP100'
 
 # conversion to PRIMAP2 format
-# manual category codes
-cat_codes_manual = { # transform to PRIMAP1 form. PRIMAP2 form in next step with other codes
-    'International bunkers': 'MBK',
-    'Marine': 'MBKM',
-    'Aviation': 'MBKA',
-    'Multilateral operations': 'MMULTIOP',
-}
 
 coords_terminologies = {
     "area": "ISO3",
@@ -69,9 +62,9 @@ coords_defaults = {
 coords_value_mapping = {
     'unit': 'PRIMAP1',
     'entity': {
-        f"GHG {gwp_to_use}": f"KYOTOGHG {gwp_to_use}",
-        f"HFC {gwp_to_use}": f"HFCS {gwp_to_use}",
-        f"PFC {gwp_to_use}": f"PFCS {gwp_to_use}",
+        f"GHG ({gwp_to_use})": f"KYOTOGHG ({gwp_to_use})",
+        f"HFC ({gwp_to_use})": f"HFCS ({gwp_to_use})",
+        f"PFC ({gwp_to_use})": f"PFCS ({gwp_to_use})",
     },
     'category': {
         'Total national GHG emissions (with LULUCF)': '0',
@@ -80,6 +73,8 @@ coords_value_mapping = {
         '1.A.3.a.i': 'M.BK.A',
         '1.A.3.d.i': 'M.BK.M',
         'CO2 from Biomass Combustion for Energy Production': 'M.BIO',
+        '6 Other': '6',
+        '2 H': '2.H',
     },
 }
 

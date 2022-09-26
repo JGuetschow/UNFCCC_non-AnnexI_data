@@ -17,13 +17,16 @@ def get_unfccc_submission_info(
     info = []
     pattern = re.compile(r"BUR ?\d")
     i = 0
+    last_excep = None
     while i < max_tries:
         try:
             driver.get(url)
             html = BeautifulSoup(driver.page_source, "html.parser")
-            title = html.find("h1").contents[0]
+            subtree = html.find(class_="document-title")
+            title = subtree.find("span").contents[0]
             break
-        except (AttributeError, WebDriverException):
+        except (AttributeError, WebDriverException) as excep:
+            last_excep = excep
             print(f"Error fetching {url}")
             print("Retrying ...")
             time.sleep(randrange(5, 15))
@@ -31,7 +34,8 @@ def get_unfccc_submission_info(
             continue
 
     if i == max_tries:
-        print(f"Aborting after {max_tries} tries")
+        print(f"Aborting after {max_tries} tries.")
+        print(last_excep)
     else:
         match = pattern.search(title)
         if match:
@@ -39,31 +43,35 @@ def get_unfccc_submission_info(
         else:
             kind = None
 
-        h2 = html.find("h2", text="Versions")
-        if h2:
-            div = h2.findNext("div")
-            links = div.findAll("a")
-            try:
-                country = (
-                    html.find("h2", text="Countries").findNext("div").findNext("div").text
-                )
-            except AttributeError:
-                country = (
-                    html.find("h2", text="Corporate Author")
-                    .findNext("div")
-                    .findNext("div")
-                    .text
-                )
-            doctype = (
-                html.find("h2", text="Document Type").findNext("div").findNext("div").text
-            )
-            for link in links:
-                url = link.attrs["href"]
+        # TODO: might improve speed by first searching for class="document-line" and then operating on thie resulting subtree for the info
+        try:
+            subtree = html.find_all(
+                class_="field field--name-field-document-country field--type-termstore-entity-reference field--label-inline")
+            country = subtree[0].find(class_="field--item").contents[0]
+        except AttributeError:
+            # author as backup for country
+            subtree = html.find_all(class_="field--name-field-document-ca")
+            country = subtree[0].find(class_="field--item").contents[0]
+        # document type
+        subtree = html.find_all(
+            class_="field field--name-field-document-type field--type-termstore-entity-reference field--label-hidden field--items")
+        doctype = subtree[0].find(class_="field--item").contents[0]
+
+        # get files
+        sub_files = html.find(
+            class_=["form-select form-control", "form-select form-control download"])
+        files = sub_files.find_all("option", value=True)
+        files = [file.attrs['value'] for file in files]
+
+        if len(files) > 0:
+            for file in files:
                 if not kind:
-                    match = pattern.search(url.upper())
+                    match = pattern.search(file.upper())
                     if match:
                         kind = match.group(0)
                     else:
+                        # TODO: check why search in filename makes sense (compared to
+                        #  directly using doctype)
                         if ("CRF" in doctype) or ("CRF" in title):
                             kind = "CRF"
                         elif ("SEF" in doctype) or ("SEF" in title):
@@ -80,10 +88,10 @@ def get_unfccc_submission_info(
                     "Kind": kind,
                     "Country": country,
                     "Title": title,
-                    "URL": url,
+                    "URL": file,
                 })
 
-            print("\t".join([kind, country, title, url]))
+                print("\t".join([kind, country, title, file]))
         else:
             print(f"No files found for {url}")
 

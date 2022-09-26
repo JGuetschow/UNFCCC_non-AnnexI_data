@@ -56,10 +56,8 @@ aggregate_cats = {
     '3.C.1': {'sources': ['3.C.1.c', '3.C.1.b'], 'name': 'Emissions from Biomass Burning'},
     '3.C': {'sources': ['3.C.1', '3.C.3', 'M.3.C.45AG', '3.C.7'],
             'name': 'Aggregate sources and non-CO2 emissions sources on land'},
-    'M.3.C.AG': {'sources': ['3.C.1.b', '3.C.3', 'M.3.C.45AG', '3.C.7'],
+    'M.3.C.AG': {'sources': ['3.C.1', '3.C.3', 'M.3.C.45AG', '3.C.7'],
             'name': 'Aggregate sources and non-CO2 emissions sources on land (Agriculture)'},
-    'M.3.C.LU': {'sources': ['3.C.1.c'],
-            'name': 'Aggregate sources and non-CO2 emissions sources on land (Land use)'},
     '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
     'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock emissions'},
 }

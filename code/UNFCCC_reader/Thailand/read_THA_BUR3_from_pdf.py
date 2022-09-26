@@ -304,6 +304,10 @@ data_indirect_pm2 = pm2.pm2io.from_interchange_format(data_indirect_IF)
 
 data_all = data_inventory_pm2.pr.merge(data_main_sector_ts_pm2)
 data_all = data_all.pr.merge(data_indirect_pm2)
+
+# combine CO2 emissions and absorptions
+data_all["CO2"] = data_all['CO2 removals'] + data_all['CO2 emissions']
+
 data_all_if = data_all.pr.to_interchange_format()
 
 
