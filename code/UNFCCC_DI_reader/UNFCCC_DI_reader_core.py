@@ -394,7 +394,7 @@ def convert_DI_IF_data_to_pm2(
 )-> xr.Dataset:
     if_index_cols = set(itertools.chain(*data_di_if.attrs["dimensions"].values()))
     time_cols = set(data_di_if.columns.values) - if_index_cols
-    data_di_if.dropna(subset=time_cols, inplace=True)
+    data_di_if.dropna(subset=time_cols, inplace=True, how="all")
 
     #try:
         # try to convert all in one go
