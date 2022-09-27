@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - source
   - provenance
-  - category (IPCC1996_2006_MNE_Inv)
   - area (ISO3)
   - scenario (PRIMAP)
+  - category (IPCC1996_2006_MNE_Inv)
+  - source
   - entity
   - unit
 data_file: MNE_BUR3_2022_IPCC1996_2006_MNE_Inv.csv
