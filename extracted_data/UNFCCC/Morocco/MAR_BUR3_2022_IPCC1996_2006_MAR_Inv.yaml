@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - provenance
-  - scenario (PRIMAP)
   - area (ISO3)
-  - source
   - category (IPCC1996_2006_MAR_Inv)
+  - scenario (PRIMAP)
+  - source
+  - provenance
   - entity
   - unit
 data_file: MAR_BUR3_2022_IPCC1996_2006_MAR_Inv.csv
