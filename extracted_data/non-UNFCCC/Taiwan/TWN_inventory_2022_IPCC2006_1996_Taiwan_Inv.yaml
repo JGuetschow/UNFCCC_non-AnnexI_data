@@ -12,74 +12,74 @@ time_format: '%Y'
 dimensions:
   CH4 (AR4GWP100):
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
   CO2:
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
   HFCS (AR4GWP100):
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
   KYOTOGHG (AR4GWP100):
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
   N2O (AR4GWP100):
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
   NF3 (AR4GWP100):
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
   PFCS (AR4GWP100):
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
   SF6 (AR4GWP100):
   - time
-  - category (IPCC2006_PRIMAP)
   - area (ISO3)
-  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
+  - provenance
   - entity
   - unit
 data_file: TWN_inventory_2022_IPCC2006_1996_Taiwan_Inv.csv

@@ -117,6 +117,7 @@ aggregate_cats = {
                  'name': 'Agriculture excluding livestock emissions'},
 }
 
+
 # 2 for NF3, PFCs (from 2.E)
 aggregate_cats_NF3_PFC = {
     '2': {'sources': ['2.E'], 'name': 'Industrial Process and Product Use Sector'},
@@ -312,7 +313,7 @@ for cat_to_agg in aggregate_cats:
 
         df_combine = df_combine.groupby(
             by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                'unit']).sum()
+                'unit']).sum(min_count=1)
 
         df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
         # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
@@ -330,7 +331,7 @@ for cat_to_agg in aggregate_cats_NF3_PFC:
     mask = data_if_2006["category (IPCC2006_PRIMAP)"].isin(
         aggregate_cats_NF3_PFC[cat_to_agg]["sources"])
     mask_gas = data_if_2006["entity"].isin(
-        [f"NF3 ({gwp_to_use})", f"PFCs ({gwp_to_use})"])
+        [f"NF3 ({gwp_to_use})", f"PFCS ({gwp_to_use})"])
     df_test = data_if_2006[mask & mask_gas]
 
     if len(df_test) > 0:
@@ -349,7 +350,7 @@ for cat_to_agg in aggregate_cats_NF3_PFC:
 
         df_combine = df_combine.groupby(
             by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                'unit']).sum()
+                'unit']).sum(min_count=1)
 
         df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
         # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])

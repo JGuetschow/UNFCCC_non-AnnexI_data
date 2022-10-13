@@ -41,7 +41,8 @@ header_defs = {
     'Energy': [['Catégories', 'CO2', 'CH4', 'N2O', 'NOx', 'CO', 'COVNM', 'SO2'],
         ['', 'Gg', 'Gg', 'Gg', 'Gg', 'Gg', 'Gg', 'Gg']],
     'Agriculture': [['Catégories', 'CO2', 'CH4', 'N2O', 'NOx', 'CO', 'COVNM', 'SO2'],
-        ['', 'Gg', 'Gg', 'Gg', 'Gg', 'Gg', 'Gg', 'Gg']],
+        ['', 'Gg', 'GgCO2eq', 'GgCO2eq', 'Gg', 'Gg', 'Gg', 'Gg']], # units are wrong
+    # in BUR pdf
     'IPPU': [['Catégories', 'CO2', 'CH4', 'N2O', 'HFCs', 'PFCs', 'SF6', 'NOx', 'CO', 'COVNM', 'SO2'],
         ['', 'GgCO2eq', 'GgCO2eq', 'GgCO2eq', 'GgCO2eq', 'GgCO2eq', 'GgCO2eq', 'Gg', 'Gg', 'Gg', 'Gg']],
     'LULUCF': [['Catégories', 'CO2', 'CH4', 'N2O', 'NOx', 'CO', 'COVNM', 'SO2'],
@@ -131,6 +132,7 @@ aggregate_cats = {
     'M.AG': {'sources': ['3.A', 'M.3.C.AG'], 'name': 'Agriculture'},
     '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
     'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock emissions'},
+    '4': {'sources': ['4.A', '4.D'], 'name': 'Waste'},
 }
 
 zero_cats = ['1.B.2.a.i', '1.B.2.a.ii'] # venting and flaring with 0 for oil as
