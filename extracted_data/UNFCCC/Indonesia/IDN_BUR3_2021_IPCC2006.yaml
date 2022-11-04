@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - area (ISO3)
-  - scenario (PRIMAP)
   - source
-  - provenance
   - category (IPCC2006)
+  - area (ISO3)
+  - provenance
+  - scenario (PRIMAP)
   - entity
   - unit
 additional_coordinates:
