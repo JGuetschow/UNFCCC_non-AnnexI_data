@@ -53,11 +53,15 @@ cat_mapping = {
 aggregate_cats = {
     '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
     '3.B': {'sources': ['3.B.1', '3.B.2', '3.B.3', '3.B.4', '3.B.5', '3.B.6'], 'name': 'Land'},
+    '3.C.1.AG': {'sources': ['3.C.1.c', '3.C.1.b'], 'name': 'Emissions from Biomass '
+                                                          'Burning (Agriculture)'},
     '3.C.1': {'sources': ['3.C.1.c', '3.C.1.b'], 'name': 'Emissions from Biomass Burning'},
     '3.C': {'sources': ['3.C.1', '3.C.3', 'M.3.C.45AG', '3.C.7'],
             'name': 'Aggregate sources and non-CO2 emissions sources on land'},
-    'M.3.C.AG': {'sources': ['3.C.1', '3.C.3', 'M.3.C.45AG', '3.C.7'],
+    'M.3.C.AG': {'sources': ['3.C.1.AG', '3.C.3', 'M.3.C.45AG', '3.C.7'],
             'name': 'Aggregate sources and non-CO2 emissions sources on land (Agriculture)'},
+    '3.D': {'sources': ['3.D.1'], 'name': 'Other'},
     '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
     'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock emissions'},
+    '0': {'sources': ['1', '2', '3', '4', '5']},
 }

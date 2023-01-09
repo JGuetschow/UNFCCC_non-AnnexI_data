@@ -5,10 +5,8 @@
 import pandas as pd
 import primap2 as pm2
 from pathlib import Path
+from primap2.pm2io._data_reading import matches_time_format
 
-
-
-from primap2.pm2io._data_reading import filter_data
 
 # ###
 # configuration
@@ -213,10 +211,34 @@ data_if = pm2.pm2io.convert_long_dataframe_if(
     )
 
 
+# combine CO2 emissions and absorptions
+data_CO2 = data_if[data_if[f"entity"].isin([
+    'CO2 Absorptions', 'CO2 Emissions'])]
+
+time_format = '%Y'
+time_columns = [
+    col
+    for col in data_CO2.columns.values
+    if matches_time_format(col, time_format)
+]
+
+for col in time_columns:
+    data_CO2[col] = pd.to_numeric(data_CO2[col], errors="coerce")
+
+data_CO2 = data_CO2.groupby(
+    by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)',
+        f"category ({coords_terminologies['category']})",
+        'unit']).sum(min_count = 1)
+
+data_CO2.insert(0, 'entity', 'CO2')
+data_CO2 = data_CO2.reset_index()
+
+data_if = pd.concat([data_if, data_CO2])
+
+
+
 data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 
-# combine CO2 emissions and absorptions
-data_pm2["CO2"] = data_pm2['CO2 Absorptions'] + data_pm2['CO2 Emissions']
 
 # convert back to IF to have units in the fixed format
 data_if = data_pm2.pr.to_interchange_format()

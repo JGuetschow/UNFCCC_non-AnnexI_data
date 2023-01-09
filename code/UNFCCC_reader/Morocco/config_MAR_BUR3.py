@@ -133,6 +133,8 @@ aggregate_cats = {
     '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
     'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock emissions'},
     '4': {'sources': ['4.A', '4.D'], 'name': 'Waste'},
+    '0': {'sources': ['1', '2', '3', '4']},
+    'M.0.EL': {'sources': ['1', '2', 'M.AG', '4']},
 }
 
 zero_cats = ['1.B.2.a.i', '1.B.2.a.ii'] # venting and flaring with 0 for oil as

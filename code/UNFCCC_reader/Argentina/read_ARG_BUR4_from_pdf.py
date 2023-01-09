@@ -12,6 +12,9 @@ from pathlib import Path
 # configuration
 # ###
 
+# TODO: lot's of empty lines are written in csv file. check if solved with new
+#  PRIMAP2 version
+
 # folders and files
 root_path = Path(__file__).parents[3].absolute()
 root_path = root_path.resolve()

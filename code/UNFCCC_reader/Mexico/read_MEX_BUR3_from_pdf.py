@@ -61,6 +61,9 @@ coords_cols = {
     "unit": "unit",
 }
 
+add_coords_cols = {
+    "orig_cat_name": ["orig_cat_name", "category"],
+}
 
 coords_terminologies = {
     "area": "ISO3",
@@ -182,7 +185,7 @@ df_all.columns = df_all.columns.map(str)
 data_if = pm2.pm2io.convert_long_dataframe_if(
     df_all,
     coords_cols=coords_cols,
-    #add_coords_cols=add_coords_cols,
+    add_coords_cols=add_coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping,

@@ -207,7 +207,8 @@ df_all.columns = df_all.columns.map(str)
 # conversion to PRIMAP2 native format
 data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 
-entities_to_convert = ['N2O', 'SF6', 'CO2', 'CH4']
+entities_to_convert = ['CO2'] #['N2O', 'SF6', 'CO2', 'CH4'] # CO2 is not converted on
+# conversion to IF as data with and without GWP exists. needs to be fixed in primap2
 entities_to_convert = [f"{entity} (AR4GWP100)" for entity in entities_to_convert]
 
 # convert GWP units to mass units

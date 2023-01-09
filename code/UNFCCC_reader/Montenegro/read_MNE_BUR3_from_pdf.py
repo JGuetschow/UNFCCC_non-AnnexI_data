@@ -78,6 +78,14 @@ coords_value_mapping = {
     },
 }
 
+coords_value_filling = {
+    "category": {
+        "orig_cat_name": {
+            'International Bunkers': 'M.BK',
+        },
+    },
+}
+
 coords_cols = {
     "category": "category",
     "entity": "entity",
@@ -184,15 +192,15 @@ for i, table in enumerate(tables):
 entities_to_convert = ['N2O', 'SF6', 'CH4']
 entities_to_convert = [f"{entity} ({gwp_to_use})" for entity in entities_to_convert]
 
-for entity in entities_to_convert:
-    converted = data_all[entity].pr.convert_to_mass()
-    basic_entity = entity.split(" ")[0]
-    converted = converted.to_dataset(name=basic_entity)
-    data_all = data_all.pr.merge(converted)
-    data_all[basic_entity].attrs["entity"] = basic_entity
-
-# drop the GWP data
-data_all = data_all.drop_vars(entities_to_convert)
+# for entity in entities_to_convert:
+#     converted = data_all[entity].pr.convert_to_mass()
+#     basic_entity = entity.split(" ")[0]
+#     converted = converted.to_dataset(name=basic_entity)
+#     data_all = data_all.pr.merge(converted)
+#     data_all[basic_entity].attrs["entity"] = basic_entity
+#
+# # drop the GWP data
+# data_all = data_all.drop_vars(entities_to_convert)
 
 # convert back to IF
 data_if = data_all.pr.to_interchange_format()

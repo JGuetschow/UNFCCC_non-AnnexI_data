@@ -395,13 +395,19 @@ aggregate_after_mapping = {
     '2.A': {'sources': ['2.A.1', '2.A.2', '2.A.4', '2.A.5', '2.A.6'],
             'name': 'Mineral Industry'},
     '2.B': {'sources': ['2.B', '2.B.7', '2.B.9'], 'name': 'Chemical Industry'},
-    '2.D': {'sources': ['2006.2.D.4'], 'name': 'Other'},
+    '2.D': {'sources': ['2.D.4'], 'name': 'Other'},
     '2.E': {'sources': ['2.E_1', '2.E_2'], 'name': 'Electronics Industry'},
     '2.F': {'sources': ['2.F.1', '2.F.2', '2.F.3', '2.F.4', '2.F.5'],
             'name': 'Product uses as Substitutes for Ozone Depleting Substances'},
     '2.G': {'sources': ['2.G.1', '2.G.2'], 'name': 'Other Product Manufacture and Use'},
     '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
-    'M.3.C.AG': {'sources': ['3.C.4', '3.C.5', '3.C.7'], 'name': 'Livestock'},
+    '3.C': {'sources': ['3.C.4', '3.C.5', '3.C.7'],
+                 'name': 'Aggregate sources and non-CO2 emissions sources on land'},
+    'M.3.C.AG': {'sources': ['3.C.4', '3.C.5', '3.C.7'],
+                 'name': 'Aggregate sources and non-CO2 emissions sources on land ('
+                         'Agriculture)'},
+    'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock'},
+    '4.C': {'sources': ['4.C.1'], 'name': 'Incineration and Open Burning of Waste'},
 }
 
 coords_terminologies_2006 = {

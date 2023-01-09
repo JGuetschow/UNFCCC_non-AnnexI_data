@@ -45,9 +45,10 @@ header_long = ["orig_cat_name", "entity", "unit", "time", "data"]
 # manual category codes
 cat_codes_manual = {
     'Total National Emissions and Removals': '0',
-    'Peat Decomposition': 'M.PD',
-    'Peat Fire': 'M.PF',
+    'Peat Decomposition': 'M.3.B.4.APD',
+    'Peat Fire': 'M.3.B.4.APF',
     '4A1.2 Industrial Solid Waste Disposal': 'M.4.A.Ind',
+    #'3A2b Direct N2O Emissions from Manure Management': '3.A.2',
 }
 
 cat_code_regexp = r'(?P<code>^[a-zA-Z0-9]{1,4})\s.*'
@@ -58,6 +59,9 @@ coords_cols = {
     "unit": "unit",
 }
 
+add_coords_cols = {
+    "orig_cat_name": ["orig_cat_name", "category"],
+}
 
 coords_terminologies = {
     "area": "ISO3",
@@ -143,6 +147,15 @@ aggregate_cats = {
     '4.A': {'sources': ['4.A.2', 'M.4.A.Ind'], 'name': 'Solid Waste Disposal (calculated)'},
 }
 
+aggregate_cats_N2O = {
+    '3.A.2': {'sources': ['3.A.2.b'], 'name': '3A2 Manure Management'},
+    '3.A': {'sources': ['3.A.2'], 'name': '3A Livestock'},
+}
+
+aggregate_cats_CO2CH4N2O = {
+    '3.A.2': {'sources': ['3.A.2', '3.A.2.b'], 'name': '3A2 Manure Management'},
+}
+
 df_all = None
 
 for page in pages_to_read:
@@ -198,9 +211,10 @@ df_all = df_all.reset_index(drop=True)
 # replace "," with "" in data
 df_all.loc[:, "data"] = df_all.loc[:, "data"].str.replace(',','', regex=False)
 
-
 # make sure all col headers are str
 df_all.columns = df_all.columns.map(str)
+
+
 
 # ###
 # convert to PRIMAP2 interchange format
@@ -208,7 +222,7 @@ df_all.columns = df_all.columns.map(str)
 data_if = pm2.pm2io.convert_long_dataframe_if(
     df_all,
     coords_cols=coords_cols,
-    #add_coords_cols=add_coords_cols,
+    add_coords_cols=add_coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping,
@@ -246,7 +260,7 @@ for cat_to_agg in aggregate_cats:
 
         df_combine = df_combine.groupby(
             by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                'unit']).sum()
+                'unit']).sum(min_count=1)
 
         df_combine.insert(0, cat_label, cat_to_agg)
         df_combine.insert(1, "orig_cat_name", aggregate_cats[cat_to_agg]["name"])
@@ -256,23 +270,102 @@ for cat_to_agg in aggregate_cats:
         data_if = pd.concat([data_if, df_combine])
     else:
         print(f"no data to aggregate category {cat_to_agg}")
+
+
+# delete cat 3 for N2O as it's wrong
+index_3A_N2O = data_if[(data_if[cat_label] == '3') &
+                       (data_if['entity'] == 'N2O')].index
+data_if = data_if.drop(index_3A_N2O)
+
+# aggregate cat 3 for N2O
+for cat_to_agg in aggregate_cats_N2O:
+    mask = data_if[cat_label].isin(aggregate_cats_N2O[cat_to_agg]["sources"])
+    df_test = data_if[mask]
+    df_test = df_test[df_test["entity"] == "N2O"]
+
+    if len(df_test) > 0:
+        print(f"Aggregating category {cat_to_agg}")
+        df_combine = df_test.copy(deep=True)
+
+        time_format = '%Y'
+        time_columns = [
+            col
+            for col in df_combine.columns.values
+            if matches_time_format(col, time_format)
+        ]
+
+        for col in time_columns:
+            df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
+
+        df_combine = df_combine.groupby(
+            by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
+                'unit']).sum(min_count=1)
+
+        df_combine.insert(0, cat_label, cat_to_agg)
+        df_combine.insert(1, "orig_cat_name", aggregate_cats_N2O[cat_to_agg]["name"])
+
+        df_combine = df_combine.reset_index()
+
+        data_if = pd.concat([data_if, df_combine])
+    else:
+        print(f"no data to aggregate category {cat_to_agg}")
+
+# delete cat 3.A.2 for CO2CH4N2O as it's wrong
+index_3A2_CO2CH4N2O = data_if[(data_if[cat_label] == '3.A.2') &
+                       (data_if['entity'] == 'CH4CO2N2O (SARGWP100)')].index
+data_if = data_if.drop(index_3A2_CO2CH4N2O)
+
+# aggregate cat 3 for N2O
+for cat_to_agg in aggregate_cats_CO2CH4N2O:
+    mask = data_if[cat_label].isin(aggregate_cats_CO2CH4N2O[cat_to_agg]["sources"])
+    df_test = data_if[mask]
+    df_test = df_test[df_test["entity"] == "CO2CH4N2O (SARGWP100)"]
+
+    if len(df_test) > 0:
+        print(f"Aggregating category {cat_to_agg}")
+        df_combine = df_test.copy(deep=True)
+
+        time_format = '%Y'
+        time_columns = [
+            col
+            for col in df_combine.columns.values
+            if matches_time_format(col, time_format)
+        ]
+
+        for col in time_columns:
+            df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
+
+        df_combine = df_combine.groupby(
+            by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
+                'unit']).sum(min_count=1)
+
+        df_combine.insert(0, cat_label, cat_to_agg)
+        df_combine.insert(1, "orig_cat_name", aggregate_cats_CO2CH4N2O[cat_to_agg]["name"])
+
+        df_combine = df_combine.reset_index()
+
+        data_if = pd.concat([data_if, df_combine])
+    else:
+        print(f"no data to aggregate category {cat_to_agg}")
+
+
 data_if.attrs = attrs
 
 data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 
-# convert to mass units from CO2eq
-entities_to_convert = [f"{entity} ({gwp_to_use})" for entity in
-                       entities_to_convert_to_mass]
-
-for entity in entities_to_convert:
-    converted = data_pm2[entity].pr.convert_to_mass()
-    basic_entity = entity.split(" ")[0]
-    converted = converted.to_dataset(name=basic_entity)
-    data_pm2 = data_pm2.pr.merge(converted)
-    data_pm2[basic_entity].attrs["entity"] = basic_entity
-
-# drop the GWP data
-data_pm2 = data_pm2.drop_vars(entities_to_convert)
+# # convert to mass units from CO2eq
+# entities_to_convert = [f"{entity} ({gwp_to_use})" for entity in
+#                        entities_to_convert_to_mass]
+#
+# for entity in entities_to_convert:
+#     converted = data_pm2[entity].pr.convert_to_mass()
+#     basic_entity = entity.split(" ")[0]
+#     converted = converted.to_dataset(name=basic_entity)
+#     data_pm2 = data_pm2.pr.merge(converted)
+#     data_pm2[basic_entity].attrs["entity"] = basic_entity
+#
+# # drop the GWP data
+# data_pm2 = data_pm2.drop_vars(entities_to_convert)
 
 # convert back to IF to have units in the fixed format
 data_if = data_pm2.pr.to_interchange_format()
