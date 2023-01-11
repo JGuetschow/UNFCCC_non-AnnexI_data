@@ -12,10 +12,10 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - source
+  - category (IPCC1996_2006_THA_Inv)
   - scenario (PRIMAP)
   - provenance
-  - category (IPCC1996_2006_THA_Inv)
+  - source
   - area (ISO3)
   - entity
   - unit
