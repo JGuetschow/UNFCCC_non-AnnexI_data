@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
+  - source
+  - area (ISO3)
   - scenario (PRIMAP)
   - provenance
   - category (IPCC2006_PRIMAP)
-  - source
-  - area (ISO3)
   - entity
   - unit
 data_file: THA_BUR3_2020_IPCC2006_PRIMAP.csv
