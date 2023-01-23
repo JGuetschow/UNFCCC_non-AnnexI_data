@@ -38,7 +38,7 @@ unit_inventory = ['Gg'] * len(header_inventory)
 unit_inventory[9] = "GgCO2eq"
 unit_inventory[10] = "GgCO2eq"
 
-year = 2019
+year = 2016
 entity_row = 0
 unit_row = 1
 gwp_to_use = "AR4GWP100"
@@ -296,7 +296,7 @@ data_indirect_IF = pm2.pm2io.convert_wide_dataframe_if(
     )
 
 # ###
-# merge the tree datasets
+# merge the three datasets
 # ###
 data_inventory_pm2 = pm2.pm2io.from_interchange_format(data_inventory_IF)
 data_main_sector_ts_pm2 = pm2.pm2io.from_interchange_format(data_main_sector_ts_IF)
@@ -306,9 +306,12 @@ data_all = data_inventory_pm2.pr.merge(data_main_sector_ts_pm2)
 data_all = data_all.pr.merge(data_indirect_pm2)
 
 # combine CO2 emissions and absorptions
-data_all["CO2"] = data_all['CO2 removals'] + data_all['CO2 emissions']
+data_CO2 = data_all[['CO2 emissions', 'CO2 removals']].\
+    to_array().pr.sum("variable", skipna=True, min_count=1)
+data_all["CO2"] = data_CO2
 
 data_all_if = data_all.pr.to_interchange_format()
+
 
 
 # ###
