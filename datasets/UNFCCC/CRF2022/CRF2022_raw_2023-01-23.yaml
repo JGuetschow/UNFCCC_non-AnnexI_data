@@ -1,0 +1,30 @@
+attrs:
+  area: area (ISO3)
+  cat: category (CRF2013_2022)
+  comment: Read fom xlsx file by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/2022
+  rights: ''
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - c
+  - l
+  - a
+  - s
+  - s
+  title: 'Data submitted in 2022 to the UNFCCC in the common reporting format (CRF)
+    by Australia. Submission date: 16092022'
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - scenario (PRIMAP)
+  - provenance
+  - category (CRF2013_2022)
+  - area (ISO3)
+  - class
+  - entity
+  - unit
+data_file: CRF2022_raw_2023-01-23.csv
