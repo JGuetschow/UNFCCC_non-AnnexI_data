@@ -53,7 +53,7 @@ cat_mapping = {
 aggregate_cats = {
     '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
     '3.B': {'sources': ['3.B.1', '3.B.2', '3.B.3', '3.B.4', '3.B.5', '3.B.6'], 'name': 'Land'},
-    '3.C.1.AG': {'sources': ['3.C.1.c', '3.C.1.b'], 'name': 'Emissions from Biomass '
+    'M.3.C.1.AG': {'sources': ['3.C.1.c', '3.C.1.b'], 'name': 'Emissions from Biomass '
                                                           'Burning (Agriculture)'},
     '3.C.1': {'sources': ['3.C.1.c', '3.C.1.b'], 'name': 'Emissions from Biomass Burning'},
     '3.C': {'sources': ['3.C.1', '3.C.3', 'M.3.C.45AG', '3.C.7'],
