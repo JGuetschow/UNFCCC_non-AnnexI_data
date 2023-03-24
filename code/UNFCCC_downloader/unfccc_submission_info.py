@@ -16,6 +16,7 @@ def get_unfccc_submission_info(
 ) -> List[Dict[str,str]]:
     info = []
     pattern = re.compile(r"BUR ?\d")
+    pattern_NC = re.compile(r"NC ?\d")
     i = 0
     last_excep = None
     while i < max_tries:
@@ -41,7 +42,11 @@ def get_unfccc_submission_info(
         if match:
             kind = match.group(0).replace(" ", "")
         else:
-            kind = None
+            match = pattern_NC.search(title)
+            if match:
+                kind = match.group(0).replace(" ", "")
+            else:
+                kind = None
 
         # TODO: might improve speed by first searching for class="document-line" and then operating on thie resulting subtree for the info
         try:
@@ -70,20 +75,22 @@ def get_unfccc_submission_info(
                     if match:
                         kind = match.group(0)
                     else:
-                        # TODO: check why search in filename makes sense (compared to
-                        #  directly using doctype)
-                        if ("CRF" in doctype) or ("CRF" in title):
-                            kind = "CRF"
-                        elif ("SEF" in doctype) or ("SEF" in title):
-                            kind = "SEF"
-                        elif ("NIR" in doctype) or ("NIR" in title):
-                            kind = "NIR"
-                        elif "NC" in title:
-                            kind = "NC"
-                        elif "Status report" in title:
-                            kind = "CRF"
+                        match = pattern_NC.search(file.upper())
+                        if match:
+                            kind = match.group(0).replace(" ", "")
                         else:
-                            kind = "other"
+                            if ("CRF" in doctype) or ("CRF" in title):
+                                kind = "CRF"
+                            elif ("SEF" in doctype) or ("SEF" in title):
+                                kind = "SEF"
+                            elif ("NIR" in doctype) or ("NIR" in title):
+                                kind = "NIR"
+                            elif "NC" in title:
+                                kind = "NC"
+                            elif "Status report" in title:
+                                kind = "CRF"
+                            else:
+                                kind = "other"
                 info.append({
                     "Kind": kind,
                     "Country": country,
