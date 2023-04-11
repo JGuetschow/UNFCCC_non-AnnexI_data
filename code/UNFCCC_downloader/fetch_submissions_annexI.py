@@ -41,7 +41,7 @@ elif int(year) in range(2020,2023):
     )
 elif int(year) >= 2023:
     url = (
-        "https://unfccc.int/process/transparency-and-reporting/"
+        "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
         "reporting-and-review-under-the-convention/"
         "greenhouse-gas-inventories-annex-i-parties/"
         "national-inventory-submissions-{}".format(year)
