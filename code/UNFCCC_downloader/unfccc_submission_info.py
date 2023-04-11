@@ -65,8 +65,11 @@ def get_unfccc_submission_info(
         # get files
         sub_files = html.find(
             class_=["form-select form-control", "form-select form-control download"])
-        files = sub_files.find_all("option", value=True)
-        files = [file.attrs['value'] for file in files]
+        if sub_files:
+            files = sub_files.find_all("option", value=True)
+            files = [file.attrs['value'] for file in files]
+        else:
+            files = []
 
         if len(files) > 0:
             for file in files:
