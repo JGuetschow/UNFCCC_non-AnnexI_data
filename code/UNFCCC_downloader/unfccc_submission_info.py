@@ -53,7 +53,7 @@ def get_unfccc_submission_info(
             subtree = html.find_all(
                 class_="field field--name-field-document-country field--type-termstore-entity-reference field--label-inline")
             country = subtree[0].find(class_="field--item").contents[0]
-        except AttributeError:
+        except (AttributeError, IndexError) as e:
             # author as backup for country
             subtree = html.find_all(class_="field--name-field-document-ca")
             country = subtree[0].find(class_="field--item").contents[0]
