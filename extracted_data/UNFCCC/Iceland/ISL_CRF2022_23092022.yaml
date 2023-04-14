@@ -1,0 +1,26 @@
+attrs:
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/2022
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Data submitted in 2022 to the UNFCCC in the common reporting format (CRF)
+    by Iceland. Submission date: 23092022'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRF2013_2022)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - class
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - scenario (PRIMAP)
+  - provenance
+  - category (CRF2013_2022)
+  - area (ISO3)
+  - class
+  - entity
+  - unit
+data_file: ISL_CRF2022_23092022.csv

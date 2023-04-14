@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/documents/461972
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: Montenegro. Biennial update report (BUR). BUR 3. National inventory report.
+  comment: Read fom pdf file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  cat: category (IPCC1996_2006_MNE_Inv)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - area (ISO3)
+  - provenance
+  - category (IPCC1996_2006_MNE_Inv)
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: MNE_BUR3_2022_IPCC1996_2006_MNE_Inv.csv

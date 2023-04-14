@@ -8,16 +8,28 @@ import primap2 as pm2
 from pathlib import Path
 
 from config_KOR_BUR4 import cat_name_translations, cat_codes
-from primap2.pm2io._data_reading import filter_data
+from config_KOR_BUR4 import remove_cats, aggregate_before_mapping, cat_mapping, \
+    aggregate_after_mapping, coords_terminologies_2006, filter_remove_2006, \
+    filter_remove_after_agg
+
+from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 # ###
 # configuration
 # ###
 
-input_folder = Path('..') / '..' / '..' / 'downloaded_data' / 'non-UNFCCC' / 'Republic_of_Korea' / '2021-Inventory'
-output_folder = Path('..') / '..' / '..' / 'extracted_data' / 'non-UNFCCC' / 'Republic_of_Korea'
+root_path = Path(__file__).parents[3].absolute()
+root_path = root_path.resolve()
+downloaded_data_path = root_path / "downloaded_data"
+extracted_data_path = root_path / "extracted_data"
 
-output_filename = 'KOR_INV2021_2021_'
+input_folder = downloaded_data_path / 'non-UNFCCC' / 'Republic_of_Korea' / \
+               '2021-Inventory'
+output_folder = extracted_data_path / 'non-UNFCCC' / 'Republic_of_Korea'
+if not output_folder.exists():
+    output_folder.mkdir()
+
+output_filename = 'KOR_2021-Inventory_2021_'
 
 inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2019).xlsx'
 years_to_read = range(1990, 2019 + 1)
@@ -86,6 +98,12 @@ filter_remove = {
     "f1": {
         "category (IPCC1996_KOR_INV)": "\IGNORE",
     },
+    "livestock": { # temp until double cat name problem is solved
+        "category (IPCC1996_KOR_INV)": [
+            '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
+            '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
+        ]
+    }
 }
 
 filter_keep = {}
@@ -157,10 +175,17 @@ data_if = pm2.pm2io.convert_wide_dataframe_if(
     #filter_remove=filter_remove,
     #filter_keep=filter_keep,
     meta_data=meta_data,
-    convert_str=True
+    convert_str=True,
+copy_df=True, # we need the unchanged DF for the conversion step
     )
 
 filter_data(data_if, filter_remove=filter_remove)
+
+#conversion to PRIMAP2 native format
+data_pm2 = pm2.pm2io.from_interchange_format(data_if)
+# convert back to IF to have units in the fixed format
+data_pm2 = data_pm2.reset_coords(["orig_cat_name", "cat_name_translation"], drop=True)
+data_if = data_pm2.pr.to_interchange_format()
 
 # ###
 # save data to IF and native format
@@ -172,3 +197,123 @@ pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_ter
 data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 encoding = {var: compression for var in data_pm2.data_vars}
 data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
+
+# ###
+# conversion to ipcc 2006 categories
+# ###
+
+
+data_if_2006 = pm2.pm2io.convert_wide_dataframe_if(
+    df_all,
+    coords_cols=coords_cols,
+    add_coords_cols=add_coords_cols,
+    coords_defaults=coords_defaults,
+    coords_terminologies=coords_terminologies_2006,
+    coords_value_mapping=coords_value_mapping,
+    meta_data=meta_data,
+    convert_str=True,
+    copy_df=True,  # don't mess up the dataframe when testing
+)
+
+cat_label = 'category (' + coords_terminologies_2006["category"] + ')'
+# agg before mapping
+
+for cat_to_agg in aggregate_before_mapping:
+    mask = data_if_2006[cat_label].isin(aggregate_before_mapping[cat_to_agg]["sources"])
+    df_test = data_if_2006[mask]
+
+    if len(df_test) > 0:
+        print(f"Aggregating category {cat_to_agg}")
+        df_combine = df_test.copy(deep=True)
+
+        time_format = '%Y'
+        time_columns = [
+            col
+            for col in df_combine.columns.values
+            if matches_time_format(col, time_format)
+        ]
+
+        for col in time_columns:
+            df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
+
+        df_combine = df_combine.groupby(
+            by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
+                'unit']).sum()
+
+        df_combine.insert(0, cat_label, cat_to_agg)
+        df_combine.insert(1, "orig_cat_name",
+                          aggregate_before_mapping[cat_to_agg]["name"])
+
+        df_combine = df_combine.reset_index()
+
+        if cat_to_agg in aggregate_before_mapping[cat_to_agg]["sources"]:
+            filter_this_cat = {
+                "f": {cat_label: cat_to_agg}
+            }
+            filter_data(data_if_2006, filter_remove=filter_this_cat)
+
+        data_if_2006 = pd.concat([data_if_2006, df_combine])
+    else:
+        print(f"no data to aggregate category {cat_to_agg}")
+
+# filtering
+filter_data(data_if_2006, filter_remove=filter_remove_2006)
+
+# map 1 to 1 categories
+data_if_2006 = data_if_2006.replace({cat_label: cat_mapping})
+data_if_2006[cat_label].unique()
+
+# agg after mapping
+
+for cat_to_agg in aggregate_after_mapping:
+    mask = data_if_2006[cat_label].isin(aggregate_after_mapping[cat_to_agg]["sources"])
+    df_test = data_if_2006[mask]
+
+    if len(df_test) > 0:
+        print(f"Aggregating category {cat_to_agg}")
+        df_combine = df_test.copy(deep=True)
+
+        time_format = '%Y'
+        time_columns = [
+            col
+            for col in df_combine.columns.values
+            if matches_time_format(col, time_format)
+        ]
+
+        for col in time_columns:
+            df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
+
+        df_combine = df_combine.groupby(
+            by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
+                'unit']).sum()
+
+        df_combine.insert(0, cat_label, cat_to_agg)
+        df_combine.insert(1, "orig_cat_name",
+                          aggregate_after_mapping[cat_to_agg]["name"])
+
+        df_combine = df_combine.reset_index()
+
+        if cat_to_agg in aggregate_after_mapping[cat_to_agg]["sources"]:
+            filter_this_cat = {
+                "f": {cat_label: cat_to_agg}
+            }
+            filter_data(data_if_2006, filter_remove=filter_this_cat)
+
+        data_if_2006 = pd.concat([data_if_2006, df_combine])
+    else:
+        print(f"no data to aggregate category {cat_to_agg}")
+
+
+#conversion to PRIMAP2 native format
+data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if_2006)
+# convert back to IF to have units in the fixed format
+data_pm2_2006 = data_pm2_2006.reset_coords(["orig_cat_name", "cat_name_translation"],
+                                       drop=True)
+data_if_2006 = data_pm2_2006.pr.to_interchange_format()
+# save IPCC2006 data
+
+filter_data(data_if_2006, filter_remove=filter_remove_after_agg)
+pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies_2006["category"]), data_if_2006)
+
+encoding = {var: compression for var in data_pm2_2006.data_vars}
+data_pm2_2006.pr.to_netcdf(output_folder / (output_filename + coords_terminologies_2006["category"] + ".nc"), encoding=encoding)

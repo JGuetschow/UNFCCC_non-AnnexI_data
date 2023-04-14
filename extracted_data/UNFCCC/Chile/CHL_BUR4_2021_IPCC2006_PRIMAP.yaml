@@ -8,16 +8,17 @@ attrs:
   cat: category (IPCC2006_PRIMAP)
   area: area (ISO3)
   scen: scenario (PRIMAP)
-time_format: '%Y-%m-%d'
+time_format: '%Y'
 dimensions:
   '*':
+  - time
+  - category (IPCC2006_PRIMAP)
   - source
-  - scenario (PRIMAP)
   - provenance
+  - scenario (PRIMAP)
   - area (ISO3)
   - entity
   - unit
-  - category (IPCC2006_PRIMAP)
 additional_coordinates:
   orig_cat_name: category (IPCC2006_PRIMAP)
 data_file: CHL_BUR4_2021_IPCC2006_PRIMAP.csv

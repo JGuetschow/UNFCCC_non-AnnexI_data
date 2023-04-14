@@ -11,12 +11,13 @@ attrs:
 time_format: '%Y'
 dimensions:
   '*':
+  - time
+  - CategoryName
+  - area (ISO3)
+  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
-  - provenance
-  - area (ISO3)
   - entity
   - unit
-  - category (IPCC2006_PRIMAP)
-  - CategoryName
 data_file: ZAF_BUR3_2019_IPCC2006_inventory.csv

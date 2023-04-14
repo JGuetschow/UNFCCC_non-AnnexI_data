@@ -9,7 +9,7 @@ import pycountry
 
 root_path = Path(__file__).parents[2].absolute()
 root_path = root_path.resolve()
-code_path = root_path / "code"
+code_path = root_path / "code" / "UNFCCC_reader"
 # beware, folders below are different than for CRF reader
 downloaded_data_path = root_path / "downloaded_data"
 extracted_data_path = root_path / "extracted_data"
@@ -23,6 +23,22 @@ custom_country_mapping = {
     "DKE": "Denmark",
     "DNM": "Denmark",
     "GBK": "United Kingdom of Great Britain and Northern Ireland",
+}
+
+custom_folders = {
+    'Venezeula_(Bolivarian_Republic_of)': 'VEN',
+    'Venezuela_(Bolivarian_Republic_of)': 'VEN',
+    'Micronesia_(Federated_State_of)': 'FSM',
+    'Micronesia_(Federated_States_of)': 'FSM',
+    'The_Republic_of_North_Macedonia': 'MKD',
+    'Republic_of_Korea': 'KOR',
+    'Bolivia_(Plurinational_State_of)': 'BOL',
+    'Türkiye': 'TUR',
+    'Iran_(Islamic_Republic_of)': 'IRN',
+    'Côte_d’Ivoire': 'CIV',
+    'Democratic_Republic_of_the_Congo': "COD",
+    'European_Union': 'EUA',
+    'Taiwan': 'TWN',
 }
 
 def get_country_submissions(
@@ -281,26 +297,30 @@ def get_country_code(
         Country code or name to get the three-letter code for.
 
     """
-    try:
-        # check if it's a 3 letter code
-        country = pycountry.countries.get(alpha_3=country_name)
-        country_code = country.alpha_3
-    except:
+    # First check if it's in the list of custom codes
+    if country_name in custom_country_mapping:
+        country_code = country_name
+    else:
         try:
-            country = pycountry.countries.search_fuzzy(country_name)
+            # check if it's a 3 letter code
+            country = pycountry.countries.get(alpha_3=country_name)
+            country_code = country.alpha_3
         except:
-            raise ValueError(f"Country name {country_name} can not be mapped to "
-                             f"any country code")
-        if len(country) > 1:
-            country_code = None
-            for current_country in country:
-                if current_country.name == country_name:
-                    country_code = current_country.alpha_3
-            if country_code is None:
-                raise ValueError(f"Country name {country_name} has {len(country)} "
-                                 f"possible results for country codes.")
+            try:
+                country = pycountry.countries.search_fuzzy(country_name.replace("_", " "))
+            except:
+                raise ValueError(f"Country name {country_name} can not be mapped to "
+                                 f"any country code. Try using the ISO3 code directly.")
+            if len(country) > 1:
+                country_code = None
+                for current_country in country:
+                    if current_country.name == country_name:
+                        country_code = current_country.alpha_3
+                if country_code is None:
+                    raise ValueError(f"Country name {country_name} has {len(country)} "
+                                     f"possible results for country codes.")
 
-        country_code = country[0].alpha_3
+            country_code = country[0].alpha_3
 
     return country_code
 
@@ -518,40 +538,32 @@ def create_folder_mapping(
     """
 
     folder = root_path / folder
-
-    folder_mapping = custom_country_mapping
-    if not extracted:
-        folder_mapping = {
-            **folder_mapping,
-            **{
-                'VEN': 'Venezeula_(Bolivarian_Republic_of)',
-                'FSM': 'Micronesia_(Federated_State_of)',
-                'MKD': 'The_Republic_of_North_Macedonia',
-            }
-        }
-    known_folders = list(folder_mapping.values())
-    print(f"known_folders: {known_folders}")
+    folder_mapping = {}
+    #if not extracted:
+    known_folders = custom_folders
+    #else:
+    #    known_folders = {}
 
     for item in folder.iterdir():
-        if item.is_dir():
-            try:
-                country = pycountry.countries.search_fuzzy(item.name.replace("_", " "))
-                if len(country) > 1:
+        if item.is_dir() and not item.match("__pycache__"):
+            if item.name in known_folders:
+                ISO3 = known_folders[item.name]
+            else:
+                try:
+                    country = pycountry.countries.search_fuzzy(item.name.replace("_", " "))
+                    if len(country) > 1:
+                        ISO3 = None
+                        for current_country in country:
+                            if current_country.name == item.name.replace("_", " "):
+                                ISO3 = current_country.alpha_3
+                    else:
+                        ISO3 = country[0].alpha_3
+                except:
                     ISO3 = None
-                    for current_country in country:
-                        if current_country.name == item.name.replace("_", " "):
-                            ISO3 = current_country.alpha_3
-                else:
-                    ISO3 = country[0].alpha_3
-            except:
-                ISO3 = None
 
             if ISO3 is None:
-                if item.name not in known_folders:
-                    print(folder_mapping.values())
-                    print(f"No match for {item.name}")
+                print(f"No match for {item.name}")
             else:
-                known_folders.append(item.name)
                 if ISO3 in folder_mapping.keys():
                     folder_mapping[ISO3] = [folder_mapping[ISO3], item.name]
                 else:

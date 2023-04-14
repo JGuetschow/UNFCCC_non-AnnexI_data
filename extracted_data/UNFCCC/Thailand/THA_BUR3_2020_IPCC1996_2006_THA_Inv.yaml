@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/documents/267629
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: Thailand. Biennial update report (BUR). BUR3
+  comment: Read fom pdf by Johannes Gütschow
+  institution: UNFCCC
+  cat: category (IPCC1996_2006_THA_Inv)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - area (ISO3)
+  - category (IPCC1996_2006_THA_Inv)
+  - scenario (PRIMAP)
+  - source
+  - entity
+  - unit
+data_file: THA_BUR3_2020_IPCC1996_2006_THA_Inv.csv

@@ -302,3 +302,147 @@ translations = [
 ]
 cat_name_translations = dict(zip(original_names, [cat[0] for cat in translations]))
 cat_codes = dict(zip(original_names, [cat[1] for cat in translations]))
+
+remove_cats = [
+    '1.A.1.a', '1.A.1.b', '1.A.1.c', '1.A.2.f',
+    '2.A', '2.D',
+    '2.F', '2.G',
+    '4.C.1', '4.C.4',
+    '4.D',
+    '4.F.1', '4.F.2', '4.F.3', '4.F.4', '4.F.5',  # detail not in 2006 categories
+    '5.A', '5.A.1', '5.A.2', '5.A.3', '5.A.4', '5.A.5',  # don't not match IPCC
+    # categories
+    '5.B', '5.B.1', '5.B.2', '5.B.3', '5.B.4', '5.B.5',
+    '5.C', '5.C.1', '5.C.2', '5.C.3', '5.C.4',
+    '5.D', '5.D.1', '5.D.2', '5.D.3', '5.D.4',
+    '5.E', '5.F',
+    '5.G', '5.B.6', # for 2021 NIR
+]
+
+aggregate_before_mapping = {
+    '2006.2.D.4': {'sources': ['2.A.5', '2.A.6'], 'name': 'Other'},
+    '2006.3.C.4': {'sources': ['4.D.1', '4.D.2'],
+                   'name': 'Direct N2O Emissions from Managed Soils'},
+    '2006.M.3C1AG': {'sources': ['4.E', '4.F'], 'name': 'Biomass burning Agriculture'},
+    '2006.1.A.2.m': {'sources': ['1.A.2.f.2', '1.A.2.f.6'], 'name': 'Other'},
+}
+
+cat_mapping = {
+    '1.A.2.f.1': '1.A.2.f',
+    '1.A.2.f.3': '1.A.2.j',
+    '1.A.2.f.4': '1.A.2.k',
+    '1.A.2.f.5': '1.A.2.l',
+    '2006.1.A.2.m': '1.A.2.m',
+    '2.A.4': '2.B.7',  # add to 2.B
+    '2.A.3': '2.A.4',
+    '2.D': '2.H',
+    '2006.2.D.4': '2.D.4',
+    '2.E': '2.B.9',  # add to 2.B
+    '2.E.1': '2.B.9.a',
+    '2.E.2': '2.B.9.b',
+    #    '2.F', # remove?
+    '2.F.1': '2.F.1',  # just added here to avoid confusion
+    #    '2.F.2', '2.F.3', '2.F.4', '2.F.5',
+    '2.F.6': '2.E_1',
+    '2.F.7': '2.E_2',
+    '2.F.8': '2.G.1',
+    '2.F.9': '2.G.2',
+    '4': 'M.AG',
+    '4.A': '3.A.1',
+    '4.A.1': '3.A.1.a',
+    '4.A.2': '3.A.1.b',
+    '4.A.3': '3.A.1.c',
+    '4.A.4': '3.A.1.d',
+    '4.A.5': '3.A.1.e',
+    '4.A.6': '3.A.1.f',
+    '4.A.7': '3.A.1.g',
+    '4.A.8': '3.A.1.h',
+    '4.A.9': '3.A.1.i',
+    '4.A.10': '3.A.1.j',
+    '4.B': '3.A.2',
+    '4.B.1': '3.A.2.a',
+    '4.B.2': '3.A.2.b',
+    '4.B.3': '3.A.2.c',
+    '4.B.4': '3.A.2.d',
+    '4.B.5': '3.A.2.e',
+    '4.B.6': '3.A.2.f',
+    '4.B.7': '3.A.2.g',
+    '4.B.8': '3.A.2.h',
+    '4.B.9': '3.A.2.i',
+    '4.B.10': '3.A.2.j',
+    '4.C': '3.C.7',
+    '2006.3.C.4': '3.C.4',
+    '4.D.3': '3.C.5',
+    '2006.M.3C1AG': 'M.3.C.1.AG',
+    '5': 'M.LULUCF',
+    '6': '4',
+    '6.A': '4.A',
+    '6.A.1': '4.A.1',
+    '6.A.2': '4.A.2',
+    '6.B': '4.D',
+    '6.B.1': '4.D.1',
+    '6.B.2': '4.D.2',
+    '6.C': '4.C.1',
+    '6.D': '4.E',
+    'M.1': 'M.BK',
+    'M.1.A': 'M.BK.A',
+    'M.1.B': 'M.BK.M',
+}
+
+aggregate_after_mapping = {
+    '1.A.3.a': {'sources': ['1.A.3.a.2'], 'name': 'Civil Aviation'},  # aviation
+    '1.A.3.d': {'sources': ['1.A.3.d.2'], 'name': 'Water-borne Navigation'},  # shipping
+    '2.A': {'sources': ['2.A.1', '2.A.2', '2.A.4', '2.A.5', '2.A.6'],
+            'name': 'Mineral Industry'},
+    '2.B': {'sources': ['2.B', '2.B.7', '2.B.9'], 'name': 'Chemical Industry'},
+    '2.D': {'sources': ['2.D.4'], 'name': 'Other'},
+    '2.E': {'sources': ['2.E_1', '2.E_2'], 'name': 'Electronics Industry'},
+    '2.F': {'sources': ['2.F.1', '2.F.2', '2.F.3', '2.F.4', '2.F.5'],
+            'name': 'Product uses as Substitutes for Ozone Depleting Substances'},
+    '2.G': {'sources': ['2.G.1', '2.G.2'], 'name': 'Other Product Manufacture and Use'},
+    '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
+    '3.C': {'sources': ['3.C.4', '3.C.5', '3.C.7'],
+                 'name': 'Aggregate sources and non-CO2 emissions sources on land'},
+    'M.3.C.AG': {'sources': ['3.C.4', '3.C.5', '3.C.7'],
+                 'name': 'Aggregate sources and non-CO2 emissions sources on land ('
+                         'Agriculture)'},
+    'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock'},
+    '4.C': {'sources': ['4.C.1'], 'name': 'Incineration and Open Burning of Waste'},
+}
+
+coords_terminologies_2006 = {
+    "area": "ISO3",
+    "category": "IPCC2006_PRIMAP",
+    "scenario": "PRIMAP",
+}
+
+filter_remove_2006 = {
+    "f1": {
+        "category (IPCC2006_PRIMAP)": "\IGNORE",
+    },
+    "livestock": {  # temp until double cat name problem is solved
+        "category (IPCC2006_PRIMAP)": [
+            '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
+            '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
+        ]
+    },
+    "fmap": {
+        "category (IPCC2006_PRIMAP)": remove_cats
+    },
+    "f_bef_map": {
+        "category (IPCC2006_PRIMAP)": [
+            '2.A.5', '2.A.6',  # combined to 2006.2.D.4
+            '4.D.1', '4.D.2',  # combined to 2006.3.C.4
+            '4.E', '4.F',  # 2006.M.3.C.1.AG
+            '1.A.2.f.2', '1.A.2.f.6',  # 2006.1.A.2.m
+        ]
+    }
+}
+
+filter_remove_after_agg = {
+    "tempCats": {
+        "category (IPCC2006_PRIMAP)": [
+            "2.E_1", "2.E_2"
+        ],
+    },
+}

@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--submission_year', help='Submission round to read', type=int)
 parser.add_argument('--submission_date', help='Date of submission to read', default=None)
 parser.add_argument('--re_read', help='Read data also if already read before',
-                    action='store_false')
+                    action='store_true')
 
 args = parser.parse_args()
 

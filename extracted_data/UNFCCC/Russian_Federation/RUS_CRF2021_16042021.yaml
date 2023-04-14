@@ -10,16 +10,16 @@ attrs:
   area: area (ISO3)
   scen: scenario (PRIMAP)
   sec_cats:
-  - type
+  - class
 time_format: '%Y'
 dimensions:
   '*':
   - time
-  - type
   - source
   - scenario (PRIMAP)
-  - category (CRF2013_2021)
+  - class
   - area (ISO3)
+  - category (CRF2013_2021)
   - provenance
   - entity
   - unit

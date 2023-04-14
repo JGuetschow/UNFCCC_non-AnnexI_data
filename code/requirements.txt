@@ -8,3 +8,7 @@ pycountry
 datalad
 treelib
 unfccc_di_api
+camelot-py
+opencv-python
+ghostscript
+

@@ -10,17 +10,17 @@ attrs:
   area: area (ISO3)
   scen: scenario (PRIMAP)
   sec_cats:
-  - type
+  - class
 time_format: '%Y'
 dimensions:
   '*':
   - time
-  - provenance
-  - type
-  - category (CRF2013_2021)
-  - scenario (PRIMAP)
-  - area (ISO3)
   - source
+  - scenario (PRIMAP)
+  - class
+  - area (ISO3)
+  - category (CRF2013_2021)
+  - provenance
   - entity
   - unit
 data_file: LUX_CRF2021_12042021.csv
