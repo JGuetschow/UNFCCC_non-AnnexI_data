@@ -27,7 +27,7 @@ args = parser.parse_args()
 year = args.year
 
 print("Fetching submissions for {}".format(year))
-
+# TODO: move to utils as used in two places
 if int(year) == 2019:
     url = (
         "https://unfccc.int/process-and-meetings/transparency-and-reporting/"

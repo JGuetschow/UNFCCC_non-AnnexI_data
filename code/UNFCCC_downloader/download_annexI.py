@@ -50,19 +50,32 @@ url = (
     "submissions/national-inventory-submissions-{}".format(year)
 )
 
-# TODO: years before 2019
+# TODO: move to utils as used in two places
 if int(year) == 2019:
     url = (
-           "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
-           "reporting-and-review-under-the-convention/"
-           "greenhouse-gas-inventories-annex-i-parties/"
-           "national-inventory-submissions-{}".format(year)
-          )
-
-if int(year) >= 2020:
+        "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
+        "reporting-and-review-under-the-convention/"
+        "greenhouse-gas-inventories-annex-i-parties/"
+        "national-inventory-submissions-{}".format(year)
+    )
+elif int(year) in range(2020,2023):
     url = (
-            "https://unfccc.int/ghg-inventories-annex-i-parties/{}".format(year)
-            )
+        "https://unfccc.int/ghg-inventories-annex-i-parties/{}".format(year)
+    )
+elif int(year) >= 2023:
+    url = (
+        "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
+        "reporting-and-review-under-the-convention/"
+        "greenhouse-gas-inventories-annex-i-parties/"
+        "national-inventory-submissions-{}".format(year)
+    )
+else:
+    url = (
+        "https://unfccc.int/process/transparency-and-reporting/"
+        "reporting-and-review-under-the-convention/"
+        "greenhouse-gas-inventories-annex-i-parties/"
+        "submissions/national-inventory-submissions-{}".format(year)
+    )
 
 download_path = root / "downloaded_data" / "UNFCCC"
 
