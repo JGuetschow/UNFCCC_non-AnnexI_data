@@ -1,4 +1,5 @@
 from pathlib import Path
+import unfccc_di_api
 # imports for copied functions
 import pycountry
 
@@ -9,13 +10,16 @@ code_path = root_path / "code"
 downloaded_data_path = root_path / "downloaded_data" / "UNFCCC"
 extracted_data_path = root_path / "extracted_data" / "UNFCCC"
 
+reader = unfccc_di_api.UNFCCCApiReader()
 
+nAI_countries = list(reader.non_annex_one_reader.parties["code"])
+AI_countries = list(reader.annex_one_reader.parties["code"])
 
 class NoDIDataError(Exception):
     pass
 
 
-# the following is copied from other cub-packages
+# the following is copied from other sub-packages
 # TODO: move these fucntions to common location to allow easy importing into all modules
 custom_country_mapping = {
     "EUA": "European Union",
