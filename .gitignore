@@ -5,7 +5,7 @@ __pycache__
 /JG_test_code/
 .doit.db
 log
-code/datasets
-code/UNFCCC_DI_reader
+UNFCCC_GHG_data/datasets
+UNFCCC_GHG_data/UNFCCC_DI_reader
 datasets/UNFCCC/DI_NAI
 
