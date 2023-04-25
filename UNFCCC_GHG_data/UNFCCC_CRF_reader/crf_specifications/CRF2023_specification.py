@@ -1144,7 +1144,8 @@ CRF2023 = {
             ['heavy fuel oil', ['1.A.4.c.ii', 'HeavyFuelOil'], 4],  # NOR
             ['Other motor fuels', ['1.A.4.c.ii', 'OMotorFuels'], 4],  # RUS
             ['Biodiesel (5 percent fossil portion)', ['1.A.4.c.ii', 'OLBiodieselFC'], 4],  # CAN
-            ['Lubricating Oil (Two-Stroke Engines)', ['1.A.4.c.ii', 'OLBiodieselFC'], 4],  # CAN
+            ['Lubricating Oil (Two-Stroke Engines)', ['1.A.4.c.ii', 'Lubricants'], 4],
+            # CAN new in 2023
             ['Gaseous fuels', ['1.A.4.c.ii', 'Gaseous'], 3],
             ['Biomass(6)', ['1.A.4.c.ii', 'Biomass'], 3],
             ['Other fossil fuels (please specify)(4)', ['1.A.4.c.ii', 'OtherFF'], 3],
@@ -2474,16 +2475,16 @@ CRF2023 = {
             ['Other (please specify)', ['5.C.2.a.ii'], 2],
             ['agricultural waste', ['5.C.2.a.ii.1'], 3],  # ITA
             ['Agricultural residues', ['5.C.2.a.ii.1'], 3],  # ESP
-            ['Agriculture residues', ['5.C.2.a.ii.1'], 3],  # PRT
+            ['Agriculture residues', ['5.C.2.a.ii.1'], 3],  # PRT new in 2023
             ['Natural residues', ['5.C.2.a.ii.2'], 3],  # CHE
             ['Wood waste', ['5.C.2.a.ii.3'], 3],  # GBR, GBK
             ['Bonfires etc.', ['5.C.2.a.ii.4'], 3],  # DEU
             ['Bonfires', ['5.C.2.a.ii.4'], 3],  # NLD, ISL
             ['Other', ['5.C.2.a.ii.5'], 3],  # EST
             ['Other waste', ['5.C.2.a.ii.5'], 3],  # CZE
-            ['Waste', ['5.C.2.a.ii.5'], 3],  # GBR
+            ['Waste', ['5.C.2.a.ii.5'], 3],  # GBR new in 2023
             ['Industrial Solid Waste', ['5.C.2.a.ii.6'], 3],  # JPN
-            ['Vine', ['5.C.2.a.ii.7'], 3], # AUT
+            ['Vine', ['5.C.2.a.ii.7'], 3], # AUT new in 2023
             ['Non-biogenic', ['5.C.2.b'], 1],
             ['Municipal solid waste', ['5.C.2.b.i'], 2],
             ['Other (please specify)', ['5.C.2.b.ii'], 2],
@@ -2493,7 +2494,7 @@ CRF2023 = {
             ['Bonfires', ['5.C.2.b.ii.4'], 3],  # ISL
             ['Other', ['5.C.2.b.ii.5'], 3],  # EST
             ['Other waste', ['5.C.2.b.ii.5'], 3],  # CZE
-            ['Waste', ['5.C.2.b.ii.5'], 3],  # GBR
+            ['Waste', ['5.C.2.b.ii.5'], 3],  # GBR new in 2023
             ['Industrial Solid Waste', ['5.C.2.b.ii.6'], 3],  # JPN
         ],
         "entity_mapping": {
