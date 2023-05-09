@@ -1,0 +1,26 @@
+attrs:
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/2023
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Data submitted in 2023 to the UNFCCC in the common reporting format (CRF)
+    by Denmark. Submission date: 14042023'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRF2013_2023)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - class
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - area (ISO3)
+  - class
+  - category (CRF2013_2023)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: DNK_CRF2023_14042023.csv
