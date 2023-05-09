@@ -24,9 +24,9 @@ dataset_path = root_path / "datasets" / "UNFCCC"
 
 #sys.path.append(code_path.name)
 
-from .util import all_crf_countries
-from .UNFCCC_CRF_reader_prod import get_input_and_output_files_for_country
-from .UNFCCC_CRF_reader_prod import submission_has_been_read
+from UNFCCC_GHG_data.UNFCCC_CRF_reader.util import all_crf_countries
+from UNFCCC_GHG_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import get_input_and_output_files_for_country
+from UNFCCC_GHG_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import submission_has_been_read
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--submission_year', help='Submission round to read', type=int)

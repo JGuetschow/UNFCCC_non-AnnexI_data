@@ -4,8 +4,8 @@ from doit in the current setup where doit runs on system python and
 not in the venv.
 """
 
-from .UNFCCC_CRF_reader_prod import read_new_crf_for_year_datalad
-from util import NoCRFFilesError
+from UNFCCC_GHG_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import read_new_crf_for_year_datalad
+from UNFCCC_GHG_data.UNFCCC_CRF_reader.util import NoCRFFilesError
 import argparse
 
 parser = argparse.ArgumentParser()

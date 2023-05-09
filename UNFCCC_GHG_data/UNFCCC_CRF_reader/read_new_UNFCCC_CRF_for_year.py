@@ -3,7 +3,8 @@ This script is a wrapper around the read_crf_for_country
 function such that it can be called from datalad
 """
 
-from .UNFCCC_CRF_reader_prod import read_new_crf_for_year
+from UNFCCC_GHG_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import \
+    read_new_crf_for_year
 import argparse
 
 parser = argparse.ArgumentParser()
