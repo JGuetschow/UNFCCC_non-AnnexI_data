@@ -9,7 +9,7 @@ from datetime import date
 from util import code_path
 #from UNFCCC_CRF_reader import custom_country_mapping
 sys.path.append(code_path.name)
-from UNFCCC_DI_reader_core import read_UNFCCC_DI_for_party
+from UNFCCC_DI_reader_core import read_UNFCCC_DI_for_country
 from UNFCCC_DI_reader_core import determine_filename
 from util import custom_country_mapping
 from util import get_country_name
@@ -56,8 +56,8 @@ filename_base = determine_filename(country_code, date_str)
 
 # we have no input files as data is read from DI API
 
-read_UNFCCC_DI_for_party(
-    party_code=country_code,
+read_UNFCCC_DI_for_country(
+    country_code=country_code,
     category_groups=None, # read all categories
     read_subsectors=False, # not applicable as we read all categories
     date_str=date_str,
