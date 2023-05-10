@@ -7,17 +7,20 @@ import itertools
 import json
 import copy
 import xarray as xr
+import datalad.api
 from datetime import date
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Union
 from pathlib import Path
 from copy import deepcopy
 
-from UNFCCC_DI_reader_config import di_to_pm2if_template_nai
-from UNFCCC_DI_reader_config import di_to_pm2if_template_ai
-from UNFCCC_DI_reader_config import di_query_filters
-from UNFCCC_DI_reader_config import cat_conversion
-from util import NoDIDataError, extracted_data_path, get_country_name
-from util import nAI_countries, AI_countries
+from .UNFCCC_DI_reader_config import di_to_pm2if_template_nai
+from .UNFCCC_DI_reader_config import di_to_pm2if_template_ai
+from .UNFCCC_DI_reader_config import di_query_filters
+from .UNFCCC_DI_reader_config import cat_conversion
+from .util import NoDIDataError, extracted_data_path, \
+    get_country_name, get_country_code
+from .util import nAI_countries, AI_countries, custom_country_mapping
+from .util import code_path, root_path
 
 
 def read_UNFCCC_DI_for_country(
@@ -617,6 +620,7 @@ def convert_DI_IF_data_to_pm2(
 
     return data_pm2
 
+
 ## datalad and pydoit interface functions
 def read_DI_for_country_datalad(
         country: str,
@@ -629,27 +633,31 @@ def read_DI_for_country_datalad(
     __________
 
     country_codes: str
-        ISO 3-letter country code
+        country name or ISO 3-letter country code
 
     """
 
-    # get all the info for the country
-    country_info = get_input_and_output_files_for_country(
-        country, submission_year=submission_year, verbose=True)
+    # get date to determine output filename
+    date_str = str(date.today())
 
-    print(f"Attempting to read DI data for {country}.")
+    # get all the info for the country
+    country_info = get_output_files_for_country_DI(country, date_str,
+                                                   raw=True, verbose=True)
+
+    print(f"Attempting to read DI data for {country_info['name']}.")
     print("#"*80)
     print("")
     print(f"Using the UNFCCC_DI_reader")
     print("")
     print(f"Run the script using datalad run via the python api")
-    script = code_path / "UNFCCC_DI_reader" / "read_UNFCCC_DI_country.py"
+    script = code_path / "UNFCCC_DI_reader" / "read_UNFCCC_DI_for_country.py"
 
-    cmd = f"./venv/bin/python3 {script.as_posix()} --country={country} ""
+    cmd = f"./venv/bin/python3 {script.as_posix()} --country={country_info['code']} " \
+          f"--date={date_str}"
     datalad.api.run(
         cmd=cmd,
         dataset=root_path,
-        message=f"Read DI data for {country}.",
+        message=f"Read DI data for {country_info['name']}.",
         inputs=country_info["input"],
         outputs=country_info["output"],
         dry_run=None,
@@ -775,10 +783,11 @@ def convert_categories(
 
     return ds_converted
 
-def get_input_and_output_files_for_country(
+
+def get_output_files_for_country_DI(
         country: str,
-        submission_year: int,
-        submission_date: Optional[str]=None,
+        date_str: str,
+        raw: bool,
         verbose: Optional[bool]=True,
 ) -> Dict[str, Union[List, str]]:
     """
@@ -795,61 +804,28 @@ def get_input_and_output_files_for_country(
     country_name = get_country_name(country_code)
     country_info["code"] = country_code
     country_info["name"] = country_name
+    # now get the country name
+    country_name = get_country_name(country_code)
+    country_info["code"] = country_code
+    country_info["name"] = country_name
 
     # determine latest data
-    print(f"Determining input and output files for {country}")
-    if submission_date is None:
-        if verbose:
-            print(f"No submission date given, find latest date.")
-        submission_date = get_latest_date_for_country(country_code, submission_year)
-    else:
-        if verbose:
-            print(f"Using given submissions date {submission_date}")
+    print(f"Determining output files for {country_name}")
 
-    if submission_date is None:
-        # there is no data. Raise an exception
-        raise NoCRFFilesError(f"No submissions found for {country_code}, "
-                              f"submission_year={submission_year}, "
-                              f"date={date}")
-    else:
-        if verbose:
-            print(f"Latest submission date for CRF{submission_year} is {submission_date}")
-    country_info["date"] = submission_date
+    # get output files
+    output_file = determine_filename(country_code, date_str, raw=raw)
 
-    # get possible input files
-    input_files = get_crf_files(country_codes=country_code,
-                                submission_year=submission_year,
-                                date=submission_date)
-    if not input_files:
-        raise NoCRFFilesError(f"No possible input files found for {country}, CRF{submission_year}, "
-                              f"v{submission_date}. Are they already submitted and included in the "
-                              f"repository?")
-    elif verbose:
-        print(f"Found the following input_files:")
-        for file in input_files:
-            print(file.name)
-        print("")
-
-
-    # convert file's path to str
-    input_files = [file.as_posix() for file in input_files]
-    country_info["input"] = input_files
-
-    # get output file
-    output_folder = extracted_data_path / country_name.replace(" ", "_")
-    output_files = [output_folder / f"{country_code}_CRF{submission_year}"
-                                    f"_{submission_date}.{suffix}" for suffix
+    output_files = [f"{str(output_file)}.{suffix}" for suffix
                     in ['yaml', 'csv', 'nc']]
+
     if verbose:
         print(f"The following files are considered as output_files:")
         for file in output_files:
             print(file)
         print("")
 
-    # check if output data present
-
-    # convert file paths to str
-    output_files = [file.as_posix() for file in output_files]
+    # add to country infor
+    country_info["input"] = []
     country_info["output"] = output_files
 
     return country_info

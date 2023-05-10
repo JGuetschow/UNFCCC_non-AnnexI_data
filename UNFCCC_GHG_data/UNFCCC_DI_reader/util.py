@@ -20,7 +20,7 @@ class NoDIDataError(Exception):
 
 
 # the following is copied from other sub-packages
-# TODO: move these fucntions to common location to allow easy importing into all modules
+# TODO: move these functions to common location to allow easy importing into all modules
 custom_country_mapping = {
     "EUA": "European Union",
     "EUC": "European Union",
