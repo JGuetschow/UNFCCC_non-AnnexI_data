@@ -15,12 +15,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - source
-  - provenance
   - scenario (PRIMAP)
-  - area (ISO3)
   - category (CRF2013_2022)
+  - area (ISO3)
+  - provenance
   - class
+  - source
   - entity
   - unit
 data_file: RUS_CRF2022_13042022.csv

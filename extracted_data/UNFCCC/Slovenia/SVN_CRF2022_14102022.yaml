@@ -15,12 +15,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - class
-  - source
+  - scenario (PRIMAP)
   - category (CRF2013_2022)
   - area (ISO3)
-  - scenario (PRIMAP)
   - provenance
+  - class
+  - source
   - entity
   - unit
 data_file: SVN_CRF2022_14102022.csv

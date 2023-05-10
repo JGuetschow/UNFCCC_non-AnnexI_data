@@ -15,12 +15,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - source
-  - provenance
   - scenario (PRIMAP)
-  - area (ISO3)
   - category (CRF2013_2022)
+  - area (ISO3)
+  - provenance
   - class
+  - source
   - entity
   - unit
 data_file: KAZ_CRF2022_14042022.csv
