@@ -1022,7 +1022,7 @@ def get_submission_parties(
                          f"the function's purpose is to return available parties.")
 
     if folder.exists():
-        files = filter_filenames(folder.glob("*.xlsx"), **file_filter)
+        files = filter_filenames(list(folder.glob("*.xlsx")), **file_filter)
     else:
         raise ValueError(f"Folder {folder} does not exist")
 
@@ -1034,6 +1034,7 @@ def get_submission_parties(
 
 def find_latest_date(
         dates: List[str],
+        date_format: str='%d%m%Y',
 )-> str:
     """
     Returns the latest date in a list of dates as str in the format
@@ -1050,7 +1051,8 @@ def find_latest_date(
     """
 
     if len(dates) > 0:
-        dates_datetime = [[date, datetime.strptime(date, "%d%m%Y")] for date in dates]
+        dates_datetime = [[date, datetime.strptime(date, date_format)] for date in
+                          dates]
         dates_datetime = sorted(dates_datetime, key=itemgetter(1))
     else:
         raise ValueError(f"Passed list of dates is empty")

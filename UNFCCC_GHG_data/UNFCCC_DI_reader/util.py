@@ -6,7 +6,7 @@ import pycountry
 root_path = Path(__file__).parents[2].absolute()
 root_path = root_path.resolve()
 log_path = root_path / "log"
-code_path = root_path / "code"
+code_path = root_path / "UNFCCC_GHG_data"
 downloaded_data_path = root_path / "downloaded_data" / "UNFCCC"
 extracted_data_path = root_path / "extracted_data" / "UNFCCC"
 
@@ -14,6 +14,9 @@ reader = unfccc_di_api.UNFCCCApiReader()
 
 nAI_countries = list(reader.non_annex_one_reader.parties["code"])
 AI_countries = list(reader.annex_one_reader.parties["code"])
+
+DI_date_format = '%Y-%m-%d'
+regex_date = r"([0-9]{4}-[0-9]{2}-[0-9]{2})"
 
 class NoDIDataError(Exception):
     pass

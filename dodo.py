@@ -225,6 +225,7 @@ def task_read_new_unfccc_crf_for_year():
 # datalad run is called from within the read_UNFCCC_DI_for_country.py script
 read_config_di = {
     "country": get_var('country', None),
+    "date": get_var('date', None),
     #"countries": get_var('countries', None),
 }
 
@@ -232,7 +233,7 @@ def task_read_unfccc_di_for_country():
     """ Read DI data for a country """
     actions = [
         f"./venv/bin/python "
-        f"UNFCCC_GHG_data/UNFCCC_DI_reader/read_UNFCCC_DI_country_datalad.py "
+        f"UNFCCC_GHG_data/UNFCCC_DI_reader/read_UNFCCC_DI_for_country_datalad.py "
         f"--country={read_config_di['country']}",
         f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
         f"--folder=extracted_data/UNFCCC"
@@ -242,6 +243,22 @@ def task_read_unfccc_di_for_country():
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
+
+def task_process_unfccc_di_for_country():
+    """ Process DI data for a country """
+    actions = [
+        f"./venv/bin/python "
+        f"UNFCCC_GHG_data/UNFCCC_DI_reader/process_UNFCCC_DI_for_country_datalad.py "
+        f"--country={read_config_di['country']} --date={read_config_di['date']}",
+        f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+        f"--folder=extracted_data/UNFCCC"
+        ]
+    return {
+        'actions': actions,
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
 
 
 # general tasks
