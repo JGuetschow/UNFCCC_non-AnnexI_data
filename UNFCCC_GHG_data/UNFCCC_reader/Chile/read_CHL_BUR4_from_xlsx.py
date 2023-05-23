@@ -5,9 +5,9 @@ import os
 import sys
 import pandas as pd
 import primap2 as pm2
-from pathlib import Path
 
 from config_CHL_BUR4 import cat_mapping, filter_remove_IPCC2006, aggregate_cats
+from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 from primap2.pm2io._data_reading import matches_time_format
 from primap2.pm2io._data_reading import filter_data
 
@@ -16,11 +16,6 @@ from primap2.pm2io._data_reading import filter_data
 # ###
 
 # folders and files
-root_path = Path(__file__).parents[3].absolute()
-root_path = root_path.resolve()
-downloaded_data_path = root_path / "downloaded_data"
-extracted_data_path = root_path / "extracted_data"
-
 input_folder = downloaded_data_path / 'UNFCCC' / 'Chile' / 'BUR4'
 output_folder = extracted_data_path / 'UNFCCC' / 'Chile'
 if not output_folder.exists():

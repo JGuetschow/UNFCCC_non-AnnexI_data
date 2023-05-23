@@ -3,11 +3,10 @@
 
 import pandas as pd
 import primap2 as pm2
-from pathlib import Path
 import camelot
 import copy
-#import re
 
+from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 from primap2.pm2io._data_reading import matches_time_format
 
 from config_TWN_NIR2022 import table_defs, page_defs
@@ -17,12 +16,6 @@ from config_TWN_NIR2022 import gwp_to_use
 # ###
 # configuration
 # ###
-
-root_path = Path(__file__).parents[3].absolute()
-root_path = root_path.resolve()
-downloaded_data_path = root_path / "downloaded_data"
-extracted_data_path = root_path / "extracted_data"
-
 input_folder = downloaded_data_path / 'non-UNFCCC' / 'Taiwan'
 # TODO: move file to subfolder
 output_folder = extracted_data_path / 'non-UNFCCC' / 'Taiwan'

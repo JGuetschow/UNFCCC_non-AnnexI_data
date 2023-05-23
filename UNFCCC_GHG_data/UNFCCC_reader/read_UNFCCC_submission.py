@@ -1,15 +1,12 @@
 # this script takes submission and country as input (from doit) and
 # runs the appropriate script to extract the submission data
 
-import sys
 import datalad.api
-from pathlib import Path
 import argparse
 from get_submissions_info import get_code_file
 from get_submissions_info import get_possible_inputs
 from get_submissions_info import get_possible_outputs
-
-
+from UNFCCC_GHG_data.helper import root_path
 
 # Find the right function and possible input and output files and
 # read the data using datalad run.
@@ -22,9 +19,6 @@ args = parser.parse_args()
 country = args.country
 submission = args.submission
 
-codepath = Path(__file__).parent
-rootpath = codepath / ".." / ".."
-rootpath = rootpath.resolve()
 
 print(f"Attempting to extract data for {submission} from {country}.")
 print("#"*80)
@@ -49,7 +43,7 @@ if script_name is not None:
         print("")
     # make input files absolute to avoid datalad confusions when
     # root directory is via symlink
-    input_files = [rootpath / file for file in input_files]
+    input_files = [root_path / file for file in input_files]
     # convert file's path to str
     input_files = [file.as_posix() for file in input_files]
 
@@ -69,7 +63,7 @@ if script_name is not None:
     print(f"Run the script using datalad run via the python api")
     datalad.api.run(
         cmd=f"./venv/bin/python3 {script_name.as_posix()}",
-        dataset=rootpath,
+        dataset=root_path,
         message=f"Read data for {country}, {submission}.",
         inputs=input_files,
         outputs=output_files,

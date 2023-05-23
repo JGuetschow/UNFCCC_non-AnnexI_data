@@ -5,9 +5,9 @@ import time
 import os
 from datetime import date
 from random import randrange
-
+from UNFCCC_GHG_data.helper import downloaded_data_path_UNFCCC
 from pathlib import Path
-root = Path(__file__).parents[2]
+
 """
 based on download_bur from national-inventory-submissions
 # (https://github.com/openclimatedata/national-inventory-submisions)
@@ -35,12 +35,10 @@ url = "https://www4.unfccc.int/sites/NDCStaging/Pages/All.aspx"
 error_file_sizes = [212, 210]
 
 # Ensure download path and subfolders exist
-download_path = root / "downloaded_data" / "UNFCCC"
-if not download_path.exists():
-    download_path.mkdir(parents=True)
+if not downloaded_data_path_UNFCCC.exists():
+    downloaded_data_path_UNFCCC.mkdir(parents=True)
 
 new_downloaded = []
-
 
 for idx, submission in submissions.iterrows():
     print("=" * 60)
@@ -54,12 +52,12 @@ for idx, submission in submissions.iterrows():
 
     ndc_folder = "NDC_" + ndc + "_" + submission_date
 
-    country_folder = download_path / country
+    country_folder = downloaded_data_path_UNFCCC / country
     if not country_folder.exists():
         country_folder.mkdir()
     local_filename = country_folder / ndc_folder / url.split('/')[-1]
     local_filename_underscore = \
-        download_path / country / ndc_folder / \
+        downloaded_data_path_UNFCCC / country / ndc_folder / \
         url.split('/')[-1].replace("%20", "_").replace(" ", "_")
     if not local_filename.parent.exists():
         local_filename.parent.mkdir()
@@ -102,4 +100,4 @@ for idx, submission in submissions.iterrows():
 
 
 df = pd.DataFrame(new_downloaded)
-df.to_csv(download_path / "00_new_downloads_ndc-{}.csv".format(date.today()), index=False)
+df.to_csv(downloaded_data_path_UNFCCC / "00_new_downloads_ndc-{}.csv".format(date.today()), index=False)

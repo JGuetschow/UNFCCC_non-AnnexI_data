@@ -9,20 +9,10 @@ submission are available in the downloaded data folder.
 # TODO: integrate into doit
 
 import argparse
-import sys
 import primap2 as pm2
 from pathlib import Path
 from datetime import date
-
-root_path = Path(__file__).parents[2].absolute()
-root_path = root_path.resolve()
-#log_path = root_path / "log"
-code_path = root_path / "UNFCCC_GHG_data"
-downloaded_data_path = root_path / "downloaded_data" / "UNFCCC"
-extracted_data_path = root_path / "extracted_data" / "UNFCCC"
-dataset_path = root_path / "datasets" / "UNFCCC"
-
-#sys.path.append(code_path.name)
+from UNFCCC_GHG_data.helper import dataset_path_UNFCCC
 
 from UNFCCC_GHG_data.UNFCCC_CRF_reader.util import all_crf_countries
 from UNFCCC_GHG_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import get_input_and_output_files_for_country
@@ -81,7 +71,7 @@ for country in all_crf_countries:
 today = date.today()
 
 compression = dict(zlib=True, complevel=9)
-output_folder = dataset_path / f"CRF{submission_year}"
+output_folder = dataset_path_UNFCCC / f"CRF{submission_year}"
 output_filename = f"CRF{submission_year}_raw_{today.strftime('%Y-%m-%d')}"
 
 if not output_folder.exists():

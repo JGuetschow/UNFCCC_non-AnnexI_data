@@ -5,24 +5,17 @@ import os
 import sys
 import pandas as pd
 import primap2 as pm2
-from pathlib import Path
 
 from config_KOR_BUR4 import cat_name_translations, cat_codes
 from config_KOR_BUR4 import remove_cats, aggregate_before_mapping, cat_mapping, \
     aggregate_after_mapping, coords_terminologies_2006, filter_remove_2006, \
     filter_remove_after_agg
-
+from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 # ###
 # configuration
 # ###
-
-root_path = Path(__file__).parents[3].absolute()
-root_path = root_path.resolve()
-downloaded_data_path = root_path / "downloaded_data"
-extracted_data_path = root_path / "extracted_data"
-
 input_folder = downloaded_data_path / 'non-UNFCCC' / 'Republic_of_Korea' / \
                '2021-Inventory'
 output_folder = extracted_data_path / 'non-UNFCCC' / 'Republic_of_Korea'

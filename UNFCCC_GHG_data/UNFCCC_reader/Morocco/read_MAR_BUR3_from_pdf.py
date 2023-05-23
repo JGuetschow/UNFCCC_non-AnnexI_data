@@ -5,25 +5,19 @@ import camelot
 import primap2 as pm2
 import pandas as pd
 import copy
-from pathlib import Path
+
 from config_MAR_BUR3 import zero_cats, cat_mapping, aggregate_cats, remove_cats, \
     table_defs, header_defs
 from primap2.pm2io._data_reading import matches_time_format, filter_data
+from UNFCCC_GHG_data.helper import extracted_data_path, downloaded_data_path
 
 # ###
 # configuration
 # ###
-root_path = Path(__file__).parents[3].absolute()
-root_path = root_path.resolve()
-downloaded_data_path = root_path / "downloaded_data"
-extracted_data_path = root_path / "extracted_data"
-
 input_folder = downloaded_data_path / 'UNFCCC' / 'Morocco' / 'BUR3'
 output_folder = extracted_data_path / 'UNFCCC' / 'Morocco'
 output_filename = 'MAR_BUR3_2022_'
-
 inventory_file = 'Morocco_BUR3_Fr.pdf'
-
 gwp_to_use = 'AR4GWP100'
 
 # years to read

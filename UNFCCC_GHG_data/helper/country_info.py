@@ -2,8 +2,8 @@
 # runs displays available submissions and datasets
 
 import argparse
-from get_submissions_info import get_country_submissions
-from get_submissions_info import get_country_datasets
+from UNFCCC_GHG_data.helper.functions import get_country_submissions
+from UNFCCC_GHG_data.helper.functions import get_country_datasets
 
 # Find the right function and possible input and output files and
 # read the data using datalad run.

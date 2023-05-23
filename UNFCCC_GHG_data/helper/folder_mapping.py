@@ -3,7 +3,7 @@
 # oir that folder
 
 import argparse
-from get_submissions_info import create_folder_mapping
+from .functions import create_folder_mapping
 
 # Find the right function and possible input and output files and
 # read the data using datalad run.
