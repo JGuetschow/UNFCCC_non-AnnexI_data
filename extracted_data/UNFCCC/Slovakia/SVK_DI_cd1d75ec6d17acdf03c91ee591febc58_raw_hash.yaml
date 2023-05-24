@@ -1,0 +1,29 @@
+attrs:
+  references: https://di.unfccc.int
+  title: Data submitted to the UNFCCC by country Slovakia as available in the DI interface
+    on 2023-05-24.
+  comment: Data read from the UNFCCC DI flexible query interface using the API. Data
+    read on 2023-05-24.
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRFDI)
+  area: area (ISO3)
+  scen: scenario (Access_Date)
+  sec_cats:
+  - class
+  - measure
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - category (CRFDI)
+  - source
+  - area (ISO3)
+  - class
+  - scenario (Access_Date)
+  - measure
+  - entity
+  - unit
+data_file: SVK_DI_cd1d75ec6d17acdf03c91ee591febc58_raw_hash.csv
