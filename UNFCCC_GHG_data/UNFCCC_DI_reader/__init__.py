@@ -6,8 +6,7 @@ from .UNFCCC_DI_reader_core import \
     process_UNFCCC_DI_for_country, process_and_save_UNFCCC_DI_for_country, \
     process_DI_for_country_datalad, \
     convert_DI_data_to_pm2_if, convert_DI_IF_data_to_pm2, determine_filename, \
-    read_UNFCCC_DI_for_all_countries
-
+    read_UNFCCC_DI_for_country_group, read_DI_for_country_group_datalad
 
 
 __all__ = [
@@ -19,5 +18,6 @@ __all__ = [
     "convert_DI_data_to_pm2_if",
     "convert_DI_IF_data_to_pm2",
     "determine_filename",
-    "read_UNFCCC_DI_for_all_countries",
+    "read_UNFCCC_DI_for_country_group",
+    "read_DI_for_country_group_datalad",
 ]

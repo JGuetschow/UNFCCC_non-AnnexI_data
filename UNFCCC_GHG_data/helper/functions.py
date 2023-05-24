@@ -1,10 +1,75 @@
 import pycountry
 import json
+import xarray as xr
+from copy import deepcopy
 from typing import Dict, List
 from pathlib import Path
 from .definitions import custom_country_mapping, custom_folders
 from .definitions import root_path, downloaded_data_path, extracted_data_path
 from .definitions import legacy_data_path, code_path
+
+
+def convert_categories(
+        ds_input: xr.Dataset,
+        conversion: Dict[str, Dict[str, str]],
+        #terminology_from: str,
+        terminology_to: str,
+        debug: bool=False,
+        tolerance: float=0.01,
+)->xr.Dataset:
+    """
+    convert data from one category terminology to another
+    """
+    ds_converted = ds_input.copy(deep=True)
+    ds_converted.attrs = deepcopy(ds_input.attrs)
+
+    # change category terminology
+    cat_dim = ds_converted.attrs["cat"]
+    ds_converted.attrs["cat"] = f"category ({terminology_to})"
+    ds_converted = ds_converted.rename({cat_dim: ds_converted.attrs["cat"]})
+
+    # find categories present in dataset
+    cats_present = list(ds_converted.coords[f'category ({terminology_to})'])
+
+    # restrict categories and map category names
+    if 'mapping' in conversion.keys():
+        mapping_cats_present = [cat for cat in list(conversion['mapping'].keys()) if
+                                cat in cats_present]
+        ds_converted = ds_converted.pr.loc[
+            {'category': mapping_cats_present}]
+
+        from_cats = ds_converted.coords[f'category ({terminology_to})'].values
+        to_cats = pd.Series(from_cats).replace(conversion['mapping'])
+        ds_converted = ds_converted.assign_coords({f'category ({terminology_to})':
+                                                   (f'category ({terminology_to})',
+                                                    to_cats)})
+
+    # redo the list of present cats after mapping, as we have new categories in the
+    # target terminology now
+    cats_present_mapped = list(ds_converted.coords[f'category ({terminology_to})'])
+    # aggregate categories
+    if 'aggregate' in conversion:
+        aggregate_cats = conversion['aggregate']
+        for cat_to_agg in aggregate_cats:
+            if debug:
+                print(f"Category: {cat_to_agg}")
+            source_cats = [cat for cat in aggregate_cats[cat_to_agg]['sources'] if
+                           cat in cats_present_mapped]
+            data_agg = ds_converted.pr.loc[{'category': source_cats}].pr.sum(
+                dim='category', skipna=True, min_count=1)
+            nan_vars = [var for var in data_agg.data_vars if
+                        data_agg[var].isnull().all().data == True]
+            data_agg = data_agg.drop(nan_vars)
+            if len(data_agg.data_vars) > 0:
+                data_agg = data_agg.expand_dims([f'category ({terminology_to})'])
+                data_agg = data_agg.assign_coords(
+                    coords={f'category ({terminology_to})':
+                                (f'category ({terminology_to})', [cat_to_agg])})
+                ds_converted = ds_converted.pr.merge(data_agg, tolerance=tolerance)
+            else:
+                print(f"no data to aggregate category {cat_to_agg}")
+
+    return ds_converted
 
 
 def get_country_name(
