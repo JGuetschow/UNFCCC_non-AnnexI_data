@@ -844,11 +844,14 @@ def read_UNFCCC_DI_for_country_group(
 
     if annexI:
         countries = AI_countries
+        data_all_if = None
+        country_group = "AnnexI"
     else:
         countries = nAI_countries
+        data_all = None
+        country_group = "non-AnnexI"
 
     # read the data
-    data_all = None
     for country in countries[0:5]:
         print(f"reading DI data for country {country}")
 
@@ -863,21 +866,33 @@ def read_UNFCCC_DI_for_country_group(
                 default_gwp=None,  # automatically uses right default GWP for AI and NAI
                 debug=False)
 
-            if data_all is None:
-                data_all = data_country
+            if annexI:
+            # annexI data has additional dimensions and unfortunately the xarray
+            # merge function needs some extra memory which is not needed when
+            # converting from IF to pm2
+                if data_all_if is None:
+                    data_all_if = data_country.pr.to_interchange_format()
+                    attrs = data_all_if.attrs
+                else:
+                    data_all_if = pd.concat([data_all_if,
+                                          data_country.pr.to_interchange_format()])
             else:
-                data_all = data_all.pr.merge(data_country)
+                if data_all in None:
+                    data_all = data_country
+                else:
+                    data_all = data_all.pr.merge(data_country)
+
         except unfccc_di_api.NoDataError as err:
             print(f"No data for {country}.")
             print(err)
 
-    # TODO: add more info to metadata? (like list of covered countries)
     if annexI:
-        data_all.attrs["comment"] = data_all.attrs["comment"] + " Data for AnnexI " \
-                                                                "countries."
-    else:
-        data_all.attrs["comment"] = data_all.attrs["comment"] + " Data for non-AnnexI " \
-                                                                "countries."
+        data_all = pm2.pm2io.from_interchange_format(data_all_if, attrs=attrs)
+
+    countries_present = list(data_all.coords[data_all.attrs['area']].values)
+    data_all.attrs["title"] = f"Data submitted by the following {country_group} " \
+                              f"countries and available in the DI interface on " \
+                              f"{date_str}: {', '.join(countries_present)}"
 
     # save the data
     save_DI_dataset(data_all, raw=True, annexI=annexI)
