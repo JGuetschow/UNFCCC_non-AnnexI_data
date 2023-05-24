@@ -4,6 +4,26 @@ di_query_filters = [
 # category, party are extra
 # measure is preprocessed to find ids
 
+# the activity data and emissions factors have a structure that is incompatible
+# with PRIMAP2.
+# To read it into a primap2 dataframe the information in classification / measure
+# has to be put into "entity" which is currently always "No gas". I's possible,
+# but takes some time, so I have omitted it here
+filter_activity_factors = {
+    "entity": {"gas": ["No gas"]},
+    "unit": {"unit": [
+        'no unit', 'kg/TJ', 't/TJ', '%', 'kg/t',
+        'kg/kt', 't/t', 'kg/head/year', 'kg N2O/kg N handled', 'kg N2O/kg N',
+        'kg N2O-N/kg N handled', 'g/m^2', 'kg N2O-N/kg N', 'kg N2O-N/ha', 'kg/t dm',
+        't CO2-C/t', 't/unit', 't C/ha', 'kg CH4/ha', 'kg CO2/ha',
+        'g/kg', 'kg/kg DC',
+    ]
+    },
+}
+
+# regular expression to match category code in category label
+cat_code_regexp = r'(?P<code>^(([0-9][A-Za-z0-9\.]{0,10}[0-9A-Za-z]))|([0-9]))[' \
+                  r'\s\.].*'
 
 # PRIMAP2 interchange format config
 di_to_pm2if_template_nai = {

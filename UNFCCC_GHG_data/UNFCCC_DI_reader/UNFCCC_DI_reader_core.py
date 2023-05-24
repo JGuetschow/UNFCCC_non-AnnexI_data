@@ -24,6 +24,7 @@ from .UNFCCC_DI_reader_config import di_query_filters
 from .UNFCCC_DI_reader_config import di_processing_info
 from .UNFCCC_DI_reader_config import cat_conversion
 from .UNFCCC_DI_reader_config import gas_baskets
+from .UNFCCC_DI_reader_config import cat_code_regexp
 from .util import NoDIDataError, nAI_countries, AI_countries
 from .util import DI_date_format, regex_date
 
@@ -413,14 +414,14 @@ def read_UNFCCC_DI_for_country_df(
     }
 
     # find country group
-    if country_code in list(reader.non_annex_one_reader.parties["code"]):
+    if country_code in nAI_countries:
         ai_country = False
-    elif country_code in list(reader.annex_one_reader.parties["code"]):
+    elif country_code in AI_countries:
         ai_country = True
         #di_data = reader.annex_one_reader.query(**query)
     else:
         raise ValueError(f"Country code {country_code} found neither in AnnexI nor "
-                         f"non-AnnexI countrz lists.")
+                         f"non-AnnexI country lists.")
 
     if category_groups is None:
         # no category defs given, so use default which is all categories,
@@ -558,27 +559,6 @@ def convert_DI_data_to_pm2_if(
 
     print("Convert data to PRIMAP2 interchange format")
 
-    # regular expression to match category code in category label
-    cat_code_regexp = r'(?P<code>^(([0-9][A-Za-z0-9\.]{0,10}[0-9A-Za-z]))|([0-9]))[' \
-                      r'\s\.].*'
-
-    # the activity data and emissions factors have a structure that is incompatible
-    # with PRIMAP2.
-    # To read it into a primap2 dataframe the information in classification / measure
-    # has to be put into "entity" which is currently always "No gas". I's possible,
-    # but takes some time, so I have omitted it here
-    filter_activity_factors = {
-        "entity": {"gas": ["No gas"]},
-        "unit": {"unit": [
-            'no unit', 'kg/TJ', 't/TJ', '%', 'kg/t',
-            'kg/kt', 't/t', 'kg/head/year', 'kg N2O/kg N handled', 'kg N2O/kg N',
-            'kg N2O-N/kg N handled', 'g/m^2', 'kg N2O-N/kg N', 'kg N2O-N/ha', 'kg/t dm',
-            't CO2-C/t', 't/unit', 't C/ha', 'kg CH4/ha', 'kg CO2/ha',
-            'g/kg', 'kg/kg DC',
-        ]
-        },
-    }
-
     # create a copy of the data to avoid data altering the original data
     # this will be done inside the *convert_to_long_dataframe* function
     # in the future. Thus it can be removed here once the category column
@@ -587,12 +567,10 @@ def convert_DI_data_to_pm2_if(
 
     # check which country group we have
     reader = unfccc_di_api.UNFCCCApiReader()
-    ai_parties = list(reader.annex_one_reader.parties["code"])
-    nai_parties = list(reader.non_annex_one_reader.parties["code"])
     parties_present_ai = [party for party in data_temp["party"].unique() if party
-                          in ai_parties]
+                          in AI_countries]
     parties_present_nai = [party for party in data_temp["party"].unique() if party
-                          in nai_parties]
+                          in nAI_countries]
     if len(parties_present_ai) > 0:
         if len(parties_present_nai) > 0:
             raise ValueError("AnnexI and non-AnnexI parties present in one dataset. "
@@ -857,9 +835,68 @@ def read_UNFCCC_DI_for_country_group(
 ) -> xr.Dataset:
     '''
     This function reads DI data for all countries in a group (annexI or non-AnnexI)
-    TODO: currently only non-annexI is implemented
     The function reads all data in one go using datalad run. as the output data file
     names are unknown beforehand datalad run uses explicit=false
+    '''
+
+    today = date.today()
+    date_str = today.strftime(DI_date_format)
+
+    if annexI:
+        countries = AI_countries
+    else:
+        countries = nAI_countries
+
+    # read the data
+    data_all = None
+    for country in countries[0:5]:
+        print(f"reading DI data for country {country}")
+
+        try:
+            data_country = read_UNFCCC_DI_for_country(
+                country_code=country,
+                category_groups=None,  # read all categories
+                read_subsectors=False,  # not applicable as we read all categories
+                date_str=date_str,
+                pm2if_specifications=None,
+                # automatically use the right specs for AI and NAI
+                default_gwp=None,  # automatically uses right default GWP for AI and NAI
+                debug=False)
+
+            if data_all is None:
+                data_all = data_country
+            else:
+                data_all = data_all.pr.merge(data_country)
+        except unfccc_di_api.NoDataError as err:
+            print(f"No data for {country}.")
+            print(err)
+
+    # TODO: add more info to metadata? (like list of covered countries)
+    if annexI:
+        data_all.attrs["comment"] = data_all.attrs["comment"] + " Data for AnnexI " \
+                                                                "countries."
+    else:
+        data_all.attrs["comment"] = data_all.attrs["comment"] + " Data for non-AnnexI " \
+                                                                "countries."
+
+    # save the data
+    save_DI_dataset(data_all, raw=True, annexI=annexI)
+
+    return data_all
+
+
+def process_UNFCCC_DI_for_country_group(
+        annexI: bool=False,
+) -> xr.Dataset:
+    '''
+    This function processes DI data for all countries in a group (annexI or non-AnnexI)
+    TODO: currently only non-annexI is implemented
+    The function processes all data in one go using datalad run. as the output data file
+    names are unknown beforehand datalad run uses explicit=false
+
+    TODO: use the latest
+
+
     '''
 
     today = date.today()
