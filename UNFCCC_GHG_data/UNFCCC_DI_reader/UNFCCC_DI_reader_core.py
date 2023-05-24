@@ -852,7 +852,7 @@ def read_UNFCCC_DI_for_country_group(
         country_group = "non-AnnexI"
 
     # read the data
-    for country in countries[0:5]:
+    for country in countries:
         print(f"reading DI data for country {country}")
 
         try:
