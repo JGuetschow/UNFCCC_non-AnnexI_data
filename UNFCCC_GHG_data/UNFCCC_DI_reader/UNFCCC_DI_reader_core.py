@@ -1039,7 +1039,7 @@ def read_DI_for_country_group_datalad(
     print(f"Using the UNFCCC_DI_reader")
     print("")
     print(f"Run the script using datalad run via the python api")
-    script = code_path / "UNFCCC_DI_reader" / "read_UNFCCC_DI_for_all_countries.py"
+    script = code_path / "UNFCCC_DI_reader" / "read_UNFCCC_DI_for_country_group.py"
     script = script.relative_to(root_path)
 
     cmd = f"./venv/bin/python3 {script.as_posix()} "
