@@ -3,7 +3,7 @@
 # oir that folder
 
 import argparse
-from .functions import create_folder_mapping
+from UNFCCC_GHG_data.helper import create_folder_mapping
 
 # Find the right function and possible input and output files and
 # read the data using datalad run.
