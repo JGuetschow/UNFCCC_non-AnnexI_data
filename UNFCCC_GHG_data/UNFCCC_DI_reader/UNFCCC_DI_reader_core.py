@@ -887,7 +887,8 @@ def read_UNFCCC_DI_for_country_group(
             print(err)
 
     if annexI:
-        data_all = pm2.pm2io.from_interchange_format(data_all_if, attrs=attrs)
+        data_all = pm2.pm2io.from_interchange_format(data_all_if, attrs=attrs,
+                                                     max_array_size=500000000000)
 
     countries_present = list(data_all.coords[data_all.attrs['area']].values)
     data_all.attrs["title"] = f"Data submitted by the following {country_group} " \
