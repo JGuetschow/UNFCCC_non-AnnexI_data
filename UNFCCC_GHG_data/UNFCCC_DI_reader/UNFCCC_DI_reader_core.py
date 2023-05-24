@@ -877,7 +877,7 @@ def read_UNFCCC_DI_for_country_group(
                     data_all_if = pd.concat([data_all_if,
                                           data_country.pr.to_interchange_format()])
             else:
-                if data_all in None:
+                if data_all is None:
                     data_all = data_country
                 else:
                     data_all = data_all.pr.merge(data_country)
