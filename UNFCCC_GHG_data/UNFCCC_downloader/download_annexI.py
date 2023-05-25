@@ -134,7 +134,7 @@ for idx, submission in items.iterrows():
             os.remove(local_filename)
     
     # now we have removed error pages, so a present file should not be overwritten
-    if not local_filename.exists():
+    if (not local_filename.exists()) and (not local_filename.is_symlink()):
         i = 0  # reset counter
         while not local_filename.exists() and i < 10:
             # for i = 0 and i = 5 try to get a new session ID

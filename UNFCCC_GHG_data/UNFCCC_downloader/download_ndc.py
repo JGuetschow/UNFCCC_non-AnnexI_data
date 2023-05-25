@@ -71,7 +71,8 @@ for idx, submission in submissions.iterrows():
             os.remove(local_filename_underscore)
     
     # now we have to remove error pages, so a present file should not be overwritten
-    if not local_filename_underscore.exists():
+    if (not local_filename_underscore.exists()) \
+            and (not local_filename_underscore.is_symlink()):
         i = 0  # reset counter
         while not local_filename_underscore.exists() and i < 10:
 
