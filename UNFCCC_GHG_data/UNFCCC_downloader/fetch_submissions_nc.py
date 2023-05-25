@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from random import randrange
-from .unfccc_submission_info import get_unfccc_submission_info
+from UNFCCC_GHG_data.UNFCCC_downloader import \
+    get_unfccc_submission_info
 from UNFCCC_GHG_data.helper import downloaded_data_path_UNFCCC
 
 """
