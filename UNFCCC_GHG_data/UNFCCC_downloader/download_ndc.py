@@ -35,14 +35,6 @@ url = "https://www4.unfccc.int/sites/NDCStaging/Pages/All.aspx"
 # if an error page is found instead of a pdf adjust sizes here
 error_file_sizes = [212, 210]
 ndc_regex = r".*\s([A-Za-z]*)\sNDC"
-ndc_to_number = {
-    "First": 1,
-    "Second": 2,
-    "Third": 3,
-    "Fourth": 4,
-    "Fifth": 5,
-}
-
 
 # Ensure download path and subfolders exist
 if not downloaded_data_path_UNFCCC.exists():
@@ -55,7 +47,7 @@ for idx, submission in submissions.iterrows():
     #ndc = submission.Number
     title = submission.Title
     temp = re.findall(ndc_regex, title)
-    ndc = ndc_to_number[temp[0]]
+    ndc = temp[0]
     url = submission.EncodedAbsUrl
     submission_date = submission.SubmissionDate
     country = submission.Party
