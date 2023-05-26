@@ -3,6 +3,7 @@ import requests
 import shutil
 import time
 import os
+import re
 from datetime import date
 from random import randrange
 from UNFCCC_GHG_data.helper import downloaded_data_path_UNFCCC
@@ -33,6 +34,15 @@ url = "https://www4.unfccc.int/sites/NDCStaging/Pages/All.aspx"
 # TODO error page sizes are from BUR and NC and might differ for NDCs
 # if an error page is found instead of a pdf adjust sizes here
 error_file_sizes = [212, 210]
+ndc_regex = r".*\s([A-Za-z]*)\sNDC"
+ndc_to_number = {
+    "First": 1,
+    "Second": 2,
+    "Third": 3,
+    "Fourth": 4,
+    "Fifth": 5,
+}
+
 
 # Ensure download path and subfolders exist
 if not downloaded_data_path_UNFCCC.exists():
@@ -42,8 +52,10 @@ new_downloaded = []
 
 for idx, submission in submissions.iterrows():
     print("=" * 60)
-    ndc = submission.Number
+    #ndc = submission.Number
     title = submission.Title
+    temp = re.findall(ndc_regex, title)
+    ndc = ndc_to_number[temp[0]]
     url = submission.EncodedAbsUrl
     submission_date = submission.SubmissionDate
     country = submission.Party
