@@ -6,7 +6,7 @@ import sys
 import camelot
 import primap2 as pm2
 from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
-from pathlib import Path
+from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 
 # ###
 # configuration
@@ -16,11 +16,6 @@ from pathlib import Path
 #  PRIMAP2 version
 
 # folders and files
-root_path = Path(__file__).parents[3].absolute()
-root_path = root_path.resolve()
-downloaded_data_path = root_path / "downloaded_data"
-extracted_data_path = root_path / "extracted_data"
-
 input_folder = downloaded_data_path / 'UNFCCC' / 'Argentina' / \
                'BUR4'
 output_folder = extracted_data_path / 'UNFCCC' / 'Argentina'

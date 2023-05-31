@@ -11,7 +11,7 @@ from selenium.webdriver.firefox.options import Options
 from random import randrange
 from pathlib import Path
 
-root = Path(__file__).parents[2]
+from UNFCCC_GHG_data.helper import root_path, downloaded_data_path_UNFCCC
 
 ###############
 #
@@ -77,12 +77,10 @@ else:
         "submissions/national-inventory-submissions-{}".format(year)
     )
 
-download_path = root / "downloaded_data" / "UNFCCC"
-
 error_file_sizes = [212, 210]
 
 # Read submissions list
-submissions = pd.read_csv(download_path / f"submissions-annexI_{year}.csv")
+submissions = pd.read_csv(downloaded_data_path_UNFCCC / f"submissions-annexI_{year}.csv")
 
 # filter submissions list or category
 items = submissions[submissions.Kind  == category.upper()]
@@ -120,7 +118,7 @@ for idx, submission in items.iterrows():
     country = country.replace(' ', '_')
     print(f"Downloading {title} from {url}")
 
-    country_folder = download_path / country
+    country_folder = downloaded_data_path_UNFCCC / country
     if not country_folder.exists():
         country_folder.mkdir()
     local_filename = \
@@ -136,7 +134,7 @@ for idx, submission in items.iterrows():
             os.remove(local_filename)
     
     # now we have removed error pages, so a present file should not be overwritten
-    if not local_filename.exists():
+    if (not local_filename.exists()) and (not local_filename.is_symlink()):
         i = 0  # reset counter
         while not local_filename.exists() and i < 10:
             # for i = 0 and i = 5 try to get a new session ID
@@ -167,7 +165,7 @@ for idx, submission in items.iterrows():
             
         if local_filename.exists():
             new_downloaded.append(submission)
-            print(f"Download => {local_filename.relative_to(root)}")
+            print(f"Download => {local_filename.relative_to(root_path)}")
             # unzip data (only for new downloads)
             if local_filename.suffix == ".zip":
                 try:
@@ -177,18 +175,21 @@ for idx, submission in items.iterrows():
                     zipped_file.close()
                 # TODO Better error logging/visibilty
                 except zipfile.BadZipFile:
-                    print(f"Error while trying to extract {local_filename.relative_to(root)}")
+                    print(f"Error while trying to extract "
+                          f"{local_filename.relative_to(root_path)}")
                 except NotImplementedError:
                     print("Zip format not supported, please unzip on the command line.")
             else:
-                print(f"Not attempting to extract {local_filename.relative_to(root)}.")
+                print(f"Not attempting to extract "
+                      f"{local_filename.relative_to(root_path)}.")
         else:
-            print(f"Failed to download {local_filename.relative_to(root)}")
+            print(f"Failed to download {local_filename.relative_to(root_path)}")
 
     else:
-        print(f"=> Already downloaded {local_filename.relative_to(root)}")
+        print(f"=> Already downloaded {local_filename.relative_to(root_path)}")
 
 driver.close()
 
 df = pd.DataFrame(new_downloaded)
-df.to_csv(download_path / f"00_new_downloads_{category}{year}-{date.today()}.csv", index=False)
+df.to_csv(downloaded_data_path_UNFCCC
+          / f"00_new_downloads_{category}{year}-{date.today()}.csv", index=False)

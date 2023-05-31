@@ -1,0 +1,31 @@
+attrs:
+  references: https://di.unfccc.int
+  title: Data submitted to the UNFCCC by country Honduras as available in the DI interface
+    on 2023-05-24.
+  comment: Data read from the UNFCCC DI flexible query interface using the API. Data
+    read on 2023-05-24.
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (BURDI)
+  area: area (ISO3)
+  scen: scenario (Access_Date)
+  sec_cats:
+  - class
+  - measure
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - area (ISO3)
+  - measure
+  - scenario (Access_Date)
+  - source
+  - provenance
+  - category (BURDI)
+  - class
+  - entity
+  - unit
+additional_coordinates:
+  orig_cat_name: category (BURDI)
+data_file: HND_DI_a54b05371b13f2a65f30204498a8ccfc_raw_hash.csv

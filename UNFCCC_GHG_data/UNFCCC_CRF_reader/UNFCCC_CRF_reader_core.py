@@ -8,9 +8,7 @@ import re
 import json
 import numpy as np
 import pandas as pd
-import xarray as xr
 import primap2 as pm2
-import pycountry
 from pathlib import Path
 from treelib import Tree
 from operator import itemgetter
@@ -18,8 +16,8 @@ from collections import Counter
 from typing import Dict, List, Optional, Tuple, Union
 from datetime import datetime, timedelta
 from . import crf_specifications as crf
-from .util import downloaded_data_path, NoCRFFilesError, custom_country_mapping
-
+from .util import NoCRFFilesError
+from UNFCCC_GHG_data.helper import downloaded_data_path_UNFCCC
 
 ### reading functions
 def convert_crf_table_to_pm2if(
@@ -568,7 +566,7 @@ def get_crf_files(
     # we should only have files for one country and submission in the folder. But the
     # function can also be used on a given folder and then the filter is useful.
     if folder is None:
-        data_folder = downloaded_data_path
+        data_folder = downloaded_data_path_UNFCCC
         submission_folder = f"CRF{submission_year}"
 
         with open(data_folder / "folder_mapping.json", "r") as mapping_file:
@@ -935,7 +933,7 @@ def get_latest_date_for_country(
         str: string with date
     """
 
-    with open(downloaded_data_path / "folder_mapping.json", "r") as mapping_file:
+    with open(downloaded_data_path_UNFCCC / "folder_mapping.json", "r") as mapping_file:
         folder_mapping = json.load(mapping_file)
 
     if country_code in folder_mapping:
@@ -946,12 +944,12 @@ def get_latest_date_for_country(
         if isinstance(country_folders, str):
             # only one folder
             submission_date = find_latest_date(get_submission_dates(
-                downloaded_data_path / country_folders / f"CRF{submission_year}", file_filter))
+                downloaded_data_path_UNFCCC / country_folders / f"CRF{submission_year}", file_filter))
         else:
             dates = []
             for folder in country_folders:
                 dates = dates + get_submission_dates(
-                    downloaded_data_path / folder / f"CRF{submission_year}", file_filter)
+                    downloaded_data_path_UNFCCC / folder / f"CRF{submission_year}", file_filter)
             submission_date = find_latest_date(dates)
     else:
         raise ValueError(f"No data folder found for country {country_code}. "
@@ -1022,7 +1020,7 @@ def get_submission_parties(
                          f"the function's purpose is to return available parties.")
 
     if folder.exists():
-        files = filter_filenames(folder.glob("*.xlsx"), **file_filter)
+        files = filter_filenames(list(folder.glob("*.xlsx")), **file_filter)
     else:
         raise ValueError(f"Folder {folder} does not exist")
 
@@ -1034,6 +1032,7 @@ def get_submission_parties(
 
 def find_latest_date(
         dates: List[str],
+        date_format: str='%d%m%Y',
 )-> str:
     """
     Returns the latest date in a list of dates as str in the format
@@ -1050,26 +1049,11 @@ def find_latest_date(
     """
 
     if len(dates) > 0:
-        dates_datetime = [[date, datetime.strptime(date, "%d%m%Y")] for date in dates]
+        dates_datetime = [[date, datetime.strptime(date, date_format)] for date in
+                          dates]
         dates_datetime = sorted(dates_datetime, key=itemgetter(1))
     else:
         raise ValueError(f"Passed list of dates is empty")
 
     return dates_datetime[-1][0]
 
-
-def get_country_name(
-        country_code: str,
-) -> str:
-    """get country name from UNFCCC_GHG_data """
-    if country_code in custom_country_mapping:
-        country_name = custom_country_mapping[country_code]
-    else:
-        try:
-            country = pycountry.countries.get(alpha_3=country_code)
-            country_name = country.name
-        except:
-            raise ValueError(f"Country UNFCCC_GHG_data {country_code} can not be mapped to "
-                             f"any country")
-
-    return country_name

@@ -1,5 +1,6 @@
 # define tasks for UNFCCC data repository
 from doit import get_var
+import os
 
 # TODO: task for folder mapping
 
@@ -18,6 +19,18 @@ def task_setup_venv():
         'verbosity': 2,
     }
 
+# set UNFCCC_GHG_ROOT_PATH environment variable
+def task_set_env():
+    """
+    Set the environment variable for the module so data is stored in the correct folders
+    """
+    def set_root_path():
+        os.environ["UNFCCC_GHG_ROOT_PATH"] = "."
+
+    return {
+        'actions': [set_root_path],
+    }
+
 
 # Task to create the mapping files which map folder names to ISO 3-letter country codes
 read_config_folder = {
@@ -29,8 +42,9 @@ def task_map_folders():
     Create or update the folder mapping in the given folder
     """
     return {
-        'actions': [f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+        'actions': [f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
                     f"--folder={read_config_folder['folder']}"],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -44,6 +58,7 @@ def task_update_bur():
         'actions': ['datalad run -m "Fetch BUR submissions" '
                     '-o downloaded_data/UNFCCC/submissions-bur.csv '
                     './venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/fetch_submissions_bur.py'],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -58,9 +73,10 @@ def task_download_bur():
         'actions': ['datalad run -m "Download BUR submissions" '
                     '-i downloaded_data/UNFCCC/submissions-bur.csv '
                     './venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/download_non-annexI.py --category=BUR',
-                    f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+                    f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
                     f"--folder=downloaded_data/UNFCCC"
                     ],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -73,6 +89,7 @@ def task_update_nc():
         'actions': ['datalad run -m "Fetch NC submissions" '
                     '-o downloaded_data/UNFCCC/submissions-nc.csv '
                     './venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/fetch_submissions_nc.py'],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -87,9 +104,10 @@ def task_download_nc():
         'actions': ['datalad run -m "Download NC submissions" '
                     '-i downloaded_data/UNFCCC/submissions-nc.csv '
                     './venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/download_non-annexI.py --category=NC',
-                    f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+                    f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
                     f"--folder=downloaded_data/UNFCCC"
                     ],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -112,6 +130,7 @@ def task_update_annexi():
                     f"-o downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv "
                     f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/fetch_submissions_annexI.py "
                     f"--year={update_aI_config['year']}"],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -128,9 +147,10 @@ def task_download_annexi():
                     f"-i downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv "
                     f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/download_annexI.py "
                     f"--category={update_aI_config['category']} --year={update_aI_config['year']}",
-                    f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+                    f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
                     f"--folder=downloaded_data/UNFCCC"
                     ],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -141,9 +161,10 @@ def task_download_ndc():
     return {
         'actions': ['datalad run -m "Download NDC submissions" '
                     './venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/download_ndc.py',
-                    f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+                    f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
                     f"--folder=downloaded_data/UNFCCC"
                     ],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -163,9 +184,10 @@ def task_read_unfccc_submission():
     return {
         'actions': [f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/read_UNFCCC_submission.py "
                     f"--country={read_config['country']} --submission={read_config['submission']}",
-                    f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+                    f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
                     f"--folder=extracted_data/UNFCCC"
                     ],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -188,13 +210,14 @@ def task_read_unfccc_crf_submission():
         f"--country={read_config_crf['country']} "
         f"--submission_year={read_config_crf['submission_year']} "
         f"--submission_date={read_config_crf['submission_date']} ",
-        f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+        f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
         f"--folder=extracted_data/UNFCCC"
         ]
     if read_config_crf["re_read"] == "True":
         actions[0] = actions[0] + " --re_read"
     return {
         'actions': actions,
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
@@ -205,7 +228,7 @@ def task_read_new_unfccc_crf_for_year():
     data not present yet. Only reads the latest updated submission for each country."""
     actions = [f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_CRF_reader/read_new_UNFCCC_CRF_for_year_datalad.py "
                f"--submission_year={read_config_crf['submission_year']} ",
-               f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/folder_mapping.py "
+               f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
                f"--folder=extracted_data/UNFCCC"
                ]
     # specifying countries is currently disabled duo to problems with command line
@@ -217,17 +240,79 @@ def task_read_new_unfccc_crf_for_year():
     return {
         #'basename': "Read_CRF_year",
         'actions': actions,
+        'task_dep': ['set_env'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+# tasks for DI reader
+# datalad run is called from within the read_UNFCCC_DI_for_country.py script
+read_config_di = {
+    "country": get_var('country', None),
+    "date": get_var('date', None),
+    "annexI": get_var('annexI', False),
+    #"countries": get_var('countries', None),
+}
+
+def task_read_unfccc_di_for_country():
+    """ Read DI data for a country """
+    actions = [
+        f"./venv/bin/python "
+        f"UNFCCC_GHG_data/UNFCCC_DI_reader/read_UNFCCC_DI_for_country_datalad.py "
+        f"--country={read_config_di['country']}",
+        f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
+        f"--folder=extracted_data/UNFCCC"
+        ]
+    return {
+        'actions': actions,
+        'task_dep': ['set_env'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+def task_process_unfccc_di_for_country():
+    """ Process DI data for a country """
+    actions = [
+        f"./venv/bin/python "
+        f"UNFCCC_GHG_data/UNFCCC_DI_reader/process_UNFCCC_DI_for_country_datalad.py "
+        f"--country={read_config_di['country']} --date={read_config_di['date']}",
+        f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
+        f"--folder=extracted_data/UNFCCC"
+        ]
+    return {
+        'actions': actions,
+        'task_dep': ['set_env'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+def task_read_unfccc_di_for_country_group():
+    """ Read DI data for a country """
+    actions = [
+        f"./venv/bin/python "
+        f"UNFCCC_GHG_data/UNFCCC_DI_reader/read_UNFCCC_DI_for_country_group_datalad.py",
+        f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
+        f"--folder=extracted_data/UNFCCC"
+        ]
+    if read_config_di["annexI"] == "True":
+        actions[0] = actions[0] + " --annexI"
+
+    return {
+        'actions': actions,
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }
 
 
+# general tasks
 def task_country_info():
     """ Print information on submissions and datasets
     available for given country"""
     return {
-        'actions': [f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/country_info.py "
+        'actions': [f"./venv/bin/python UNFCCC_GHG_data/helper/country_info.py "
                     f"--country={read_config['country']}"],
+        'task_dep': ['set_env'],
         'verbosity': 2,
         'setup': ['setup_venv'],
     }

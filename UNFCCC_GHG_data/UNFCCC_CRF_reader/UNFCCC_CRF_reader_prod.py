@@ -20,18 +20,16 @@ from .UNFCCC_CRF_reader_core import read_crf_table
 from .UNFCCC_CRF_reader_core import convert_crf_table_to_pm2if
 from .UNFCCC_CRF_reader_core import get_latest_date_for_country
 from .UNFCCC_CRF_reader_core import get_crf_files
-from .UNFCCC_CRF_reader_core import get_country_name
 from .UNFCCC_CRF_reader_devel import save_unknown_categories_info
 from .UNFCCC_CRF_reader_devel import save_last_row_info
 
-from .util import code_path, log_path, \
-    custom_country_mapping, extracted_data_path, root_path, \
-    all_crf_countries, NoCRFFilesError
+from UNFCCC_GHG_data.helper import code_path, log_path, root_path
+from UNFCCC_GHG_data.helper import custom_country_mapping, extracted_data_path_UNFCCC
+from UNFCCC_GHG_data.helper import get_country_code, get_country_name
+from .util import all_crf_countries, NoCRFFilesError
 
 #import sys
 #sys.path.append(code_path.name)
-from ..UNFCCC_reader import get_country_code
-
 
 # functions:
 # * testing fucntions
@@ -41,8 +39,6 @@ from ..UNFCCC_reader import get_country_code
 # **
 
 # TODO: add function to read several / all countries
-
-
 
 # general approach:
 # main UNFCCC_GHG_data in a function that reads on table from one file.
@@ -188,7 +184,7 @@ def read_crf_for_country(
 
         if save_data:
             compression = dict(zlib=True, complevel=9)
-            output_folder = extracted_data_path / country_name.replace(" ", "_")
+            output_folder = extracted_data_path_UNFCCC / country_name.replace(" ", "_")
             output_filename = f"{country_code}_CRF{submission_year}_{submission_date}"
 
             if not output_folder.exists():
@@ -415,11 +411,6 @@ def read_new_crf_for_year_datalad(
     )
 
 
-# function to read all available data (or list of countries?)
-# make sure it works when not all countries have submitted data
-# give option to only read new data (no output yet), but also option to
-# read all data, e.g. when specifications have changed
-
 def get_input_and_output_files_for_country(
         country: str,
         submission_year: int,
@@ -481,7 +472,7 @@ def get_input_and_output_files_for_country(
     country_info["input"] = input_files
 
     # get output file
-    output_folder = extracted_data_path / country_name.replace(" ", "_")
+    output_folder = extracted_data_path_UNFCCC / country_name.replace(" ", "_")
     output_files = [output_folder / f"{country_code}_CRF{submission_year}"
                                     f"_{submission_date}.{suffix}" for suffix
                     in ['yaml', 'csv', 'nc']]
@@ -510,7 +501,7 @@ def submission_has_been_read(
     """
     Check if a CRF submission has already been read
     """
-    output_folder = extracted_data_path / country_name.replace(" ", "_")
+    output_folder = extracted_data_path_UNFCCC / country_name.replace(" ", "_")
     output_filename = f"{country_code}_CRF{submission_year}_{submission_date}"
     if output_folder.exists():
         existing_files = output_folder.glob(f"{output_filename}.*")
