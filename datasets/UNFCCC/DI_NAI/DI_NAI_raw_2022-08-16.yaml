@@ -1,0 +1,27 @@
+attrs:
+  references: https://di.unfccc.int
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (BURDI)
+  area: area (ISO3)
+  scen: scenario (Access_Date)
+  sec_cats:
+  - class
+  - measure
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - category (BURDI)
+  - scenario (Access_Date)
+  - class
+  - provenance
+  - source
+  - measure
+  - area (ISO3)
+  - entity
+  - unit
+additional_coordinates:
+  orig_cat_name: category (BURDI)
+data_file: DI_NAI_raw_2022-08-16.csv
