@@ -8,7 +8,7 @@ from UNFCCC_GHG_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_prod import read_crf_fo
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--country', help='Country name or UNFCCC_GHG_data')
+parser.add_argument('--country', help='Country name or code')
 parser.add_argument('--submission_year', help='Submission round to read')
 parser.add_argument('--submission_date', help='Date of submission to read', default=None)
 parser.add_argument('--re_read', help='Read data also if already read before',

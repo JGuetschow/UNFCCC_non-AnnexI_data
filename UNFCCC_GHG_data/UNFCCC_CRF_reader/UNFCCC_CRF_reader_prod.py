@@ -382,7 +382,7 @@ def read_new_crf_for_year_datalad(
                 output_files = output_files + country_info["output"]
             else:
                 data_read = submission_has_been_read(
-                    country_info["UNFCCC_GHG_data"], country_info["name"],
+                    country_info["code"], country_info["name"],
                     submission_year=submission_year,
                     submission_date=country_info["date"],
                     verbose=False,
@@ -438,7 +438,7 @@ def get_input_and_output_files_for_country(
         country_code = get_country_code(country)
     # now get the country name
     country_name = get_country_name(country_code)
-    country_info["UNFCCC_GHG_data"] = country_code
+    country_info["code"] = country_code
     country_info["name"] = country_name
 
     # determine latest data
