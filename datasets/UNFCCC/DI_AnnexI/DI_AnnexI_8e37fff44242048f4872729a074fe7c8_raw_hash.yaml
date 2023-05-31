@@ -1,0 +1,29 @@
+attrs:
+  references: https://di.unfccc.int
+  title: 'Data submitted by the following AnnexI countries and available in the DI
+    interface on 2023-05-24: AUS, AUT, BEL, BGR, BLR'
+  comment: Data read from the UNFCCC DI flexible query interface using the API. Data
+    read on 2023-05-24.
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRFDI)
+  area: area (ISO3)
+  scen: scenario (Access_Date)
+  sec_cats:
+  - class
+  - measure
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - category (CRFDI)
+  - provenance
+  - measure
+  - scenario (Access_Date)
+  - source
+  - class
+  - area (ISO3)
+  - entity
+  - unit
+data_file: DI_AnnexI_8e37fff44242048f4872729a074fe7c8_raw_hash.csv

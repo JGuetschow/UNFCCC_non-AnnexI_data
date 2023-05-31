@@ -13,11 +13,9 @@ from typing import List, Optional
 from pathlib import Path
 from datetime import date
 
-
 from .util import all_crf_countries
-from .util import log_path
+from UNFCCC_GHG_data.helper import log_path, get_country_name
 from . import crf_specifications as crf
-from .UNFCCC_CRF_reader_core import get_country_name
 from .UNFCCC_CRF_reader_core import get_latest_date_for_country, read_crf_table
 from .UNFCCC_CRF_reader_core import convert_crf_table_to_pm2if
 

@@ -4,21 +4,14 @@
 
 import pandas as pd
 import primap2 as pm2
-from pathlib import Path
 import camelot
 import numpy as np
 from primap2.pm2io._data_reading import matches_time_format
-
+from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 
 # ###
 # configuration
 # ###
-root_path = Path(__file__).parents[3].absolute()
-root_path = root_path.resolve()
-downloaded_data_path = root_path / "downloaded_data"
-extracted_data_path = root_path / "extracted_data"
-
-
 input_folder = downloaded_data_path / 'UNFCCC' / 'Indonesia' / 'BUR3'
 output_folder = extracted_data_path / 'UNFCCC' / 'Indonesia'
 if not output_folder.exists():

@@ -1,0 +1,29 @@
+attrs:
+  references: https://di.unfccc.int
+  comment: Data read from the UNFCCC DI flexible query interface using the API. Data
+    read on 2023-05-24.
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (BURDI)
+  area: area (ISO3)
+  scen: scenario (Access_Date)
+  sec_cats:
+  - class
+  - measure
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - measure
+  - class
+  - scenario (Access_Date)
+  - area (ISO3)
+  - provenance
+  - category (BURDI)
+  - entity
+  - unit
+additional_coordinates:
+  orig_cat_name: category (BURDI)
+data_file: DI_non_AnnexI_c10c3850dad21f4182cfdac530b6b49e_raw_hash.csv

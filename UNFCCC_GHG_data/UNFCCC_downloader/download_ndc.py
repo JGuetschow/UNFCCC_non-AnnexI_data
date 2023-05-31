@@ -3,11 +3,12 @@ import requests
 import shutil
 import time
 import os
+import re
 from datetime import date
 from random import randrange
-
+from UNFCCC_GHG_data.helper import downloaded_data_path_UNFCCC
 from pathlib import Path
-root = Path(__file__).parents[2]
+
 """
 based on download_bur from national-inventory-submissions
 # (https://github.com/openclimatedata/national-inventory-submisions)
@@ -33,19 +34,20 @@ url = "https://www4.unfccc.int/sites/NDCStaging/Pages/All.aspx"
 # TODO error page sizes are from BUR and NC and might differ for NDCs
 # if an error page is found instead of a pdf adjust sizes here
 error_file_sizes = [212, 210]
+ndc_regex = r".*\s([A-Za-z]*)\sNDC"
 
 # Ensure download path and subfolders exist
-download_path = root / "downloaded_data" / "UNFCCC"
-if not download_path.exists():
-    download_path.mkdir(parents=True)
+if not downloaded_data_path_UNFCCC.exists():
+    downloaded_data_path_UNFCCC.mkdir(parents=True)
 
 new_downloaded = []
 
-
 for idx, submission in submissions.iterrows():
     print("=" * 60)
-    ndc = submission.Number
+    #ndc = submission.Number
     title = submission.Title
+    temp = re.findall(ndc_regex, title)
+    ndc = temp[0]
     url = submission.EncodedAbsUrl
     submission_date = submission.SubmissionDate
     country = submission.Party
@@ -54,12 +56,12 @@ for idx, submission in submissions.iterrows():
 
     ndc_folder = "NDC_" + ndc + "_" + submission_date
 
-    country_folder = download_path / country
+    country_folder = downloaded_data_path_UNFCCC / country
     if not country_folder.exists():
         country_folder.mkdir()
     local_filename = country_folder / ndc_folder / url.split('/')[-1]
     local_filename_underscore = \
-        download_path / country / ndc_folder / \
+        downloaded_data_path_UNFCCC / country / ndc_folder / \
         url.split('/')[-1].replace("%20", "_").replace(" ", "_")
     if not local_filename.parent.exists():
         local_filename.parent.mkdir()
@@ -73,7 +75,8 @@ for idx, submission in submissions.iterrows():
             os.remove(local_filename_underscore)
     
     # now we have to remove error pages, so a present file should not be overwritten
-    if not local_filename_underscore.exists():
+    if (not local_filename_underscore.exists()) \
+            and (not local_filename_underscore.is_symlink()):
         i = 0  # reset counter
         while not local_filename_underscore.exists() and i < 10:
 
@@ -102,4 +105,4 @@ for idx, submission in submissions.iterrows():
 
 
 df = pd.DataFrame(new_downloaded)
-df.to_csv(download_path / "00_new_downloads_ndc-{}.csv".format(date.today()), index=False)
+df.to_csv(downloaded_data_path_UNFCCC / "00_new_downloads_ndc-{}.csv".format(date.today()), index=False)

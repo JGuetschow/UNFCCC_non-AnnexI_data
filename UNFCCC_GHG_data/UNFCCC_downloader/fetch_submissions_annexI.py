@@ -8,8 +8,7 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from random import randrange
 from unfccc_submission_info import get_unfccc_submission_info
-
-root = Path(__file__).absolute().parents[2]
+from UNFCCC_GHG_data.helper import downloaded_data_path_UNFCCC
 
 max_tries = 10
 
@@ -143,4 +142,4 @@ if len(no_downloads) > 0:
 
 driver.close()
 df = pd.DataFrame(downloads)
-df.to_csv(root / "downloaded_data" / "UNFCCC" / f"submissions-annexI_{year}.csv", index=False)
+df.to_csv(downloaded_data_path_UNFCCC / f"submissions-annexI_{year}.csv", index=False)
