@@ -36,7 +36,7 @@ for country in all_crf_countries:
         # check if the latest submission has been read already
 
         data_read = submission_has_been_read(
-            country_info["UNFCCC_GHG_data"], country_info["name"],
+            country_info["code"], country_info["name"],
             submission_year=submission_year,
             submission_date=country_info["date"],
             verbose=False,

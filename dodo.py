@@ -245,6 +245,20 @@ def task_read_new_unfccc_crf_for_year():
         'setup': ['setup_venv'],
     }
 
+def task_compile_raw_unfccc_crf_for_year():
+    """ Read CRF submission for all countries for given submission year. by default only reads
+    data not present yet. Only reads the latest updated submission for each country."""
+    actions = [f"./venv/bin/python "
+               f"UNFCCC_GHG_data/UNFCCC_CRF_reader/CRF_raw_for_year.py "
+               f"--submission_year={read_config_crf['submission_year']} "
+               ]
+    return {
+        'actions': actions,
+        'task_dep': ['set_env'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
 # tasks for DI reader
 # datalad run is called from within the read_UNFCCC_DI_for_country.py script
 read_config_di = {
