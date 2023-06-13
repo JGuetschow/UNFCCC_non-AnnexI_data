@@ -1303,6 +1303,110 @@ di_processing_templates = {
             },
         },
     },
+    # TGO: more data in BUR / NIR, 1992-1998, 2000, 2005, 2010, 2013-2018 (
+    # downscaling needed for some years, inconsistent detail)
+    # THA: 1994 (2000-2013, extensive downscaling needed for 2000-2012).
+    'THA': {
+        'DI2023-05-24': {
+            'downscale': {
+                # main sectors present as KYOTOGHG sum. subsectors need to be downscaled
+                # TODO: downscale CO, NOx, NMVOC, SO2 (national total present)
+                'sectors': {
+                    '1': {
+                        'basket': '1',
+                        'basket_contents': ['1.A', '1.B'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                                         '2005', '2006', '2007', '2008', '2009',
+                                         '2010', '2011', '2012', '2013']},
+                    },
+                    '1.A': {
+                        'basket': '1.A',
+                        'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                                         '2005', '2006', '2007', '2008', '2009',
+                                         '2010', '2011', '2012', '2013']},
+                    },
+                    '1.B': {
+                        'basket': '1.B',
+                        'basket_contents': ['1.B.1', '1.B.2'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                                         '2005', '2006', '2007', '2008', '2009',
+                                         '2010', '2011', '2012', '2013']},
+                    },
+                    '2': {
+                        'basket': '2',
+                        'basket_contents': ['2.A', '2.B', '2.C', '2.D'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                                         '2005', '2006', '2007', '2008', '2009',
+                                         '2010', '2011', '2012', '2013']},
+                    },
+                    '4': {
+                        'basket': '4',
+                        'basket_contents': ['4.A', '4.B', '4.C', '4.D', '4.E',
+                                            '4.F'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                                         '2005', '2006', '2007', '2008', '2009',
+                                         '2010', '2011', '2012', '2013']},
+                    },
+                    '5': {
+                        'basket': '5',
+                        'basket_contents': ['5.A', '5.B', '5.C'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                                         '2005', '2006', '2007', '2008', '2009',
+                                         '2010', '2011', '2012', '2013']},
+                    },
+                    '6': {
+                        'basket': '6',
+                        'basket_contents': ['6.A', '6.B', '6.C'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                                         '2005', '2006', '2007', '2008', '2009',
+                                         '2010', '2011', '2012', '2013']},
+                    },
+                },
+                'entities': {
+                    'KYOTO': {
+                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket_contents': ['CH4', 'CO2', 'N2O'],
+                        'sel': {
+                            'category (BURDI)': [
+                                '1', '1.A', '1.A.1', '1.A.2', '1.A.3', '1.A.4',
+                                '1.B', '1.B.1', '1.B.2',
+                                '2', '2.A', '2.B', '2.C', '2.D',
+                                '4', '4.A', '4.B', '4.C', '4.D', '4.E', '4.F',
+                                '5', '5.A', '5.B', '5.C',
+                                '6', '6.A', '6.B', '6.C',
+                                '15163', '24540',
+                            ],
+                            'time': ['2000', '2001', '2002', '2003', '2004',
+                                     '2005', '2006', '2007', '2008', '2009',
+                                     '2010', '2011', '2012', '2013']
+                        },
+                    },
+                },
+            },
+        },
+    },
+    # TJK 1990-2010
+    # TKM: 1994, 2000, 2004, 2010. subsectors a bit inconsistent
+    # TLS: 2010, also covered by NC2, but without full detail
+    # TON: 1994, 2000, 2006. subsectors a bit inconsistent
+    # TTO: 1990 only
+    # TUN: 1994, 2000
+    # TUV: 1994, 2014, many sectors missiong / 0 (but maybe as there are no emissions)
 }
 
 di_processing_info = {
@@ -1418,6 +1522,10 @@ di_processing_info = {
     'TCD': {
         'default': di_processing_templates['TCD']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['TCD']['DI2023-05-24'],
+    },
+    'THA': {
+        'default': di_processing_templates['THA']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['THA']['DI2023-05-24'],
     },
 }
 
