@@ -1,0 +1,398 @@
+import primap2 as pm2
+import unfccc_di_api
+import numpy as np
+import xarray as xr
+import re
+from datetime import date
+from typing import Optional, Dict, List, Union
+
+from .UNFCCC_DI_reader_config import di_processing_info
+from .UNFCCC_DI_reader_config import cat_conversion
+from .UNFCCC_DI_reader_config import gas_baskets
+from .util import NoDIDataError, nAI_countries
+from .util import DI_date_format
+
+from UNFCCC_GHG_data.helper import convert_categories
+
+from .UNFCCC_DI_reader_core import read_UNFCCC_DI_for_country
+
+from .UNFCCC_DI_reader_helper import find_latest_DI_data
+from .UNFCCC_DI_reader_helper import determine_filename
+
+from .UNFCCC_DI_reader_io import save_DI_dataset, save_DI_country_data
+
+
+def process_and_save_UNFCCC_DI_for_country(
+        country_code: str,
+        date_str: Union[str, None] = None,
+) -> xr.Dataset:
+    """
+    process data and save them to disk using default parameters
+    """
+
+    # get latest dataset if no date given
+    if date_str is None:
+        # get the latest date
+        raw_data_file = find_latest_DI_data(country_code, raw=True)
+    else:
+        raw_data_file = determine_filename(country_code, date_str, raw=True,
+                                           hash=False)
+
+        raw_data_file = raw_data_file.parent / (raw_data_file.name + '.nc')
+        print(f"process {raw_data_file.name}")
+        if not raw_data_file.exists():
+            raise ValueError(f"File {raw_data_file.name} does not exist. Check if it "
+                             "has been read.")
+
+    # load the data
+    data_to_process = pm2.open_dataset(raw_data_file)
+
+    # get parameters
+    countries = list(data_to_process.coords[data_to_process.attrs['area']].values)
+    if len(countries) > 1:
+        raise ValueError(
+            f"Found {len(countries)} countries. Only single country data "
+            f"can be processed by this function. countries: {countries}")
+    else:
+        country_code = countries[0]
+    processing_info_country = di_processing_info[country_code]
+    entities_to_ignore = []  # TODO: check and make default list
+
+    # process
+    data_processed = process_UNFCCC_DI_for_country(
+        data_country=data_to_process,
+        entities_to_ignore=entities_to_ignore,
+        gas_baskets=gas_baskets,
+        cat_conversion=cat_conversion,
+        sectors_out=None,
+        processing_info_country=processing_info_country,
+    )
+
+    # save
+    save_DI_country_data(data_processed, raw=False)
+
+    return data_processed
+
+
+def process_UNFCCC_DI_for_country(
+        data_country: xr.Dataset,
+        entities_to_ignore: List[str],
+        gas_baskets: Dict[str, List[str]],
+        filter_dims: Optional[Dict[str, List[str]]] = None,
+        cat_conversion: Dict[str, Dict] = None,
+        sectors_out: List[str] = None,
+        processing_info_country: Dict = None,
+) -> xr.Dataset:
+    """
+        Process data from DI interface (where necessary).
+        * Downscaling including subtraction of time series
+        * country specific sector aggregation
+        * Conversion to IPCC2006 categories
+        * general sector and gas basket aggregation (in new categories)
+    """
+    # 0: gather information
+    countries = list(data_country.coords[data_country.attrs['area']].values)
+    if len(countries) > 1:
+        raise ValueError(
+            f"Found {len(countries)} countries. Only single country data "
+            f"can be processed by this function. countries: {countries}")
+    else:
+        country_code = countries[0]
+
+    cat_col = data_country.attrs['cat']
+    temp = re.findall(r'\((.*)\)', cat_col)
+    cat_terminology_in = temp[0]
+
+    # 1: general processing
+    # remove unused cats
+    data_country = data_country.dropna(f'category ({cat_terminology_in})', how='all')
+    # remove unused years
+    data_country = data_country.dropna(f'time', how='all')
+    # remove variables only containing nan
+    nan_vars_country = [var for var in data_country.data_vars if
+                        data_country[var].isnull().all().data is True]
+    print(f"removing all-nan variables: {nan_vars_country}")
+    data_country = data_country.drop_vars(nan_vars_country)
+
+    # remove unnecessary variables
+    entities_ignore_present = [entity for entity in entities_to_ignore if
+                               entity in data_country.data_vars]
+    data_country = data_country.drop_vars(entities_ignore_present)
+
+    # filter ()
+    if filter_dims is not None:
+        data_country = data_country.pr.loc[filter_dims]
+
+    # 2: country specific processing
+    if processing_info_country is not None:
+        # get scenario
+        scenarios = list(data_country.coords[data_country.attrs['scen']].values)
+        if len(scenarios) > 1:
+            raise ValueError(
+                f"Found {len(scenarios)} scenarios. Only single scenario data "
+                f"can be processed by this function. Scenarios: {scenarios}")
+        else:
+            scenario = scenarios[0]
+            if scenario in processing_info_country.keys():
+                processing_info_country_scen = processing_info_country[scenario]
+            else:
+                processing_info_country_scen = processing_info_country['default']
+
+            if 'tolerance' in processing_info_country_scen:
+                tolerance = processing_info_country_scen["tolerance"]
+            else:
+                tolerance = 0.01
+
+            # remove entities if needed
+            if 'ignore_entities' in processing_info_country_scen:
+                entities_to_ignore_country = processing_info_country_scen[
+                    'ignore_entities']
+                entities_ignore_present = \
+                    [entity for entity in entities_to_ignore_country if
+                     entity in data_country.data_vars]
+                data_country = data_country.drop_vars(entities_ignore_present)
+
+            # take only desired years
+            if 'years' in processing_info_country_scen:
+                data_country = data_country.pr.loc[
+                    {'time': processing_info_country_scen['years']}]
+
+            # remove timeseries if desired
+            if 'remove_ts' in processing_info_country_scen:
+                for case in processing_info_country_scen['remove_ts']:
+                    remove_info = processing_info_country_scen['remove_ts'][case]
+                    entities = remove_info.pop("entities")
+                    for entity in entities:
+                        data_country[entity].pr.loc[remove_info] = \
+                            data_country[entity].pr.loc[remove_info] * np.nan
+
+            # remove all data for given years if necessary
+            if 'remove_years' in processing_info_country_scen:
+                data_country = data_country.drop_sel(
+                    time=processing_info_country_scen['remove_years'])
+                # entities = data_country.data_vars
+                # for entity in entities:
+                #     data_country[entity].pr.loc[{'time': processing_info_country_scen[
+                #         'remove_years']}] = data_country[entity].pr.loc[\
+                #             {'time': processing_info_country_scen['remove_years']}] *\
+                #             np.nan
+
+            # subtract categories
+            if 'subtract_cats' in processing_info_country_scen:
+                subtract_cats_current = processing_info_country_scen['subtract_cats']
+                if 'entities' in subtract_cats_current.keys():
+                    entities_current = subtract_cats_current['entities']
+                else:
+                    entities_current = list(data_country.data_vars)
+                print(f"Subtracting categories for country {country_code}, entities "
+                      f"{entities_current}")
+                for cat_to_generate in subtract_cats_current:
+                    cats_to_subtract = \
+                        subtract_cats_current[cat_to_generate]['subtract']
+                    cat_name = subtract_cats_current[cat_to_generate]['name']
+                    data_sub = \
+                        data_country.pr.loc[{'category': cats_to_subtract}].pr.sum(
+                            dim='category', skipna=True, min_count=1)
+                    data_parent = data_country.pr.loc[
+                        {'category': subtract_cats_current[cat_to_generate]['parent']}]
+                    data_agg = data_parent - data_sub
+                    nan_vars = [var for var in data_agg.data_vars if
+                                data_agg[var].isnull().all().data is True]
+                    data_agg = data_agg.drop(nan_vars)
+                    if len(data_agg.data_vars) > 0:
+                        print(f"Generating {cat_to_generate} through subtraction")
+                        data_agg = data_agg.expand_dims([f'category ('
+                                                         f'{cat_terminology_in})'])
+                        data_agg = data_agg.assign_coords(
+                            coords={f'category ({cat_terminology_in})':
+                                        (f'category ({cat_terminology_in})',
+                                         [cat_to_generate])})
+                        data_agg = data_agg.assign_coords(
+                            coords={'orig_cat_name':
+                                        (f'category ({cat_terminology_in})',
+                                         [cat_name])})
+                        data_country = data_country.pr.merge(data_agg,
+                                                             tolerance=tolerance)
+                    else:
+                        print(f"no data to generate category {cat_to_generate}")
+
+            # downscaling
+            if 'downscale' in processing_info_country_scen:
+                if 'sectors' in processing_info_country_scen['downscale']:
+                    sector_downscaling = \
+                        processing_info_country_scen['downscale']['sectors']
+                    for case in sector_downscaling.keys():
+                        print(f"Downscaling for {case}.")
+                        sector_downscaling_current = sector_downscaling[case]
+                        entities = sector_downscaling_current.pop('entities')
+                        for entity in entities:
+                            data_country[entity] = data_country[
+                                entity].pr.downscale_timeseries(
+                                **sector_downscaling_current)
+                            # , skipna_evaluation_dims=None)
+
+                if 'entities' in processing_info_country_scen['downscale']:
+                    entity_downscaling = \
+                        processing_info_country_scen['downscale']['entities']
+                    for case in entity_downscaling.keys():
+                        print(f"Downscaling for {case}.")
+                        # print(data_country.coords[f'category ('
+                        #                          f'{cat_terminology_in})'].values)
+                        data_country = data_country.pr.downscale_gas_timeseries(
+                            **entity_downscaling[case], skipna=True,
+                            skipna_evaluation_dims=None)
+
+            # aggregate categories
+            if 'aggregate_cats' in processing_info_country_scen:
+                if 'agg_tolerance' in processing_info_country_scen:
+                    agg_tolerance = processing_info_country_scen['agg_tolerance']
+                else:
+                    agg_tolerance = tolerance
+                aggregate_cats_current = processing_info_country_scen['aggregate_cats']
+                print(
+                    f"Aggregating categories for country {country_code}")
+                for cat_to_agg in aggregate_cats_current:
+                    print(f"Category: {cat_to_agg}")
+                    cat_name = aggregate_cats_current[cat_to_agg]['name']
+                    source_cats = aggregate_cats_current[cat_to_agg]['sources']
+                    data_agg = data_country.pr.loc[{'category': source_cats}].pr.sum(
+                        dim='category', skipna=True, min_count=1)
+                    nan_vars = [var for var in data_agg.data_vars if
+                                data_agg[var].isnull().all().data is True]
+                    data_agg = data_agg.drop(nan_vars)
+                    if len(data_agg.data_vars) > 0:
+                        data_agg = data_agg.expand_dims([f'category ('
+                                                         f'{cat_terminology_in})'])
+                        data_agg = data_agg.assign_coords(
+                            coords={f'category ({cat_terminology_in})':
+                                        (f'category ({cat_terminology_in})',
+                                         [cat_to_agg])})
+
+                        data_agg = data_agg.assign_coords(
+                            coords={'orig_cat_name':
+                                        (f'category ({cat_terminology_in})',
+                                         [cat_name])})
+                        data_country = data_country.pr.merge(data_agg,
+                                                             tolerance=agg_tolerance)
+                    else:
+                        print(f"no data to aggregate category {cat_to_agg}")
+
+            # aggregate gases if desired
+            if 'aggregate_gases' in processing_info_country_scen:
+                for case in processing_info_country_scen['aggregate_gases'].keys():
+                    case_info = processing_info_country_scen['aggregate_gases'][case]
+                    data_country[case_info['basket']] = \
+                        data_country.pr.fill_na_gas_basket_from_contents(
+                            **case_info)
+
+    # 3: map categories
+    if country_code in nAI_countries:
+        # conversion from BURDI to IPCC2006_PRIMAP needed
+        cat_terminology_out = 'IPCC2006_PRIMAP'
+        data_country = convert_categories(
+            data_country,
+            cat_conversion[f"{cat_terminology_in}_to_{cat_terminology_out}"],
+            cat_terminology_out,
+            debug=False,
+            tolerance=0.01,
+        )
+    else:
+        cat_terminology_out = cat_terminology_in
+
+    # more general processing
+    # reduce categories to output cats
+    if sectors_out is not None:
+        cats_to_keep = [cat for cat in
+                        data_country.coords[f'category ({cat_terminology_out})'].values
+                        if cat in sectors_out]
+        data_country = data_country.pr.loc[{'category': cats_to_keep}]
+
+    # create gas baskets
+    entities_present = set(data_country.data_vars)
+    for basket in gas_baskets.keys():
+        basket_contents_present = [gas for gas in gas_baskets[basket] if
+                                   gas in entities_present]
+        if len(basket_contents_present) > 0:
+            if basket in list(data_country.data_vars):
+                data_country[basket] = data_country.pr.fill_na_gas_basket_from_contents(
+                    basket=basket, basket_contents=basket_contents_present,
+                    skipna=True, min_count=1)
+            else:
+                try:
+                    data_country[basket] = xr.full_like(data_country["CO2"],
+                                                        np.nan).pr.quantify(
+                        units="Gg CO2 / year")
+                    data_country[basket].attrs = {"entity": basket.split(' ')[0],
+                                                  "gwp_context": basket.split(' ')[1][
+                                                                 1:-1]}
+                    data_country[basket] = data_country.pr.gas_basket_contents_sum(
+                        basket=basket, basket_contents=basket_contents_present,
+                        min_count=1)
+                except Exception as ex:
+                    print(f"No gas basket created for {country_code}: {ex}")
+
+    # amend title and comment
+    data_country.attrs["comment"] = data_country.attrs["comment"] + f" Processed on " \
+                                                                    f"{date.today()}"
+    data_country.attrs["title"] = data_country.attrs["title"] + f" Processed on " \
+                                                                    f"{date.today()}"
+
+    return data_country
+
+
+def process_UNFCCC_DI_for_country_group(
+        annexI: bool = False,
+) -> xr.Dataset:
+    """
+    This function processes DI data for all countries in a group (annexI or non-AnnexI)
+    TODO: currently only non-annexI is implemented
+    The function processes all data in one go using datalad run. as the output data file
+    names are unknown beforehand datalad run uses explicit=false
+
+    TODO: use the latest
+
+
+    """
+
+    today = date.today()
+    date_str = today.strftime(DI_date_format)
+
+    if annexI:
+        raise ValueError("Bulk reading for AnnexI countries not implemented yet")
+    else:
+        countries = nAI_countries
+
+    # read the data
+    data_all = None
+    for country in countries[0:5]:
+        print(f"reading DI data for country {country}")
+
+        try:
+            data_country = read_UNFCCC_DI_for_country(
+                country_code=country,
+                category_groups=None,  # read all categories
+                read_subsectors=False,  # not applicable as we read all categories
+                date_str=date_str,
+                pm2if_specifications=None,
+                # automatically use the right specs for AI and NAI
+                default_gwp=None,  # automatically uses right default GWP for AI and NAI
+                debug=False)
+
+            if data_all is None:
+                data_all = data_country
+            else:
+                data_all = data_all.pr.merge(data_country)
+        except unfccc_di_api.NoDataError as err:
+            print(f"No data for {country}.")
+            print(err)
+
+    # TODO: write metadata
+
+    # save the data
+    save_DI_dataset(data_all, raw=True, annexI=annexI)
+
+    return data_all
+
+# TODO:
+# add process all sfunctios and scripts
+# config for all DI data
