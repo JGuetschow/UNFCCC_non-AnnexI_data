@@ -1123,6 +1123,186 @@ di_processing_templates = {
             },
         },
     },
+    # MDV: 1994 (only few sectors), 2011-2015
+    # MEX: more data in BURs 2 and 3
+    # MHL: 2000, 2005, 2010
+    # MKD: 1990-2009
+    'MLI': {
+        'DI2023-05-24': {  # 1995,2000, 2005
+            'downscale': {
+                'sectors': {
+                    '1.A': {
+                        'basket': '1.A',
+                        'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                        'sel': {'time': ['1995', '2000']},
+                    },
+                },
+            },
+        },
+    },
+    'MMR': {
+        'DI2023-05-24': {  # 2000-2005
+            'downscale': {
+                'sectors': {
+                    '2': {
+                        'basket': '2',
+                        'basket_contents': ['2.A', '2.B', '2.C', '2.D'],
+                        'entities': ['CO2'],
+                        'dim': 'category (BURDI)',
+                    },
+                },
+                'entities': {
+                    'kyotoghg_5': {
+                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket_contents': ['CO2', 'CH4', 'N2O'],
+                        'sel': {
+                            'category (BURDI)': [
+                                '5'],
+                        }
+                    },
+                },
+            },
+        },
+    },
+    # MNE: more data in BUR3
+    # MNG: 1990-1998, 2006. Some details missing in 1990-1998 but to disconnected
+    # from 2006 data to use that for downscaling
+    # MOZ: 1990, 1994
+    # MRT: more data in BUR 1 and 2
+    # MUS: 1995, 200-2006, 2013
+    # MWI: 1990, 1994. inconsistency in 1.B.1: 1994: CO2, 1990: CH4
+    # MYS: more data in BUR 3, 4
+    # NAM: more adat in BUR 2, 3
+    # NER: 1990, 2000, 2008
+    # NGA: miore data in NIR
+    # NIC: 1994, 2000: LU data inconsistent (5.A missing in 2000)
+    # NIU: 1990, 2000, 2005-2009
+    # NPL: 1994, 2000
+    # NRU: 1994, 2000, 2003, 2007, 2010. Subsectors (e.g. 1.A.x) sometimes inconsistent
+    # OMN: more data in BUR1
+    # PAK: 1994, 2008, 2012, 2015 (very limited data)
+    # PAN: more data in NIR, BUR2
+    # PER: 1994, 2000, 2010, 2012
+    # PNG: 1994, 2000 inconsistent sector coverage
+    'PHL': {
+        'DI2023-05-24': {  # 1994, 2000
+            'downscale': {
+                'sectors': {
+                    '6': {
+                        'basket': '6',
+                        'basket_contents': ['6.A', '6.B'],
+                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'dim': 'category (BURDI)',
+                    },
+                },
+                'entities': {
+                    'kyotoghg_56': {
+                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket_contents': ['CH4', 'N2O'],
+                        'sel': {
+                            'category (BURDI)': ['6', '6.A', '6.B'],
+                        }
+                    },
+                },
+            },
+        },
+    },
+    # PLW: 1994, 1995-1999 (partial), 2000, 2005
+    # PRK: 1990, 1994, 2000, 2002
+    # PRY: 1990, 1994, 2000, 2005, 2011, 2012, 2015, 2017 land use sectors not
+    # consistent, more data in BUR3 but not read yet
+    # PSE: 2011 only
+    # QAT: 2007 only
+    'RWA': {
+        'DI2023-05-24': {  # 2002, 2005
+            'downscale': {
+                'sectors': {
+                    '1.A': {
+                        'basket': '1.A',
+                        'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                },
+            },
+        },
+    },
+    # SAU: 1990, 2000, 2010, 2012
+    # SDN: 1995, 2000 subsectors inconsistent
+    # SEN: 2000, 2005 subsectors inconsistent
+    # SGP: 1994, 2000, 2010, 2012 for 1994 sectors a bit inconsistent
+    'SLB': {
+        'DI2023-05-24': {  # 1994 (energy CO2 only), 2000, 2005, 2010 (5, 10 need downscaling)
+            'downscale': {
+                'entities': {
+                    'kyotoghg': {
+                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket_contents': ['CO2', 'CH4', 'N2O'],
+                        'sel': {
+                            'category (BURDI)': [
+                                '1', '1.A', '1.A.1', '1.A.3', '1.A.4',
+                                '1.B', '1.B.1', '1.B.2',
+                                '4', '4.A', '4.B', '4.C', '4.D',
+                                '6', '6.A', '6.B',
+                                '14424', '14637', '15163', '24540',
+                            ],
+                        }
+                    },
+                },
+            },
+        },
+    },
+    # SLV: 1994, 2005 subsectors a bit inconsistent
+    # SMR: 2007, 2010
+    # SSD: 2012-2015
+    'STP': {
+        'DI2023-05-24': {  # 1998 (dwn), 2005 (dwn), 2012:
+            'downscale': {
+                'entities': {
+                    'kyotoghg': {
+                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket_contents': ['CO2', 'CH4', 'N2O'],
+                        'sel': {
+                            'category (BURDI)': [
+                                '1', '1.A', '1.A.1', '1.A.3', '1.A.4', '1.A.5',
+                                '1.B',
+                                '4', '4.A', '4.B', '4.D', '4.E', '4.F',
+                                '5', '5.A', '5.B', '5.C', '5.D',
+                                '6', '6.A', '6.B',
+                                '14423', '14424', '14637', '14638', '15163', '24540',
+                            ],
+                        }
+                    },
+                },
+            },
+        },
+    },
+    # SUR: 2003
+    # SYC: 1995 (partial), 2000
+    # SYR: 1994-2005: external key needed
+    'TCD': {
+        'DI2023-05-24': {  # 1993, 1998-2003, 2010 sector coverage inconsistent
+            # LULUCF data with sum errors
+            'downscale': {
+                'sectors': {
+                    '1': {
+                        'basket': '1',
+                        'basket_contents': ['1.A'],
+                        'entities': ['CO2'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '4': {
+                        'basket': '4',
+                        'basket_contents': ['4.A', '4.B', '4.C', '4.D', '4.E', '4.F'],
+                        'entities': ['CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                },
+            },
+        },
+    },
 }
 
 di_processing_info = {
@@ -1210,6 +1390,34 @@ di_processing_info = {
     'MDG': {
         'default': di_processing_templates['MDG']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MDG']['DI2023-05-24'],
+    },
+    'MLI': {
+        'default': di_processing_templates['MLI']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['MLI']['DI2023-05-24'],
+    },
+    'MMR': {
+        'default': di_processing_templates['MMR']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['MMR']['DI2023-05-24'],
+    },
+    'PHL': {
+        'default': di_processing_templates['PHL']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['PHL']['DI2023-05-24'],
+    },
+    'RWA': {
+        'default': di_processing_templates['RWA']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['RWA']['DI2023-05-24'],
+    },
+    'SLB': {
+        'default': di_processing_templates['SLB']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['SLB']['DI2023-05-24'],
+    },
+    'STP': {
+        'default': di_processing_templates['STP']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['STP']['DI2023-05-24'],
+    },
+    'TCD': {
+        'default': di_processing_templates['TCD']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['TCD']['DI2023-05-24'],
     },
 }
 
