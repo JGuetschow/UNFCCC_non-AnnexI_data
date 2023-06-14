@@ -34,15 +34,19 @@ def process_and_save_UNFCCC_DI_for_country(
     if date_str is None:
         # get the latest date
         raw_data_file = find_latest_DI_data(country_code, raw=True)
+        if raw_data_file is None:
+            raise ValueError(f"No raw data available for {country_code}.")
     else:
         raw_data_file = determine_filename(country_code, date_str, raw=True,
                                            hash=False)
 
         raw_data_file = raw_data_file.parent / (raw_data_file.name + '.nc')
-        print(f"process {raw_data_file.name}")
+
         if not raw_data_file.exists():
             raise ValueError(f"File {raw_data_file.name} does not exist. Check if it "
                              "has been read.")
+
+    print(f"process {raw_data_file.name}")
 
     # load the data
     data_to_process = pm2.open_dataset(raw_data_file)
@@ -55,7 +59,10 @@ def process_and_save_UNFCCC_DI_for_country(
             f"can be processed by this function. countries: {countries}")
     else:
         country_code = countries[0]
-    processing_info_country = di_processing_info[country_code]
+    if country_code in di_processing_info.keys():
+        processing_info_country = di_processing_info[country_code]
+    else:
+        processing_info_country = None
     entities_to_ignore = []  # TODO: check and make default list
 
     # process
@@ -344,57 +351,74 @@ def process_UNFCCC_DI_for_country(
 
 def process_UNFCCC_DI_for_country_group(
         annexI: bool = False,
+        date_str: Optional[str] = None,
 ) -> xr.Dataset:
     """
     This function processes DI data for all countries in a group (annexI or non-AnnexI)
-    
-    The function processes all data in one go using datalad run. as the output data file
-    names are unknown beforehand datalad run uses explicit=false
 
-    TODO: use the latest
+    Parameters
+    __________
 
+    annexI: bool (default False)
+        If True process all annexI countries (not implemented yet), else all non-AnnexI
+        countries.
+    date_str: str (default None)
+        Date of the data to be processed in the format %Y-%m-%d (e.g. 2023-01-30). If
+        no date is given the last data read will be processed.
 
     """
-
     today = date.today()
-    date_str = today.strftime(DI_date_format)
+    date_str_today = today.strftime(DI_date_format)
 
     if annexI:
-        raise ValueError("Bulk reading for AnnexI countries not implemented yet")
+        raise ValueError("Bulk processing for AnnexI countries not implemented yet")
+        countries = AI_countries
+        #data_all_if = None
+        country_group = "AnnexI"
     else:
         countries = nAI_countries
+        data_all = None
+        country_group = "non-AnnexI"
 
     # read the data
-    data_all = None
-    for country in countries[0:5]:
-        print(f"reading DI data for country {country}")
+    exception_countries = []
+    for country in countries:
+        print(f"processing DI data for country {country}")
 
         try:
-            data_country = read_UNFCCC_DI_for_country(
+            data_country = process_and_save_UNFCCC_DI_for_country(
                 country_code=country,
-                category_groups=None,  # read all categories
-                read_subsectors=False,  # not applicable as we read all categories
                 date_str=date_str,
-                pm2if_specifications=None,
-                # automatically use the right specs for AI and NAI
-                default_gwp=None,  # automatically uses right default GWP for AI and NAI
-                debug=False)
+            )
+
+            # change the scenario to today's date
+            data_country = data_country.assign_coords({"scenario (Access_Date)": [
+                f"DI{date_str_today}"]})
+            scen_dim = data_country.attrs["scen"]
+            data_country.attrs["scen"] = f"scenario (Process_Date)"
+            data_country = data_country.rename({scen_dim: data_country.attrs["scen"]})
 
             if data_all is None:
                 data_all = data_country
             else:
                 data_all = data_all.pr.merge(data_country)
-        except unfccc_di_api.NoDataError as err:
-            print(f"No data for {country}.")
+        except Exception as err:
+            exception_countries.append(country)
+            print(f"Error occurred when processing data for {country}.")
             print(err)
 
-    # TODO: write metadata
+    # update metadata
+    countries_present = list(data_all.coords[data_all.attrs['area']].values)
+    data_all.attrs["title"] = f"Data submitted by the following {country_group} " \
+                              f"countries and available in the DI interface, " \
+                              f"converted to IPCC2006 categories and downscaled " \
+                              f"where applicable. For download date see scenario. " \
+                              f"Countries: {', '.join(countries_present)}"
+
 
     # save the data
-    save_DI_dataset(data_all, raw=True, annexI=annexI)
-
+    save_DI_dataset(data_all, raw=False, annexI=annexI)
+    print(data_all.coords["scenario (Process_Date)"].values)
+    print(f"Errors occured for countries: {exception_countries}")
     return data_all
 
-# TODO:
-# add process all sfunctios and scripts
-# config for all DI data

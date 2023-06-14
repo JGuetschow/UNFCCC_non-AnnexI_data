@@ -9,7 +9,8 @@ from .UNFCCC_DI_reader_proc import process_UNFCCC_DI_for_country, \
     process_and_save_UNFCCC_DI_for_country, process_UNFCCC_DI_for_country_group
 
 from .UNFCCC_DI_reader_datalad import read_DI_for_country_datalad, \
-read_DI_for_country_group_datalad, process_DI_for_country_datalad
+read_DI_for_country_group_datalad, process_DI_for_country_datalad, \
+    process_DI_for_country_group_datalad
 
 from .UNFCCC_DI_reader_helper import determine_filename
 
@@ -21,6 +22,7 @@ __all__ = [
     "process_UNFCCC_DI_for_country",
     "process_and_save_UNFCCC_DI_for_country",
     "process_UNFCCC_DI_for_country_group",
+    "process_DI_for_country_group_datalad",
     "read_DI_for_country_datalad",
     "process_DI_for_country_datalad",
     "read_DI_for_country_group_datalad",

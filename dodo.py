@@ -326,7 +326,7 @@ def task_process_unfccc_di_for_country():
     }
 
 def task_read_unfccc_di_for_country_group():
-    """ Read DI data for a country """
+    """ Read DI data for a country group """
     actions = [
         f"./venv/bin/python "
         f"UNFCCC_GHG_data/UNFCCC_DI_reader/read_UNFCCC_DI_for_country_group_datalad.py",
@@ -343,6 +343,26 @@ def task_read_unfccc_di_for_country_group():
         'setup': ['setup_venv'],
     }
 
+
+def task_process_unfccc_di_for_country_group():
+    """ Process DI data for a country group """
+    actions = [
+        f"./venv/bin/python "
+        f"UNFCCC_GHG_data/UNFCCC_DI_reader/read_UNFCCC_DI_for_country_group_datalad.py",
+        f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
+        f"--folder=extracted_data/UNFCCC"
+        ]
+    if read_config_di["annexI"] == "True":
+        actions[0] = actions[0] + " --annexI"
+    if read_config_di["date"] is not None:
+        actions[0] = actions[0] + f" --date={read_config_di['date']}"
+
+    return {
+        'actions': actions,
+        'task_dep': ['set_env'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
 
 # general tasks
 def task_country_info():

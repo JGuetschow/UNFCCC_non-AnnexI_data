@@ -11,7 +11,7 @@ from UNFCCC_GHG_data.UNFCCC_DI_reader import \
 parser = argparse.ArgumentParser()
 parser.add_argument('--country', help='Country code')
 parser.add_argument('--date', help='String with date to read and process. If not '
-                                   'given latest data will be used')
+                                   'given latest data will be used', default=None)
 args = parser.parse_args()
 
 country_code = args.country

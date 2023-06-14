@@ -249,9 +249,9 @@ def find_latest_DI_data(
     '''
 
     if raw:
-        regex = regex_date + r"_raw\.nc"
+        regex = f"{country_code}_DI_{regex_date}" + r"_raw\.nc"
     else:
-        regex = regex_date + r"\.nc"
+        regex = f"{country_code}_DI_{regex_date}" + r"\.nc"
 
     # get the country folder
     with open(extracted_data_path_UNFCCC / "folder_mapping.json", "r") as mapping_file:
@@ -272,6 +272,9 @@ def find_latest_DI_data(
         # remove files with hash
         files_list = [file.name for file in files_path_list
                       if not re.search(r'_hash\.nc', file.name)]
+        # remove files that don't begin with country_code_DI
+        files_list = [file for file in files_list
+                      if re.search(f'^{country_code}_DI_', file)]
         # filter according to raw flag
         if raw:
             files_list = [file for file in files_list if
@@ -283,9 +286,9 @@ def find_latest_DI_data(
         if len(files_list) > 0:
             date_list = [re.findall(regex, file)[0] for file in files_list]
             latest_date = find_latest_date(date_list, '%Y-%m-%d')
-            latest_file = [file for file in files_path_list if re.search(latest_date,
-                                                                         file.name)][0]
-            return latest_file
+            latest_file = [file for file in files_list if re.search(latest_date,
+                                                                         file)][0]
+            return country_folder / latest_file
         else:
             return None
 
