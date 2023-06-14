@@ -348,9 +348,8 @@ def task_process_unfccc_di_for_country_group():
     """ Process DI data for a country group """
     actions = [
         f"./venv/bin/python "
-        f"UNFCCC_GHG_data/UNFCCC_DI_reader/read_UNFCCC_DI_for_country_group_datalad.py",
-        f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
-        f"--folder=extracted_data/UNFCCC"
+        f"UNFCCC_GHG_data/UNFCCC_DI_reader/process_UNFCCC_DI_for_country_group_datalad"
+        f".py",
         ]
     if read_config_di["annexI"] == "True":
         actions[0] = actions[0] + " --annexI"
