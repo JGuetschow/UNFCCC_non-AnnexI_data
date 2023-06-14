@@ -1,6 +1,7 @@
 import pycountry
 import json
 import xarray as xr
+import pandas as pd
 from copy import deepcopy
 from typing import Dict, List
 from pathlib import Path
@@ -20,6 +21,12 @@ def convert_categories(
     """
     convert data from one category terminology to another
     """
+    print(f"converting categories to {terminology_to}")
+
+    if 'orig_cat_name' in ds_input.coords:
+        cat_name_present = True
+    else:
+        cat_name_present = False
     ds_converted = ds_input.copy(deep=True)
     ds_converted.attrs = deepcopy(ds_input.attrs)
 
@@ -55,6 +62,8 @@ def convert_categories(
                 print(f"Category: {cat_to_agg}")
             source_cats = [cat for cat in aggregate_cats[cat_to_agg]['sources'] if
                            cat in cats_present_mapped]
+            if debug:
+                print(source_cats)
             data_agg = ds_converted.pr.loc[{'category': source_cats}].pr.sum(
                 dim='category', skipna=True, min_count=1)
             nan_vars = [var for var in data_agg.data_vars if
@@ -65,7 +74,13 @@ def convert_categories(
                 data_agg = data_agg.assign_coords(
                     coords={f'category ({terminology_to})':
                                 (f'category ({terminology_to})', [cat_to_agg])})
+                if cat_name_present:
+                    data_agg = data_agg.assign_coords(
+                        coords={'orig_cat_name':
+                                    (f'category ({terminology_to})',
+                                     [aggregate_cats[cat_to_agg]['name']])})
                 ds_converted = ds_converted.pr.merge(data_agg, tolerance=tolerance)
+                cats_present_mapped.append(cat_to_agg)
             else:
                 print(f"no data to aggregate category {cat_to_agg}")
 

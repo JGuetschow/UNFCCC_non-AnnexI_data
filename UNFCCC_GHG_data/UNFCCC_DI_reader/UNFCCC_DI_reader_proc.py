@@ -63,7 +63,7 @@ def process_and_save_UNFCCC_DI_for_country(
         data_country=data_to_process,
         entities_to_ignore=entities_to_ignore,
         gas_baskets=gas_baskets,
-        cat_conversion=cat_conversion,
+        #category_conversion=cat_conversion,
         sectors_out=None,
         processing_info_country=processing_info_country,
     )
@@ -79,7 +79,7 @@ def process_UNFCCC_DI_for_country(
         entities_to_ignore: List[str],
         gas_baskets: Dict[str, List[str]],
         filter_dims: Optional[Dict[str, List[str]]] = None,
-        cat_conversion: Dict[str, Dict] = None,
+        category_conversion: Dict[str, Dict] = None,
         sectors_out: List[str] = None,
         processing_info_country: Dict = None,
 ) -> xr.Dataset:
@@ -289,9 +289,11 @@ def process_UNFCCC_DI_for_country(
     if country_code in nAI_countries:
         # conversion from BURDI to IPCC2006_PRIMAP needed
         cat_terminology_out = 'IPCC2006_PRIMAP'
+        if category_conversion is None:
+            category_conversion = cat_conversion[f"{cat_terminology_in}_to_{cat_terminology_out}"]
         data_country = convert_categories(
             data_country,
-            cat_conversion[f"{cat_terminology_in}_to_{cat_terminology_out}"],
+            category_conversion,
             cat_terminology_out,
             debug=False,
             tolerance=0.01,
@@ -345,7 +347,7 @@ def process_UNFCCC_DI_for_country_group(
 ) -> xr.Dataset:
     """
     This function processes DI data for all countries in a group (annexI or non-AnnexI)
-    TODO: currently only non-annexI is implemented
+    
     The function processes all data in one go using datalad run. as the output data file
     names are unknown beforehand datalad run uses explicit=false
 

@@ -1407,6 +1407,99 @@ di_processing_templates = {
     # TTO: 1990 only
     # TUN: 1994, 2000
     # TUV: 1994, 2014, many sectors missiong / 0 (but maybe as there are no emissions)
+    # TZA: 1990, 1994
+    # UGA: 1994, 2000, subcategories a bit inconsistent
+    'URY': {
+        'DI2023-05-24': {
+            'downscale': {
+                'sectors': {
+                    '1': {
+                        'basket': '1',
+                        'basket_contents': ['1.A', '1.B'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '1.A': {
+                        'basket': '1.A',
+                        'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4',
+                                            '1.A.5'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '1.B': {
+                        'basket': '1.B',
+                        'basket_contents': ['1.B.1', '1.B.2'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '2_CO2CH4N2O': {
+                        'basket': '2',
+                        'basket_contents': ['2.A', '2.B', '2.C', '2.D', '2.G'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '2_FGASES': {
+                        'basket': '2',
+                        'basket_contents': ['2.C', '2.E', '2.F'],
+                        'entities': ['C2F6', 'CF4', 'HFC125', 'HFC134a', 'HFC143a',
+                                     'HFC152a', 'HFC227ea', 'HFC23', 'HFC32', 'SF6'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '4': {
+                        'basket': '4',
+                        'basket_contents': ['4.A', '4.B', '4.C', '4.D', '4.E', '4.F',
+                                            '4.G'],
+                        'entities': ['CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '5': {
+                        'basket': '5',
+                        'basket_contents': ['5.A', '5.B', '5.C', '5.D', '5.E'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '6': {
+                        'basket': '6',
+                        'basket_contents': ['6.A', '6.B', '6.C', '6.D'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                },
+            },
+        },
+    },
+    # UZB: 1990-2012
+    # VCT: 1990, 1994, 1997, 2000, 2004. Sector coverage a bit inconsistent. 1.A.x
+    # missing for CH4 but present for CO2. IPPU is 0, subsectors missing downscaling
+    # doesn't wor for all 0 / Nan timeseries
+    # VEN: 1999 only
+    # VNM: more data in BUR3
+    # VUT: more data in NC3
+    # WSM: more data in NC2
+    # YEM: 1995, 2000, 2010, 2012. subsectoral data a bit inconsistent, e.g. for 1.A.x
+    # ZAF: 1990, 1994
+    'ZMB': {
+        'DI2023-05-24': {  # 1994, 2000
+            'downscale': { # for 2000
+                'sectors': {
+                    '5': {
+                        'basket': '5',
+                        'basket_contents': ['5.B', '5.C'],
+                        'entities': ['CO2', 'CH4', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                    '6': {
+                        'basket': '6',
+                        'basket_contents': ['6.A', '6.B'],
+                        'entities': ['CH4'],
+                        'dim': 'category (BURDI)',
+                    },
+                },
+            },
+        },
+    },
+    # ZWE: 1994, 2000, 2006 consistency of sectors and coverage does not look good,
+    # esopecially for subsectors
 }
 
 di_processing_info = {
@@ -1526,6 +1619,14 @@ di_processing_info = {
     'THA': {
         'default': di_processing_templates['THA']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['THA']['DI2023-05-24'],
+    },
+    'URY': {
+        'default': di_processing_templates['URY']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['URY']['DI2023-05-24'],
+    },
+    'ZMB': {
+        'default': di_processing_templates['ZMB']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['ZMB']['DI2023-05-24'],
     },
 }
 
