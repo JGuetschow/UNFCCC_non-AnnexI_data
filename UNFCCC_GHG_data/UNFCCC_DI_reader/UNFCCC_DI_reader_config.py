@@ -942,6 +942,7 @@ di_processing_templates = {
             },
         },
     },
+    # GNQ: no data
     # GED: 1994, limited coverage
     # GTM: 1990, 1994, 2000, 2005,
     # GUY: 1990-2004
@@ -1007,6 +1008,7 @@ di_processing_templates = {
     # LAO: 1990, 2000 (1990 data maybe inconsistent)
     # LBN: 1994, 2000, 2011-2013
     # LBR: 2000, 2014 (2000 misses some sectors, e.g. IPPU)
+    # LBY: no data
     # LCA: 1994, 2000, 2005, 2010, sectors a bit inconsistent for 1994
     # LKA: 1994, 2000. a bit inconsisten in subsectrs (all emissions in "other in
     # 1994 for some sectors)
@@ -1254,8 +1256,10 @@ di_processing_templates = {
             },
         },
     },
+    # SLE: no data
     # SLV: 1994, 2005 subsectors a bit inconsistent
     # SMR: 2007, 2010
+    # SOM: no data
     # SSD: 2012-2015
     'STP': {
         'DI2023-05-24': {  # 1998 (dwn), 2005 (dwn), 2012:
