@@ -54,7 +54,7 @@ def process_data_for_country(
     scenario = scenarios[0]
 
     # get source
-    sources = list(data_country.coords[data_country.attrs['source']].values)
+    sources = list(data_country.coords['source'].values)
     if len(sources) > 1:
         raise ValueError(
             f"Found {len(sources)} sources. Only single source data "
