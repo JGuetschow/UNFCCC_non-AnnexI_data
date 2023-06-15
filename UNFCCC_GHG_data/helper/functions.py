@@ -1,13 +1,291 @@
 import pycountry
 import json
+import re
 import xarray as xr
 import pandas as pd
+import numpy as np
 from copy import deepcopy
-from typing import Dict, List
+from typing import Dict, List, Optional
 from pathlib import Path
 from .definitions import custom_country_mapping, custom_folders
 from .definitions import root_path, downloaded_data_path, extracted_data_path
 from .definitions import legacy_data_path, code_path
+
+
+def process_data_for_country(
+        data_country: xr.Dataset,
+        entities_to_ignore: List[str],
+        gas_baskets: Dict[str, List[str]],
+        filter_dims: Optional[Dict[str, List[str]]] = None,
+        cat_terminology_out: Optional[str] = None,
+        category_conversion: Dict[str, Dict] = None,
+        sectors_out: List[str] = None,
+        processing_info_country: Dict = None,
+) -> xr.Dataset:
+    """
+        Process data from DI interface (where necessary).
+        * Downscaling including subtraction of time series
+        * country specific sector aggregation
+        * Conversion to IPCC2006 categories
+        * general sector and gas basket aggregation (in new categories)
+    """
+
+    # 0: gather information
+    countries = list(data_country.coords[data_country.attrs['area']].values)
+    if len(countries) > 1:
+        raise ValueError(
+            f"Found {len(countries)} countries. Only single country data "
+            f"can be processed by this function. countries: {countries}")
+    else:
+        country_code = countries[0]
+
+    # get category terminology
+    cat_col = data_country.attrs['cat']
+    temp = re.findall(r'\((.*)\)', cat_col)
+    cat_terminology_in = temp[0]
+
+    # get scenario
+    scenarios = list(data_country.coords[data_country.attrs['scen']].values)
+    if len(scenarios) > 1:
+        raise ValueError(
+            f"Found {len(scenarios)} scenarios. Only single scenario data "
+            f"can be processed by this function. Scenarios: {scenarios}")
+    scenario = scenarios[0]
+
+    # get source
+    sources = list(data_country.coords[data_country.attrs['source']].values)
+    if len(sources) > 1:
+        raise ValueError(
+            f"Found {len(sources)} sources. Only single source data "
+            f"can be processed by this function. Sources: {sources}")
+    source = sources[0]
+
+    # check if category name column present
+    # TODO: replace 'name' in config by  'additional_cols' dict that defines the cols
+    #  and the values
+    if 'orig_cat_name' in data_country.coords:
+        cat_name_present = True
+    else:
+        cat_name_present = False
+
+    # 1: general processing
+    # remove unused cats
+    data_country = data_country.dropna(f'category ({cat_terminology_in})', how='all')
+    # remove unused years
+    data_country = data_country.dropna(f'time', how='all')
+    # remove variables only containing nan
+    nan_vars_country = [var for var in data_country.data_vars if
+                        data_country[var].isnull().all().data is True]
+    print(f"removing all-nan variables: {nan_vars_country}")
+    data_country = data_country.drop_vars(nan_vars_country)
+
+    # remove unnecessary variables
+    entities_ignore_present = [entity for entity in entities_to_ignore if
+                               entity in data_country.data_vars]
+    data_country = data_country.drop_vars(entities_ignore_present)
+
+    # filter ()
+    if filter_dims is not None:
+        data_country = data_country.pr.loc[filter_dims]
+
+    # 2: country specific processing
+    if processing_info_country is not None:
+
+        if 'tolerance' in processing_info_country:
+            tolerance = processing_info_country["tolerance"]
+        else:
+            tolerance = 0.01
+
+        # remove entities if needed
+        if 'ignore_entities' in processing_info_country:
+            entities_to_ignore_country = processing_info_country[
+                'ignore_entities']
+            entities_ignore_present = \
+                [entity for entity in entities_to_ignore_country if
+                 entity in data_country.data_vars]
+            data_country = data_country.drop_vars(entities_ignore_present)
+
+        # take only desired years
+        if 'years' in processing_info_country:
+            data_country = data_country.pr.loc[
+                {'time': processing_info_country['years']}]
+
+        # remove timeseries if desired
+        if 'remove_ts' in processing_info_country:
+            for case in processing_info_country['remove_ts']:
+                remove_info = processing_info_country['remove_ts'][case]
+                entities = remove_info.pop("entities")
+                for entity in entities:
+                    data_country[entity].pr.loc[remove_info] = \
+                        data_country[entity].pr.loc[remove_info] * np.nan
+
+        # remove all data for given years if necessary
+        if 'remove_years' in processing_info_country:
+            data_country = data_country.drop_sel(
+                time=processing_info_country['remove_years'])
+
+        # subtract categories
+        if 'subtract_cats' in processing_info_country:
+            subtract_cats_current = processing_info_country['subtract_cats']
+            if 'entities' in subtract_cats_current.keys():
+                entities_current = subtract_cats_current['entities']
+            else:
+                entities_current = list(data_country.data_vars)
+            print(f"Subtracting categories for country {country_code}, entities "
+                  f"{entities_current}")
+            for cat_to_generate in subtract_cats_current:
+                cats_to_subtract = \
+                    subtract_cats_current[cat_to_generate]['subtract']
+                data_sub = \
+                    data_country.pr.loc[{'category': cats_to_subtract}].pr.sum(
+                        dim='category', skipna=True, min_count=1)
+                data_parent = data_country.pr.loc[
+                    {'category': subtract_cats_current[cat_to_generate]['parent']}]
+                data_agg = data_parent - data_sub
+                nan_vars = [var for var in data_agg.data_vars if
+                            data_agg[var].isnull().all().data is True]
+                data_agg = data_agg.drop(nan_vars)
+                if len(data_agg.data_vars) > 0:
+                    print(f"Generating {cat_to_generate} through subtraction")
+                    data_agg = data_agg.expand_dims([f'category ('
+                                                     f'{cat_terminology_in})'])
+                    if cat_name_present:
+                        cat_name = subtract_cats_current[cat_to_generate]['name']
+                        data_agg = data_agg.assign_coords(
+                            coords={f'category ({cat_terminology_in})':
+                                        (f'category ({cat_terminology_in})',
+                                         [cat_to_generate])})
+                    data_agg = data_agg.assign_coords(
+                        coords={'orig_cat_name':
+                                    (f'category ({cat_terminology_in})',
+                                     [cat_name])})
+                    data_country = data_country.pr.merge(data_agg,
+                                                         tolerance=tolerance)
+                else:
+                    print(f"no data to generate category {cat_to_generate}")
+
+        # downscaling
+        if 'downscale' in processing_info_country:
+            if 'sectors' in processing_info_country['downscale']:
+                sector_downscaling = \
+                    processing_info_country['downscale']['sectors']
+                for case in sector_downscaling.keys():
+                    print(f"Downscaling for {case}.")
+                    sector_downscaling_current = sector_downscaling[case]
+                    entities = sector_downscaling_current.pop('entities')
+                    for entity in entities:
+                        data_country[entity] = data_country[
+                            entity].pr.downscale_timeseries(
+                            **sector_downscaling_current)
+                        # , skipna_evaluation_dims=None)
+
+            if 'entities' in processing_info_country['downscale']:
+                entity_downscaling = \
+                    processing_info_country['downscale']['entities']
+                for case in entity_downscaling.keys():
+                    print(f"Downscaling for {case}.")
+                    # print(data_country.coords[f'category ('
+                    #                          f'{cat_terminology_in})'].values)
+                    data_country = data_country.pr.downscale_gas_timeseries(
+                        **entity_downscaling[case], skipna=True,
+                        skipna_evaluation_dims=None)
+
+        # aggregate categories
+        if 'aggregate_cats' in processing_info_country:
+            if 'agg_tolerance' in processing_info_country:
+                agg_tolerance = processing_info_country['agg_tolerance']
+            else:
+                agg_tolerance = tolerance
+            aggregate_cats_current = processing_info_country['aggregate_cats']
+            print(
+                f"Aggregating categories for country {country_code}, source {source}, "
+                f"scenario {scenario}")
+            for cat_to_agg in aggregate_cats_current:
+                print(f"Category: {cat_to_agg}")
+                source_cats = aggregate_cats_current[cat_to_agg]['sources']
+                data_agg = data_country.pr.loc[{'category': source_cats}].pr.sum(
+                    dim='category', skipna=True, min_count=1)
+                nan_vars = [var for var in data_agg.data_vars if
+                            data_agg[var].isnull().all().data is True]
+                data_agg = data_agg.drop(nan_vars)
+                if len(data_agg.data_vars) > 0:
+                    data_agg = data_agg.expand_dims([f'category ('
+                                                     f'{cat_terminology_in})'])
+                    data_agg = data_agg.assign_coords(
+                        coords={f'category ({cat_terminology_in})':
+                                    (f'category ({cat_terminology_in})',
+                                     [cat_to_agg])})
+                    if cat_name_present:
+                        cat_name = aggregate_cats_current[cat_to_agg]['name']
+                        data_agg = data_agg.assign_coords(
+                            coords={'orig_cat_name':
+                                        (f'category ({cat_terminology_in})',
+                                         [cat_name])})
+                    data_country = data_country.pr.merge(data_agg,
+                                                         tolerance=agg_tolerance)
+                else:
+                    print(f"no data to aggregate category {cat_to_agg}")
+
+        # aggregate gases if desired
+        if 'aggregate_gases' in processing_info_country:
+            for case in processing_info_country['aggregate_gases'].keys():
+                case_info = processing_info_country['aggregate_gases'][case]
+                data_country[case_info['basket']] = \
+                    data_country.pr.fill_na_gas_basket_from_contents(
+                        **case_info)
+
+    # 3: map categories
+    if category_conversion is not None:
+        data_country = convert_categories(
+            data_country,
+            category_conversion,
+            cat_terminology_out,
+            debug=False,
+            tolerance=0.01,
+        )
+    else:
+        cat_terminology_out = cat_terminology_in
+
+    # more general processing
+    # reduce categories to output cats
+    if sectors_out is not None:
+        cats_to_keep = [cat for cat in
+                        data_country.coords[f'category ({cat_terminology_out})'].values
+                        if cat in sectors_out]
+        data_country = data_country.pr.loc[{'category': cats_to_keep}]
+
+    # create gas baskets
+    entities_present = set(data_country.data_vars)
+    for basket in gas_baskets.keys():
+        basket_contents_present = [gas for gas in gas_baskets[basket] if
+                                   gas in entities_present]
+        if len(basket_contents_present) > 0:
+            if basket in list(data_country.data_vars):
+                data_country[basket] = data_country.pr.fill_na_gas_basket_from_contents(
+                    basket=basket, basket_contents=basket_contents_present,
+                    skipna=True, min_count=1)
+            else:
+                try:
+                    data_country[basket] = xr.full_like(data_country["CO2"],
+                                                        np.nan).pr.quantify(
+                        units="Gg CO2 / year")
+                    data_country[basket].attrs = {"entity": basket.split(' ')[0],
+                                                  "gwp_context": basket.split(' ')[1][
+                                                                 1:-1]}
+                    data_country[basket] = data_country.pr.gas_basket_contents_sum(
+                        basket=basket, basket_contents=basket_contents_present,
+                        min_count=1)
+                except Exception as ex:
+                    print(f"No gas basket created for {country_code}, {source}, "
+                          f"{scenario}: {ex}")
+
+    # amend title and comment
+    data_country.attrs["comment"] = data_country.attrs["comment"] + f" Processed on " \
+                                                                    f"{date.today()}"
+    data_country.attrs["title"] = data_country.attrs["title"] + f" Processed on " \
+                                                                    f"{date.today()}"
+
+    return data_country
 
 
 def convert_categories(
