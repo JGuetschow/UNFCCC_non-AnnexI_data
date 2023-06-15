@@ -122,6 +122,8 @@ def process_UNFCCC_DI_for_country(
             processing_info_country_scen = processing_info_country[scenario]
         else:
             processing_info_country_scen = processing_info_country['default']
+    else:
+        processing_info_country_scen = None
 
     # 3: map categories
     if country_code in nAI_countries:
