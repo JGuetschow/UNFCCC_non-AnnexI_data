@@ -2,11 +2,16 @@
 # Data is read from the xlsx file
 
 import os
+os.environ["UNFCCC_GHG_ROOT_PATH"] = \
+    "/storage/data/data/PRIMAP/primap_2.0/datasets/UNFCCC_non-AnnexI_data/"
 import sys
 import camelot
 import primap2 as pm2
 from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
-from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
+from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path, \
+    process_data_for_country
+from UNFCCC_GHG_data.UNFCCC_DI_reader.UNFCCC_DI_reader_config import gas_baskets
+
 
 # ###
 # configuration
@@ -373,6 +378,16 @@ for page in pages_to_read_fgases:
 
     # aggregate to one df
     data_all = data_all.pr.merge(data_pm2)
+
+# ###
+# process (aggregate fgases)
+# ###
+data_all = process_data_for_country(
+    data_all,
+    entities_to_ignore=[],
+    gas_baskets=gas_baskets,
+    processing_info_country=None,
+)
 
 
 # ###
