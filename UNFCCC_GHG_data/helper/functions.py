@@ -230,6 +230,8 @@ def process_data_for_country(
 
         # aggregate gases if desired
         if 'aggregate_gases' in processing_info_country:
+            # TODO: why use different code here than below. Can this fill non-existen
+            #  gas baskets?
             for case in processing_info_country['aggregate_gases'].keys():
                 case_info = processing_info_country['aggregate_gases'][case]
                 data_country[case_info['basket']] = \
@@ -278,6 +280,7 @@ def process_data_for_country(
                     data_country[basket] = data_country.pr.gas_basket_contents_sum(
                         basket=basket, basket_contents=basket_contents_present,
                         min_count=1)
+                    entities_present.add(basket)
                 except Exception as ex:
                     print(f"No gas basket created for {country_code}, {source}, "
                           f"{scenario}: {ex}")
