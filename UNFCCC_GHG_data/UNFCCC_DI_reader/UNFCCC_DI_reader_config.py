@@ -1,3 +1,5 @@
+# TODO: move gas baskets to helper
+
 di_query_filters = [
     'classifications', 'measures', 'gases',
 ]
@@ -329,7 +331,100 @@ di_processing_templates = {
     # versions. So we store them here and refer to them in the processing info dict
     #AFG: not needed (newer data in BUR1), 2005, 2013 only
     #AGO: 2000, 2005 only (external key needed for some gases / sectors)
-    #TODO ALB: pre 2000 downscaling
+    'ALB': {
+        # 1990-2009, 1990-1999 need downscaling
+        'DI2023-05-24': {
+            'remove_ts': {
+                '2.A_H': { # looks wrong in 2005
+                    'category': ['2.A', '2.B', '2.C', '2.D', '2.G'],
+                    'entities': ['CO2', 'KYOTOGHG (SARGWP100)'],
+                        'time': ['2005'],
+                },
+                'Bunkers': { # Aviation and marine swappen in 2005
+                    'category': ['14423', '14424'],
+                    'entities': ['KYOTOGHG (SARGWP100)'],
+                        'time': ['2005'],
+                },
+                'Bunkers_CH4': { # 2005 looks all wrong (swap in activity data not
+                    # result?)
+                    'category': ['14423', '14424', '14637'],
+                    'entities': ['CH4', 'KYOTOGHG (SARGWP100)', 'N2O'],
+                        'time': ['2005'],
+                },
+            },
+            'downscale': { # needed for 1990, 2000, 2005-2012
+                'sectors': {
+                    '1': {
+                        'basket': '1',
+                        'basket_contents': ['1.A', '1.B'],
+                        'entities': ['CO2', 'N2O', 'CH4'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                    '1.A': {
+                        'basket': '1.A',
+                        'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4',
+                                            '1.A.5'],
+                        'entities': ['CO2', 'N2O', 'CH4'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                    '1.B': {
+                        'basket': '1.B',
+                        'basket_contents': ['1.B.1', '1.B.2'],
+                        'entities': ['CH4'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                    '2': {
+                        'basket': '2',
+                        'basket_contents': ['2.A', '2.B', '2.C', '2.D', '2.E', '2.F',
+                                            '2.G'],
+                        'entities': ['CO2', 'N2O', 'CH4'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                    '4': {
+                        'basket': '4',
+                        'basket_contents': ['4.A', '4.B', '4.C', '4.D', '4.E', '4.F',
+                                            '4.G'],
+                        'entities': ['N2O', 'CH4'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                    '5': {
+                        'basket': '5',
+                        'basket_contents': ['5.A', '5.B', '5.C', '5.D', '5.E'],
+                        'entities': ['CO2', 'CH4'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                    '6': {
+                        'basket': '6',
+                        'basket_contents': ['6.A', '6.B', '6.C', '6.D'],
+                        'entities': ['N2O', 'CH4'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                    'bunkers': {
+                        'basket': '14637',
+                        'basket_contents': ['14423', '14424'],
+                        'entities': ['CO2'],
+                        'dim': 'category (BURDI)',
+                        #'skipna_evaluation_dims': None,
+                        #'skipna': True,
+                    },
+                },
+            },
+        }
+    },
     #AND: no data
     'ARE': { # 1990, 2000, 2005, 2014. some aggregation for fgases (pfcs) needed
         'DI2023-05-24': {
@@ -1512,6 +1607,10 @@ di_processing_info = {
     # the 'default' option is used if no specific option is found such that
     # processing of new versions can be done before creating a configuration for the
     # version.
+    'ALB': {
+        'default': di_processing_templates['ALB']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['ALB']['DI2023-05-24'],
+    },
     'ARE': {
         'default': di_processing_templates['ARE']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ARE']['DI2023-05-24'],

@@ -150,16 +150,17 @@ def process_data_for_country(
                     print(f"Generating {cat_to_generate} through subtraction")
                     data_agg = data_agg.expand_dims([f'category ('
                                                      f'{cat_terminology_in})'])
+
+                    data_agg = data_agg.assign_coords(
+                        coords={f'category ({cat_terminology_in})':
+                                    (f'category ({cat_terminology_in})',
+                                     [cat_to_generate])})
                     if cat_name_present:
                         cat_name = subtract_cats_current[cat_to_generate]['name']
                         data_agg = data_agg.assign_coords(
-                            coords={f'category ({cat_terminology_in})':
+                            coords={'orig_cat_name':
                                         (f'category ({cat_terminology_in})',
-                                         [cat_to_generate])})
-                    data_agg = data_agg.assign_coords(
-                        coords={'orig_cat_name':
-                                    (f'category ({cat_terminology_in})',
-                                     [cat_name])})
+                                         [cat_name])})
                     data_country = data_country.pr.merge(data_agg,
                                                          tolerance=tolerance)
                 else:
@@ -267,6 +268,7 @@ def process_data_for_country(
                     skipna=True, min_count=1)
             else:
                 try:
+                    #print(data_country.data_vars)
                     data_country[basket] = xr.full_like(data_country["CO2"],
                                                         np.nan).pr.quantify(
                         units="Gg CO2 / year")

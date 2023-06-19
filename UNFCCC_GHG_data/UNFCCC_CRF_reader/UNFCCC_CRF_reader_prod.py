@@ -1,20 +1,10 @@
-#import re
-#
-#from treelib import Tree
-
-
-#import pandas as pd
 import xarray as xr
 import primap2 as pm2
-#import numpy as np
-#import pycountry
 import datalad.api
 from datetime import date
-#from pathlib import Path
 from typing import Optional, List, Dict, Union
 
 from . import crf_specifications as crf
-#import crf_specifications as crf
 
 from .UNFCCC_CRF_reader_core import read_crf_table
 from .UNFCCC_CRF_reader_core import convert_crf_table_to_pm2if

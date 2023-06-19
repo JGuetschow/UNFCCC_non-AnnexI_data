@@ -10,4 +10,7 @@ UNFCCC_GHG_data/UNFCCC_DI_reader/test_UNFCCC_DI_reader.ipynb
 UNFCCC_GHG_data/UNFCCC_DI_reader/.ipynb_checkpoints/
 *.autosave
 #UNFCCC_GHG_data/UNFCCC_DI_reader
+build
+UNFCCC_GHG_data.egg-info
+
 
