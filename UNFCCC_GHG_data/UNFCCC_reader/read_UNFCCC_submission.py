@@ -3,10 +3,9 @@
 
 import datalad.api
 import argparse
-from get_submissions_info import get_code_file
 from get_submissions_info import get_possible_inputs
 from get_submissions_info import get_possible_outputs
-from UNFCCC_GHG_data.helper import root_path
+from UNFCCC_GHG_data.helper import root_path, get_code_file
 
 # Find the right function and possible input and output files and
 # read the data using datalad run.
