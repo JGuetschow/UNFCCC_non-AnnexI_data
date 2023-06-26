@@ -7,6 +7,8 @@ import primap2 as pm2
 from primap2.pm2io._data_reading import matches_time_format
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 
+# TODO: add fgases, sector summing (proc version)
+
 # ###
 # configuration
 # ###

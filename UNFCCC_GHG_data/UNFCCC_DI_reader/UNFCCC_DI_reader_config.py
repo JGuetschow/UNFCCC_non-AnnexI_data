@@ -322,6 +322,7 @@ cat_conversion = {
                          'name': 'Aggregate sources and non-CO2 emissions sources on land ('
                                  'Agriculture)'},
             'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock'},
+            '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
         },
     },
 }
@@ -474,9 +475,10 @@ di_processing_templates = {
     },
     # BDI 1998, 2005, 2010, 2015 # data coverage is a bit inconsistent
     # BEN 1995, 2000 # data coverage a bit inconsistent
-    'BFA': {
+    'BFA': { # 1994, 2007, 2008-2017
         'DI2023-05-24': {  # remove 2007, seems to have summed sectors (Agri and LULUCF)
-            # and missing sectors (e.g. 1,2 for CH4, N2O)
+            # and missing sectors (e.g. 1,2 for CH4, N2O), Agri. burning (4.E,
+            # 4.F) missing for 2008-2017
             'remove_years': ['2007'],
         },
     },
@@ -597,7 +599,20 @@ di_processing_templates = {
             },
         },
     },
-    # BLZ 1994, 2000, 2003, 2006, 2009 (energy sector missing in 200X)
+    'BLZ': {
+        'DI2023-05-24': { # 1994, 2000, 2003, 2006, 2009 (energy sector missing in 200X)
+            'remove_ts': {
+                'AG_2000': { # inconsistent with other data
+                    'category': ['4', '4.A', '4.B', '4.C', '4.D', '4.E', '4.F'],
+                    'time': ['2000'],
+                },
+                'waste_1994': { # inconsistent with other data
+                    'category': ['6', '6.A', '6.B'],
+                    'time': ['1994'],
+                },
+            },
+        },
+    },
     # BOL 1990, 1994, 1998, 2000, 2002 (energy sectors missing for CH4, N2O), 2004 (sm),
     # BRA 1990-2016 (BUR4)
     'BRB': {
@@ -930,7 +945,32 @@ di_processing_templates = {
             },
         },
     },
-    # EGY: 1990, 2000, 2005
+    'EGY': {
+        'DI2023-05-24': { # 1990, 2000, 2005
+            #omit aerosols / GHG precursosrs in downscaling
+            'remove_ts': {
+                '2.H': { # all in 2.H in 1990
+                        'category': ['2.H'],
+                        'entities': ['KYOTOGHG (AR4GWP100)', 'CH4', 'CO2', 'N2O'],
+                    },
+                '2': { # all in 2.H in 1990
+                        'category': ['2.H'],
+                        'entities': ['KYOTOGHG (AR4GWP100)', 'CH4'],
+                    },
+            },
+            'downscale': {
+                'sectors': {
+                    '2': {
+                        'basket': '2',
+                        'basket_contents': ['2.A', '2.B', '2.C'],
+                        'entities': ['CO2', 'N2O'],
+                        'dim': 'category (BURDI)',
+                    },
+                },
+            },
+        },
+    },
+    # EGY:  TODO: downscale 2 in 1990, remove
     # 'ERI' #1994 1995-1999 (partial coverage, KYOTOGHG and total are incomplete), 2000
     'ETH': {
         'DI2023-05-24': { # 1990-1993 (downscaling needed), 1994-2013
@@ -1082,6 +1122,20 @@ di_processing_templates = {
             },
         },
     },
+    # ISR: sf6 in 2008 is very high, but it's from BUR1
+    # JOR: M.AG in 2000 is very low but it's like that in NC2 and no comment on error
+    # in comparison in NC3
+    # 'JOR': {
+    #     'DI2023-05-24': {
+    #         'remove_ts': {
+    #             'agri_N2O': {
+    #                 'category': [''],
+    #                 'entities': ['N2O'],
+    #                 'time': ['2000']
+    #             },
+    #         },
+    #     }
+    # }
     'KEN': {
         'DI2023-05-24': { # 1994,1995, 2000, 2005, 2010. Subsectors doffer a bit
             # especilly for 1994
@@ -1104,7 +1158,18 @@ di_processing_templates = {
     # LBN: 1994, 2000, 2011-2013
     # LBR: 2000, 2014 (2000 misses some sectors, e.g. IPPU)
     # LBY: no data
-    # LCA: 1994, 2000, 2005, 2010, sectors a bit inconsistent for 1994
+    'LCA': {
+        'DI2023-05-24': { #1994, 2000, 2005, 2010, sectors a bit inconsistent for 1994
+            # 1994 data waste CH4
+            'remove_ts': {
+                'waste': { # very high in 1994
+                    'category': ['6', '6.A', '6.B', '6.D'],
+                    'entities': ['CH4', 'N2O', 'KYOTOGHG (SARGWP100)'],
+                        'time': ['1994'],
+                },
+            },
+        },
+    },
     # LKA: 1994, 2000. a bit inconsisten in subsectrs (all emissions in "other in
     # 1994 for some sectors)
     'LSO': {
@@ -1268,7 +1333,17 @@ di_processing_templates = {
     # from 2006 data to use that for downscaling
     # MOZ: 1990, 1994
     # MRT: more data in BUR 1 and 2
-    # MUS: 1995, 200-2006, 2013
+    'MUS': {
+        'DI2023-05-24': { #1995, 200-2006, 2013
+            'remove_ts': {
+                'waste': { # 1994 inconsistent
+                    'category': ['6', '6.A', '6.B', '6.C', '6.D'],
+                    'entities': ['CO2', 'CH4', 'N2O', 'KYOTOGHG (SARGWP100)'],
+                        'time': ['1994'],
+                },
+            },
+        },
+    },
     # MWI: 1990, 1994. inconsistency in 1.B.1: 1994: CO2, 1990: CH4
     # MYS: more data in BUR 3, 4
     # NAM: more adat in BUR 2, 3
@@ -1655,6 +1730,10 @@ di_processing_info = {
         'default': di_processing_templates['ECU']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ECU']['DI2023-05-24'],
     },
+    'EGY': {
+        'default': di_processing_templates['EGY']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['EGY']['DI2023-05-24'],
+    },
     'ETH': {
         'default': di_processing_templates['ETH']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ETH']['DI2023-05-24'],
@@ -1679,6 +1758,10 @@ di_processing_info = {
         'default': di_processing_templates['KEN']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['KEN']['DI2023-05-24'],
     },
+    'LCA': {
+        'default': di_processing_templates['LCA']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['LCA']['DI2023-05-24'],
+    },
     'LSO': {
         'default': di_processing_templates['LSO']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['LSO']['DI2023-05-24'],
@@ -1698,6 +1781,10 @@ di_processing_info = {
     'MMR': {
         'default': di_processing_templates['MMR']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MMR']['DI2023-05-24'],
+    },
+    'MUS': {
+        'default': di_processing_templates['MUS']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['MUS']['DI2023-05-24'],
     },
     'PHL': {
         'default': di_processing_templates['PHL']['DI2023-05-24'],
@@ -1737,7 +1824,8 @@ gas_baskets = {
     'HFCS (SARGWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
                      'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
                      'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                     'HFC407c', 'HFC410a', 'HFC4310mee', 'OTHERHFCS (SARGWP100)'],
+                     'HFC407c', 'HFC410a', 'HFC4310mee', #'OTHERHFCS (SARGWP100)',
+                         'Unspecified mix of HFCs (SARGWP100)'],
     'HFCS (AR4GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
                      'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
                      'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
@@ -1745,13 +1833,14 @@ gas_baskets = {
     'HFCS (AR5GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
                       'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
                       'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                      'HFC407c', 'HFC410a', 'HFC4310mee'],
+                      'HFC407c', 'HFC410a', 'HFC4310mee',
+                         'Unspecified mix of HFCs (AR5GWP100)'],
     'PFCS (SARGWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'Unspecified mix of PFCs (AR4GWP100)'],
+                      'Unspecified mix of PFCs (SARGWP100)'],
     'PFCS (AR4GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
                       'Unspecified mix of PFCs (AR4GWP100)'],
     'PFCS (AR5GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'Unspecified mix of PFCs (AR4GWP100)'],
+                      'Unspecified mix of PFCs (AR5GWP100)'],
     'FGASES (SARGWP100)': ['HFCS (SARGWP100)', 'PFCS (SARGWP100)', 'SF6', 'NF3'],
     'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3'],
     'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3'],

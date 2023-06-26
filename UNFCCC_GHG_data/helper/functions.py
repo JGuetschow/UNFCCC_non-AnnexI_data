@@ -313,6 +313,7 @@ def convert_categories(
         cat_name_present = False
     ds_converted = ds_input.copy(deep=True)
     ds_converted.attrs = deepcopy(ds_input.attrs)
+    # TODO: change attrs for additional coordinates
 
     # change category terminology
     cat_dim = ds_converted.attrs["cat"]
