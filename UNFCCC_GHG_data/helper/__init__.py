@@ -25,5 +25,4 @@ __all__ = [
     "convert_categories",
     "create_folder_mapping",
     "process_data_for_country",
-    "get_code_file",
 ]
