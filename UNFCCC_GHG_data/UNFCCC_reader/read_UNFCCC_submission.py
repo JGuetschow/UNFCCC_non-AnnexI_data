@@ -3,7 +3,7 @@
 
 import datalad.api
 import argparse
-from get_submissions_info import get_code_file
+from UNFCCC_GHG_data.helper import get_code_file
 from get_submissions_info import get_possible_inputs
 from get_submissions_info import get_possible_outputs
 from UNFCCC_GHG_data.helper import root_path

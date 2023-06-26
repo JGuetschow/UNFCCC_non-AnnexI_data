@@ -12,23 +12,24 @@ from config_KOR_BUR4 import remove_cats, aggregate_before_mapping, cat_mapping, 
     filter_remove_after_agg
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 from primap2.pm2io._data_reading import filter_data, matches_time_format
+from UNFCCC_GHG_data.helper import process_data_for_country
 
 # ###
 # configuration
 # ###
 input_folder = downloaded_data_path / 'non-UNFCCC' / 'Republic_of_Korea' / \
-               '2021-Inventory'
+               '2022-Inventory'
 output_folder = extracted_data_path / 'non-UNFCCC' / 'Republic_of_Korea'
 if not output_folder.exists():
     output_folder.mkdir()
 
-output_filename = 'KOR_2021-Inventory_2021_'
+output_filename = 'KOR_2022-Inventory_2022_'
 
-inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2019).xlsx'
-years_to_read = range(1990, 2019 + 1)
+inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2020).xlsx'
+years_to_read = range(1990, 2020 + 1)
 
 sheets_to_read = ['온실가스', 'CO2', 'CH4', 'N2O', 'HFCs', 'PFCs', 'SF6']
-cols_to_read = range(1, 2019 - 1990 + 3)
+cols_to_read = range(1, 2020 - 1990 + 3)
 
 # columns for category UNFCCC_GHG_data and original category name
 index_cols = ['분야·부문/연도']
@@ -78,7 +79,7 @@ coords_defaults = {
     "source": "KOR-GHG-Inventory",
     "provenance": "measured",
     "area": "KOR",
-    "scenario": "INV2021",
+    "scenario": "INV2022",
 }
 
 coords_value_mapping = {
@@ -102,13 +103,15 @@ filter_remove = {
 filter_keep = {}
 
 meta_data = {
-    "references": "http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=5240&fileSeq=1",
+    "references": "http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=5810&fileSeq=3",
     "rights": "",
     "contact": "mail@johannes-guetschow.de",
-    "title": "Republic of Korea: National Greenhouse Gas Inventory Report 2021",
+    "title": "Republic of Korea: National Greenhouse Gas Inventory Report 2022",
     "comment": "Read fom xlsx file by Johannes Gütschow",
     "institution": "Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory and Research Center",
 }
+
+
 
 cols_for_space_stripping = []
 
@@ -134,6 +137,8 @@ for sheet in sheets_to_read:
     df_current.dropna(axis=0, how='all', subset=index_cols, inplace=True)
     # set index. necessary for the stack operation in the conversion to long format
     # df_current = df_current.set_index(index_cols)
+    # make sure all col headers are str
+    df_current.columns = df_current.columns.map(str)
     # add columns
     for col in sheet_metadata.keys():
         df_current.insert(1, col, sheet_metadata[col][sheet])
@@ -151,8 +156,7 @@ df_all.rename(columns={"분야·부문/연도": "category"}, inplace=True)
 df_all["orig_cat_name"] = df_all["category"]
 df_all["cat_name_translation"] = df_all["category"]
 
-# make sure all col headers are str
-df_all.columns = df_all.columns.map(str)
+
 
 # ###
 # convert to PRIMAP2 interchange format
@@ -169,7 +173,7 @@ data_if = pm2.pm2io.convert_wide_dataframe_if(
     #filter_keep=filter_keep,
     meta_data=meta_data,
     convert_str=True,
-copy_df=True, # we need the unchanged DF for the conversion step
+    copy_df=True, # we need the unchanged DF for the conversion step
     )
 
 filter_data(data_if, filter_remove=filter_remove)
@@ -185,11 +189,11 @@ data_if = data_pm2.pr.to_interchange_format()
 # ###
 if not output_folder.exists():
     output_folder.mkdir()
-#pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
+pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
 
 data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 encoding = {var: compression for var in data_pm2.data_vars}
-#data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
+data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
 
 # ###
 # conversion to ipcc 2006 categories
@@ -233,7 +237,7 @@ for cat_to_agg in aggregate_before_mapping:
             by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
                 'unit']).sum()
 
-
+        df_combine = df_combine.drop(columns=["category (IPCC2006_PRIMAP)", "orig_cat_name", "cat_name_translation"])
         df_combine.insert(0, cat_label, cat_to_agg)
         df_combine.insert(1, "orig_cat_name",
                           aggregate_before_mapping[cat_to_agg]["name"])
@@ -281,6 +285,7 @@ for cat_to_agg in aggregate_after_mapping:
             by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
                 'unit']).sum()
 
+        df_combine = df_combine.drop(columns=["category (IPCC2006_PRIMAP)", "orig_cat_name", "cat_name_translation"])
         df_combine.insert(0, cat_label, cat_to_agg)
         df_combine.insert(1, "orig_cat_name",
                           aggregate_after_mapping[cat_to_agg]["name"])
