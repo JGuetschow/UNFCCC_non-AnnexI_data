@@ -4,6 +4,7 @@ from .definitions import legacy_data_path
 from .definitions import downloaded_data_path, downloaded_data_path_UNFCCC
 from .definitions import dataset_path, dataset_path_UNFCCC
 from .definitions import custom_country_mapping, custom_folders
+from .definitions import GWP_factors
 from .functions import get_country_code, get_country_name, convert_categories
 from .functions import create_folder_mapping, process_data_for_country, get_code_file
 
@@ -20,6 +21,7 @@ __all__ = [
     "dataset_path_UNFCCC",
     "custom_country_mapping",
     "custom_folders",
+    "GWP_factors",
     "get_country_code",
     "get_country_name",
     "convert_categories",

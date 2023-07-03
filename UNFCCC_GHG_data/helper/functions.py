@@ -76,7 +76,7 @@ def process_data_for_country(
     data_country = data_country.dropna(f'time', how='all')
     # remove variables only containing nan
     nan_vars_country = [var for var in data_country.data_vars if
-                        data_country[var].isnull().all().data is True]
+                        bool(data_country[var].isnull().all().data) is True]
     print(f"removing all-nan variables: {nan_vars_country}")
     data_country = data_country.drop_vars(nan_vars_country)
 
@@ -338,7 +338,8 @@ def convert_categories(
 
     # redo the list of present cats after mapping, as we have new categories in the
     # target terminology now
-    cats_present_mapped = list(ds_converted.coords[f'category ({terminology_to})'])
+    cats_present_mapped = list(ds_converted.coords[f'category ('
+                                                   f'{terminology_to})'].values)
     # aggregate categories
     if 'aggregate' in conversion:
         aggregate_cats = conversion['aggregate']

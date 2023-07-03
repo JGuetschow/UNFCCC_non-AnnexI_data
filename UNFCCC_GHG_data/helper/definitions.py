@@ -47,3 +47,18 @@ custom_folders = {
     'European_Union': 'EUA',
     'Taiwan': 'TWN',
 }
+
+GWP_factors = {
+    'SARGWP100_to_AR4GWP100': {
+        'HFCS': 1.1,
+        'PFCS': 1.1,
+    },
+    'SARGWP100_to_AR5GWP100': {
+        'HFCS': 1.2,
+        'PFCS': 1.2,
+    },
+    'SARGWP100_to_AR6GWP100': {
+        'HFCS': 1.4,
+        'PFCS': 1.3,
+    },
+}
