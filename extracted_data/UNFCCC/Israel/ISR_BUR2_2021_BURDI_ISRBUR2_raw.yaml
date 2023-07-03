@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/documents/627150
+  rights: ''
+  contact: mail@johannes-guestchow.de
+  title: Israel. Biennial update report (BUR). BUR2
+  comment: Read fom pdf by Johannes Gütschow
+  institution: UNFCCC
+  cat: category (BURDI_ISRBUR2)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - source
+  - category (BURDI_ISRBUR2)
+  - scenario (PRIMAP)
+  - area (ISO3)
+  - entity
+  - unit
+data_file: ISR_BUR2_2021_BURDI_ISRBUR2_raw.csv

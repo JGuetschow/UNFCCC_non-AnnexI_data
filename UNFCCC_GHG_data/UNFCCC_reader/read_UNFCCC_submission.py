@@ -27,7 +27,7 @@ print("")
 script_name = get_code_file(country, submission)
 
 if script_name is not None:
-    print(f"Found UNFCCC_GHG_data file {script_name}")
+    print(f"Found code file {script_name}")
     print("")
 
     # get possible input files
@@ -71,7 +71,7 @@ if script_name is not None:
     )
 else:
     # no UNFCCC_GHG_data found.
-    print(f"No UNFCCC_GHG_data found to read {submission} from {country}")
-    print(f"Use 'doit country_info --country={country} to get "
+    print(f"No code found to read {submission} from {country}")
+    print(f"Use 'doit country_info country={country} to get "
           f"a list of available submissions and datasets.")
 
