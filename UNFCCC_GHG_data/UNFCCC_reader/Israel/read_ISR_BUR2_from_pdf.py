@@ -248,17 +248,6 @@ data_pm2.pr.to_netcdf(
 #### processing
 data_proc_pm2 = data_pm2
 
-# add FGASES in AR4, AR5, and AR6 GWPs
-GWPs_to_add = ["AR4GWP100", "AR5GWP100", "AR6GWP100"]
-entities = ["HFCS", "PFCS"]
-for entity in entities:
-    data_SAR = data_proc_pm2[f'{entity} ({gwp_to_use})']
-    for GWP in GWPs_to_add:
-        data_GWP = data_SAR * GWP_factors[f"{gwp_to_use}_to_{GWP}"][entity]
-        data_GWP.attrs["entity"] = entity
-        data_GWP.attrs["gwp_context"] = GWP
-        data_proc_pm2[f"{entity} ({GWP})"] = data_GWP
-
 # combine CO2 emissions and removals
 temp_CO2 = data_proc_pm2["CO2"].copy()
 #data_proc_pm2["CO2"] = data_proc_pm2[["CO2 emissions", "CO2 removals"]].to_array()

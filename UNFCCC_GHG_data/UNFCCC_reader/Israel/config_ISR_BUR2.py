@@ -385,14 +385,23 @@ cat_conversion = {
         'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock'},
         '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
     },
+    'basket_copy': {
+        'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+        'entities': ["HFCS", "PFCS"],
+        'source_GWP': 'SARGWP100',
+    },
 }
 
 sectors_to_save = [
-    '1', '1.A', '1.A.1', '1.A.2', '1.A.3', '1.A.4', '1.A.4.a', '1.A.4.b', '1.A.4.c', '1.A.5',
-    '1.B', '1.B.1', '1.B.2', '2.A', '2.A.1', '2.A.2', '2.A.4', '2.A.5', '2.A.3',
-    '2.B.2', '2.B.8', '2.B.9', '2.B.10', '2.C', '2.F', '2.H',
-    '3', 'M.AG', '3.A', '3.A.1', '3.A.2', '3.C.1', '3.C.7', 'M.3.C.45.AG', '3.C.7', '3.C.8',
-    'M.LULUCF', '4', '4.A', '4.B', '4.C', '4.D',
+    '1', '1.A', '1.A.1', '1.A.2', '1.A.3', '1.A.4', '1.A.4.a', '1.A.4.b', '1.A.4.c',
+    '1.A.5',
+    '1.B', '1.B.1', '1.B.2',
+    '2', '2.A', '2.A.1', '2.A.2', '2.A.3', '2.A.4', '2.A.5',
+    '2.B', '2.B.2', '2.B.8', '2.B.9', '2.B.10', '2.C', '2.F', '2.H',
+    '3', 'M.AG', '3.A', '3.A.1', '3.A.2',
+    '3.C', '3.C.1', 'M.3.C.1.AG', '3.C.7', 'M.3.C.45.AG', '3.C.8', 'M.3.C.AG',
+    'M.LULUCF', 'M.AG.ELV',
+    '4', '4.A', '4.B', '4.C', '4.D',
     '0', 'M.0.EL', 'M.BK', 'M.BK.A', 'M.BK.M', 'M.BIO', '5']
 
 
@@ -402,10 +411,16 @@ gas_baskets = {
                            'Unspecified mix of HFCs (SARGWP100)',
                            'Unspecified mix of PFCs (SARGWP100)'],
     'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3',
-                           'Unspecified mix of HFCs (SARGWP100)',
-                           'Unspecified mix of PFCs (SARGWP100)'],
-    'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3'],
-    'FGASES (AR6GWP100)':['HFCS (AR6GWP100)', 'PFCS (AR6GWP100)', 'SF6', 'NF3'],
+                           'Unspecified mix of HFCs (AR4GWP100)',
+                           'Unspecified mix of PFCs (AR4GWP100)'],
+    'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3',
+                          'Unspecified mix of HFCs (AR5GWP100)',
+                          'Unspecified mix of PFCs (AR5GWP100)'
+                          ],
+    'FGASES (AR6GWP100)':['HFCS (AR6GWP100)', 'PFCS (AR6GWP100)', 'SF6', 'NF3',
+                          'Unspecified mix of HFCs (AR6GWP100)',
+                          'Unspecified mix of PFCs (AR6GWP100)'
+                          ],
     'KYOTOGHG (SARGWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (SARGWP100)'],
     'KYOTOGHG (AR4GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR4GWP100)'],
     'KYOTOGHG (AR5GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR5GWP100)'],

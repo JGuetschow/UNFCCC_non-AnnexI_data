@@ -47,7 +47,7 @@ cat_codes_manual = {
     'CO2 from Biomass': 'MBIO',
 }
 
-cat_code_regexp = r'^(?P<UNFCCC_GHG_data>[a-zA-Z0-9]{1,4})[\s\.].*'
+cat_code_regexp = r'^(?P<code>[a-zA-Z0-9]{1,4})[\s\.].*'
 
 coords_cols = {
     "category": "category",

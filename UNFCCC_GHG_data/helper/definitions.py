@@ -61,4 +61,16 @@ GWP_factors = {
         'HFCS': 1.4,
         'PFCS': 1.3,
     },
+    'AR4GWP100_to_SARGWP100': {
+        'HFCS': 0.91,
+        'PFCS': 0.91,
+    },
+    'AR4GWP100_to_AR5GWP100': {
+        'HFCS': 1.1,
+        'PFCS': 1.1,
+    },
+    'AR4GWP100_to_AR6GWP100': {
+        'HFCS': 1.27,
+        'PFCS': 1.18,
+    },
 }
