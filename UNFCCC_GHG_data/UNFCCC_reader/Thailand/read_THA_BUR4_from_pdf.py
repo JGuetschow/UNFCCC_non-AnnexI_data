@@ -15,12 +15,9 @@ os.environ["UNFCCC_GHG_ROOT_PATH"] = \
      "/storage/data/data/PRIMAP/primap_2.0/datasets/UNFCCC_non-AnnexI_data/"
 import pandas as pd
 import primap2 as pm2
-import copy
 
-from UNFCCC_GHG_data.helper import process_data_for_country, GWP_factors
+from UNFCCC_GHG_data.helper import process_data_for_country
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
-from primap2.pm2io._data_reading import matches_time_format
-
 from config_THA_BUR4 import gwp_to_use, inv_conf
 from config_THA_BUR4 import coords_cols, coords_defaults, coords_terminologies, \
     coords_value_mapping, filter_remove, filter_keep, meta_data
