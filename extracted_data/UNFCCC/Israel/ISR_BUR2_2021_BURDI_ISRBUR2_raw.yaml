@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - provenance
   - source
+  - provenance
   - category (BURDI_ISRBUR2)
-  - scenario (PRIMAP)
   - area (ISO3)
+  - scenario (PRIMAP)
   - entity
   - unit
 data_file: ISR_BUR2_2021_BURDI_ISRBUR2_raw.csv
