@@ -1,9 +1,6 @@
 # this script reads data from Thailand's BUR3
 # Data is read from the pdf file
 
-import os
-os.environ["UNFCCC_GHG_ROOT_PATH"] = \
-     "/storage/data/data/PRIMAP/primap_2.0/datasets/UNFCCC_non-AnnexI_data/"
 import pandas as pd
 import primap2 as pm2
 import camelot

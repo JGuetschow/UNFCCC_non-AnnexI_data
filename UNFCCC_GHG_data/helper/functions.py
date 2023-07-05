@@ -823,3 +823,46 @@ def get_code_file(
         return code_file_path.relative_to(root_path)
     else:
         return None
+
+
+def fix_rows(data: pd.DataFrame, rows_to_fix: list, col_to_use: str, n_rows: int)->pd.DataFrame:
+    '''
+    Function to fix rows that have been split during reading from pdf
+    This is the version used for Malaysia BUR3,4. adapt for other BURs if needed
+
+    :param data:
+    :param rows_to_fix:
+    :param col_to_use:
+    :param n_rows:
+    :return:
+    '''
+    for row in rows_to_fix:
+        #print(row)
+        # find the row number and collect the row and the next two rows
+        index = data.loc[data[col_to_use] == row].index
+        #print(list(index))
+        if not list(index):
+            print(f"Can't merge split row {row}")
+            print(data[col_to_use])
+        #print(f"Merging split row {row} for table {page}")
+        loc = data.index.get_loc(index[0])
+        if n_rows == -3:
+            locs_to_merge = list(range(loc - 1, loc + 2))
+        elif n_rows == -5:
+            locs_to_merge = list(range(loc - 1, loc + 4))
+        else:
+            locs_to_merge = list(range(loc, loc + n_rows))
+        rows_to_merge = data.iloc[locs_to_merge]
+        indices_to_merge = rows_to_merge.index
+        # join the three rows
+        new_row = rows_to_merge.agg(' '.join)
+        # replace the double spaces that are created
+        # must be done here and not at the end as splits are not always
+        # the same and join would produce different col values
+        new_row = new_row.str.replace("  ", " ")
+        new_row = new_row.str.replace("N O", "NO")
+        new_row = new_row.str.replace(", N", ",N")
+        new_row = new_row.str.replace("- ", "-")
+        data.loc[indices_to_merge[0]] = new_row
+        data = data.drop(indices_to_merge[1:])
+    return data

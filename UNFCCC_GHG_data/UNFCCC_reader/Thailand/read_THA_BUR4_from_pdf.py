@@ -10,9 +10,6 @@
 # CO2eq and thus HFC data can be used and SF6 data is not 0 as in the mein inventory
 # tables
 
-import os
-os.environ["UNFCCC_GHG_ROOT_PATH"] = \
-     "/storage/data/data/PRIMAP/primap_2.0/datasets/UNFCCC_non-AnnexI_data/"
 import pandas as pd
 import primap2 as pm2
 

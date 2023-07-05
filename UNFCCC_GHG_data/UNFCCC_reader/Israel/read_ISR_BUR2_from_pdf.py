@@ -2,9 +2,6 @@
 
 # TODO: bunkers trend tables not read because of special format
 
-import os
-os.environ["UNFCCC_GHG_ROOT_PATH"] = \
-     "/storage/data/data/PRIMAP/primap_2.0/datasets/UNFCCC_non-AnnexI_data/"
 from UNFCCC_GHG_data.helper import process_data_for_country, GWP_factors
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 import camelot

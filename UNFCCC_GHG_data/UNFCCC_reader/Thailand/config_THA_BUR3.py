@@ -250,7 +250,7 @@ country_processing_step2 = {
     'basket_copy': {
         'GWPs_to_add': ["SARGWP100", "AR5GWP100", "AR6GWP100"],
         'entities': ["HFCS", "PFCS"],
-        'source_GWP': 'AR4GWP100',
+        'source_GWP': gwp_to_use,
     },
 }
 ## not in BUR3: 1.A.1.a, 1.A.1.b, 1.A.3.a, 1.A.3.b, 1.A.3.c, 1.A.3.d, 1.A.5, 1.B.3,

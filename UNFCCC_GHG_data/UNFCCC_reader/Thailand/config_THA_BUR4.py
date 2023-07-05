@@ -233,7 +233,7 @@ country_processing_step2 = {
     'basket_copy': {
         'GWPs_to_add': ["SARGWP100", "AR5GWP100", "AR6GWP100"],
         'entities': ["HFCS", "PFCS"],
-        'source_GWP': 'AR4GWP100',
+        'source_GWP': gwp_to_use,
     },
 }
 
