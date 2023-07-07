@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/documents/624776
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: Malaysia - Fourth Biennial Update Report under the UNFCCC Processed on 2023-07-05
+  comment: Read fom pdf file by Johannes Gütschow Processed on 2023-07-05
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - provenance
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: MYS_BUR3_2020_IPCC2006_PRIMAP.csv
