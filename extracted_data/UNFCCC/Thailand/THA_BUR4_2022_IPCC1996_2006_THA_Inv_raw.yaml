@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
+  - provenance
   - source
   - scenario (PRIMAP)
-  - category (IPCC1996_2006_THA_Inv)
-  - provenance
   - area (ISO3)
+  - category (IPCC1996_2006_THA_Inv)
   - entity
   - unit
 data_file: THA_BUR4_2022_IPCC1996_2006_THA_Inv_raw.csv
