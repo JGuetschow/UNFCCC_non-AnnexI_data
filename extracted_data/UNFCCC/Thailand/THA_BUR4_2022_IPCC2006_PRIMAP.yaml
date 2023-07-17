@@ -2,10 +2,10 @@ attrs:
   references: https://unfccc.int/documents/624750
   rights: ''
   contact: mail@johannes-guetschow.de
-  title: Thailand. Biennial update report (BUR). BUR4 Processed on 2023-07-04 Processed
-    on 2023-07-04
-  comment: Read fom pdf by Johannes Gütschow Processed on 2023-07-04 Processed on
-    2023-07-04
+  title: Thailand. Biennial update report (BUR). BUR4 Processed on 2023-07-17 Processed
+    on 2023-07-17
+  comment: Read fom pdf by Johannes Gütschow Processed on 2023-07-17 Processed on
+    2023-07-17
   institution: UNFCCC
   cat: category (IPCC2006_PRIMAP)
   area: area (ISO3)
@@ -14,11 +14,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - category (IPCC2006_PRIMAP)
-  - area (ISO3)
   - source
   - scenario (PRIMAP)
+  - category (IPCC2006_PRIMAP)
   - provenance
+  - area (ISO3)
   - entity
   - unit
 data_file: THA_BUR4_2022_IPCC2006_PRIMAP.csv
