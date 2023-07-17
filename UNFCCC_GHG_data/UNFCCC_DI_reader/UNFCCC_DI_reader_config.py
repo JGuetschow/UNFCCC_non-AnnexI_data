@@ -1816,6 +1816,10 @@ di_processing_info = {
         'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
         'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
     },
+    'MHL': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'MLI': {
         'default': di_processing_templates['MLI']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MLI']['DI2023-05-24'],
@@ -1832,9 +1836,21 @@ di_processing_info = {
         'default': di_processing_templates['PHL']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['PHL']['DI2023-05-24'],
     },
+    'PRY': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
+    'PSE': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'RWA': {
         'default': di_processing_templates['RWA']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['RWA']['DI2023-05-24'],
+    },
+    'SGP': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
     },
     'SLB': {
         'default': di_processing_templates['SLB']['DI2023-05-24'],
