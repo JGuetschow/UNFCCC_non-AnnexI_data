@@ -54,6 +54,7 @@ coords_value_mapping = {
     "entity": {
         'HFCs': f"HFCS ({gwp_to_use})",
         'PFCs': f"PFCS ({gwp_to_use})",
+        'SF6': f'SF6 ({gwp_to_use})',
         'NMVOCs': 'NMVOC',
         'Nox': 'NOx',
     },
