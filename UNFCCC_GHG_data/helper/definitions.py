@@ -52,25 +52,37 @@ GWP_factors = {
     'SARGWP100_to_AR4GWP100': {
         'HFCS': 1.1,
         'PFCS': 1.1,
+        'UnspMixOfHFCs': 1.1,
+        'PFCS': 1.1,
     },
     'SARGWP100_to_AR5GWP100': {
         'HFCS': 1.2,
         'PFCS': 1.2,
+        'UnspMixOfHFCs': 1.2,
+        'UnspMixOfPFCs': 1.2,
     },
     'SARGWP100_to_AR6GWP100': {
         'HFCS': 1.4,
         'PFCS': 1.3,
+        'UnspMixOfHFCs': 1.4,
+        'UnspMixOfPFCs': 1.3,
     },
     'AR4GWP100_to_SARGWP100': {
         'HFCS': 0.91,
         'PFCS': 0.91,
+        'UnspMixOfHFCs': 0.91,
+        'UnspMixOfPFCs': 0.91,
     },
     'AR4GWP100_to_AR5GWP100': {
         'HFCS': 1.1,
         'PFCS': 1.1,
+        'UnspMixOfHFCs': 1.1,
+        'UnspMixOfPFCs': 1.1,
     },
     'AR4GWP100_to_AR6GWP100': {
         'HFCS': 1.27,
         'PFCS': 1.18,
+        'UnspMixOfHFCs': 1.27,
+        'UnspMixOfPFCs': 1.18,
     },
 }
