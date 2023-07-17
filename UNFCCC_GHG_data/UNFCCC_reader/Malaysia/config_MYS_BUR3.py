@@ -665,20 +665,10 @@ country_processing_step1 = {
 }
 
 gas_baskets = {
-    'FGASES (SARGWP100)': ['HFCS (SARGWP100)', 'PFCS (SARGWP100)', 'SF6', 'NF3',
-                           'Unspecified mix of HFCs (SARGWP100)',
-                           'Unspecified mix of PFCs (SARGWP100)'],
-    'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3',
-                           'Unspecified mix of HFCs (AR4GWP100)',
-                           'Unspecified mix of PFCs (AR4GWP100)'],
-    'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3',
-                          'Unspecified mix of HFCs (AR5GWP100)',
-                          'Unspecified mix of PFCs (AR5GWP100)'
-                          ],
-    'FGASES (AR6GWP100)':['HFCS (AR6GWP100)', 'PFCS (AR6GWP100)', 'SF6', 'NF3',
-                          'Unspecified mix of HFCs (AR6GWP100)',
-                          'Unspecified mix of PFCs (AR6GWP100)'
-                          ],
+    'FGASES (SARGWP100)': ['HFCS (SARGWP100)', 'PFCS (SARGWP100)', 'SF6', 'NF3'],
+    'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3'],
+    'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3'],
+    'FGASES (AR6GWP100)':['HFCS (AR6GWP100)', 'PFCS (AR6GWP100)', 'SF6', 'NF3'],
     'KYOTOGHG (SARGWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (SARGWP100)'],
     'KYOTOGHG (AR4GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR4GWP100)'],
     'KYOTOGHG (AR5GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR5GWP100)'],

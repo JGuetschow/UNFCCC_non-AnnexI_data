@@ -27,6 +27,8 @@ filter_activity_factors = {
 cat_code_regexp = r'(?P<code>^(([0-9][A-Za-z0-9\.]{0,10}[0-9A-Za-z]))|([0-9]))[' \
                   r'\s\.].*'
 
+gwp_to_use = 'SARGWP100'
+
 # PRIMAP2 interchange format config
 di_to_pm2if_template_nai = {
     "coords_cols": {
@@ -57,18 +59,18 @@ di_to_pm2if_template_nai = {
     # mapping of values e.g. gases to the primap2 format
     "coords_value_mapping": {
         "entity": {
-            "Aggregate GHGs (SARGWP100)": "KYOTOGHG (SARGWP100)",
-            "Aggregate F-gases (SARGWP100)": "FGASES (SARGWP100)",
-            "HFCs (SARGWP100)": "HFCS (SARGWP100)",
-            "PFCs (SARGWP100)": "PFCS (SARGWP100)",
-            #"SF6 (SARGWP100)": "SF6 (SARGWP100)",
-            #"CH4 (SARGWP100)": "CH4 (SARGWP100)",
-            "CO2 (SARGWP100)": "CO2",
-            #"N2O (SARGWP100)": "N2O (SARGWP100)",
-            #"Unspecified mix of HFCs and PFCs (SARGWP100)":
-            #    "UnspMixOfHFCsPFCs (SARGWP100)",
-            "Unspecified mix of HFCs (SARGWP100)": "UnspMixOfHFCs (SARGWP100)",
-            "Unspecified mix of PFCs (SARGWP100)": "UnspMixOfPFCs (SARGWP100)",
+            f"Aggregate GHGs ({gwp_to_use})": f"KYOTOGHG ({gwp_to_use})",
+            f"Aggregate F-gases ({gwp_to_use})": f"FGASES ({gwp_to_use})",
+            f"HFCs ({gwp_to_use})": f"HFCS ({gwp_to_use})",
+            f"PFCs ({gwp_to_use})": f"PFCS ({gwp_to_use})",
+            #f"SF6 ({gwp_to_use})": f"SF6 ({gwp_to_use})",
+            #f"CH4 ({gwp_to_use})": f"CH4 ({gwp_to_use})",
+            f"CO2 ({gwp_to_use})": "CO2",
+            #f"N2O ({gwp_to_use})": f"N2O ({gwp_to_use})",
+            #f"Unspecified mix of HFCs and PFCs ({gwp_to_use})":
+            #    f"UnspMixOfHFCsPFCs ({gwp_to_use})",
+            f"Unspecified mix of HFCs ({gwp_to_use})": f"UnspMixOfHFCs ({gwp_to_use})",
+            f"Unspecified mix of PFCs ({gwp_to_use})": f"UnspMixOfPFCs ({gwp_to_use})",
             "HFC-23": "HFC23",
             "HFC-32": "HFC32",
             "HFC-41": "HFC41",
@@ -1821,7 +1823,7 @@ di_processing_info = {
 }
 
 basket_copy = {
-    'GWPs_to_add': ["SARGWP100", "AR5GWP100", "AR6GWP100"],
+    'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
     'entities': ["HFCS", "PFCS"],
     'source_GWP': gwp_to_use,
 },
@@ -1841,24 +1843,29 @@ gas_baskets = {
                       'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
                       'HFC407c', 'HFC410a', 'HFC4310mee',
                          'Unspecified mix of HFCs (AR5GWP100)'],
+    'HFCS (AR6GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
+                      'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
+                      'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
+                      'HFC407c', 'HFC410a', 'HFC4310mee',
+                         'Unspecified mix of HFCs (AR6GWP100)'],
     'PFCS (SARGWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
                       'Unspecified mix of PFCs (SARGWP100)'],
     'PFCS (AR4GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
                       'Unspecified mix of PFCs (AR4GWP100)'],
     'PFCS (AR5GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
                       'Unspecified mix of PFCs (AR5GWP100)'],
+    'PFCS (AR6GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
+                      'Unspecified mix of PFCs (AR6GWP100)'],
     'FGASES (SARGWP100)': ['HFCS (SARGWP100)', 'PFCS (SARGWP100)', 'SF6', 'NF3'],
     'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3'],
     'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3'],
+    'FGASES (AR6GWP100)':['HFCS (AR6GWP100)', 'PFCS (AR6GWP100)', 'SF6', 'NF3'],
     'KYOTOGHG (SARGWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (SARGWP100)',
-                          'PFCS (SARGWP100)',
-                          'Unspecified mix of HFCs (SARGWP100)',
-                          'Unspecified mix of PFCs (SARGWP100)'],
+                          'PFCS (SARGWP100)'],
     'KYOTOGHG (AR4GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR4GWP100)',
-                          'PFCS (AR4GWP100)',
-                             'Unspecified mix of HFCs (AR4GWP100)', 'Unspecified mix of PFCs (AR4GWP100)'],
+                          'PFCS (AR4GWP100)'],
     'KYOTOGHG (AR5GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR5GWP100)',
-                            'PFCS (AR5GWP100)',
-                             'Unspecified mix of HFCs (AR5GWP100)',
-                             'Unspecified mix of PFCs (AR5GWP100)'],
+                            'PFCS (AR5GWP100)'],
+    'KYOTOGHG (AR6GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR6GWP100)',
+                            'PFCS (AR6GWP100)'],
 }
