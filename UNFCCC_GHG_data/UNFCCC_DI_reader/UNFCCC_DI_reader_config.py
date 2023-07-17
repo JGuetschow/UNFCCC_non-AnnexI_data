@@ -1487,10 +1487,10 @@ di_processing_templates = {
     'MUS': {
         'DI2023-05-24': { #1995, 200-2006, 2013
             'remove_ts': {
-                'waste': { # 1994 inconsistent
+                'waste': { # 1995 inconsistent
                     'category': ['6', '6.A', '6.B', '6.C', '6.D'],
                     'entities': ['CO2', 'CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
-                        'time': ['1994'],
+                        'time': ['1995'],
                 },
             },
             'basket_copy': {
