@@ -126,10 +126,11 @@ def process_UNFCCC_DI_for_country(
 
     # fill net emissions from actual emissions where necessary (e.g. 24540 for
     # individual fgases)
-    data_country = data_country.pr.set("measure", "Net emissions/removals",
-                                       data_country.pr.loc[
-                                           {"measure": "Actual emissions"}],
-                                       existing='fillna')
+    if "Actual emissions" in data_country.coords["measure"].values:
+        data_country = data_country.pr.set("measure", "Net emissions/removals",
+                                           data_country.pr.loc[
+                                               {"measure": "Actual emissions"}],
+                                           existing='fillna')
 
     # 3: map categories
     if country_code in nAI_countries:
