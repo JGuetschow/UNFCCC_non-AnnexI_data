@@ -332,6 +332,17 @@ cat_conversion = {
 di_processing_templates = {
     # templates fro the DI processing. Most processing rules will apply to several
     # versions. So we store them here and refer to them in the processing info dict
+    # general templates
+    'general': {
+        'copyUnspHFCUnspPFC': {
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        }
+    },
+    # country templates
     #AFG: not needed (newer data in BUR1), 2005, 2013 only
     #AGO: 2000, 2005 only (external key needed for some gases / sectors)
     'ALB': {
@@ -425,6 +436,11 @@ di_processing_templates = {
                         #'skipna': True,
                     },
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
             },
         }
     },
@@ -1692,6 +1708,10 @@ di_processing_info = {
         'default': di_processing_templates['ARE']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ARE']['DI2023-05-24'],
     },
+    'ARG': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'AZE': {
         'default': di_processing_templates['AZE']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['AZE']['DI2023-05-24'],
@@ -1707,6 +1727,10 @@ di_processing_info = {
     'BIH': {
         'default': di_processing_templates['BIH']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['BIH']['DI2023-05-24'],
+    },
+    'BOL': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
     },
     'BRB': {
         'default': di_processing_templates['BRB']['DI2023-05-24'],
@@ -1756,9 +1780,17 @@ di_processing_info = {
         'default': di_processing_templates['IND']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['IND']['DI2023-05-24'],
     },
+    'JAM': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'KEN': {
         'default': di_processing_templates['KEN']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['KEN']['DI2023-05-24'],
+    },
+    'KOR': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
     },
     'LCA': {
         'default': di_processing_templates['LCA']['DI2023-05-24'],
@@ -1772,9 +1804,17 @@ di_processing_info = {
         'default': di_processing_templates['MAR']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MAR']['DI2023-05-24'],
     },
+    'MDA': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'MDG': {
         'default': di_processing_templates['MDG']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MDG']['DI2023-05-24'],
+    },
+    'MDV': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
     },
     'MLI': {
         'default': di_processing_templates['MLI']['DI2023-05-24'],
@@ -1834,44 +1874,4 @@ basket_copy_unspHFCPFC = {
 },
 
 
-gas_baskets = {
-    'HFCS (SARGWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
-                     'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
-                     'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                     'HFC407c', 'HFC410a', 'HFC4310mee', #'OTHERHFCS (SARGWP100)',
-                         'UnspMixOfHFCs (SARGWP100)'],
-    'HFCS (AR4GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
-                     'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
-                     'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                     'HFC407c', 'HFC410a', 'HFC4310mee', 'UnspMixOfHFCs (AR4GWP100)'],
-    'HFCS (AR5GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
-                      'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
-                      'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                      'HFC407c', 'HFC410a', 'HFC4310mee',
-                         'UnspMixOfHFCs (AR5GWP100)'],
-    'HFCS (AR6GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
-                      'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
-                      'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                      'HFC407c', 'HFC410a', 'HFC4310mee',
-                         'UnspMixOfHFCs (AR6GWP100)'],
-    'PFCS (SARGWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'UnspMixOfPFCs (SARGWP100)'],
-    'PFCS (AR4GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'UnspMixOfPFCs (AR4GWP100)'],
-    'PFCS (AR5GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'UnspMixOfPFCs (AR5GWP100)'],
-    'PFCS (AR6GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'UnspMixOfPFCs (AR6GWP100)'],
-    'FGASES (SARGWP100)': ['HFCS (SARGWP100)', 'PFCS (SARGWP100)', 'SF6', 'NF3'],
-    'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3'],
-    'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3'],
-    'FGASES (AR6GWP100)':['HFCS (AR6GWP100)', 'PFCS (AR6GWP100)', 'SF6', 'NF3'],
-    'KYOTOGHG (SARGWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (SARGWP100)',
-                          'PFCS (SARGWP100)'],
-    'KYOTOGHG (AR4GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR4GWP100)',
-                          'PFCS (AR4GWP100)'],
-    'KYOTOGHG (AR5GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR5GWP100)',
-                            'PFCS (AR5GWP100)'],
-    'KYOTOGHG (AR6GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR6GWP100)',
-                            'PFCS (AR6GWP100)'],
-}
+

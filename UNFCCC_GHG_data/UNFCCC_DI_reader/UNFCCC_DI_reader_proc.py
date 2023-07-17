@@ -8,11 +8,10 @@ from typing import Optional, Dict, List, Union
 
 from .UNFCCC_DI_reader_config import di_processing_info
 from .UNFCCC_DI_reader_config import cat_conversion
-from .UNFCCC_DI_reader_config import gas_baskets
 from .util import NoDIDataError, nAI_countries
 from .util import DI_date_format
 
-from UNFCCC_GHG_data.helper import process_data_for_country
+from UNFCCC_GHG_data.helper import process_data_for_country, gas_baskets
 from .UNFCCC_DI_reader_helper import find_latest_DI_data
 from .UNFCCC_DI_reader_helper import determine_filename
 
@@ -124,6 +123,13 @@ def process_UNFCCC_DI_for_country(
             processing_info_country_scen = processing_info_country['default']
     else:
         processing_info_country_scen = None
+
+    # fill net emissions from actual emissions where necessary (e.g. 24540 for
+    # individual fgases)
+    data_country = data_country.pr.set("measure", "Net emissions/removals",
+                                       data_country.pr.loc[
+                                           {"measure": ["Actual emissions"]}],
+                                       existing='fillna')
 
     # 3: map categories
     if country_code in nAI_countries:
