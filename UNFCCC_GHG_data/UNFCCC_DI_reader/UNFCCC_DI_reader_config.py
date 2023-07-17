@@ -1856,6 +1856,10 @@ di_processing_info = {
         'default': di_processing_templates['SLB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['SLB']['DI2023-05-24'],
     },
+    'SMR': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'STP': {
         'default': di_processing_templates['STP']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['STP']['DI2023-05-24'],
