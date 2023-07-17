@@ -128,7 +128,7 @@ def process_UNFCCC_DI_for_country(
     # individual fgases)
     data_country = data_country.pr.set("measure", "Net emissions/removals",
                                        data_country.pr.loc[
-                                           {"measure": ["Actual emissions"]}],
+                                           {"measure": "Actual emissions"}],
                                        existing='fillna')
 
     # 3: map categories
