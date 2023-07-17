@@ -1820,6 +1820,12 @@ di_processing_info = {
     },
 }
 
+basket_copy = {
+    'GWPs_to_add': ["SARGWP100", "AR5GWP100", "AR6GWP100"],
+    'entities': ["HFCS", "PFCS"],
+    'source_GWP': gwp_to_use,
+},
+
 gas_baskets = {
     'HFCS (SARGWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
                      'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
