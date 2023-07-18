@@ -30,6 +30,7 @@ def read_UNFCCC_DI_for_country(
         pm2if_specifications: Optional[dict]=None,
         default_gwp: Optional[str]=None,
         debug: Optional[bool]=False,
+        use_zenodo: Optional[bool]=True,
 ):
     """
     reads data for a country from the UNFCCC DI interface and saves to native and
@@ -37,12 +38,20 @@ def read_UNFCCC_DI_for_country(
     """
 
     # read the data
-    data_df = read_UNFCCC_DI_for_country_df(
-        country_code=country_code,
-        category_groups=category_groups,
-        read_subsectors=read_subsectors,
-        debug=debug,
-    )
+    if use_zenodo:
+        data_df = read_UNFCCC_DI_for_country_df_zenodo(
+            country_code=country_code,
+            category_groups=category_groups,
+            read_subsectors=read_subsectors,
+            debug=debug,
+        )
+    else:
+        data_df = read_UNFCCC_DI_for_country_df(
+            country_code=country_code,
+            category_groups=category_groups,
+            read_subsectors=read_subsectors,
+            debug=debug,
+        )
 
     # set date_str if not given
     if date_str is None:
@@ -243,6 +252,78 @@ def read_UNFCCC_DI_for_country_df(
     return di_data
 
 
+def read_UNFCCC_DI_for_country_df_zenodo(
+        country_code: str,
+        category_groups: Optional[Dict]=None,
+        read_subsectors: bool=False,
+        debug: Optional[bool]=False,
+)->pd.DataFrame:
+    """
+    read UNFCCC DI data for a given country. All data will be read
+    including all categories, gases, measures, and classifications
+    Filtering is done later on conversion to PRIMAP2 format
+
+    Parameters
+    ----------
+    country_code: str
+        ISO3 code of the country (country names don't work, use the wrapper function)
+
+    category_groups: dict (optional)
+        define which categories to read including filters on classification, measure,
+        gases
+
+        cat_groups = {
+            "4.A  Enteric Fermentation": { #4.A  Enteric Fermentation[14577]
+                "measure": [
+                    'Net emissions/removals',
+                    'Total population',
+                ],
+                "gases": ["CH4"],
+            },
+        }
+
+    Returns
+    -------
+    pd.DataFrame with read data
+
+    """
+    if read_subsectors:
+        raise ValueError("Subsector reading is not possible with the Zenodo reader "
+                         "yet")
+
+    reader = unfccc_di_api.ZenodoReader()
+
+    di_data = reader.query(party_code=country_code)
+    # remove the "no_gas" data
+    di_data = di_data[di_data["gas"] != "No gas"]
+
+    if category_groups is not None:
+        di_data = di_data[di_data["category"].isin(category_groups)]
+
+    # if data has been collected print some information and save the data
+    if di_data is None:
+        raise ValueError(f"No data collected for country {country_code} and category "
+                         f"groups "
+                         f"{category_groups}")
+    elif debug:
+        # print some information on collected data
+        print(f"Collected data for country {country_code}")
+        print("### Categories ###")
+        categories = di_data["category"].unique()
+        categories.sort()
+        print(categories)
+        print("### Classifications ###")
+        classifications = di_data["classification"].unique()
+        classifications.sort()
+        print(classifications)
+        print("### Measures ###")
+        measures = di_data["measure"].unique()
+        measures.sort()
+        print(measures)
+
+    return di_data
+
+
 def convert_DI_data_to_pm2_if(
         data: pd.DataFrame,
         pm2if_specifications: Optional[dict]=None,
@@ -266,7 +347,6 @@ def convert_DI_data_to_pm2_if(
     data_temp = data.copy(deep=True)
 
     # check which country group we have
-    reader = unfccc_di_api.UNFCCCApiReader()
     parties_present_ai = [party for party in data_temp["party"].unique() if party
                           in AI_countries]
     parties_present_nai = [party for party in data_temp["party"].unique() if party
