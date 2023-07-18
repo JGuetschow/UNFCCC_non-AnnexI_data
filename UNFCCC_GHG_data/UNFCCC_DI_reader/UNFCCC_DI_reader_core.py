@@ -294,6 +294,7 @@ def read_UNFCCC_DI_for_country_df_zenodo(
     reader = unfccc_di_api.ZenodoReader()
 
     di_data = reader.query(party_code=country_code)
+
     # remove the "no_gas" data
     di_data = di_data[di_data["gas"] != "No gas"]
 
@@ -301,7 +302,7 @@ def read_UNFCCC_DI_for_country_df_zenodo(
         di_data = di_data[di_data["category"].isin(category_groups)]
 
     # if data has been collected print some information and save the data
-    if di_data is None:
+    if di_data is None or len(di_data) == 0:
         raise ValueError(f"No data collected for country {country_code} and category "
                          f"groups "
                          f"{category_groups}")
