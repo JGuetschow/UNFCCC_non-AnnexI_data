@@ -128,19 +128,20 @@ def process_data_for_country(
         # subtract categories
         if 'subtract_cats' in processing_info_country:
             subtract_cats_current = processing_info_country['subtract_cats']
-            if 'entities' in subtract_cats_current.keys():
-                entities_current = subtract_cats_current['entities']
-            else:
-                entities_current = list(data_country.data_vars)
-            print(f"Subtracting categories for country {country_code}, entities "
-                  f"{entities_current}")
+            print(f"Subtracting categories for country {country_code}")
             for cat_to_generate in subtract_cats_current:
+                if 'entities' in subtract_cats_current[cat_to_generate].keys():
+                    entities_current = subtract_cats_current[cat_to_generate]['entities']
+                else:
+                    entities_current = list(data_country.data_vars)
+
                 cats_to_subtract = \
                     subtract_cats_current[cat_to_generate]['subtract']
                 data_sub = \
-                    data_country.pr.loc[{'category': cats_to_subtract}].pr.sum(
+                    data_country[entities_current].pr.loc[
+                        {'category': cats_to_subtract}].pr.sum(
                         dim='category', skipna=True, min_count=1)
-                data_parent = data_country.pr.loc[
+                data_parent = data_country[entities_current].pr.loc[
                     {'category': subtract_cats_current[cat_to_generate]['parent']}]
                 data_agg = data_parent - data_sub
                 nan_vars = [var for var in data_agg.data_vars if

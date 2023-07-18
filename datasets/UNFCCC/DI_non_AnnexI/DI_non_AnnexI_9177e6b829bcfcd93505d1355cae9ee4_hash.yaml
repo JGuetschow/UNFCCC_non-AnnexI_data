@@ -1,0 +1,41 @@
+attrs:
+  references: https://di.unfccc.int
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (Process_Date)
+  sec_cats:
+  - class
+  - measure
+  comment: Data read from the UNFCCC DI flexible query interface using the API. Data
+    read on 2023-05-24. Processed on 2023-07-18
+  title: 'Data submitted by the following non-AnnexI countries and available in the
+    DI interface, converted to IPCC2006 categories and downscaled where applicable.
+    For download date see scenario. Countries: AFG, AGO, ALB, ARE, ARG, ARM, ATG,
+    AZE, BDI, BEN, BFA, BGD, BHR, BHS, BIH, BLZ, BOL, BRA, BRB, BRN, BTN, BWA, CAF,
+    CHL, CHN, CIV, CMR, COD, COG, COK, COL, COM, CPV, CRI, CUB, DJI, DMA, DOM, DZA,
+    ECU, EGY, ERI, ETH, FJI, FSM, GAB, GEO, GHA, GIN, GMB, GNB, GRD, GTM, GUY, HND,
+    HTI, IDN, IND, IRN, IRQ, ISR, JAM, JOR, KEN, KGZ, KHM, KIR, KNA, KOR, KWT, LAO,
+    LBN, LBR, LCA, LKA, LSO, MAR, MDA, MDG, MDV, MEX, MHL, MKD, MLI, MMR, MNE, MNG,
+    MOZ, MRT, MUS, MWI, MYS, NAM, NER, NGA, NIC, NIU, NPL, NRU, OMN, PAK, PAN, PER,
+    PHL, PLW, PNG, PRK, PRY, PSE, QAT, RWA, SAU, SDN, SEN, SGP, SLB, SLV, SMR, SRB,
+    SSD, STP, SUR, SWZ, SYC, SYR, TCD, TGO, THA, TJK, TKM, TLS, TON, TTO, TUN, TUV,
+    TZA, UGA, URY, UZB, VCT, VEN, VNM, VUT, WSM, YEM, ZAF, ZMB, ZWE'
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - measure
+  - class
+  - scenario (Process_Date)
+  - area (ISO3)
+  - provenance
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - unit
+additional_coordinates:
+  orig_cat_name: category (IPCC2006_PRIMAP)
+data_file: DI_non_AnnexI_9177e6b829bcfcd93505d1355cae9ee4_hash.csv
