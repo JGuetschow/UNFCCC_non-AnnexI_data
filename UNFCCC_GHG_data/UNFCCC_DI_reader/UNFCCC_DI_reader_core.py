@@ -520,6 +520,9 @@ def read_UNFCCC_DI_for_country_group(
         except unfccc_di_api.NoDataError as err:
             print(f"No data for {country}.")
             print(err)
+        except ValueError as err:
+            print(f"ValueError for {country}.")
+            print(err)
 
     if annexI:
         data_all = pm2.pm2io.from_interchange_format(data_all_if, attrs=attrs,
