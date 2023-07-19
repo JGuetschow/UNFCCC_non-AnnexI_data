@@ -6,7 +6,7 @@ from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
 
 from UNFCCC_GHG_data.helper import process_data_for_country, fix_rows
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
-from config_MYS_BUR4 import coords_cols, coords_defaults, coords_terminologies, \
+from config_MYS_BUR3 import coords_cols, coords_defaults, coords_terminologies, \
     meta_data, add_coords_cols
 from config_MYS_BUR3 import gas_baskets, terminology_proc, country_processing_step1
 from config_MYS_BUR3 import table_def_templates, table_defs, index_cols

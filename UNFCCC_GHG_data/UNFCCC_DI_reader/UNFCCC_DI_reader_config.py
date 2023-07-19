@@ -1,4 +1,4 @@
-# TODO: move gas baskets to helper
+# TODO: check if downscaling respects gas basket resolution for GWP transformation
 
 di_query_filters = [
     'classifications', 'measures', 'gases',
@@ -1495,7 +1495,7 @@ di_processing_templates = {
             },
             'basket_copy': {
                 'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
-                'entities': ["UnspMixOfHFCs"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
                 'source_GWP': gwp_to_use,
             },
         },

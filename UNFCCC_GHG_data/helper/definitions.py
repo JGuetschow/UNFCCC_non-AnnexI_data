@@ -91,6 +91,27 @@ GWP_factors = {
         'UnspMixOfPFCs': 1.18,
         'FGASES': 1.23,
     },
+    'AR5GWP100_to_SARGWP100': {
+        'HFCS': 0.83,
+        'PFCS': 0.83,
+        'UnspMixOfHFCs': 0.83,
+        'UnspMixOfPFCs': 0.83,
+        'FGASES': 0.83,
+    },
+    'AR5GWP100_to_AR4GWP100': {
+        'HFCS': 0.91,
+        'PFCS': 0.91,
+        'UnspMixOfHFCs': 0.91,
+        'UnspMixOfPFCs': 0.91,
+        'FGASES': 0.91,
+    },
+    'AR5GWP100_to_AR6GWP100': {
+        'HFCS': 1.17,
+        'PFCS': 1.08,
+        'UnspMixOfHFCs': 1.17,
+        'UnspMixOfPFCs': 1.08,
+        'FGASES': 1.125,
+    },
 }
 
 gas_baskets = {
