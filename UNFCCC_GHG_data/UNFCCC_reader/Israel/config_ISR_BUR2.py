@@ -325,6 +325,7 @@ cat_conversion = {
         '1.B': '1.B', # currently not needed
         '1.B.1': '1.B.1', # currently not needed
         '1.B.2': '1.B.2', # currently not needed
+        '2': '2',
         '2.A': '2.A',
         '2.A.1': '2.A.1', # cement
         '2.A.2': '2.A.2', # lime
@@ -370,8 +371,8 @@ cat_conversion = {
         '2.B.10': {'sources': ['M.2.B.10.a', 'M.2.B.10.b'], 'name': 'Other'},
         '2.B': {'sources': ['2.B.2', '2.B.8', '2.B.9', '2.B.10'], 'name': 'Chemical Industry'},
         '2.H': {'sources': ['M.2.H.1_2', '2.H.3'], 'name': 'Other'},
-        '2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
-              'name': 'Industrial Processes and Product Use'},
+        # '2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
+        #       'name': 'Industrial Processes and Product Use'},
         '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
         '3.C.1': {'sources': ['3.C.1.b', '3.C.1.c'],
                      'name': 'Emissions from biomass burning'},
@@ -384,6 +385,8 @@ cat_conversion = {
                              'Agriculture)'},
         'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock'},
         '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
+        'M.0.EL': {'sources': ['1', '2', 'M.AG', '4', '5'], 'name': 'National total '
+                                                                    'excluding LULUCF'},
     },
     'basket_copy': {
         'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],

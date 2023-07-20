@@ -1,4 +1,5 @@
 # TODO: check if downscaling respects gas basket resolution for GWP transformation
+# TODO: why is albania IPPU KYOTOGHG 0 in 2005
 
 di_query_filters = [
     'classifications', 'measures', 'gases',
@@ -279,6 +280,7 @@ cat_conversion = {
             '1.B': '1.B',
             '1.B.1': '1.B.1',
             '1.B.2': '1.B.2',
+            '2': '2',
             '2.A': '2.A',
             '2.B': 'M.2.B_2.B',
             '2.C': '2.C',
@@ -311,8 +313,8 @@ cat_conversion = {
         'aggregate': {
             '2.B': {'sources': ['M.2.B_2.B', 'M.2.B_2.E'], 'name': 'Chemical Industry'},
             '2.H': {'sources': ['M.2.H.1_2', '2.H.3'], 'name': 'Other'},
-            '2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
-                  'name': 'Industrial Processes and Product Use'},
+            #'2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
+            #      'name': 'Industrial Processes and Product Use'},
             '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
             '3.C.1': {'sources': ['3.C.1.b', '3.C.1.c'],
                          'name': 'Emissions from biomass burning'},
@@ -382,7 +384,7 @@ di_processing_templates = {
                     'entities': ['CO2', f'KYOTOGHG ({gwp_to_use})'],
                         'time': ['2005'],
                 },
-                'Bunkers': { # Aviation and marine swappen in 2005
+                'Bunkers': { # Aviation and marine swapped in 2005
                     'category': ['14423', '14424'],
                     'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'time': ['2005'],

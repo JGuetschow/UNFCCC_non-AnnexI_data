@@ -1,3 +1,5 @@
+import copy
+
 import pycountry
 import json
 import re
@@ -114,7 +116,7 @@ def process_data_for_country(
         # remove timeseries if desired
         if 'remove_ts' in processing_info_country:
             for case in processing_info_country['remove_ts']:
-                remove_info = processing_info_country['remove_ts'][case]
+                remove_info = copy.deepcopy(processing_info_country['remove_ts'][case])
                 entities = remove_info.pop("entities")
                 for entity in entities:
                     data_country[entity].pr.loc[remove_info] = \
