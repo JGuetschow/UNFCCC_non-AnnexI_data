@@ -1,0 +1,24 @@
+attrs:
+  references: https://unfccc.int/documents/621650
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: Singapore's Fifth National Communication and Fifth Biannial Update Report
+    Processed on 2023-07-26 Processed on 2023-07-26
+  comment: Read fom pdf file by Johannes Gütschow Processed on 2023-07-26 Processed
+    on 2023-07-26
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - provenance
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: SGP_BUR5_2022_IPCC2006_PRIMAP.csv
