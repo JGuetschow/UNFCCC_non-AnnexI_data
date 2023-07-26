@@ -1742,6 +1742,7 @@ di_processing_templates = {
     # TZA: 1990, 1994
     # UGA: 1994, 2000, subcategories a bit inconsistent
     'URY': {
+        # remove data: CH4, 1998, 2002, 1
         'DI2023-05-24': {
             'downscale': {
                 'sectors': {
