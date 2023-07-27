@@ -44,7 +44,7 @@ cat_codes_manual = {
     #'3A2b Direct N2O Emissions from Manure Management': '3.A.2',
 }
 
-cat_code_regexp = r'(?P<UNFCCC_GHG_data>^[a-zA-Z0-9]{1,4})\s.*'
+cat_code_regexp = r'(?P<code>^[a-zA-Z0-9]{1,4})\s.*'
 
 coords_cols = {
     "category": "category",
@@ -195,7 +195,7 @@ df_all["category"] = df_all["orig_cat_name"]
 # first the manual replacements
 df_all["category"] = df_all["category"].replace(cat_codes_manual)
 # then the regex replacements
-repl = lambda m: m.group('UNFCCC_GHG_data')
+repl = lambda m: m.group('code')
 df_all["category"] = df_all["category"].str.replace(cat_code_regexp, repl, regex=True)
 df_all = df_all.reset_index(drop=True)
 
