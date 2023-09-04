@@ -257,6 +257,7 @@ def find_latest_DI_data(
         regex = f"{country_code}_DI_{regex_date}" + r"_raw\.nc"
     else:
         regex = f"{country_code}_DI_{regex_date[1:-1]}_{regex_date}" + r"\.nc"
+        #regex = f"{country_code}_DI_{regex_date}" + r"\.nc"
 
     # get the country folder
     with open(extracted_data_path_UNFCCC / "folder_mapping.json", "r") as mapping_file:
