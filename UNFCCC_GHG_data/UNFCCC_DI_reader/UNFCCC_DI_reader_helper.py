@@ -67,7 +67,7 @@ def determine_filename(
     filename = f"{country_code}_DI_{date_or_hash}"
     if raw:
         filename = f"{filename}_raw"
-    else:
+    elif not hash:
         today = date.today()
         date_str_today = today.strftime(DI_date_format)
         filename = f"{filename}_{date_str_today}"
