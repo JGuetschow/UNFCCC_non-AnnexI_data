@@ -6,7 +6,6 @@ from UNFCCC_GHG_data.helper import root_path
 
 from .UNFCCC_DI_reader_helper import determine_filename, determine_dataset_filename
 
-
 def save_DI_country_data(
         data_pm2: xr.Dataset,
         raw: bool=True,
