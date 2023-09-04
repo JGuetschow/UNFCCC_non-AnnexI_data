@@ -1,9 +1,6 @@
 # this script reads data from Chile's 2020 national inventory which is underlying BUR4
 # Data is read from the xlsx file
 
-import os
-os.environ["UNFCCC_GHG_ROOT_PATH"] = \
-    "/storage/data/data/PRIMAP/primap_2.0/datasets/UNFCCC_non-AnnexI_data/"
 import sys
 import camelot
 import primap2 as pm2

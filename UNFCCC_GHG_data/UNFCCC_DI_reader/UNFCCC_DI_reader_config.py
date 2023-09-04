@@ -1,4 +1,5 @@
-# TODO: move gas baskets to helper
+# TODO: check if downscaling respects gas basket resolution for GWP transformation
+# TODO: why is albania IPPU KYOTOGHG 0 in 2005
 
 di_query_filters = [
     'classifications', 'measures', 'gases',
@@ -26,6 +27,8 @@ filter_activity_factors = {
 # regular expression to match category code in category label
 cat_code_regexp = r'(?P<code>^(([0-9][A-Za-z0-9\.]{0,10}[0-9A-Za-z]))|([0-9]))[' \
                   r'\s\.].*'
+
+gwp_to_use = 'SARGWP100'
 
 # PRIMAP2 interchange format config
 di_to_pm2if_template_nai = {
@@ -57,18 +60,18 @@ di_to_pm2if_template_nai = {
     # mapping of values e.g. gases to the primap2 format
     "coords_value_mapping": {
         "entity": {
-            "Aggregate GHGs (SARGWP100)": "KYOTOGHG (SARGWP100)",
-            "Aggregate F-gases (SARGWP100)": "FGASES (SARGWP100)",
-            "HFCs (SARGWP100)": "HFCS (SARGWP100)",
-            "PFCs (SARGWP100)": "PFCS (SARGWP100)",
-            #"SF6 (SARGWP100)": "SF6 (SARGWP100)",
-            #"CH4 (SARGWP100)": "CH4 (SARGWP100)",
-            "CO2 (SARGWP100)": "CO2",
-            #"N2O (SARGWP100)": "N2O (SARGWP100)",
-            #"Unspecified mix of HFCs and PFCs (SARGWP100)":
-            #    "UnspMixOfHFCsPFCs (SARGWP100)",
-            "Unspecified mix of HFCs (SARGWP100)": "UnspMixOfHFCs (SARGWP100)",
-            "Unspecified mix of PFCs (SARGWP100)": "UnspMixOfPFCs (SARGWP100)",
+            f"Aggregate GHGs ({gwp_to_use})": f"KYOTOGHG ({gwp_to_use})",
+            f"Aggregate F-gases ({gwp_to_use})": f"FGASES ({gwp_to_use})",
+            f"HFCs ({gwp_to_use})": f"HFCS ({gwp_to_use})",
+            f"PFCs ({gwp_to_use})": f"PFCS ({gwp_to_use})",
+            #f"SF6 ({gwp_to_use})": f"SF6 ({gwp_to_use})",
+            #f"CH4 ({gwp_to_use})": f"CH4 ({gwp_to_use})",
+            f"CO2 ({gwp_to_use})": "CO2",
+            #f"N2O ({gwp_to_use})": f"N2O ({gwp_to_use})",
+            #f"Unspecified mix of HFCs and PFCs ({gwp_to_use})":
+            #    f"UnspMixOfHFCsPFCs ({gwp_to_use})",
+            f"Unspecified mix of HFCs ({gwp_to_use})": f"UnspMixOfHFCs ({gwp_to_use})",
+            f"Unspecified mix of PFCs ({gwp_to_use})": f"UnspMixOfPFCs ({gwp_to_use})",
             "HFC-23": "HFC23",
             "HFC-32": "HFC32",
             "HFC-41": "HFC41",
@@ -277,6 +280,7 @@ cat_conversion = {
             '1.B': '1.B',
             '1.B.1': '1.B.1',
             '1.B.2': '1.B.2',
+            '2': '2',
             '2.A': '2.A',
             '2.B': 'M.2.B_2.B',
             '2.C': '2.C',
@@ -309,8 +313,8 @@ cat_conversion = {
         'aggregate': {
             '2.B': {'sources': ['M.2.B_2.B', 'M.2.B_2.E'], 'name': 'Chemical Industry'},
             '2.H': {'sources': ['M.2.H.1_2', '2.H.3'], 'name': 'Other'},
-            '2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
-                  'name': 'Industrial Processes and Product Use'},
+            #'2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
+            #      'name': 'Industrial Processes and Product Use'},
             '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
             '3.C.1': {'sources': ['3.C.1.b', '3.C.1.c'],
                          'name': 'Emissions from biomass burning'},
@@ -330,6 +334,45 @@ cat_conversion = {
 di_processing_templates = {
     # templates fro the DI processing. Most processing rules will apply to several
     # versions. So we store them here and refer to them in the processing info dict
+    # general templates
+    'general': {
+        'copyUnspHFCUnspPFC': {
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        },
+        'copyUnspHFC': {
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        },
+        'copyHFCPFC': {
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["HFCS", "PFCS"],
+                'source_GWP': gwp_to_use,
+            },
+        },
+        'copyPFC': {
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["PFCS"],
+                'source_GWP': gwp_to_use,
+            },
+        },
+        'copyFGASES': {
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["FGASES"],
+                'source_GWP': gwp_to_use,
+            },
+        },
+    },
+    # country templates
     #AFG: not needed (newer data in BUR1), 2005, 2013 only
     #AGO: 2000, 2005 only (external key needed for some gases / sectors)
     'ALB': {
@@ -338,18 +381,18 @@ di_processing_templates = {
             'remove_ts': {
                 '2.A_H': { # looks wrong in 2005
                     'category': ['2.A', '2.B', '2.C', '2.D', '2.G'],
-                    'entities': ['CO2', 'KYOTOGHG (SARGWP100)'],
+                    'entities': ['CO2', f'KYOTOGHG ({gwp_to_use})'],
                         'time': ['2005'],
                 },
-                'Bunkers': { # Aviation and marine swappen in 2005
+                'Bunkers': { # Aviation and marine swapped in 2005
                     'category': ['14423', '14424'],
-                    'entities': ['KYOTOGHG (SARGWP100)'],
+                    'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'time': ['2005'],
                 },
                 'Bunkers_CH4': { # 2005 looks all wrong (swap in activity data not
                     # result?)
                     'category': ['14423', '14424', '14637'],
-                    'entities': ['CH4', 'KYOTOGHG (SARGWP100)', 'N2O'],
+                    'entities': ['CH4', f'KYOTOGHG ({gwp_to_use})', 'N2O'],
                         'time': ['2005'],
                 },
             },
@@ -424,6 +467,11 @@ di_processing_templates = {
                     },
                 },
             },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
+            },
         }
     },
     #AND: no data
@@ -453,9 +501,13 @@ di_processing_templates = {
             'remove_ts': {
                 '1.A.1': { #contains data for all subsectors
                     'category': ['1.A.1'],
-                    'entities': ['CH4', 'KYOTOGHG (SARGWP100)'],
-                        'time': ['1990', '2000', '2005', '2006', '2007', '2008', '2009',
-                                 '2010', '2011', '2012'],
+                    'entities': ['CH4', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1990', '2000', '2005', '2006', '2007', '2008', '2009',
+                             '2010', '2011', '2012'],
+                },
+                'pfcs': { # only HFCs in other years, likely wrong
+                    'entities': [f'PFCS ({gwp_to_use})'],
+                    'time': ['1991', '1992', '1993', '1994'],
                 },
             },
             'downscale': { # needed for 1990, 2000, 2005-2012
@@ -470,8 +522,29 @@ di_processing_templates = {
                         'skipna': True,
                     },
                 },
+                'entities': {
+                    'FGASES': {
+                        'basket': f'FGASES ({gwp_to_use})',
+                        'basket_contents': [f'HFCS ({gwp_to_use})'],
+                        'sel': {'time': ['1990', '1991', '1992', '1993', '1994',
+                                         '1995']},
+                    },
+                    'HFC': {
+                        'basket': f'HFCS ({gwp_to_use})',
+                        'basket_contents': [f'UnspMixOfHFCs ({gwp_to_use})'],
+                        'sel': {'time': ['1990', '1991', '1992', '1993', '1994',
+                                         '1995', '2000', '2001', '2002', '2003',
+                                         '2004', '2005', '2006', '2007', '2008',
+                                         '2009', '2010', '2012']},
+                    },
+                },
             },
-        }
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        },
     },
     # BDI 1998, 2005, 2010, 2015 # data coverage is a bit inconsistent
     # BEN 1995, 2000 # data coverage a bit inconsistent
@@ -480,6 +553,11 @@ di_processing_templates = {
             # and missing sectors (e.g. 1,2 for CH4, N2O), Agri. burning (4.E,
             # 4.F) missing for 2008-2017
             'remove_years': ['2007'],
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
         },
     },
     # BGD 1994, 2001, 2005; coverage mostly consistent but not fully
@@ -492,7 +570,7 @@ di_processing_templates = {
                     '4': { # 1994
                         'basket': '4',
                         'basket_contents': ['4.A', '4.B', '4.D', '4.G'],
-                        'entities': ['CH4', 'CO2', 'KYOTOGHG (SARGWP100)'], # no N2O but
+                        'entities': ['CH4', 'CO2', f'KYOTOGHG ({gwp_to_use})'], # no N2O but
                         # CO2 is unusual
                         'dim': 'category (BURDI)',
                         'skipna_evaluation_dims': None,
@@ -580,7 +658,7 @@ di_processing_templates = {
                 },
                 'entities': {  # 2002-2014
                     'KYOTO': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CH4', 'CO2', 'N2O'],
                         'sel': {'category (BURDI)':
                                     ['1', '1.A', '1.A.1', '1.A.2', '1.A.3', '1.A.4',
@@ -629,7 +707,7 @@ di_processing_templates = {
                     '5_2000': {
                         'basket': '5',
                         'basket_contents': ['5.A', '5.B', '5.C', '5.D'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2009', '2010']},
@@ -639,7 +717,7 @@ di_processing_templates = {
                 },
                 'entities': {  # 2000-2010 (1997 as key)
                     'KYOTO': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CO2', 'CH4', 'N2O'],
                         'sel': {'category (BURDI)':
                                     ['1', '1.A', '1.A.1', '1.A.2', '1.A.3', '1.A.4',
@@ -733,8 +811,27 @@ di_processing_templates = {
                         'skipna': True,
                     },
                 },
+                'entities': {
+                    'HFC': {
+                        'basket': f'HFCS ({gwp_to_use})',
+                        'basket_contents': ['HFC125', 'HFC134a', 'HFC143a', 'HFC152a',
+                                            'HFC227ea', 'HFC23', 'HFC236fa', 'HFC32',
+                                            f'UnspMixOfHFCs ({gwp_to_use})'],
+                        'sel': {'time': ['2005', '2010']},
+                    },
+                    'PFC': {
+                        'basket': f'PFCS ({gwp_to_use})',
+                        'basket_contents': ['C2F6', 'CF4'],
+                        'sel': {'time': ['2005', '2010']},
+                    },
+                },
             },
-        }
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        },
     },
     'CIV' :{
         'DI2023-05-24': { #1994 (needs some downscaling), 2000
@@ -743,12 +840,17 @@ di_processing_templates = {
                     '1.A': { # 2005
                         'basket': '1.A',
                         'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4'],
-                        'entities': ['CO2', 'CH4', 'N2O', 'KYOTOGHG (SARGWP100)'],
+                        'entities': ['CO2', 'CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'skipna_evaluation_dims': None,
                         'skipna': True,
                     },
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["FGASES"],
+                'source_GWP': gwp_to_use,
             },
         },
     },
@@ -862,7 +964,7 @@ di_processing_templates = {
                     '2': {
                         'basket': '2',
                         'basket_contents': ['2.A', '2.F'],
-                        'entities': ['CO2', 'HFCS (SARGWP100)'],
+                        'entities': ['CO2', f'HFCS ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     'bunkers': {
@@ -872,6 +974,11 @@ di_processing_templates = {
                         'dim': 'category (BURDI)',
                     },
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
             },
         },
     },
@@ -885,51 +992,51 @@ di_processing_templates = {
                     '1': {
                         'basket': '1',
                         'basket_contents': ['1.A', '1.B'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     '1.A': {
                         'basket': '1.A',
                         'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4',
                                             '1.A.5'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     '1.B': {
                         'basket': '1.B',
                         'basket_contents': ['1.B.1', '1.B.2'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     '2': {
                         'basket': '2',
                         'basket_contents': ['2.A', '2.B', '2.C', '2.D', '2.G'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     '4': {
                         'basket': '4',
                         'basket_contents': ['4.A', '4.B', '4.C', '4.D', '4.E',
                                             '4.F', '4.G'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     '5': {
                         'basket': '5',
                         'basket_contents': ['5.A', '5.B', '5.C', '5.D'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     '6': {
                         'basket': '6',
                         'basket_contents': ['6.A', '6.B', '6.D'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                 },
                 'entities': {
                     'KYOTO': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CH4', 'CO2', 'N2O'],
                         'sel': {'category (BURDI)':
                                     ['15163', '24540',
@@ -949,13 +1056,9 @@ di_processing_templates = {
         'DI2023-05-24': { # 1990, 2000, 2005
             #omit aerosols / GHG precursosrs in downscaling
             'remove_ts': {
-                '2.H': { # all in 2.H in 1990
-                        'category': ['2.H'],
-                        'entities': ['KYOTOGHG (AR4GWP100)', 'CH4', 'CO2', 'N2O'],
-                    },
-                '2': { # all in 2.H in 1990
-                        'category': ['2.H'],
-                        'entities': ['KYOTOGHG (AR4GWP100)', 'CH4'],
+                '2.G': { # all in 2.G in 1990
+                        'category': ['2.G'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})', 'CO2', 'N2O'],
                     },
             },
             'downscale': {
@@ -968,9 +1071,13 @@ di_processing_templates = {
                     },
                 },
             },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
         },
     },
-    # EGY:  TODO: downscale 2 in 1990, remove
     # 'ERI' #1994 1995-1999 (partial coverage, KYOTOGHG and total are incomplete), 2000
     'ETH': {
         'DI2023-05-24': { # 1990-1993 (downscaling needed), 1994-2013
@@ -1004,13 +1111,13 @@ di_processing_templates = {
                     'bunkers': {
                         'basket': '14637',
                         'basket_contents': ['14424'],
-                        'entities': ['CO2', 'KYOTOGHG (SARGWP100)'],
+                        'entities': ['CO2', f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                 },
                 'entities': {
                     'bunkers': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CH4', 'CO2', 'N2O'],
                         'sel': {'category (BURDI)': ['14637', '14424']}
                     },
@@ -1164,9 +1271,14 @@ di_processing_templates = {
             'remove_ts': {
                 'waste': { # very high in 1994
                     'category': ['6', '6.A', '6.B', '6.D'],
-                    'entities': ['CH4', 'N2O', 'KYOTOGHG (SARGWP100)'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                         'time': ['1994'],
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
             },
         },
     },
@@ -1217,20 +1329,20 @@ di_processing_templates = {
                     '1.B': {
                         'basket': '1.B',
                         'basket_contents': ['1.B.1', '1.B.2'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                     '5': {
                         'basket': '5',
                         'basket_contents': ['5.A', '5.B'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'tolerance' : 0.018, # LULUCF data inconstent in 2012
                     },
                 },
                 'entities': {
                     'all': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CH4', 'CO2', 'N2O'],
                         'sel': {'category (BURDI)': [
                             '1', '2', '4', '5', '6', '15163', '24540',
@@ -1272,7 +1384,7 @@ di_processing_templates = {
                     'kyotoghg_4': { # in general similar problem to 1.A, but most sectors have
                         # only one gas and we need the data for PRIMAP-hist,
                         # so we have to do it anyway
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CH4', 'N2O'],
                         'sel': {
                             'category (BURDI)': [
@@ -1288,7 +1400,28 @@ di_processing_templates = {
     # MDV: 1994 (only few sectors), 2011-2015
     # MEX: more data in BURs 2 and 3
     # MHL: 2000, 2005, 2010
-    # MKD: 1990-2009
+    # MKD:
+    'MKD': {
+        'DI2023-05-24': {  # 1990-2009
+            'downscale': {
+                'entities': {
+                    'FGASES': {
+                        'basket': f'FGASES ({gwp_to_use})',
+                        'basket_contents': [f'HFCS ({gwp_to_use})'],
+                    },
+                    'HFC': {
+                        'basket': f'HFCS ({gwp_to_use})',
+                        'basket_contents': [f'UnspMixOfHFCs ({gwp_to_use})'],
+                    },
+                },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        },
+    },
     'MLI': {
         'DI2023-05-24': {  # 1995,2000, 2005
             'downscale': {
@@ -1301,6 +1434,21 @@ di_processing_templates = {
                         'sel': {'time': ['1995', '2000']},
                     },
                 },
+                'entities': {
+                    'FGASES': {
+                        'basket': f'FGASES ({gwp_to_use})',
+                        'basket_contents': [f'HFCS ({gwp_to_use})'],
+                    },
+                    'HFC': {
+                        'basket': f'HFCS ({gwp_to_use})',
+                        'basket_contents': [f'UnspMixOfHFCs ({gwp_to_use})'],
+                    },
+                },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
             },
         },
     },
@@ -1317,7 +1465,7 @@ di_processing_templates = {
                 },
                 'entities': {
                     'kyotoghg_5': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CO2', 'CH4', 'N2O'],
                         'sel': {
                             'category (BURDI)': [
@@ -1325,6 +1473,11 @@ di_processing_templates = {
                         }
                     },
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
             },
         },
     },
@@ -1336,11 +1489,16 @@ di_processing_templates = {
     'MUS': {
         'DI2023-05-24': { #1995, 200-2006, 2013
             'remove_ts': {
-                'waste': { # 1994 inconsistent
+                'waste': { # 1995 inconsistent
                     'category': ['6', '6.A', '6.B', '6.C', '6.D'],
-                    'entities': ['CO2', 'CH4', 'N2O', 'KYOTOGHG (SARGWP100)'],
-                        'time': ['1994'],
+                    'entities': ['CO2', 'CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                        'time': ['1995'],
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
             },
         },
     },
@@ -1365,13 +1523,13 @@ di_processing_templates = {
                     '6': {
                         'basket': '6',
                         'basket_contents': ['6.A', '6.B'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                     },
                 },
                 'entities': {
                     'kyotoghg_56': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CH4', 'N2O'],
                         'sel': {
                             'category (BURDI)': ['6', '6.A', '6.B'],
@@ -1410,7 +1568,7 @@ di_processing_templates = {
             'downscale': {
                 'entities': {
                     'kyotoghg': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CO2', 'CH4', 'N2O'],
                         'sel': {
                             'category (BURDI)': [
@@ -1436,7 +1594,7 @@ di_processing_templates = {
             'downscale': {
                 'entities': {
                     'kyotoghg': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CO2', 'CH4', 'N2O'],
                         'sel': {
                             'category (BURDI)': [
@@ -1489,7 +1647,7 @@ di_processing_templates = {
                     '1': {
                         'basket': '1',
                         'basket_contents': ['1.A', '1.B'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
@@ -1498,7 +1656,7 @@ di_processing_templates = {
                     '1.A': {
                         'basket': '1.A',
                         'basket_contents': ['1.A.1', '1.A.2', '1.A.3', '1.A.4'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
@@ -1507,7 +1665,7 @@ di_processing_templates = {
                     '1.B': {
                         'basket': '1.B',
                         'basket_contents': ['1.B.1', '1.B.2'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
@@ -1516,7 +1674,7 @@ di_processing_templates = {
                     '2': {
                         'basket': '2',
                         'basket_contents': ['2.A', '2.B', '2.C', '2.D'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
@@ -1526,7 +1684,7 @@ di_processing_templates = {
                         'basket': '4',
                         'basket_contents': ['4.A', '4.B', '4.C', '4.D', '4.E',
                                             '4.F'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
@@ -1535,7 +1693,7 @@ di_processing_templates = {
                     '5': {
                         'basket': '5',
                         'basket_contents': ['5.A', '5.B', '5.C'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
@@ -1544,7 +1702,7 @@ di_processing_templates = {
                     '6': {
                         'basket': '6',
                         'basket_contents': ['6.A', '6.B', '6.C'],
-                        'entities': ['KYOTOGHG (SARGWP100)'],
+                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
                         'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
@@ -1553,7 +1711,7 @@ di_processing_templates = {
                 },
                 'entities': {
                     'KYOTO': {
-                        'basket': 'KYOTOGHG (SARGWP100)',
+                        'basket': f'KYOTOGHG ({gwp_to_use})',
                         'basket_contents': ['CH4', 'CO2', 'N2O'],
                         'sel': {
                             'category (BURDI)': [
@@ -1584,6 +1742,7 @@ di_processing_templates = {
     # TZA: 1990, 1994
     # UGA: 1994, 2000, subcategories a bit inconsistent
     'URY': {
+        # remove data: CH4, 1998, 2002, 1
         'DI2023-05-24': {
             'downscale': {
                 'sectors': {
@@ -1640,6 +1799,11 @@ di_processing_templates = {
                     },
                 },
             },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
+            },
         },
     },
     # UZB: 1990-2012
@@ -1670,6 +1834,11 @@ di_processing_templates = {
                     },
                 },
             },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
         },
     },
     # ZWE: 1994, 2000, 2006 consistency of sectors and coverage does not look good,
@@ -1690,6 +1859,10 @@ di_processing_info = {
         'default': di_processing_templates['ARE']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ARE']['DI2023-05-24'],
     },
+    'ARG': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'AZE': {
         'default': di_processing_templates['AZE']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['AZE']['DI2023-05-24'],
@@ -1706,9 +1879,21 @@ di_processing_info = {
         'default': di_processing_templates['BIH']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['BIH']['DI2023-05-24'],
     },
+    'BOL': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'BRB': {
         'default': di_processing_templates['BRB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['BRB']['DI2023-05-24'],
+    },
+    'BRN': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+    },
+    'CHL': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
     },
     'CHN': {
         'default': di_processing_templates['CHN']['DI2023-05-24'],
@@ -1742,6 +1927,10 @@ di_processing_info = {
         'default': di_processing_templates['GEO']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['GEO']['DI2023-05-24'],
     },
+    'GMB': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+    },
     'GNB': {
         'default': di_processing_templates['GNB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['GNB']['DI2023-05-24'],
@@ -1754,13 +1943,37 @@ di_processing_info = {
         'default': di_processing_templates['IND']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['IND']['DI2023-05-24'],
     },
+    'ISR': {
+        'default': di_processing_templates['general']['copyHFCPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyHFCPFC'],
+    },
+    'JAM': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
+    'JOR': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+    },
     'KEN': {
         'default': di_processing_templates['KEN']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['KEN']['DI2023-05-24'],
     },
+    'KGZ': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+    },
+    'KOR': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'LCA': {
         'default': di_processing_templates['LCA']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['LCA']['DI2023-05-24'],
+    },
+    'LKA': {
+        'default': di_processing_templates['general']['copyFGASES'],
+        'DI2023-05-24': di_processing_templates['general']['copyFGASES'],
     },
     'LSO': {
         'default': di_processing_templates['LSO']['DI2023-05-24'],
@@ -1770,9 +1983,25 @@ di_processing_info = {
         'default': di_processing_templates['MAR']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MAR']['DI2023-05-24'],
     },
+    'MDA': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'MDG': {
         'default': di_processing_templates['MDG']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MDG']['DI2023-05-24'],
+    },
+    'MDV': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
+    'MEX': {
+        'default': di_processing_templates['general']['copyHFCPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyHFCPFC'],
+    },
+    'MHL': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
     },
     'MLI': {
         'default': di_processing_templates['MLI']['DI2023-05-24'],
@@ -1782,6 +2011,18 @@ di_processing_info = {
         'default': di_processing_templates['MMR']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MMR']['DI2023-05-24'],
     },
+    'MNE': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+    },
+    'MNG': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+    },
+    'MOZ': {
+        'default': di_processing_templates['general']['copyPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyPFC'],
+    },
     'MUS': {
         'default': di_processing_templates['MUS']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['MUS']['DI2023-05-24'],
@@ -1790,17 +2031,41 @@ di_processing_info = {
         'default': di_processing_templates['PHL']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['PHL']['DI2023-05-24'],
     },
+    'PRY': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
+    'PSE': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'RWA': {
         'default': di_processing_templates['RWA']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['RWA']['DI2023-05-24'],
+    },
+    'SEN': {
+        'default': di_processing_templates['general']['copyHFCPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyHFCPFC'],
+    },
+    'SGP': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
     },
     'SLB': {
         'default': di_processing_templates['SLB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['SLB']['DI2023-05-24'],
     },
+    'SMR': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'STP': {
         'default': di_processing_templates['STP']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['STP']['DI2023-05-24'],
+    },
+    'SWZ': {
+        'default': di_processing_templates['general']['copyUnspHFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
     },
     'TCD': {
         'default': di_processing_templates['TCD']['DI2023-05-24'],
@@ -1814,45 +2079,26 @@ di_processing_info = {
         'default': di_processing_templates['URY']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['URY']['DI2023-05-24'],
     },
+    'UZB': {
+        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
     'ZMB': {
         'default': di_processing_templates['ZMB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ZMB']['DI2023-05-24'],
     },
 }
 
-gas_baskets = {
-    'HFCS (SARGWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
-                     'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
-                     'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                     'HFC407c', 'HFC410a', 'HFC4310mee', #'OTHERHFCS (SARGWP100)',
-                         'Unspecified mix of HFCs (SARGWP100)'],
-    'HFCS (AR4GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
-                     'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
-                     'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                     'HFC407c', 'HFC410a', 'HFC4310mee', 'Unspecified mix of HFCs (AR4GWP100)'],
-    'HFCS (AR5GWP100)': ['HFC23', 'HFC32', 'HFC41', 'HFC125', 'HFC134',
-                      'HFC134a', 'HFC143',  'HFC143a', 'HFC152a', 'HFC227ea',
-                      'HFC236fa', 'HFC245ca', 'HFC245fa', 'HFC365mfc',  'HFC404a',
-                      'HFC407c', 'HFC410a', 'HFC4310mee',
-                         'Unspecified mix of HFCs (AR5GWP100)'],
-    'PFCS (SARGWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'Unspecified mix of PFCs (SARGWP100)'],
-    'PFCS (AR4GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'Unspecified mix of PFCs (AR4GWP100)'],
-    'PFCS (AR5GWP100)': ['C3F8', 'C4F10', 'CF4', 'C2F6', 'C6F14', 'C5F12', 'cC4F8',
-                      'Unspecified mix of PFCs (AR5GWP100)'],
-    'FGASES (SARGWP100)': ['HFCS (SARGWP100)', 'PFCS (SARGWP100)', 'SF6', 'NF3'],
-    'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3'],
-    'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3'],
-    'KYOTOGHG (SARGWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (SARGWP100)',
-                          'PFCS (SARGWP100)',
-                          'Unspecified mix of HFCs (SARGWP100)',
-                          'Unspecified mix of PFCs (SARGWP100)'],
-    'KYOTOGHG (AR4GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR4GWP100)',
-                          'PFCS (AR4GWP100)',
-                             'Unspecified mix of HFCs (AR4GWP100)', 'Unspecified mix of PFCs (AR4GWP100)'],
-    'KYOTOGHG (AR5GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR5GWP100)',
-                            'PFCS (AR5GWP100)',
-                             'Unspecified mix of HFCs (AR5GWP100)',
-                             'Unspecified mix of PFCs (AR5GWP100)'],
-}
+basket_copy_HFCPFC = {
+    'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+    'entities': ["HFCS", "PFCS"],
+    'source_GWP': gwp_to_use,
+},
+basket_copy_unspHFCPFC = {
+    'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+    'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+    'source_GWP': gwp_to_use,
+},
+
+
+

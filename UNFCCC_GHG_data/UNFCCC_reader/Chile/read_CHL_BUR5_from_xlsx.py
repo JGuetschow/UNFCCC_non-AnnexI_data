@@ -23,8 +23,9 @@ if not output_folder.exists():
 
 output_filename = 'CHL_BUR5_2022_'
 
-inventory_file = 'Inventario_Nacional_de_GEI-1990-2018.xlsx'
-years_to_read = range(1990, 2018 + 1)
+inventory_file = '2022_GEI_CL.xlsx'
+years_to_read = range(1990, 2020 + 1)
+time_format='%Y'
 
 # configuration for conversion to PRIMAP2 data format
 unit_row = "header"
@@ -81,7 +82,7 @@ coords_defaults = {
     "source": "CHL-GHG-Inventory",
     "provenance": "measured",
     "area": "CHL",
-    "scenario": "BUR4"
+    "scenario": "BUR5"
 }
 
 coords_value_mapping = {
@@ -130,17 +131,17 @@ filter_remove = {
         "entity": ["Absorciones CO₂", "Emisiones CO₂"],
     },
     "f2": {
-        "orig_cat_name": ["Partidas informativas"],
+        "orig_cat_name": ["Partidas informativas", "Todas las emisiones nacionales"],
     },
 }
 
 filter_keep = {}
 
 meta_data = {
-    "references": "https://unfccc.int/documents/267936, https://snichile.mma.gob.cl/wp-content/uploads/2021/03/Inventario_Nacional_de_GEI-1990-2018.xlsx",
+    "references": "https://unfccc.int/documents/624735, https://snichile.mma.gob.cl/wp-content/uploads/2023/04/2022_GEI_CL.xlsx",
     "rights": "",
     "contact": "mail@johannes-guetschow.de.de",
-    "title": "Chile: BUR4",
+    "title": "Chile: BUR5",
     "comment": "Read fom xlsx file by Johannes Gütschow",
     "institution": "United Nations Framework Convention on Climate Change (UNFCCC)",
 }
@@ -200,7 +201,8 @@ data_if = pm2.pm2io.convert_long_dataframe_if(
     coords_value_filling=coords_value_filling,
     filter_remove=filter_remove,
     filter_keep=filter_keep,
-    meta_data=meta_data
+    meta_data=meta_data,
+    time_format=time_format,
 )
 
 
@@ -232,7 +234,8 @@ data_if_2006 = pm2.pm2io.convert_long_dataframe_if(
     coords_value_filling=coords_value_filling,
     filter_remove=filter_remove,
     filter_keep=filter_keep,
-    meta_data=meta_data
+    meta_data=meta_data,
+    time_format=time_format
 )
 
 cat_label = 'category (' + coords_terminologies_2006["category"] + ')'
@@ -260,6 +263,7 @@ for cat_to_agg in aggregate_cats:
 
         df_combine = df_combine.groupby(
             by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity', 'unit']).sum()
+        df_combine = df_combine.drop(columns=["category (IPCC2006_PRIMAP)", "orig_cat_name"])
 
         df_combine.insert(0, cat_label, cat_to_agg)
         df_combine.insert(1, "orig_cat_name", aggregate_cats[cat_to_agg]["name"])

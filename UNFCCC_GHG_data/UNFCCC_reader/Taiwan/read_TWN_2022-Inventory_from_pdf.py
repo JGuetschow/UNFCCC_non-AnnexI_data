@@ -1,5 +1,6 @@
 # this script reads data from Taiwan's 2022 national inventory
 # Data is read from the english summary pdf
+# TODO: add further GWPs and gas baskets
 
 import pandas as pd
 import primap2 as pm2

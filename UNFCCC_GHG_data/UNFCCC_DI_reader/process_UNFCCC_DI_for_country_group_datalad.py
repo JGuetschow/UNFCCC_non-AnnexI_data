@@ -11,7 +11,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--annexI', help='read for AnnexI countries (default is for '
                                      'non-AnnexI)', action='store_true')
-parser.add_argument('--date', help='date of inout data to use (default is None '
+parser.add_argument('--date', help='date of input data to use (default is None '
                                        'to read latest data)', default=None)
 args = parser.parse_args()
 annexI = args.annexI

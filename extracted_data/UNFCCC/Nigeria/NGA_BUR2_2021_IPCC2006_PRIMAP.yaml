@@ -1,0 +1,24 @@
+attrs:
+  references: https://unfccc.int/documents/307085
+  rights: ''
+  contact: mail@johannes-guestchow.de
+  title: Nigeria. Second Biennial Update Report (BUR2) to the United Nations Framework
+    Convention on Climate Change Processed on 2023-07-27 Processed on 2023-07-27
+  comment: Read fom pdf by Johannes Gütschow Processed on 2023-07-27 Processed on
+    2023-07-27
+  institution: UNFCCC
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - area (ISO3)
+  - provenance
+  - source
+  - scenario (PRIMAP)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - unit
+data_file: NGA_BUR2_2021_IPCC2006_PRIMAP.csv

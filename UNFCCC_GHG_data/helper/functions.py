@@ -1,3 +1,5 @@
+import copy
+
 import pycountry
 import json
 import re
@@ -11,7 +13,7 @@ from pathlib import Path
 from .definitions import custom_country_mapping, custom_folders
 from .definitions import root_path, downloaded_data_path, extracted_data_path
 from .definitions import legacy_data_path, code_path
-
+from .definitions import GWP_factors
 
 def process_data_for_country(
         data_country: xr.Dataset,
@@ -76,7 +78,7 @@ def process_data_for_country(
     data_country = data_country.dropna(f'time', how='all')
     # remove variables only containing nan
     nan_vars_country = [var for var in data_country.data_vars if
-                        data_country[var].isnull().all().data is True]
+                        bool(data_country[var].isnull().all().data) is True]
     print(f"removing all-nan variables: {nan_vars_country}")
     data_country = data_country.drop_vars(nan_vars_country)
 
@@ -114,7 +116,7 @@ def process_data_for_country(
         # remove timeseries if desired
         if 'remove_ts' in processing_info_country:
             for case in processing_info_country['remove_ts']:
-                remove_info = processing_info_country['remove_ts'][case]
+                remove_info = copy.deepcopy(processing_info_country['remove_ts'][case])
                 entities = remove_info.pop("entities")
                 for entity in entities:
                     data_country[entity].pr.loc[remove_info] = \
@@ -128,19 +130,20 @@ def process_data_for_country(
         # subtract categories
         if 'subtract_cats' in processing_info_country:
             subtract_cats_current = processing_info_country['subtract_cats']
-            if 'entities' in subtract_cats_current.keys():
-                entities_current = subtract_cats_current['entities']
-            else:
-                entities_current = list(data_country.data_vars)
-            print(f"Subtracting categories for country {country_code}, entities "
-                  f"{entities_current}")
+            print(f"Subtracting categories for country {country_code}")
             for cat_to_generate in subtract_cats_current:
+                if 'entities' in subtract_cats_current[cat_to_generate].keys():
+                    entities_current = subtract_cats_current[cat_to_generate]['entities']
+                else:
+                    entities_current = list(data_country.data_vars)
+
                 cats_to_subtract = \
                     subtract_cats_current[cat_to_generate]['subtract']
                 data_sub = \
-                    data_country.pr.loc[{'category': cats_to_subtract}].pr.sum(
+                    data_country[entities_current].pr.loc[
+                        {'category': cats_to_subtract}].pr.sum(
                         dim='category', skipna=True, min_count=1)
-                data_parent = data_country.pr.loc[
+                data_parent = data_country[entities_current].pr.loc[
                     {'category': subtract_cats_current[cat_to_generate]['parent']}]
                 data_agg = data_parent - data_sub
                 nan_vars = [var for var in data_agg.data_vars if
@@ -227,6 +230,20 @@ def process_data_for_country(
                                                          tolerance=agg_tolerance)
                 else:
                     print(f"no data to aggregate category {cat_to_agg}")
+
+        # copy HFCs and PFCs with default factors
+        if 'basket_copy' in processing_info_country:
+            GWPs_to_add = processing_info_country["basket_copy"]["GWPs_to_add"]
+            entities = processing_info_country["basket_copy"]["entities"]
+            source_GWP = processing_info_country["basket_copy"]["source_GWP"]
+            for entity in entities:
+                data_source = data_country[f'{entity} ({source_GWP})']
+                for GWP in GWPs_to_add:
+                    data_GWP = data_source * \
+                               GWP_factors[f"{source_GWP}_to_{GWP}"][entity]
+                    data_GWP.attrs["entity"] = entity
+                    data_GWP.attrs["gwp_context"] = GWP
+                    data_country[f"{entity} ({GWP})"] = data_GWP
 
         # aggregate gases if desired
         if 'aggregate_gases' in processing_info_country:
@@ -338,7 +355,8 @@ def convert_categories(
 
     # redo the list of present cats after mapping, as we have new categories in the
     # target terminology now
-    cats_present_mapped = list(ds_converted.coords[f'category ({terminology_to})'])
+    cats_present_mapped = list(ds_converted.coords[f'category ('
+                                                   f'{terminology_to})'].values)
     # aggregate categories
     if 'aggregate' in conversion:
         aggregate_cats = conversion['aggregate']
@@ -808,3 +826,46 @@ def get_code_file(
         return code_file_path.relative_to(root_path)
     else:
         return None
+
+
+def fix_rows(data: pd.DataFrame, rows_to_fix: list, col_to_use: str, n_rows: int)->pd.DataFrame:
+    '''
+    Function to fix rows that have been split during reading from pdf
+    This is the version used for Malaysia BUR3,4. adapt for other BURs if needed
+
+    :param data:
+    :param rows_to_fix:
+    :param col_to_use:
+    :param n_rows:
+    :return:
+    '''
+    for row in rows_to_fix:
+        #print(row)
+        # find the row number and collect the row and the next two rows
+        index = data.loc[data[col_to_use] == row].index
+        #print(list(index))
+        if not list(index):
+            print(f"Can't merge split row {row}")
+            print(data[col_to_use])
+        #print(f"Merging split row {row} for table {page}")
+        loc = data.index.get_loc(index[0])
+        if n_rows == -3:
+            locs_to_merge = list(range(loc - 1, loc + 2))
+        elif n_rows == -5:
+            locs_to_merge = list(range(loc - 1, loc + 4))
+        else:
+            locs_to_merge = list(range(loc, loc + n_rows))
+        rows_to_merge = data.iloc[locs_to_merge]
+        indices_to_merge = rows_to_merge.index
+        # join the three rows
+        new_row = rows_to_merge.agg(' '.join)
+        # replace the double spaces that are created
+        # must be done here and not at the end as splits are not always
+        # the same and join would produce different col values
+        new_row = new_row.str.replace("  ", " ")
+        new_row = new_row.str.replace("N O", "NO")
+        new_row = new_row.str.replace(", N", ",N")
+        new_row = new_row.str.replace("- ", "-")
+        data.loc[indices_to_merge[0]] = new_row
+        data = data.drop(indices_to_merge[1:])
+    return data
