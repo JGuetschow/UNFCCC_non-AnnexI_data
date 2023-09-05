@@ -2,8 +2,9 @@ import json
 import re
 from typing import Optional, Dict, List, Union
 from pathlib import Path
+from datetime import date
 from UNFCCC_GHG_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_core import find_latest_date
-from .util import regex_date
+from .util import regex_date, DI_date_format
 from UNFCCC_GHG_data.helper import custom_country_mapping
 from UNFCCC_GHG_data.helper import get_country_code, get_country_name
 from UNFCCC_GHG_data.helper import extracted_data_path_UNFCCC, root_path, code_path
@@ -66,6 +67,10 @@ def determine_filename(
     filename = f"{country_code}_DI_{date_or_hash}"
     if raw:
         filename = f"{filename}_raw"
+    elif not hash:
+        today = date.today()
+        date_str_today = today.strftime(DI_date_format)
+        filename = f"{filename}_{date_str_today}"
     if hash:
         filename = f"{filename}_hash"
     filename = country_folder / filename
@@ -251,7 +256,8 @@ def find_latest_DI_data(
     if raw:
         regex = f"{country_code}_DI_{regex_date}" + r"_raw\.nc"
     else:
-        regex = f"{country_code}_DI_{regex_date}" + r"\.nc"
+        regex = f"{country_code}_DI_{regex_date[1:-1]}_{regex_date}" + r"\.nc"
+        #regex = f"{country_code}_DI_{regex_date}" + r"\.nc"
 
     # get the country folder
     with open(extracted_data_path_UNFCCC / "folder_mapping.json", "r") as mapping_file:

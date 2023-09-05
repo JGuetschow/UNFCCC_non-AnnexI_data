@@ -695,6 +695,7 @@ di_processing_templates = {
     # BRA 1990-2016 (BUR4)
     'BRB': {
         'DI2023-05-24': {
+            #'remove_years': ['1990', '1994', '1997'], # keep as 1997 needed for downscaling
             'aggregate_cats': {
                 '14637': {'sources': ['14423', '14424'],
                      'name': 'International Bunkers'},
@@ -709,7 +710,7 @@ di_processing_templates = {
                         'basket_contents': ['5.A', '5.B', '5.C', '5.D'],
                         'entities': [f'KYOTOGHG ({gwp_to_use})'],
                         'dim': 'category (BURDI)',
-                        'sel': {'time': ['2000', '2001', '2002', '2003', '2004',
+                        'sel': {'time': ['1997', '2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2009', '2010']},
                         'skipna_evaluation_dims': None,
                         'skipna': True,
@@ -725,7 +726,7 @@ di_processing_templates = {
                                      '14637', '4', '4.A', '4.B', '4.D',
                                      '6', '6.A', '6.B', '15163', '24540',
                                      ],
-                                'time': ['1997', '2000', '2001', '2002', '2003', '2004',
+                                'time': ['2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
                                          '2010'],
                                 },
@@ -733,7 +734,7 @@ di_processing_templates = {
                 },
             },
         },
-    },
+    }, # TODO: downscaling using external key instead of 1997
     # BRN 2010 only (though with full sectors)
     # BTN 1994, 2000, 2015. patchy coverage but no downscaling needed / possible
     # BWA 1994, 2000, 2015. inconsistent coverage
@@ -987,6 +988,7 @@ di_processing_templates = {
     'ECU': {
         'DI2023-05-24': { # 1990 (1994, 2000), 2010, 2012
             #omit aerosols / GHG precursosrs in downscaling
+            'remove_years': ['1990'],
             'downscale': {
                 'sectors': {
                     '1': {
@@ -1170,22 +1172,41 @@ di_processing_templates = {
     # GHA: 1990-2006
     # GIN: 1994, 2000
     # GMB: 1993, 2000
+    'GMB': {
+        'DI2023-05-24': { # 1993, 2000
+            'remove_ts': {
+                'waste': { # very high in 1994
+                    'category': ['6', '6.A', '6.B'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                        'time': ['1993'],
+                },
+            },
+        }
+    },
     'GNB': {
-        'DI2023-05-24': { # 1994, 2006 (dwn), 2010 coverage and subsectors inconsistent
-            'downscale': {
-                'sectors': { # for 2006
-                    '1': { # no further downscaling as inconsistent subcategories
-                        'basket': '1',
-                        'basket_contents': ['1.A', '1.B'],
-                        'entities': ['CH4', 'N2O'],
-                        'dim': 'category (BURDI)',
-                    },
+        'DI2023-05-24': {
+            'remove_ts': {
+                'energy_nonCO2': { # very high in 2006
+                    'category': ['1', '1.A', '15163', '24540'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                        'time': ['2006'],
                 },
             },
         },
     },
     # GNQ: no data
-    # GED: 1994, limited coverage
+    'GRD': { # 1994, limited coverage
+        'DI2023-05-24': {
+            'remove_ts': {
+                'agri, waste': { # inconsistent with other sources
+                    'category': ['4', '4.A', '4.B', '4.D', '6', '6.A',
+                                 '15163', '24540'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                        'time': ['1994'],
+                },
+            },
+        },
+    },
     # GTM: 1990, 1994, 2000, 2005,
     # GUY: 1990-2004
     # HND: 1995, 2000, 2005, 2015
@@ -1230,6 +1251,18 @@ di_processing_templates = {
         },
     },
     # ISR: sf6 in 2008 is very high, but it's from BUR1
+    'JAM': { # 1994, 2006-2010, 2012
+        'DI2023-05-24': {
+            'remove_ts': {
+                'agri, waste': { # inconsistent with other sources
+                    'category': ['4', '4.A', '4.B', '4.D', '6', '6.A',
+                                 '15163', '24540'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                        'time': ['1994'],
+                },
+            },
+        },
+    },
     # JOR: M.AG in 2000 is very low but it's like that in NC2 and no comment on error
     # in comparison in NC3
     # 'JOR': {
@@ -1257,7 +1290,17 @@ di_processing_templates = {
     },
     # KGZ: 1990-2010
     # KHM: 1994, 2000 (more data in BUR1)
-    # KIR: 1994, (2004,2005 partial coverage), 2006-2008
+    'KIR': { # 1994, (2004,2005 partial coverage), 2006-2008
+        'DI2023-05-24': {
+            'remove_ts': {
+                'agri_n2O': { # very high compared to CH4 and total emissions
+                    'category': ['4', '4.B',
+                                 '15163', '24540'],
+                    'entities': ['N2O', f'KYOTOGHG ({gwp_to_use})'],
+                },
+            },
+        },
+    },
     # KNA: 1994
     # KOR: 1990-2018 (more data in 2022 inventory)
     # KWT: 1994, 2016
@@ -1841,8 +1884,13 @@ di_processing_templates = {
             },
         },
     },
-    # ZWE: 1994, 2000, 2006 consistency of sectors and coverage does not look good,
-    # esopecially for subsectors
+    # ZWE:
+    'ZWE': { # 1994, 2000, 2006 consistency of sectors and coverage does not look good,
+    # especially for subsectors
+        'DI2023-05-24': {  # remove all years
+            'remove_years': ['1994', '2000', '2006'],
+        },
+    },
 }
 
 di_processing_info = {
@@ -1878,6 +1926,10 @@ di_processing_info = {
     'BIH': {
         'default': di_processing_templates['BIH']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['BIH']['DI2023-05-24'],
+    },
+    'BLZ': {
+        'default': di_processing_templates['BLZ']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['BLZ']['DI2023-05-24'],
     },
     'BOL': {
         'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
@@ -2086,6 +2138,10 @@ di_processing_info = {
     'ZMB': {
         'default': di_processing_templates['ZMB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ZMB']['DI2023-05-24'],
+    },
+    'ZWE': {
+        'default': di_processing_templates['ZWE']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['ZWE']['DI2023-05-24'],
     },
 }
 
