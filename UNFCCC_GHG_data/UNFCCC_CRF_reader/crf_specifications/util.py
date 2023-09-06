@@ -27,6 +27,7 @@ unit_info = {
         "manual_repl_unit": {
             "CO2 equivalent (kt)": "kt CO2eq",
             "CO2 equivalents (kt)": "kt CO2eq", # for AUS Table1
+            "CO2 equivalent (kt) (3)": "kt CO2eq", # for AUS, Table2(I)
         },
         "default_unit": "kt",
     },
