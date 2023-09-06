@@ -1082,38 +1082,37 @@ CRF2023_AUS = {
             "class": "Total",
         },
     },  # to test
+    # TODO: tables 3.A and 3.B for livestock details as they are not contained in table3
     "Table3.C": {  # rice cultivation details
-        "status": "tested",
+        "status": "to_test",
         "table": {
-            "firstrow": 5,
-            "lastrow": 21,
+            "firstrow": 7,
+            "lastrow": 25,
             "header": ['group', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION Harvested area(2)',
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION Organic amendments added(3)',
+                'ACTIVITY DATA AND OTHER RELATED INFORMATION Harvested area (2)',
+                'ACTIVITY DATA AND OTHER RELATED INFORMATION Organic amendments added (3)',
                 'IMPLIED EMISSION FACTOR (1) CH4',
             ],
             "stop_cats": ["", np.nan],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
-            ['1. Irrigated', ['3.C.1']],
-            ['Continuously flooded', ['3.C.1.a']],
-            ['Intermittently flooded Single aeration', ['3.C.1.a.i']],
-            ['Intermittently flooded Multiple aeration', ['3.C.1.b.ii']],
-            ['2. Rainfed', ['3.C.2']],
-            ['Flood prone', ['3.C.2.a']],
-            ['Drought prone', ['3.C.2.b']],
-            ['3. Deep water', ['3.C.3']],
-            ['Water depth 50–100 cm', ['3.C.3.a']],
-            ['Water depth > 100 cm', ['3.C.3.b']],
-            ['4. Other (please specify)', ['3.C.4']],
-            ['Non-specified', ['3.C.4.a']],  # EST
-            ['Other', ['3.C.4.a']],  # DEU
-            ['other', ['3.C.4.a']],  # LVA
-            ['Other cultivation', ['3.C.4.a']],  # CZE
+            ['3.C.1. Irrigated', ['3.C.1']],
+            ['3.C.1.a. Continuously flooded', ['3.C.1.a']],
+            ['3.C.1.b. Intermittently flooded', ['3.C.1.a']],
+            ['3.C.1.b.i. Single aeration', ['3.C.1.b.i']],
+            ['3.C.1.b.ii. Multiple aeration', ['3.C.1.b.ii']],
+            ['3.C.2. Rain-fed', ['3.C.2']],
+            ['3.C.2.a. Flood-prone', ['3.C.2.a']],
+            ['3.C.2.b. Drought-prone', ['3.C.2.b']],
+            ['3.C.3. Deep water', ['3.C.3']],
+            ['3.C.3.a. Water depth 50–100 cm', ['3.C.3.a']],
+            ['3.C.3.b. Water depth > 100 cm', ['3.C.3.b']],
+            ['3.C.4. Other (please specify)', ['3.C.4']],
+            ['NA', ['\IGNORE']],
             ['Upland rice(4)', ['\IGNORE']],
             ['Total(4)', ['\IGNORE']],
         ],
@@ -1123,12 +1122,12 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # tested
+    },  # to test
     "Table3.D": {  # direct and indirect N2O from soils
-        "status": "tested",
+        "status": "to_test",
         "table": {
-            "firstrow": 5,
-            "lastrow": 21,
+            "firstrow": 7,
+            "lastrow": 23,
             "header": ['group', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
@@ -1141,20 +1140,21 @@ CRF2023_AUS = {
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
-            ['a. Direct N2O emissions from managed soils', ['3.D.a']],
-            ['1. Inorganic N fertilizers(3)', ['3.D.a.1']],
-            ['2. Organic N fertilizers(3)', ['3.D.a.2']],
-            ['a. Animal manure applied to soils', ['3.D.a.2.a']],
-            ['b. Sewage sludge applied to soils', ['3.D.a.2.b']],
-            ['c. Other organic fertilizers applied to soils', ['3.D.a.2.c']],
-            ['3. Urine and dung deposited by grazing animals', ['3.D.a.3']],
-            ['4. Crop residues', ['3.D.a.4']],
-            ['5. Mineralization/immobilization associated with loss/gain of soil organic matter (4)(5)', ['3.D.a.5']],
-            ['6. Cultivation of organic soils (i.e. histosols)(2)', ['3.D.a.6']],
-            ['7. Other', ['3.D.a.7']],
-            ['b. Indirect N2O Emissions from managed soils', ['3.D.b']],
-            ['1. Atmospheric deposition(6)', ['3.D.b.1']],
-            ['2. Nitrogen leaching and run-off', ['3.D.b.2']],
+            ['3.D.1. Direct N2O emissions from managed soils', ['3.D.a']],
+            ['3.D.1.a. Inorganic N fertilizers(3)', ['3.D.a.1']],
+            ['3.D.1.b. Organic N fertilizers(3)', ['3.D.a.2']],
+            ['3.D.1.b.i. Animal manure applied to soils', ['3.D.a.2.a']],
+            ['3.D.1.b.ii. Sewage sludge applied to soils', ['3.D.a.2.b']],
+            ['3.D.1.b.iii. Other organic fertilizers applied to soils', ['3.D.a.2.c']],
+            ['3.D.1.c. Urine and dung deposited by grazing animals', ['3.D.a.3']],
+            ['3.D.1.d. Crop residues', ['3.D.a.4']],
+            ['3.D.1.e. Mineralization/immobilization associated with loss/gain of '
+             'soil organic matter (4,5)', ['3.D.a.5']],
+            ['3.D.1.f. Cultivation of organic soils (i.e. histosols) (2)', ['3.D.a.6']],
+            ['3.D.1.g. Other', ['3.D.a.7']],
+            ['3.D.2. Indirect N2O Emissions from managed soils', ['3.D.b']],
+            ['3.D.2.a. Atmospheric deposition (8)', ['3.D.b.1']],
+            ['3.D.2.b. Nitrogen leaching and run-off', ['3.D.b.2']],
         ],
         "entity_mapping": {
             'EMISSIONS N2O': 'N2O',
@@ -1162,7 +1162,7 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # tested
+    },  # to test
     "Table3.E": {  # savanna burning details
         "status": "tested",
         "table": {

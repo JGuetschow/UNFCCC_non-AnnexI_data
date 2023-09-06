@@ -2046,7 +2046,7 @@ CRF2023 = {
         "sector_mapping": [
             ['1. Irrigated', ['3.C.1']],
             ['Continuously flooded', ['3.C.1.a']],
-            ['Intermittently flooded Single aeration', ['3.C.1.a.i']],
+            ['Intermittently flooded Single aeration', ['3.C.1.b.i']],
             ['Intermittently flooded Multiple aeration', ['3.C.1.b.ii']],
             ['2. Rainfed', ['3.C.2']],
             ['Flood prone', ['3.C.2.a']],
