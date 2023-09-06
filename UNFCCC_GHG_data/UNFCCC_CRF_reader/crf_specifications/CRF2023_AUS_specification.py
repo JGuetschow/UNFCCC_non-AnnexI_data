@@ -45,7 +45,7 @@ from .util import unit_info
 CRF2023_AUS = {
     # Table1 instead of 1s1 and 1s2
     "Table1": {
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 8,
             "lastrow": 59,
@@ -117,7 +117,7 @@ CRF2023_AUS = {
         },
     },  # to test
     "Table1.A(a)s1": {
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 7,
             "lastrow": 88,
@@ -235,7 +235,7 @@ CRF2023_AUS = {
         },
     },  # to test
     "Table1.A(a)s2": {
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 7,
             "lastrow": 119,
@@ -689,7 +689,7 @@ CRF2023_AUS = {
         },
     },  # to test
     "Table1.B.1": {
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 7,
             "lastrow": 32,
@@ -808,7 +808,7 @@ CRF2023_AUS = {
         },
     },  # to test
     "Table1.C": {
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 7,
             "lastrow": 29,
@@ -872,7 +872,7 @@ CRF2023_AUS = {
         },
     },  # TODO
     "Table2(I)": {
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 8,
             "lastrow": 58,
@@ -944,7 +944,7 @@ CRF2023_AUS = {
         },
     },  # to test
     "Table2(II)": {
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 8,
             "lastrow": 37, # ignore the totals
@@ -1022,7 +1022,7 @@ CRF2023_AUS = {
         },
     },  # to test
     "Table3": {  # Agriculture summary
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 8,
             "lastrow": 48,
@@ -1084,7 +1084,7 @@ CRF2023_AUS = {
     },  # to test
     # TODO: tables 3.A and 3.B for livestock details as they are not contained in table3
     "Table3.C": {  # rice cultivation details
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 7,
             "lastrow": 25,
@@ -1124,7 +1124,7 @@ CRF2023_AUS = {
         },
     },  # to test
     "Table3.D": {  # direct and indirect N2O from soils
-        "status": "to_test",
+        "status": "totest",
         "table": {
             "firstrow": 7,
             "lastrow": 23,
@@ -1184,28 +1184,10 @@ CRF2023_AUS = {
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
-            ['Forest land (specify ecological zone)(1)', ['3.E.1'], 0],
-            ['Savanna Grassland', ['3.E.1.b'], 1],  # AUS
-            ['Savanna Woodland', ['3.E.1.a'], 1],  # AUS
-            ['Forest land', ['3.E.1.a'], 1],  # SWE, CHE, CZE, HRV
-            ['Luxembourg', ['3.E.1.c'], 1],  # LUX
-            ['Other non-specified', ['3.E.1.d'], 1],  # EST
-            ['All', ['3.E.1.d'], 1],  # DNK, DNM, DKE
-            ['Unspecified', ['3.E.1.d'], 1],  # DEU
-            ['forest land', ['3.E.1.a'], 1],  # MLT
-            ['Zone', ['3.E.1.d'], 1],  # LVA
-            ['Grassland (specify ecological zone)(1)', ['3.E.2'], 0],
-            ['Savanna Woodland', ['3.E.2.a'], 1],  # AUS
-            ['Savanna Grassland', ['3.E.2.b'], 1],  # AUS
-            ['Temperate Grassland', ['3.E.2.c'], 1],  # AUS
-            ['Grassland', ['3.E.2.d'], 1],  # SWE, CHE, CZE, HRV
-            ['Luxembourg', ['3.E.2.e'], 1],  # LUX
-            ['Other non-specified', ['3.E.2.f'], 1],  # EST
-            ['All', ['3.E.2.f'], 1],  # DNK, DNM, DKE
-            ['Unspecified', ['3.E.2.f'], 1],  # DEU
-            ['Tussock', ['3.E.2.g'], 1],  # NZL
-            ['grassland', ['3.E.2.d'], 1],  # MLT
-            ['Zone_', ['3.E.2.f'], 1],  # LVA
+            ['3.E.1. Forest land (specify ecological zone) (2)', ['3.E.1'], 0],
+            ['NA', ['\IGNORE']],
+            ['3.E.2. Grassland (specify ecological zone) (2)', ['3.E.2'], 0],
+            ['NA', ['\IGNORE']],
         ],
         "entity_mapping": {
             'EMISSIONS (2) CH4': 'CH4',
@@ -1256,109 +1238,90 @@ CRF2023_AUS = {
         },
     },  # TODO
     "Table4": {  # LULUCF overview
-        "status": "tested",
+        "status": "totest",
         "table": {
-            "firstrow": 5,
-            "lastrow": 29,
+            "firstrow": 8,
+            "lastrow": 33,
             "header": ['entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": ["", ".", np.nan],
-            "unit_info": unit_info["default"],
+            "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
             ['4. Total LULUCF', ['4']],
-            ['A. Forest land', ['4.A']],
-            ['1. Forest land remaining forest land', ['4.A.1']],
-            ['2. Land converted to forest land', ['4.A.2']],
-            ['B. Cropland', ['4.B']],
-            ['1. Cropland remaining cropland', ['4.B.1']],
-            ['2. Land converted to cropland', ['4.B.2']],
-            ['C. Grassland', ['4.C']],
-            ['1. Grassland remaining grassland', ['4.C.1']],
-            ['2. Land converted to grassland', ['4.C.2']],
-            ['D. Wetlands(3)', ['4.D']],
-            ['1. Wetlands remaining wetlands', ['4.D.1']],
-            ['2. Land converted to wetlands', ['4.D.2']],
-            ['E. Settlements', ['4.E']],
-            ['1. Settlements remaining settlements', ['4.E.1']],
-            ['2. Land converted to settlements', ['4.E.2']],
-            ['F. Other land (4)', ['4.F']],
-            ['1. Other land remaining other land', ['4.F.1']],
-            ['2. Land converted to other land', ['4.F.2']],
-            ['G. Harvested wood products (5)', ['4.G']],
-            ['H. Other (please specify)', ['4.H']],
+            ['4.A. Forest land', ['4.A']],
+            ['4.A.1. Forest land remaining forest land', ['4.A.1']],
+            ['4.A.2. Land converted to forest land', ['4.A.2']],
+            ['4.B. Cropland', ['4.B']],
+            ['4.B.1. Cropland remaining cropland', ['4.B.1']],
+            ['4.B.2. Land converted to cropland', ['4.B.2']],
+            ['4.C. Grassland', ['4.C']],
+            ['4.C.1. Grassland remaining grassland', ['4.C.1']],
+            ['4.C.2. Land converted to grassland', ['4.C.2']],
+            ['4.D. Wetlands (5)', ['4.D']],
+            ['4.D.1. Wetlands remaining wetlands', ['4.D.1']],
+            ['4.D.2. Land converted to wetlands', ['4.D.2']],
+            ['4.E. Settlements', ['4.E']],
+            ['4.E.1. Settlements remaining settlements', ['4.E.1']],
+            ['4.E.2. Land converted to settlements', ['4.E.2']],
+            ['4.F. Other land (6)', ['4.F']],
+            ['4.F.1. Other land remaining other land', ['4.F.1']],
+            ['4.F.2. Land converted to other land', ['4.F.2']],
+            ['4.G. Harvested wood products (7)', ['4.G']],
+            ['4.H. Other (please specify)', ['4.H']],
             ['Land converted to Settlement', ['4.H.1']],
-            ['Reservoir of Petit-Saut in French Guiana', ['4.H.5']],
-            ['Biogenic NMVOCs from managed forest', ['4.H.4']],
-            ['All other', ['4.H.9']],
-            ['Luxembourg', ['4.H.8']],
-            ['Settlements Remaining Settlements', ['4.H.2']],
-            ['4.E Settlements', ['4.H.2']],
-            ['4.C Grassland', ['4.H.3']],
-            ['Settlements', ['4.H.2']],
-            ['Other', ['4.H.9']],
-            ['N2O Emissions from Aquaculture Use', ['4.H.6']],
-            ['CH4 from artificial water bodies', ['4.H.7']],
+            ['Aquaculture', ['4.H.10']],
+            ['Seagrass', ['4.H.11']],
+            # currently ignoring memo item
         ],
         "entity_mapping": {
             'CH4(2)': 'CH4',
             'N2O(2)': 'N2O',
             'Net CO2 emissions/removals(1), (2)': 'CO2',
+            #'Total GHG emissions/removals (3)': 'KYOTOGHG (AR4GWP100)'
         },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # tested
+    },  # to test
     # TODO: all other LULUCF tables
     "Table5": {  # Waste overview
-        "status": "tested",
+        "status": "totest",
         "table": {
-            "firstrow": 5,
-            "lastrow": 27,
+            "firstrow": 8,
+            "lastrow": 30,
             "header": ['entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": ["", np.nan],
-            "unit_info": unit_info["default"],
+            "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
-            ['Total waste', ['5']],
-            ['A. Solid waste disposal', ['5.A']],
-            ['1. Managed waste disposal sites', ['5.A.1']],
-            ['2. Unmanaged waste disposal sites', ['5.A.2']],
-            ['3. Uncategorized waste disposal sites', ['5.A.3']],
-            ['B. Biological treatment of solid waste', ['5.B']],
-            ['1. Composting', ['5.B.1']],
-            ['2. Anaerobic digestion at biogas facilities', ['5.B.2']],
-            ['C. Incineration and open burning of waste', ['5.C']],
-            ['1. Waste incineration', ['5.C.1']],
-            ['2. Open burning of waste', ['5.C.2']],
-            ['D. Wastewater treatment and discharge', ['5.D']],
-            ['1. Domestic wastewater', ['5.D.1']],
-            ['2. Industrial wastewater', ['5.D.2']],
-            ['3. Other (as specified in table 5.D)', ['5.D.3']],
-            ['E. Other (please specify)', ['5.E']],
-            ['Other', ['5.E.5']],  # EST, NOR
-            ['Recycling activities', ['5.E.1']],  # NLD
-            ['Mechanical-Biological Treatment MBT', ['5.E.2']],  # DEU
-            ['Accidental fires', ['5.E.3']],  # DEU, DKE, DNK, DNM
-            ['Decomposition of Petroleum-Derived Surfactants', ['5.E.4']],  # JPN
-            ['Decomposition of Fossil-fuel Derived Surfactants', ['5.E.4']],
-            # JPN since 2023
-            ['Other non-specified', ['5.E.5']],  # USA
-            ['Biogas burning without energy recovery', ['5.E.6']],  # PRT
-            ['Sludge spreading', ['5.E.7']],  # ESP
-            ['Accidental combustion', ['5.E.3']],  # ESP
-            ['Other waste', ['5.E.5']],  # CZE
-            ['5.E.1 Industrial Wastewater', ['5.E.8']],  # CAN, new in 2022
-            ['Accidental Fires at SWDS', ['5.E.9']],  # AUS, new in 2022
-            ['Memo item:(2)', ['\IGNORE']],
-            ['Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
-            ['Annual change in total long-term C storage', ['M.Memo.ACLT']],
-            ['Annual change in total long-term C storage in HWP waste(3)', ['M.Memo.ACLTHWP']],
+            ['5. Total waste', ['5']],
+            ['5.A. Solid waste disposal', ['5.A']],
+            ['5.A.1. Managed waste disposal sites', ['5.A.1']],
+            ['5.A.2. Unmanaged waste disposal sites', ['5.A.2']],
+            ['5.A.3. Uncategorized waste disposal sites', ['5.A.3']],
+            ['5.B. Biological treatment of solid waste', ['5.B']],
+            ['5.B.1. Composting', ['5.B.1']],
+            ['5.B.2. Anaerobic digestion at biogas facilities', ['5.B.2']],
+            ['5.C. Incineration and open burning of waste', ['5.C']],
+            ['5.C.1. Waste incineration', ['5.C.1']],
+            ['5.C.2. Open burning of waste', ['5.C.2']],
+            ['5.D. Wastewater treatment and discharge', ['5.D']],
+            ['5.D.1. Domestic wastewater', ['5.D.1']],
+            ['5.D.2. Industrial wastewater', ['5.D.2']],
+            ['5.D.3. Other (as specified in table 5.D)', ['5.D.3']],
+            ['5.E. Other (please specify)', ['5.E']],
+            ['Accidental fires at Solid Waste Disposal Sites', ['5.E.9']],
+            ['Memo item: (3)', ['\IGNORE']],
+            ['5.F.1. Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
+            ['5.F.1.a. Annual change in total long-term C storage', ['M.Memo.ACLT']],
+            ['5.F.1.b. Annual change in total long-term C storage in HWP waste (4)',
+             ['M.Memo.ACLTHWP']],
         ],
         "entity_mapping": {
             'CO2(1)': 'CO2',
@@ -1366,362 +1329,80 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # tested; memo items not read because of empty lines
-    "Table5.A": {  # solid waste disposal
-        "status": "tested",
-        "table": {
-            "firstrow": 6,
-            "lastrow": 15,
-            "header": ['group', 'group', 'entity', 'entity', 'unit'],
-            "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category"],
-            "cols_to_ignore": [
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION SINK CATEGORIES Annual waste at the SWDS',
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION SINK CATEGORIES MCF',
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION SINK CATEGORIES DOCf',
-                'IMPLIED EMISSION FACTOR SINK CATEGORIES CH4(1)',
-                'IMPLIED EMISSION FACTOR SINK CATEGORIES CO2',
-                'EMISSIONS SINK CATEGORIES CH4 Amount of CH4 flared',
-                'EMISSIONS SINK CATEGORIES CH4 Amount of CH4 for energy recovery(3)',
-            ],
-            "stop_cats": ["", np.nan],
-            "unit_info": unit_info["default"],
-        },
-        "sector_mapping": [
-            ['1. Managed waste disposal sites', ['5.A.1']],
-            ['a. Anaerobic', ['5.A.1.a']],
-            ['b. Semi-aerobic', ['5.A.1.b']],
-            ['2. Unmanaged waste disposal sites', ['5.A.2']],
-            ['3. Uncategorized waste disposal sites', ['5.A.3']],
-        ],
-        "entity_mapping": {
-            'EMISSIONS SINK CATEGORIES CH4 Emissions(2)': 'CH4',
-            'EMISSIONS SINK CATEGORIES CO2(4) Amount of CH4 for energy recovery(3)': 'CO2',
-        },
-        "coords_defaults": {
-            "class": "Total",
-        },
-    },  # tested
-    "Table5.B": {  # Biological treatment of solid waste
-        "status": "tested",
-        "table": {
-            "firstrow": 5,
-            "lastrow": 16,
-            "header": ['group', 'entity', 'entity', 'unit'],
-            "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category"],
-            "cols_to_ignore": [
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION Annual waste amount treated',
-                'IMPLIED EMISSION FACTOR CH4(1)',
-                'IMPLIED EMISSION FACTOR N2O',
-                'EMISSIONS CH4 Amount of CH4 flared',
-                'EMISSIONS CH4 Amount of CH4 for energy recovery(3)',
-            ],
-            "stop_cats": [".", "", np.nan],
-            "unit_info": unit_info["default"],
-        },
-        "sector_mapping": [
-            ['1. Composting', ['5.B.1'], 0],
-            ['Municipal solid waste', ['5.B.1.a'], 1],
-            ['Other (please specify)(4)', ['5.B.1.b'], 1],
-            ['Organic wastes households', ['5.B.1.b.i'], 2],  # NLD
-            ['Organic wastes from gardens and horticulture', ['5.B.1.b.ii'], 2],  # NLD
-            ['Food and garden waste', ['5.B.1.b.ii'], 2],  # DNM, DNK, DKE
-            ['Industrial Solid Waste', ['5.B.1.b.iii'], 2],  # POL
-            ['Home composting', ['5.B.1.b.iv'], 2],  # NOR
-            ['Mixed waste', ['5.B.1.b.v'], 2],  # LTU
-            ['Other waste', ['5.B.1.b.v'], 2],  # SWE
-            ['Sludge', ['5.B.1.b.vi'], 2],  # HUN, EST
-            ['Textile', ['5.B.1.b.vii'], 2],  # EST
-            ['Wood', ['5.B.1.b.viii'], 2],  # EST
-            ['Organic', ['5.B.1.b.ix'], 2],  # EST
-            ['Paper', ['5.B.1.b.x'], 2],  # EST
-            ['Other_SW', ['5.B.1.b.v'], 2],  # CZE
-            ['MBA treated MSW', ['5.B.1.b.xi'], 2],  # LUX
-            ['Specific Agricultural and Industrial Waste', ['5.B.1.b.xii'], 2],  # UKR
-            ['Industrial solid waste and constr. waste', ['5.B.1.b.xiii'], 2],  # FIN
-            ['Municipal sludge', ['5.B.1.b.xiv'], 2],  # FIN
-            ['Industrial sludge', ['5.B.1.b.xv'], 2],  # FIN
-            ['Open air composting', ['5.B.1.b.xvi'], 2],  # LIE
-            ['Industrial Waste', ['5.B.1.b.xvii'], 2],  # JPN
-            ['Human Waste and Johkasou sludge', ['5.B.1.b.xviii'], 2],  # JPN
-            ['2. Anaerobic digestion at biogas facilities(3)', ['5.B.2'], 0],
-            ['Municipal solid waste', ['5.B.2.a'], 1],
-            ['Other (please specify)(4)', ['5.B.2.b'], 1],
-            ['Organic wastes households', ['5.B.2.b.i'], 2],  # NLD
-            ['Organic wastes from gardens and horticulture', ['5.B.2.b.ii'], 2],  # NLD
-            ['Animal manure and other organic waste', ['5.B.2.b.iii'], 2],  # DNM, DNK, DKE
-            ['sewage sludge', ['5.B.2.b.iv'], 2],  # LTU
-            ['Other waste', ['5.B.2.b.v'], 2],  # SWE
-            ['Agricultural biogas facilities', ['5.B.2.b.vi'], 2],  # CHE
-            ['Other biogases from anaerobic fermentation', ['5.B.2.b.vii'], 2],  # HUN
-            ['Sludge', ['5.B.2.b.iv'], 2],  # EST
-            ['Anaerobic Digestion On-Farm and at Wastewater Treatment Facilities', ['5.B.2.b.viii'], 2],  # USA
-            ['Other_AD', ['5.B.2.b.v'], 2],  # CZE
-            ['Biogenic waste incl. wastes from Agriculture (manure)', ['5.B.2.b.ix'], 2],  # LUX
-            ['Industrial solid waste and constr. waste', ['5.B.2.b.x'], 2],  # FIN
-            ['Municipal sludge', ['5.B.2.b.xi'], 2],  # FIN
-            ['Industrial sludge', ['5.B.2.b.xii'], 2],  # FIN
-            ['Livestock manure co-digested', ['5.B.2.b.xiii'], 2],  # DEU, new in 2022
-            ['Waste water', ['5.B.2.b.xiv'], 2],  # NOR, new in 2022
-        ],
-        "entity_mapping": {
-            'EMISSIONS CH4 Emissions(2)': 'CH4',
-            'EMISSIONS N2O Amount of CH4 for energy recovery(3)': 'N2O',
-        },
-        "coords_defaults": {
-            "class": "Total",
-        },
-    },  # tested
-    "Table5.C": {  # Waste incineration and open burning
-        "status": "tested",
-        "table": {
-            "firstrow": 5,
-            "lastrow": 38,
-            "header": ['group', 'group', 'entity', 'unit'],
-            "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category"],
-            "cols_to_ignore": [
-                'ACTIVITY DATA Amount of wastes (incinerated/open burned)',
-                'IMPLIED EMISSION FACTOR Amount of wastes (incinerated/open burned) CO2',
-                'IMPLIED EMISSION FACTOR Amount of wastes (incinerated/open burned) CH4',
-                'IMPLIED EMISSION FACTOR Amount of wastes (incinerated/open burned) N2O',
-            ],
-            "stop_cats": [".", "", np.nan],
-            "unit_info": unit_info["default"],
-        },
-        "sector_mapping": [
-            ['1. Waste Incineration', ['5.C.1'], 0],
-            ['Biogenic (1)', ['5.C.1.a'], 1],
-            ['Municipal solid waste', ['5.C.1.a.i'], 2],
-            ['Other (please specify)(2)', ['5.C.1.a.ii'], 2],
-            ['Industrial Solid Wastes', ['5.C.1.a.ii.1'], 3],
-            ['Hazardous Waste', ['5.C.1.a.ii.2'], 3],
-            ['Clinical Waste', ['5.C.1.a.ii.3'], 3],
-            ['Sewage Sludge', ['5.C.1.a.ii.4'], 3],
-            ['Other (please specify)', ['5.C.1.a.ii.5'], 3],
-            ['Animal cremations', ['5.C.1.a.ii.5.a'], 4],  # DKE, DNK, DNM
-            ['Human cremations', ['5.C.1.a.ii.5.b'], 4],  # DKE, DNK, DNM
-            ['Cremation', ['5.C.1.a.ii.5.c'], 4],  # CHE, NOR, FRA, FRK
-            ['cremation', ['5.C.1.a.ii.5.c'], 4],  # DEU
-            ['Industrial waste', ['5.C.1.a.ii.5.d'], 4],  # NOR
-            ['Biogenic other waste', ['5.C.1.a.ii.5.e'], 4],  # EST
-            ['Biogenic waste other than Municipal Solid Waste', ['5.C.1.a.ii.5.e'], 4],  # ROU
-            ['Sludge', ['5.C.1.a.ii.5.f'], 4],  # JPN
-            ['Non-fossile liquid waste', ['5.C.1.a.ii.5.g'], 4],  # JPN
-            ['Non-biogenic', ['5.C.1.b'], 1],
-            ['Municipal solid waste', ['5.C.1.b.i'], 2],
-            ['Other (please specify)(3)', ['5.C.1.b.ii'], 2],
-            ['Industrial Solid Wastes', ['5.C.1.b.ii.1'], 3],
-            ['Hazardous Waste', ['5.C.1.b.ii.2'], 3],
-            ['Clinical Waste', ['5.C.1.b.ii.3'], 3],
-            ['Sewage Sludge', ['5.C.1.b.ii.4'], 3],
-            ['Fossil liquid waste', ['5.C.1.b.ii.5'], 3],
-            ['Other (please specify)', ['5.C.1.b.ii.6'], 3],
-            ['Quarantine and other waste', ['5.C.1.b.ii.6.a'], 4],  # NZL
-            ['Industrial waste', ['5.C.1.b.ii.6.b'], 4],  # CHE
-            ['Chemical waste', ['5.C.1.b.ii.6.c'], 4],  # GBR, GBK
-            ['Flaring in the chemical industry', ['5.C.1.a.ii.6.d'], 4],  # BEL
-            ['Sludge', ['5.C.1.a.ii.6.e'], 4],  # JPN
-            ['Solvents', ['5.C.1.a.ii.6.f'], 4],  # GRC, AUS
-            ['2. Open burning of waste', ['5.C.2'], 0],
-            ['Biogenic (1)', ['5.C.2.a'], 1],
-            ['Municipal solid waste', ['5.C.2.a.i'], 2],
-            ['Other (please specify)', ['5.C.2.a.ii'], 2],
-            ['agricultural waste', ['5.C.2.a.ii.1'], 3],  # ITA
-            ['Agricultural residues', ['5.C.2.a.ii.1'], 3],  # ESP
-            ['Agriculture residues', ['5.C.2.a.ii.1'], 3],  # PRT new in 2023
-            ['Natural residues', ['5.C.2.a.ii.2'], 3],  # CHE
-            ['Wood waste', ['5.C.2.a.ii.3'], 3],  # GBR, GBK
-            ['Bonfires etc.', ['5.C.2.a.ii.4'], 3],  # DEU
-            ['Bonfires', ['5.C.2.a.ii.4'], 3],  # NLD, ISL
-            ['Other', ['5.C.2.a.ii.5'], 3],  # EST
-            ['Other waste', ['5.C.2.a.ii.5'], 3],  # CZE
-            ['Waste', ['5.C.2.a.ii.5'], 3],  # GBR new in 2023
-            ['Industrial Solid Waste', ['5.C.2.a.ii.6'], 3],  # JPN
-            ['Vine', ['5.C.2.a.ii.7'], 3], # AUT new in 2023
-            ['Non-biogenic', ['5.C.2.b'], 1],
-            ['Municipal solid waste', ['5.C.2.b.i'], 2],
-            ['Other (please specify)', ['5.C.2.b.ii'], 2],
-            ['Rural waste', ['5.C.2.b.ii.1'], 3],  # NZL
-            ['Accidental fires (vehicles)', ['5.C.2.b.ii.2'], 3],  # GBR, GBK
-            ['Accidental fires (buildings)', ['5.C.2.b.ii.3'], 3],  # GBR, GBK
-            ['Bonfires', ['5.C.2.b.ii.4'], 3],  # ISL
-            ['Other', ['5.C.2.b.ii.5'], 3],  # EST
-            ['Other waste', ['5.C.2.b.ii.5'], 3],  # CZE
-            ['Waste', ['5.C.2.b.ii.5'], 3],  # GBR new in 2023
-            ['Industrial Solid Waste', ['5.C.2.b.ii.6'], 3],  # JPN
-        ],
-        "entity_mapping": {
-            'EMISSIONS Amount of wastes (incinerated/open burned) CH4': 'CH4',
-            'EMISSIONS Amount of wastes (incinerated/open burned) CO2': 'CO2',
-            'EMISSIONS Amount of wastes (incinerated/open burned) N2O': 'N2O',
-        },
-        "coords_defaults": {
-            "class": "Total",
-        },
-    },  # tested
-    "Table5.D": {  # Waste incineration and open burning
-        "status": "tested",
-        "table": {
-            "firstrow": 5,
-            "lastrow": 13,
-            "header": ['group', 'entity', 'entity', 'entity', 'unit'],
-            "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category"],
-            "cols_to_ignore": [
-                'ACTIVITY DATA AND RELATED INFORMATION Total organic product',
-                'ACTIVITY DATA AND RELATED INFORMATION Sludge removed(1)',
-                'ACTIVITY DATA AND RELATED INFORMATION Sludge removed(1) N in effluent',
-                'IMPLIED EMISSION FACTOR CH4(2) N in effluent',
-                'IMPLIED EMISSION FACTOR N2O(3) N in effluent',
-                'EMISSIONS CH4 Amount of CH4 flared',
-                'EMISSIONS CH4 Amount of CH4 for Energy Recovery(5)',
-            ],
-            "stop_cats": [".", "", np.nan],
-            "unit_info": unit_info["default"],
-        },
-        "sector_mapping": [
-            ['1. Domestic wastewater', ['5.D.1']],
-            ['2. Industrial wastewater', ['5.D.2']],
-            ['3. Other (please specify)', ['5.D.3']],
-            ['Other', ['5.D.3.a']],  # EST
-            ['Septic tanks', ['5.D.3.b']],  # NLD
-            ['Wastewater Effluent', ['5.D.3.c']],  # NLD
-            ['Fish farming', ['5.D.3.d']],  # FIN
-            ['Uncategorized wastewater', ['5.D.3.a']],  # CZE
-        ],
-        "entity_mapping": {
-            'EMISSIONS CH4 Emissions(4)': 'CH4',
-            'EMISSIONS N2O(3) Amount of CH4 for Energy Recovery(5)': 'N2O',
-        },
-        "coords_defaults": {
-            "class": "Total",
-        },
-    },  # tested
-    "Summary1.As1": {  # Summary 1, sheet 1
-        "status": "tested",
+    },  # to test
+    # TODO 5.A-D
+    "Summary1": {  # Summary 1
+        "status": "totest",
          "table": {
-            "firstrow": 5,
-            "lastrow": 28,
+            "firstrow": 8,
+            "lastrow": 70,
             "header": ['entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": [], #"", np.nan],
             "unit_info": unit_info["summary"],
         },
         "sector_mapping": [
             ['Total national emissions and removals', ['0']],
             ['1. Energy', ['1']],
-            ['A. Fuel combustion Reference approach(2)', ['1.A-ref']],
-            ['Sectoral approach(2)', ['1.A']],
-            ['1. Energy industries', ['1.A.1']],
-            ['2. Manufacturing industries and construction', ['1.A.2']],
-            ['3. Transport', ['1.A.3']],
-            ['4. Other sectors', ['1.A.4']],
-            ['5. Other', ['1.A.5']],
-            ['B. Fugitive emissions from fuels', ['1.B']],
-            ['1. Solid fuels', ['1.B.1']],
-            ['2. Oil and natural gas and other emissions from energy production',
+            ['1.A. Fuel combustion', ['1.A']],
+            ['1.A.1. Energy industries', ['1.A.1']],
+            ['1.A.2. Manufacturing industries and construction', ['1.A.2']],
+            ['1.A.3. Transport', ['1.A.3']],
+            ['1.A.4. Other sectors', ['1.A.4']],
+            ['1.A.5. Other', ['1.A.5']],
+            ['1.B. Fugitive emissions from fuels', ['1.B']],
+            ['1.B.1. Solid fuels', ['1.B.1']],
+            ['1.B.2. Oil and natural gas and other emissions from energy production',
              ['1.B.2']],
-            ['C. CO2 Transport and storage', ['1.C']],
+            ['1.C. CO2 Transport and storage', ['1.C']],
             ['2. Industrial processes and product use', ['2']],
-            ['A. Mineral industry', ['2.A']],
-            ['B. Chemical industry', ['2.B']],
-            ['C. Metal industry', ['2.C']],
-            ['D. Non-energy products from fuels and solvent use', ['2.D']],
-            ['E. Electronic industry', ['2.E']],
-            ['F. Product uses as substitutes for ODS', ['2.F']],
-            ['G. Other product manufacture and use', ['2.G']],
-            ['H. Other(3)', ['2.H']],
-        ],
-        "entity_mapping": {
-            'NOX': 'NOx',
-            'Net CO2 emissions/removals': 'CO2',
-            'HFCs(1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
-        },
-        "coords_defaults": {
-            "class": "Total",
-        },
-    },  # tested
-    "Summary1.As2": {  # Summary 1, sheet 2
-        "status": "tested",
-         "table": {
-            "firstrow": 5,
-            "lastrow": 34,
-            "header": ['entity', 'entity', 'unit'],
-            "header_fill": [True, False, True],
-            "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category"],
-            "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
-            "unit_info": unit_info["summary"],
-        },
-        "sector_mapping": [
+            ['2.A. Mineral industry', ['2.A']],
+            ['2.B. Chemical industry', ['2.B']],
+            ['2.C. Metal industry', ['2.C']],
+            ['2.D. Non-energy products from fuels and solvent use', ['2.D']],
+            ['2.E. Electronic industry', ['2.E']],
+            ['2.F. Product uses as substitutes for ODS', ['2.F']],
+            ['2.G. Other product manufacture and use', ['2.G']],
+            ['2.H. Other (4)', ['2.H']],
             ['3. Agriculture', ['3']],
-            ['A. Enteric fermentation', ['3.A']],
-            ['B. Manure management', ['3.B']],
-            ['C. Rice cultivation', ['3.C']],
-            ['D. Agricultural soils', ['3.D']],
-            ['E. Prescribed burning of savannas', ['3.E']],
-            ['F. Field burning of agricultural residues', ['3.F']],
-            ['G. Liming', ['3.G']],
-            ['H. Urea application', ['3.H']],
-            ['I. Other carbon-contining fertilizers', ['3.I']],
-            ['J. Other', ['3.J']],
-            ['4. Land use, land-use change and forestry (4)', ['4']],
-            ['A. Forest land (4)', ['4.A']],
-            ['B. Cropland (4)', ['4.B']],
-            ['C. Grassland (4)', ['4.C']],
-            ['D. Wetlands (4)', ['4.D']],
-            ['E. Settlements (4)', ['4.E']],
-            ['F. Other land (4)', ['4.F']],
-            ['G. Harvested wood products', ['4.G']],
-            ['H. Other (4)', ['4.H']],
+            ['3.A. Enteric fermentation', ['3.A']],
+            ['3.B. Manure management', ['3.B']],
+            ['3.C. Rice cultivation', ['3.C']],
+            ['3.D. Agricultural soils', ['3.D']],
+            ['3.E. Prescribed burning of savannas', ['3.E']],
+            ['3.F. Field burning of agricultural residues', ['3.F']],
+            ['3.G. Liming', ['3.G']],
+            ['3.H. Urea application', ['3.H']],
+            ['3.I. Other carbon-contining fertilizers', ['3.I']],
+            ['3.J. Other', ['3.J']],
+            ['4. Land use, land-use change and forestry (5)', ['4']],
+            ['4.A. Forest land (5)', ['4.A']],
+            ['4.B. Cropland (5)', ['4.B']],
+            ['4.C. Grassland (5)', ['4.C']],
+            ['4.D. Wetlands (5)', ['4.D']],
+            ['4.E. Settlements (5)', ['4.E']],
+            ['4.F. Other land (5)', ['4.F']],
+            ['4.G. Harvested wood products (5)', ['4.G']],
+            ['4.H. Other (5)', ['4.H']],
             ['5. Waste', ['5']],
-            ['A. Solid waste disposal (5)', ['5.A']],
-            ['B. Biological treatment of solid waste (5)', ['5.B']],
-            ['C. Incineration and open burning of waste (5)', ['5.C']],
-            ['D. Wastewater treatment and discharge', ['5.D']],
-            ['E. Other (5)', ['5.E']],
-            ['6. Other (please specify)(6)', ['6']],
-        ],
-        "entity_mapping": {
-            'NOX': 'NOx',
-            'Net CO2 emissions/removals': 'CO2',
-            'HFCs (1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
-        },
-        "coords_defaults": {
-            "class": "Total",
-        },
-    },  # tested
-    "Summary1.As3": {  # Summary 1, sheet 3
-        "status": "tested",
-         "table": {
-            "firstrow": 5,
-            "lastrow": 17,
-            "header": ['entity', 'entity', 'unit'],
-            "header_fill": [True, False, True],
-            "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
-            "categories": ["category"],
-            "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
-            "unit_info": unit_info["summary"],
-        },
-        "sector_mapping": [
-            ['Memo items:(7)', ['\IGNORE']],
-            ['International bunkers', ['M.Memo.Int']],
-            ['Aviation', ['M.Memo.Int.Avi']],
-            ['Navigation', ['M.Memo.Int.Mar']],
-            ['Multilateral operations', ['M.Memo.Mult']],
-            ['CO2 emissions from biomass', ['M.Memo.Bio']],
-            ['CO2 captured', ['M.Memo.CO2Cap']],
-            ['Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
+            ['5.A. Solid waste disposal (6)', ['5.A']],
+            ['5.B. Biological treatment of solid waste (6)', ['5.B']],
+            ['5.C. Incineration and open burning of waste (6)', ['5.C']],
+            ['5.D. Wastewater treatment and discharge (6)', ['5.D']],
+            ['5.E. Other (6)', ['5.E']],
+            ['6. Other (please specify) (7)', ['6']],
+            ['NA', ['\IGNORE']],
+            # memo items not read because of empty lines
+            ['Memo items: (8)', ['\IGNORE']],
+            ['1.D.1. International bunkers', ['M.Memo.Int']],
+            ['1.D.1.a. Aviation', ['M.Memo.Int.Avi']],
+            ['1.D.1.b. Navigation', ['M.Memo.Int.Mar']],
+            ['1.D.2. Multilateral operations', ['M.Memo.Mult']],
+            ['1.D.3. CO2 emissions from biomass', ['M.Memo.Bio']],
+            ['1.D.4. CO2 captured', ['M.Memo.CO2Cap']],
+            ['2.F.1. Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
             ['Indirect N2O', ['M.Memo.IndN2O']],
             ['Indirect CO2', ['M.Memo.IndCO2']],
         ],
@@ -1735,5 +1416,5 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # tested
+    },  # to test
 }
