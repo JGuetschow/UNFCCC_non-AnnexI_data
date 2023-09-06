@@ -241,10 +241,24 @@ def read_crf_table(
                               f"folder={folder}.")
 
     # get specification
-    try:
-        crf_spec = getattr(crf, f"CRF{submission_year}")
-    except:
-        raise ValueError(f"No terminology exists for submission year {submission_year}")
+    # if we only have a single country check if we might have a country specific
+    # specification (currently only Australia, 2023)
+    if len(country_codes) == 1:
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}_{country_codes[0]}")
+        except:
+            # no country specific specification, check for general specification
+            try:
+                crf_spec = getattr(crf, f"CRF{submission_year}")
+            except:
+                raise ValueError(f"No terminology exists for submission year "
+                                 f"{submission_year}")
+    else:
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}")
+        except:
+            raise ValueError(f"No terminology exists for submission year "
+                             f"{submission_year}")
 
     # now loop over files and read them
     df_all = None

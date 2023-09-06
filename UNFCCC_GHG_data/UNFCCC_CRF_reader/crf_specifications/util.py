@@ -26,6 +26,7 @@ unit_info = {
         "regexp_unit": r"\((.*)\)",
         "manual_repl_unit": {
             "CO2 equivalent (kt)": "kt CO2eq",
+            "CO2 equivalents (kt)": "kt CO2eq", # for AUS Table1
         },
         "default_unit": "kt",
     },
