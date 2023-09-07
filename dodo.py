@@ -202,7 +202,7 @@ read_config_crf = {
     "re_read": get_var('re_read', False),
     "countries": get_var('countries', None),
     "data_year": get_var('data_year', None),
-    "totest": get_var('data_year', None),
+    "totest": get_var('totest', None),
 }
 
 def task_read_unfccc_crf_submission():
@@ -255,6 +255,7 @@ def task_test_read_unfccc_crf_for_year():
                f"UNFCCC_GHG_data/UNFCCC_CRF_reader"
                f"/test_read_UNFCCC_CRF_for_year.py "
                f"--submission_year={read_config_crf['submission_year']} "
+               f"--country={read_config_crf['country']} "
                ]
     if read_config_crf["totest"] == "True":
         actions[0] = actions[0] + " --totest"

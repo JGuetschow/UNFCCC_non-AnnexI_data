@@ -23,6 +23,7 @@ def read_year_to_test_specs(
         submission_year: int,
         data_year: Optional[int]=None,
         totest: Optional[bool]=False,
+        country_code: Optional=None,
 ) -> xr.Dataset:
     """
     Read one xlsx file (so one data year) for each country for a submission year to
@@ -41,11 +42,33 @@ def read_year_to_test_specs(
     if totest:
         print("Reading only tables to test.")
     print("#"*80)
-    try:
-        crf_spec = getattr(crf, f"CRF{submission_year}")
-    except:
-        raise ValueError(f"No terminology exists for submission years {submission_year}, "
-                         f"{submission_year - 1}")
+
+
+    # get specification
+    # if we only have a single country check if we might have a country specific
+    # specification (currently only Australia, 2023)
+    if country_code is not None:
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}_{country_code}")
+            print(
+                f"Using country specific specification: "
+                f"CRF{submission_year}_{country_code}"
+            )
+        except:
+            # no country specific specification, check for general specification
+            try:
+                crf_spec = getattr(crf, f"CRF{submission_year}")
+            except:
+                raise ValueError(
+                    f"No terminology exists for submission year " f"{submission_year}"
+                )
+    else:
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}")
+        except:
+            raise ValueError(
+                f"No terminology exists for submission year " f"{submission_year}"
+            )
 
     if totest:
         tables = [table for table in crf_spec.keys()
@@ -57,7 +80,11 @@ def read_year_to_test_specs(
           f"CRF{submission_year} specification: {tables}")
     print("#" * 80)
 
-    for country_code in all_crf_countries:
+    if country_code is not None:
+        countries_to_read = [country_code]
+    else:
+        countries_to_read = all_crf_countries
+    for country_code in countries_to_read:
         # get country name
         country_name = get_country_name(country_code)
         print(f"Reading for {country_name}")
@@ -116,14 +143,32 @@ def read_year_to_test_specs(
     # process log messages.
     today = date.today()
     if len(unknown_categories) > 0:
-        log_location = log_path / f"CRF{submission_year}" \
-                       / f"{data_year}_unknown_categories_{today.strftime('%Y-%m-%d')}.csv"
+        if country_code is not None:
+            log_location = (
+                log_path
+                / f"CRF{submission_year}"
+                / f"{data_year}_unknown_categories_{country_code}"
+                  f"_{today.strftime('%Y-%m-%d')}.csv"
+            )
+        else:
+            log_location = (log_path / f"CRF{submission_year}"
+                            / f"{data_year}_unknown_categories_"
+                              f"{today.strftime('%Y-%m-%d')}.csv")
         print(f"Unknown rows found. Savin log to {log_location}")
         save_unknown_categories_info(unknown_categories, log_location)
 
     if len(last_row_info) > 0:
-        log_location = log_path / f"CRF{submission_year}" \
-                       / f"{data_year}_last_row_info_{today.strftime('%Y-%m-%d')}.csv"
+        if country_code is not None:
+            log_location = (
+               log_path
+               / f"CRF{submission_year}"
+               / f"{data_year}_last_row_info_{country_code}_"
+                 f"{today.strftime('%Y-%m-%d')}.csv"
+           )
+        else:
+            log_location = (log_path / f"CRF{submission_year}"
+                            / f"{data_year}_last_row_info_"
+                              f"{today.strftime('%Y-%m-%d')}.csv")
         print(f"Data found in the last row. Saving log to "
               f"{log_location}")
         save_last_row_info(last_row_info, log_location)
@@ -131,7 +176,11 @@ def read_year_to_test_specs(
     # save the data:
     compression = dict(zlib=True, complevel=9)
     output_folder = log_path / f"test_read_CRF{submission_year}"
-    output_filename = f"CRF{submission_year}_{today.strftime('%Y-%m-%d')}"
+    if country_code is not None:
+        output_filename = (f"CRF{submission_year}_{country_code}_"
+                           f"{today.strftime('%Y-%m-%d')}")
+    else:
+        output_filename = f"CRF{submission_year}_{today.strftime('%Y-%m-%d')}"
     if totest:
         output_filename = output_filename + "_totest"
 

@@ -45,7 +45,7 @@ from .util import unit_info
 CRF2023_AUS = {
     # Table1 instead of 1s1 and 1s2
     "Table1": {
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 8,
             "lastrow": 59,
@@ -58,7 +58,7 @@ CRF2023_AUS = {
         },
         "sector_mapping": [
             ['Total Energy', ['1']],
-            ['A. Fuel combustion activities (sectoral approach)', ['1.A']],
+            ['1.A. Fuel combustion activities (sectoral approach)', ['1.A']],
             ['1.A.1. Energy industries', ['1.A.1']],
             ['1.A.1.a. Public electricity and heat production', ['1.A.1.a']],
             ['1.A.1.b. Petroleum refining', ['1.A.1.b']],
@@ -87,7 +87,7 @@ CRF2023_AUS = {
             ['1.B. Fugitive emissions from fuels', ['1.B']],
             ['1.B.1. Solid fuels', ['1.B.1']],
             ['1.B.1.a. Coal mining and handling', ['1.B.1.a']],
-            ['1.B.1.b. Solid fuel transformation', ['1.B.1.b']],
+            ['1.B.1.b. Fuel transformation', ['1.B.1.b']],
             ['1.B.1.c. Other', ['1.B.1.c']],
             ['1.B.2. Oil and natural gas and other emissions from energy production',
              ['1.B.2']],
@@ -99,10 +99,10 @@ CRF2023_AUS = {
             ['1.C.1. Transport of CO2', ['1.C.1']],
             ['1.C.2. Injection and storage', ['1.C.2']],
             ['1.C.3. Other', ['1.C.3']],
-            ['1.D. Memo items: (1)', ['\IGNORE']],
+            ['1.D. Memo items: (3)', ['\IGNORE']],
             ['1.D.1. International bunkers', ['M.Memo.Int']],
             ['1.D.1.a. Aviation', ['M.Memo.Int.Avi']],
-            ['1.D.1.b. Navigation', ['M.Memo.Int.Mar']],
+            ['1.D.1.b.Navigation', ['M.Memo.Int.Mar']],
             ['1.D.2. Multilateral operations', ['M.Memo.Mult']],
             ['1.D.3. CO2 emissions from biomass', ['M.Memo.Bio']],
             ['1.D.4. CO2 captured', ['M.Memo.CO2Cap']],
@@ -111,13 +111,14 @@ CRF2023_AUS = {
         ],
         "entity_mapping": {
             "NOX": "NOx",
+            "Total GHG emissions (1)": "KYOTOGHG (AR4GWP100)"
         },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     "Table1.A(a)s1": {
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 7,
             "lastrow": 88,
@@ -130,7 +131,7 @@ CRF2023_AUS = {
                 'IMPLIED EMISSION FACTORS CO2 (1)',
                 'IMPLIED EMISSION FACTORS CH4',
                 'IMPLIED EMISSION FACTORS N2O',
-                'AMOUNT CAPTURED CO2'
+                'AMOUNT CAPTURED (4) CO2'
             ],
             "stop_cats": ["", np.nan],
             "unit_info": unit_info["default"],
@@ -162,27 +163,28 @@ CRF2023_AUS = {
             ['Biomass (3)', ['1.A.1.a', 'Biomass'], 3],
             ['Drop-down list:', ['\IGNORE', '\IGNORE'], 3],  # (empty)
             # 1.A.1.a.i Electricity Generation
-            ['1.A.1.a.i Electricity Generation', ['1.A.1.a.i', 'Total'], 3],
-            ['Liquid Fuels', ['1.A.1.a.i', 'Liquid'], 4],
-            ['Solid Fuels', ['1.A.1.a.i', 'Solid'], 4],
-            ['Gaseous Fuels (6)', ['1.A.1.a.i', 'Gaseous'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.1.a.i', 'OtherFF'], 4],
+            ['1.A.1.a.i. Electricity generation', ['1.A.1.a.i', 'Total'], 3],
+            ['Liquid fuels', ['1.A.1.a.i', 'Liquid'], 4],
+            ['Solid fuels', ['1.A.1.a.i', 'Solid'], 4],
+            ['Gaseous fuels (6)', ['1.A.1.a.i', 'Gaseous'], 4],
+            ['Other fossil fuels (7)', ['1.A.1.a.i', 'OtherFF'], 4],
             ['Peat (8)', ['1.A.1.a.i', 'Peat'], 4],
             ['Biomass (3)', ['1.A.1.a.i', 'Biomass'], 4],
             # 1.A.1.a.ii Combined heat and power generation
-            ['1.A.1.a.ii Combined heat and power generation', ['1.A.1.a.ii', 'Total'], 3],
-            ['Liquid Fuels', ['1.A.1.a.ii', 'Liquid'], 4],
-            ['Solid Fuels', ['1.A.1.a.ii', 'Solid'], 4],
-            ['Gaseous Fuels (6)', ['1.A.1.a.ii', 'Gaseous'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.1.a.ii', 'OtherFF'], 4],
+            ['1.A.1.a.ii. Combined heat and power generation',
+             ['1.A.1.a.ii', 'Total'], 3],
+            ['Liquid fuels', ['1.A.1.a.ii', 'Liquid'], 4],
+            ['Solid fuels', ['1.A.1.a.ii', 'Solid'], 4],
+            ['Gaseous fuels (6)', ['1.A.1.a.ii', 'Gaseous'], 4],
+            ['Other fossil fuels (7)', ['1.A.1.a.ii', 'OtherFF'], 4],
             ['Peat (8)', ['1.A.1.a.ii', 'Peat'], 4],
             ['Biomass (3)', ['1.A.1.a.ii', 'Biomass'], 4],
             # 1.A.1.a.iii heat plants
-            ['1.A.1.a.iii Heat plants', ['1.A.1.a.iii', 'Total'], 3],
-            ['Liquid Fuels', ['1.A.1.a.iii', 'Liquid'], 4],
-            ['Solid Fuels', ['1.A.1.a.iii', 'Solid'], 4],
-            ['Gaseous Fuels (6)', ['1.A.1.a.iii', 'Gaseous'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.1.a.iii', 'OtherFF'], 4],
+            ['1.A.1.a.iii. Heat plants', ['1.A.1.a.iii', 'Total'], 3],
+            ['Liquid fuels', ['1.A.1.a.iii', 'Liquid'], 4],
+            ['Solid fuels', ['1.A.1.a.iii', 'Solid'], 4],
+            ['Gaseous fuels (6)', ['1.A.1.a.iii', 'Gaseous'], 4],
+            ['Other fossil fuels (7)', ['1.A.1.a.iii', 'OtherFF'], 4],
             ['Peat (8)', ['1.A.1.a.iii', 'Peat'], 4],
             ['Biomass (3)', ['1.A.1.a.iii', 'Biomass'], 4],
             # b. Petroleum refining
@@ -194,7 +196,7 @@ CRF2023_AUS = {
             ['Peat (8)', ['1.A.1.b', 'Peat'], 3],
             ['Biomass (3)', ['1.A.1.b', 'Biomass'], 3],
             # c. Manufacture of solid fuels and other energy industries
-            ['1.A.1.c. Manufacture of solid fuels and other energy industries(8)',
+            ['1.A.1.c. Manufacture of solid fuels and other energy industries (10)',
              ['1.A.1.c', 'Total'], 2],
             ['Liquid fuels', ['1.A.1.c', 'Liquid'], 3],
             ['Solid fuels', ['1.A.1.c', 'Solid'], 3],
@@ -204,27 +206,27 @@ CRF2023_AUS = {
             ['Biomass (3)', ['1.A.1.c', 'Biomass'], 3],
             ['Drop-down list:', ['\IGNORE', '\IGNORE'], 3],  # (empty)
             # 1.A.1.c.i Manufacture of solid fuels
-            ['1.A.1.c.i Manufacture of solid fuels', ['1.A.1.c.i', 'Total'], 3],
-            ['Liquid Fuels', ['1.A.1.c.i', 'Liquid'], 4],
-            ['Solid Fuels', ['1.A.1.c.i', 'Solid'], 4],
-            ['Gaseous Fuels (6)', ['1.A.1.c.i', 'Gaseous'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.1.c.i', 'OtherFF'], 4],
+            ['1.A.1.c.i. Manufacture of solid fuels', ['1.A.1.c.i', 'Total'], 3],
+            ['Liquid fuels', ['1.A.1.c.i', 'Liquid'], 4],
+            ['Solid fuels', ['1.A.1.c.i', 'Solid'], 4],
+            ['Gaseous fuels (6)', ['1.A.1.c.i', 'Gaseous'], 4],
+            ['Other fossil fuels (7)', ['1.A.1.c.i', 'OtherFF'], 4],
             ['Peat (8)', ['1.A.1.c.i', 'Peat'], 4],
             ['Biomass (3)', ['1.A.1.c.i', 'Biomass'], 4],
             # 1.A.1.c.ii Oil and gas extraction
-            ['1.A.1.c.ii Oil and gas extraction', ['1.A.1.c.ii', 'Total'], 3],
-            ['Liquid Fuels', ['1.A.1.c.ii', 'Liquid'], 4],
-            ['Solid Fuels', ['1.A.1.c.ii', 'Solid'], 4],
-            ['Gaseous Fuels (6)', ['1.A.1.c.ii', 'Gaseous'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.1.c.ii', 'OtherFF'], 4],
+            ['1.A.1.c.ii. Oil and gas extraction', ['1.A.1.c.ii', 'Total'], 3],
+            ['Liquid fuels', ['1.A.1.c.ii', 'Liquid'], 4],
+            ['Solid fuels', ['1.A.1.c.ii', 'Solid'], 4],
+            ['Gaseous fuels (6)', ['1.A.1.c.ii', 'Gaseous'], 4],
+            ['Other fossil fuels (7)', ['1.A.1.c.ii', 'OtherFF'], 4],
             ['Peat (8)', ['1.A.1.c.ii', 'Peat'], 4],
             ['Biomass (3)', ['1.A.1.c.ii', 'Biomass'], 4],
             # 1.A.1.c.iii Other energy industries
-            ['1.A.1.c.iii Other energy industries', ['1.A.1.c.iii', 'Total'], 3],
-            ['Liquid Fuels', ['1.A.1.c.iii', 'Liquid'], 4],
-            ['Solid Fuels', ['1.A.1.c.iii', 'Solid'], 4],
-            ['Gaseous Fuels (6)', ['1.A.1.c.iii', 'Gaseous'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.1.c.iii', 'OtherFF'], 4],
+            ['1.A.1.c.iii. Other energy industries', ['1.A.1.c.iii', 'Total'], 3],
+            ['Liquid fuels', ['1.A.1.c.iii', 'Liquid'], 4],
+            ['Solid fuels', ['1.A.1.c.iii', 'Solid'], 4],
+            ['Gaseous fuels (6)', ['1.A.1.c.iii', 'Gaseous'], 4],
+            ['Other fossil fuels (7)', ['1.A.1.c.iii', 'OtherFF'], 4],
             ['Peat (8)', ['1.A.1.c.iii', 'Peat'], 4],
             ['Biomass (3)', ['1.A.1.c.iii', 'Biomass'], 4],
         ],
@@ -233,9 +235,9 @@ CRF2023_AUS = {
             'EMISSIONS CO2 (2,3)': "CO2",
             'EMISSIONS N2O': "N2O",
         },
-    },  # to test
+    },  # tested
     "Table1.A(a)s2": {
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 7,
             "lastrow": 119,
@@ -248,7 +250,7 @@ CRF2023_AUS = {
                 'IMPLIED EMISSION FACTORS CO2 (1)',
                 'IMPLIED EMISSION FACTORS CH4',
                 'IMPLIED EMISSION FACTORS N2O',
-                'AMOUNT CAPTURED CO2',
+                'AMOUNT CAPTURED (4) CO2',
             ],
             "stop_cats": ["", np.nan],
             "unit_info": unit_info["default"],
@@ -310,72 +312,76 @@ CRF2023_AUS = {
             ['Peat (8)', ['1.A.2.f', 'Peat'], 2],
             ['Biomass (3)', ['1.A.2.f', 'Biomass'], 2],
             # g. other
-            ['g. Other (please specify)(11)', ['1.A.2.g', 'Total'], 1],
+            ['1.A.2.g. Other (please specify) (11)', ['1.A.2.g', 'Total'], 1],
+            ['Dropdown list', ['\IGNORE', '\IGNORE'], 2],
             #1.A.2.g.i Manufacturing of machinery
-            ['1.A.2.g.i Manufacturing of machinery', ['1.A.2.g.i', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.2.g.i', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.2.g.i', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.2.g.i', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.i', 'OtherFF'], 3],
+            ['1.A.2.g.i. Manufacturing of machinery', ['1.A.2.g.i', 'Total'], 2],
+            ['Liquid fuels', ['1.A.2.g.i', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.2.g.i', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.2.g.i', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.2.g.i', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.2.g.i', 'Peat'], 3],
             ['Biomass (3)', ['1.A.2.g.i', 'Biomass'], 3],
             # 1.A.2.g.ii Manufacturing of transport equipment
-            ['1.A.2.g.ii Manufacturing of transport equipment', ['1.A.2.g.ii', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.2.g.ii', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.2.g.ii', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.2.g.ii', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.ii', 'OtherFF'], 3],
+            ['1.A.2.g.ii. Manufacturing of transport equipment',
+             ['1.A.2.g.ii', 'Total'], 2],
+            ['Liquid fuels', ['1.A.2.g.ii', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.2.g.ii', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.2.g.ii', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.2.g.ii', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.2.g.ii', 'Peat'], 3],
             ['Biomass (3)', ['1.A.2.g.ii', 'Biomass'], 3],
             # 1.A.2.g.iii Mining (excluding fuels) and quarrying
-            ['1.A.2.g.iii Mining (excluding fuels) and quarrying', ['1.A.2.g.iii', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.2.g.iii', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.2.g.iii', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.2.g.iii', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.iii', 'OtherFF'], 3],
+            ['1.A.2.g.iii. Mining (excluding fuels) and quarrying',
+             ['1.A.2.g.iii', 'Total'], 2],
+            ['Liquid fuels', ['1.A.2.g.iii', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.2.g.iii', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.2.g.iii', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.2.g.iii', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.2.g.iii', 'Peat'], 3],
             ['Biomass (3)', ['1.A.2.g.iii', 'Biomass'], 3],
             # 1.A.2.g.iv Wood and wood products
-            ['1.A.2.g.iv Wood and wood products', ['1.A.2.g.iv', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.2.g.iv', 'Liquid'], 3],
+            ['1.A.2.g.iv. Wood and wood products', ['1.A.2.g.iv', 'Total'], 2],
+            ['Liquid fuels', ['1.A.2.g.iv', 'Liquid'], 3],
             ['Solid Fuels', ['1.A.2.g.iv', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.2.g.iv', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.iv', 'OtherFF'], 3],
+            ['Gaseous fuels (6)', ['1.A.2.g.iv', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.2.g.iv', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.2.g.iv', 'Peat'], 3],
             ['Biomass (3)', ['1.A.2.g.iv', 'Biomass'], 3],
             # 1.A.2.g.v Construction
-            ['1.A.2.g.v Construction', ['1.A.2.g.v', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.2.g.v', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.2.g.v', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.2.g.v', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.v', 'OtherFF'], 3],
+            ['1.A.2.g.v. Construction', ['1.A.2.g.v', 'Total'], 2],
+            ['Liquid fuels', ['1.A.2.g.v', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.2.g.v', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.2.g.v', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.2.g.v', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.2.g.v', 'Peat'], 3],
             ['Biomass (3)', ['1.A.2.g.v', 'Biomass'], 3],
             # 1.A.2.g.vi Textile and leather
-            ['1.A.2.g.vi Textile and leather', ['1.A.2.g.vi', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.2.g.vi', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.2.g.vi', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.2.g.vi', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.vi', 'OtherFF'], 3],
+            ['1.A.2.g.vi. Textile and leather', ['1.A.2.g.vi', 'Total'], 2],
+            ['Liquid fuels', ['1.A.2.g.vi', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.2.g.vi', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.2.g.vi', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.2.g.vi', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.2.g.vi', 'Peat'], 3],
             ['Biomass (3)', ['1.A.2.g.vi', 'Biomass'], 3],
             # 1.A.2.g.vii Off-road vehicles and other machinery
-            ['1.A.2.g.vii Off-road vehicles and other machinery', ['1.A.2.g.vii', 'Total'], 2],
+            ['1.A.2.g.vii. Off-road vehicles and other machinery',
+             ['1.A.2.g.vii', 'Total'], 2],
             ['Gasoline', ['1.A.2.g.vii', 'Gasoline'], 3],
-            ['Diesel Oil', ['1.A.2.g.vii', 'DieselOil'], 3],
+            ['Diesel oil', ['1.A.2.g.vii', 'DieselOil'], 3],
             ['Liquefied petroleum gases (LPG)', ['1.A.2.g.vii', 'LPG'], 3],
             ['Other liquid fuels (please specify)', ['1.A.2.g.vii', 'OtherLiquid'], 3],
             ['NA', ['\IGNORE', '\IGNORE'], 3],
-            ['Gaseous Fuels (6)', ['1.A.2.g.vii', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.vii', 'OtherFF'], 3],
+            ['Gaseous fuels (6)', ['1.A.2.g.vii', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.2.g.vii', 'OtherFF'], 3],
             ['Biomass (3)', ['1.A.2.g.vii', 'Biomass'], 3],
             # 1.A.2.g.viii Other (please specify)
-            ['1.A.2.g.viii Other (please specify)', ['1.A.2.g.viii', 'Total'], 2],
+            ['1.A.2.g.viii. Other (please specify)', ['1.A.2.g.viii', 'Total'], 2],
             ['All Other Manufacturing', ['1.A.2.g.viii.3', 'Total'], 3],
-            ['Liquid Fuels', ['1.A.2.g.viii.3', 'Liquid'], 4],
-            ['Solid Fuels', ['1.A.2.g.viii.3', 'Solid'], 4],
-            ['Gaseous Fuels (6)', ['1.A.2.g.viii.3', 'Gaseous'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.2.g.viii.3', 'OtherFF'], 4],
+            ['Liquid fuels', ['1.A.2.g.viii.3', 'Liquid'], 4],
+            ['Solid fuels', ['1.A.2.g.viii.3', 'Solid'], 4],
+            ['Gaseous fuels (6)', ['1.A.2.g.viii.3', 'Gaseous'], 4],
+            ['Other fossil fuels (7)', ['1.A.2.g.viii.3', 'OtherFF'], 4],
             ['Peat (8)', ['1.A.2.g.viii.3', 'Peat'], 4],
             ['Biomass (3)', ['1.A.2.g.viii.3', 'Biomass'], 4],
         ],
@@ -384,12 +390,12 @@ CRF2023_AUS = {
             'EMISSIONS CO2 (2,3)': "CO2",
             'EMISSIONS N2O': "N2O",
         },
-    },  # to test
+    },  # tested
     "Table1.A(a)s3": {
         "status": "tested",
         "table": {
             "firstrow": 7,
-            "lastrow": 115,
+            "lastrow": 121,
             "header": ['group', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category", "class"],
@@ -416,7 +422,7 @@ CRF2023_AUS = {
             ['Jet kerosene', ['1.A.3.a', 'JetKerosene'], 2],
             ['Biomass', ['1.A.3.a', 'Biomass'], 2],
             # b. road Transportation
-            ['b. Road transportation (13)', ['1.A.3.b', 'Total'], 1],
+            ['1.A.3.b. Road transportation (13)', ['1.A.3.b', 'Total'], 1],
             ['Gasoline', ['1.A.3.b', 'Gasoline'], 2],
             ['Diesel oil', ['1.A.3.b', 'DieselOil'], 2],
             ['Liquefied petroleum gases (LPG)', ['1.A.3.b', 'LPG'], 2],
@@ -449,7 +455,7 @@ CRF2023_AUS = {
             ['Other fossil fuels (please specify)(7)', ['1.A.3.b.ii', 'OtherFF'], 3],
             ['Lubricants', ['1.A.3.b.ii', 'OFFLubricants'], 4],
             # iii. Heavy duty trucks and buses
-            ['iii. Heavy duty trucks and buses', ['1.A.3.b.iii', 'Total'], 2],
+            ['1.A.3.b.iii. Heavy duty trucks and buses', ['1.A.3.b.iii', 'Total'], 2],
             ['Gasoline', ['1.A.3.b.iii', 'Gasoline'], 3],
             ['Diesel oil', ['1.A.3.b.iii', 'DieselOil'], 3],
             ['Liquefied petroleum gases (LPG)', ['1.A.3.b.iii', 'LPG'], 3],
@@ -460,7 +466,7 @@ CRF2023_AUS = {
             ['Other fossil fuels (please specify)(7)', ['1.A.3.b.iii', 'OtherFF'], 3],
             ['Lubricants', ['1.A.3.b.iii', 'OFFLubricants'], 4],
             # iv. Motorcycles
-            ['iv. Motorcycles', ['1.A.3.b.iv', 'Total'], 2],
+            ['1.A.3.b.iv. Motorcycles', ['1.A.3.b.iv', 'Total'], 2],
             ['Gasoline', ['1.A.3.b.iv', 'Gasoline'], 3],
             ['Diesel oil', ['1.A.3.b.iv', 'DieselOil'], 3],
             ['Liquefied petroleum gases (LPG)', ['1.A.3.b.iv', 'LPG'], 3],
@@ -471,7 +477,7 @@ CRF2023_AUS = {
             ['Other fossil fuels (please specify)(7)', ['1.A.3.b.iv', 'OtherFF'], 3],
             ['Lubricants', ['1.A.3.b.iv', 'OFFLubricants'], 4],
             # v. Other
-            ['v. Other (please specify)', ['1.A.3.b.v', 'Total'], 2],
+            ['1.A.3.b.v. Other (please specify)', ['1.A.3.b.v', 'Total'], 2],
             ['NA', ['\IGNORE', '\IGNORE'], 3],
             ['Gasoline', ['1.A.3.b.v', 'Gasoline'], 4],
             ['Diesel oil', ['1.A.3.b.v', 'DieselOil'], 4],
@@ -491,7 +497,7 @@ CRF2023_AUS = {
             ['Other fossil fuels (please specify)(7)', ['1.A.3.c', 'OtherFF'], 2],
             ['Lubricants', ['1.A.3.c', 'OFFLubricants'], 3],
             # d. Domestic navigation
-            ['d. Domestic Navigation(10)', ['1.A.3.d', 'Total'], 1],
+            ['1.A.3.d. Domestic Navigation (12)', ['1.A.3.d', 'Total'], 1],
             ['Residual fuel oil', ['1.A.3.d', 'ResFuelOil'], 2],
             ['Gas/diesel oil', ['1.A.3.d', 'GasDieselOil'], 2],
             ['Gasoline', ['1.A.3.d', 'Gasoline'], 2],
@@ -504,7 +510,7 @@ CRF2023_AUS = {
             ['Lubricants', ['1.A.3.d', 'OFFLubricants'], 3],
             # e. other transportation
             # keep details also for top category as it's present
-            ['e. Other transportation (please specify)', ['1.A.3.e', 'Total'], 1],
+            ['1.A.3.e. Other transportation (please specify)', ['1.A.3.e', 'Total'], 1],
             ['Liquid fuels', ['1.A.3.e', 'Liquid'], 2],
             ['Solid fuels', ['1.A.3.e', 'Solid'], 2],
             ['Gaseous fuels (6)', ['1.A.3.e', 'Gaseous'], 2],
@@ -519,24 +525,24 @@ CRF2023_AUS = {
             ['Biomass (3)', ['1.A.3.e.i', 'Biomass'], 3],
             # ii other
             ['1.A.3.e.ii. Other (please specify)', ['1.A.3.e.ii', 'Total'], 2],
-            ['Off-Road Vehicles', ['1.A.3.e.ii.1', 'Total'], 3],
+            ['Off-road vehicles', ['1.A.3.e.ii.1', 'Total'], 3],
             ['Gasoline', ['1.A.3.e.ii.1', 'Gasoline'], 4],
             ['Diesel oil', ['1.A.3.e.ii.1', 'DieselOil'], 4],
             ['Liquefied petroleum gases (LPG)', ['1.A.3.e.ii.1', 'LPG'], 4],
             ['Other liquid fuels (please specify)', ['1.A.3.e.ii.1', 'OtherLiquid'], 4],
             ['NA', ['\IGNORE', '\IGNORE'], 5],
-            ['Solid Fuels', ['1.A.3.e.ii.1', 'Solid'], 4],
+            ['Solid fuels', ['1.A.3.e.ii.1', 'Solid'], 4],
             ['Gaseous fuels (6)', ['1.A.3.e.ii.1', 'Gaseous'], 4],
             ['Biomass (3)', ['1.A.3.e.ii.1', 'Biomass'], 4],
-            ['Other Fossil Fuels (7)', ['1.A.3.e.ii.1', 'OtherFF'], 4],
+            ['Other fossil fuels (7)', ['1.A.3.e.ii.1', 'OtherFF'], 4],
             ['Biomass (3)', ['1.A.3.e.ii.1', 'Biomass'], 4],
         ],
         "entity_mapping": {
             'EMISSIONS CH4': "CH4",
-            'EMISSIONS CO2 (1)': "CO2",
+            'EMISSIONS CO2 (2,3)': "CO2",
             'EMISSIONS N2O': "N2O",
         },
-    },  # to test
+    },  # tested
     "Table1.A(a)s4": {
         "status": "tested",
         "table": {
@@ -551,7 +557,7 @@ CRF2023_AUS = {
                 'IMPLIED EMISSION FACTORS CO2 (1)',
                 'IMPLIED EMISSION FACTORS CH4',
                 'IMPLIED EMISSION FACTORS N2O',
-                'AMOUNT CAPTURED CO2',
+                'AMOUNT CAPTURED (4) CO2',
             ],
             "stop_cats": ["", np.nan],
             "unit_info": unit_info["default"],
@@ -563,9 +569,9 @@ CRF2023_AUS = {
             ['Gaseous fuels (6)', ['1.A.4', 'Gaseous'], 1],
             ['Other fossil fuels (7)', ['1.A.4', 'OtherFF'], 1],
             ['Peat (8)', ['1.A.4', 'Peat'], 1],
-            ['Biomass (3)', ['1.A.4', 'Biomass'], 1],
+            ['Biomass(3)', ['1.A.4', 'Biomass'], 1],
             # a. Commercial/institutional(12)
-            ['1.A.4.a. Commercial/institutional(12)', ['1.A.4.a', 'Total'], 1],
+            ['1.A.4.a. Commercial/institutional (14)', ['1.A.4.a', 'Total'], 1],
             ['Liquid fuels', ['1.A.4.a', 'Liquid'], 2],
             ['Solid fuels', ['1.A.4.a', 'Solid'], 2],
             ['Gaseous fuels (6)', ['1.A.4.a', 'Gaseous'], 2],
@@ -574,19 +580,20 @@ CRF2023_AUS = {
             ['Biomass (3)', ['1.A.4.a', 'Biomass'], 2],
             ['Drop-down list:', ['\IGNORE', '\IGNORE'], 2],  # (empty)
             # 1.A.4.a.i Stationary combustion
-            ['1.A.4.a.i Stationary combustion (14)', ['1.A.4.a.i', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.4.a.i', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.4.a.i', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.4.a.i', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.4.a.i', 'OtherFF'], 3],
+            ['1.A.4.a.i. Stationary combustion', ['1.A.4.a.i', 'Total'], 2],
+            ['Liquid fuels', ['1.A.4.a.i', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.4.a.i', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.4.a.i', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.4.a.i', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.4.a.i', 'Peat'], 3],
             ['Biomass (3)', ['1.A.4.a.i', 'Biomass'], 3],
             # 1.A.4.a.ii Off-road vehicles and other machinery
-            ['1.A.4.a.ii Off-road vehicles and other machinery', ['1.A.4.a.ii', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.4.a.ii', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.4.a.ii', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.4.a.ii', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.4.a.ii', 'OtherFF'], 3],
+            ['1.A.4.a.ii. Off-road vehicles and other machinery',
+             ['1.A.4.a.ii', 'Total'], 2],
+            ['Liquid fuels', ['1.A.4.a.ii', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.4.a.ii', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.4.a.ii', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.4.a.ii', 'OtherFF'], 3],
             ['Biomass (3)', ['1.A.4.a.ii', 'Biomass'], 3],
             # b. Residential(13)
             ['1.A.4.b. Residential (14)', ['1.A.4.b', 'Total'], 1],
@@ -598,19 +605,20 @@ CRF2023_AUS = {
             ['Biomass (3)', ['1.A.4.b', 'Biomass'], 2],
             ['Drop-down list:', ['\IGNORE', '\IGNORE'], 2],  # (empty)
             # 1.A.4.b.i Stationary combustion
-            ['1.A.4.b.i Stationary combustion', ['1.A.4.b.i', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.4.b.i', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.4.b.i', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.4.b.i', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.4.b.i', 'OtherFF'], 3],
+            ['1.A.4.b.i. Stationary combustion', ['1.A.4.b.i', 'Total'], 2],
+            ['Liquid fuels', ['1.A.4.b.i', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.4.b.i', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.4.b.i', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.4.b.i', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.4.b.i', 'Peat'], 3],
             ['Biomass (3)', ['1.A.4.b.i', 'Biomass'], 3],
             # 1.A.4.b.ii Off-road vehicles and other machinery
-            ['1.A.4.b.ii Off-road vehicles and other machinery', ['1.A.4.b.ii', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.4.b.ii', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.4.b.ii', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.4.b.ii', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.4.b.ii', 'OtherFF'], 3],
+            ['1.A.4.b.ii. Off-road vehicles and other machinery', ['1.A.4.b.ii',
+                                                                   'Total'], 2],
+            ['Liquid fuels', ['1.A.4.b.ii', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.4.b.ii', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.4.b.ii', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.4.b.ii', 'OtherFF'], 3],
             ['Peat (8)', ['1.A.4.b.ii', 'Peat'], 3],
             ['Biomass (3)', ['1.A.4.b.ii', 'Biomass'], 3],
             # c. Agriculture/forestry/fishing
@@ -641,24 +649,24 @@ CRF2023_AUS = {
             ['Other fossil fuels (please specify)(7)', ['1.A.4.c.ii', 'OtherFF'], 3],
             ['NA', ['\IGNORE', '\IGNORE'], 4],
             # iii. Fishing
-            ['iii. Fishing', ['1.A.4.c.iii', 'Total'], 2],
+            ['1.A.4.c.iii. Fishing', ['1.A.4.c.iii', 'Total'], 2],
             ['Residual fuel oil', ['1.A.4.c.iii', 'ResFuelOil'], 3],
             ['Gas/diesel oil', ['1.A.4.c.iii', 'GasDieselOil'], 3],
             ['Gasoline', ['1.A.4.c.iii', 'Gasoline'], 3],
             ['Other liquid fuels (please specify)', ['1.A.4.c.iii', 'OtherLiquid'], 3],
             ['NA', ['\IGNORE', '\IGNORE'], 4],
             ['Gaseous fuels (6)', ['1.A.4.c.iii', 'Gaseous'], 3],
-            ['Biomass (3)', ['1.A.4.c.iii', 'Biomass'], 3],
+            ['Biomass(3)', ['1.A.4.c.iii', 'Biomass'], 3],
             ['Other fossil fuels (please specify)(7)', ['1.A.4.c.iii', 'OtherFF'], 3],
             ['NA', ['\IGNORE', '\IGNORE'], 4],
             # 1.A.5 Other (Not specified elsewhere)(14)
             ['1.A.5 Other (Not specified elsewhere)(15)', ['1.A.5', 'Total'], 0],
-            ['Liquid fuels', ['1.A.5', 'Liquid'], 2],
-            ['Solid fuels', ['1.A.5', 'Solid'], 2],
-            ['Gaseous fuels (6)', ['1.A.5', 'Gaseous'], 2],
-            ['Other fossil fuels (7)', ['1.A.5', 'OtherFF'], 2],
-            ['Peat (8)', ['1.A.5', 'Peat'], 2],
-            ['Biomass (3)', ['1.A.5', 'Biomass'], 2],
+            ['Liquid fuels', ['1.A.5', 'Liquid'], 1],
+            ['Solid fuels', ['1.A.5', 'Solid'], 1],
+            ['Gaseous fuels (6)', ['1.A.5', 'Gaseous'], 1],
+            ['Other fossil fuels(7)', ['1.A.5', 'OtherFF'], 1],
+            ['Peat (8)', ['1.A.5', 'Peat'], 1],
+            ['Biomass (3)', ['1.A.5', 'Biomass'], 1],
             # a. Stationary (please specify)
             ['1.A.5.a. Stationary (please specify)', ['1.A.5.a', 'Total'], 1],
             ['NA', ['\IGNORE', '\IGNORE'], 2],
@@ -671,10 +679,10 @@ CRF2023_AUS = {
             # b. Mobile (please specify)
             ['1.A.5.b. Mobile (please specify)', ['1.A.5.b', 'Total'], 1],
             ['Military Transport', ['1.A.5.b.xii', 'Total'], 2],
-            ['Liquid Fuels', ['1.A.5.b.xii', 'Liquid'], 3],
-            ['Solid Fuels', ['1.A.5.b.xii', 'Solid'], 3],
-            ['Gaseous Fuels (6)', ['1.A.5.b.xii', 'Gaseous'], 3],
-            ['Other Fossil Fuels (7)', ['1.A.5.b.xii', 'OtherFF'], 3],
+            ['Liquid fuels', ['1.A.5.b.xii', 'Liquid'], 3],
+            ['Solid fuels', ['1.A.5.b.xii', 'Solid'], 3],
+            ['Gaseous fuels (6)', ['1.A.5.b.xii', 'Gaseous'], 3],
+            ['Other fossil fuels (7)', ['1.A.5.b.xii', 'OtherFF'], 3],
             ['Biomass(3)', ['1.A.5.b.xii', 'Biomass'], 3],
             # Information Item
             ['Information item: (16)', ['\IGNORE', '\IGNORE'], 0],
@@ -687,9 +695,9 @@ CRF2023_AUS = {
             'EMISSIONS CO2 (2,3)': "CO2",
             'EMISSIONS N2O': "N2O",
         },
-    },  # to test
+    },  # tested
     "Table1.B.1": {
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 7,
             "lastrow": 32,
@@ -721,7 +729,7 @@ CRF2023_AUS = {
             ['1.B.1.a.ii.2. Post-mining activities', ['1.B.1.a.ii.2'], 2],
             ['1.B.1.a.ii.3. Other (please specify)', ['1.B.1.a.ii.3'], 2],
             ['NA', ['\IGNORE'], 3],
-            ['1. B. 1. b. Solid fuel transformation (6)', ['1.B.1.b'], 0],
+            ['1. B. 1. b. Fuel transformation (6)', ['1.B.1.b'], 0],
             ['Drop down list:', ['\IGNORE'], 1],
             ['1.B.1.b.i. Charcoal and biochar production (7)', ['1.B.1.b.i'], 1],
             ['1.B.1.b.ii. Coke production', ['1.B.1.b.ii'], 1],
@@ -739,7 +747,7 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     "Table1.B.2": {
         "status": "tested",
         "table": {
@@ -761,7 +769,7 @@ CRF2023_AUS = {
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
-            ['1. B. 2. a. Oil (7)', ['1.B.2.a'], 0],
+            ['1.B.2.a. Oil (7)', ['1.B.2.a'], 0],
             ['1.B.2.a.i. Exploration', ['1.B.2.a.1'], 1],
             ['1.B.2.a.ii. Production and upgrading (8)', ['1.B.2.a.2'], 1],
             ['1.B.2.a.iii. Transport', ['1.B.2.a.3'], 1],
@@ -772,7 +780,7 @@ CRF2023_AUS = {
             ['1.B.2.a.vi.1. Abandoned wells', ['1.B.2.a.6.1'], 2],
             ['1.B.2.a.vi.2. Other (please specify)', ['1.B.1.a.6.2'], 2],
             ['NA', ['\IGNORE'], 3],
-            ['1. B. 2. b. Natural gas', ['1.B.2.b'], 0],
+            ['1.B.2.b. Natural gas', ['1.B.2.b'], 0],
             ['1.B.2.b.i. Exploration', ['1.B.2.b.1'], 1],
             ['1.B.2.b.ii. Production and gathering (8)', ['1.B.2.b.2'], 1],
             ['1.B.2.b.iii. Processing', ['1.B.2.b.3'], 1],
@@ -786,7 +794,7 @@ CRF2023_AUS = {
             ['LNG Terminals', ['1.B.2.b.6.3.a'], 4],
             ['LNG Storage', ['1.B.2.b.6.3.b'], 4],
             ['Natural Gas Storage', ['1.B.2.b.6.3.c'], 4],
-            ['1. B. 2. c. Venting and flaring', ['1.B.2.c'], 0],
+            ['1.B.2.c. Venting and flaring', ['1.B.2.c'], 0],
             ['1.B.2.c.i. Venting', ['1.B.2.c-ven'], 1],
             ['1.B.2.c.i.1. Oil', ['1.B.2.c-ven.i'], 2],
             ['1.B.2.c.i.2. Gas', ['1.B.2.c-ven.ii'], 2],
@@ -806,9 +814,9 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     "Table1.C": {
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 7,
             "lastrow": 29,
@@ -826,23 +834,24 @@ CRF2023_AUS = {
             ['1.C.1. Transport of CO2', ['1.C.1'], 0],
             ['1.C.1.a. Pipelines', ['1.C.1.a'], 1],
             ['1.C.1.b. Ships', ['1.C.1.b'], 1],
-            ['1.C.1.c. Other', ['1.C.1.c'], 1],
+            ['1.C.1.c. Other (please specify)', ['1.C.1.c'], 1],
             ['NA', ['\IGNORE'], 2],
             ['1.C.2. Injection and storage (3)', ['1.C.2'], 0],
             ['1.C.2.a. Injection', ['1.C.2.a'], 1],
             ['1.C.2.b. Storage', ['1.C.2.b'], 1],
-            ['1.C.3. Other', ['1.C.3'], 0],
+            ['1.C.3. Other (please specify)', ['1.C.3'], 0],
             ['NA', ['\IGNORE'], 1],
-            ['Information item (4, 5, 6)', ['\IGNORE']],
-            ['Total amount captured for storage (7)', ['M.Info.A.TACS']],
-            ['Total amount of imports for storage (7)', ['M.Info.A.TAIS']],
-            ['Total A', ['M.Info.A']],
-            ['Total amount of exports for storage', ['M.Info.B.TAES']],
-            ['Total amount of CO2 injected at storage sites', ['M.Info.B.TAI']],
-            ['CO2 injected for operational usage (8)', ['M.Info.B.IOU']],
-            ['Total leakage from transport, injection and storage', ['M.Info.B.TLTIS']],
-            ['Total B', ['M.Info.B']],
-            ['Difference (A-B)(6)', ['\IGNORE']],
+            ['Information item (4, 5, 6)', ['\IGNORE'], 0],
+            ['Total amount captured for storage (7)', ['M.Info.A.TACS'], 1],
+            ['Total amount of imports for storage (7)', ['M.Info.A.TAIS'], 1],
+            ['Total A', ['M.Info.A'], 1],
+            ['Total amount of exports for storage', ['M.Info.B.TAES'], 1],
+            ['Total amount of CO2 injected at storage sites', ['M.Info.B.TAI'], 1],
+            ['CO2 injected for operational usage (8)', ['M.Info.B.IOU'], 1],
+            ['Total leakage from transport, injection and storage',
+             ['M.Info.B.TLTIS'], 1],
+            ['Total B', ['M.Info.B'], 1],
+            ['Difference (A-B)(6)', ['\IGNORE'], 1],
         ],
         "entity_mapping": {
             'EMISSIONS CO2 (2)': 'CO2',
@@ -850,7 +859,7 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to_test
+    },  # tested
     "Table1.D": {
         "status": "TODO",
         "table": {
@@ -872,7 +881,7 @@ CRF2023_AUS = {
         },
     },  # TODO
     "Table2(I)": {
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 8,
             "lastrow": 58,
@@ -918,8 +927,8 @@ CRF2023_AUS = {
             ['2.E.2. TFT flat panel display', ['2.E.2']],
             ['2.E.3. Photovoltaics', ['2.E.3']],
             ['2.E.4. Heat transfer fluid', ['2.E.4']],
-            ['2.E.5. Other (as specified in table 2(II))', ['2.E.5']],
-            ['2.F. Product uses as substitutes for ODS(2)', ['2.F']],
+            ['2.E.5. Other', ['2.E.5']],
+            ['2.F. Product uses as substitutes for ODS', ['2.F']],
             ['2.F.1. Refrigeration and air conditioning', ['2.F.1']],
             ['2.F.2. Foam blowing agents', ['2.F.2']],
             ['2.F.3. Fire protection', ['2.F.3']],
@@ -937,14 +946,15 @@ CRF2023_AUS = {
         "entity_mapping": {
             'HFCs (1)': 'HFCS (AR4GWP100)',
             'PFCs (1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'Unspecified mix of HFCs and PFCs (1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'Total GHG emissions (2)': 'KYOTOGHG (AR4GWP100)'
         },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     "Table2(II)": {
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 8,
             "lastrow": 37, # ignore the totals
@@ -959,7 +969,7 @@ CRF2023_AUS = {
             ['2. Total actual emissions of halocarbons (by chemical), SF6 and NF3',
              ['2']],
             ['2.B. Chemical industry', ['2.B']],
-            ['2.B.9. Flurochemical production', ['2.B.9']],
+            ['2.B.9. Fluorochemical production', ['2.B.9']],
             ['2.B.9.a. By-product emissions', ['2.B.9.a']],
             ['2.B.9.b. Fugitive emissions', ['2.B.9.b']],
             ['2.B.10. Other', ['2.B.10']],
@@ -984,7 +994,7 @@ CRF2023_AUS = {
             ['2.G.1. Electrical equipment', ['2.G.1']],
             ['2.G.2. SF6 and PFCs from other product use', ['2.G.2']],
             ['2.G.4. Other', ['2.G.4']],
-            ['2.H. Other (please specify)', ['2.H']],
+            ['2.H. Other', ['2.H']],
             ['2.H.1 Pulp and paper', ['2.H.1']],
             ['2.H.2 Food and beverages industry', ['2.H.2']],
             ['2.H.3 Other (please specify)', ['2.H.3']],
@@ -1020,9 +1030,9 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     "Table3": {  # Agriculture summary
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 8,
             "lastrow": 48,
@@ -1031,60 +1041,63 @@ CRF2023_AUS = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": ["", np.nan],
-            "unit_info": unit_info["default"],
+            "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
             ['3. Total agriculture', ['3'], 0],
             # A. Enteric fermentation
-            ['3.A. Enteric fermentation', ['3.A'], 2],
-            ['Option A:', ['\IGNORE'], 4],
-            ['3.A.1.a Dairy cattle', ['3.A.1.Aa'], 5],
-            ['3.A.1.b Non-dairy cattle', ['3.A.1.Ab'], 5],
-            ['Option B (country-specific):', ['\IGNORE'], 4],
-            ['3.A.1.a Other', ['3.A.1.C'], 5],
+            ['3.A. Enteric fermentation', ['3.A'], 1],
+            ['Option A:', ['\IGNORE'], 2],
+            ['3.A.1.a. Dairy cattle', ['3.A.1.Aa'], 3],
+            ['3.A.1.b. Non-dairy cattle', ['3.A.1.Ab'], 3],
+            ['Option B (country-specific):', ['\IGNORE'], 2],
+            ['3.A.1.a. Other', ['3.A.1.C'], 3],
             # Other livestock
-            ['3.A.2. Sheep', ['3.A.2'], 3],
-            ['3.A.3. Swine', ['3.A.3'], 3],
-            ['3.A.4. Other livestock', ['3.A.4'], 3],
+            ['3.A.2. Sheep', ['3.A.2'], 2],
+            ['3.A.3. Swine', ['3.A.3'], 2],
+            ['3.A.4. Other livestock', ['3.A.4'], 2],
             # Manure Management
-            ['3.B. Manure management', ['3.B'], 2],
-            ['3.B.1. Cattle(1)', ['3.B.1'], 3],
-            ['Option A:', ['\IGNORE'], 4],
-            ['3.B.1.a. Dairy cattle', ['3.B.1.Aa'], 5],
-            ['3.B.1.b. Non-dairy cattle', ['3.B.1.Ab'], 5],
-            ['Option B:', ['\IGNORE'], 4],
-            ['3.B.1.a Other', ['3.B.1.C'], 5],
-            ['2.B.2. Sheep', ['3.B.2'], 3],
-            ['2.B.3. Swine', ['3.B.3'], 3],
-            ['2.B.4. Other livestock', ['3.B.4'], 3],
-            ['3.B.5. Indirect N2O emissions', ['3.B.5'], 3],
-            ['3.C. Rice cultivation', ['3.C']],
-            ['3.D. Agricultural soils(4,5)', ['3.D']],
-            ['3.D.1. Direct N2O emissions from managed soils', '3.D.a']
-            ['3.D.1.a. Inorganic N fertilizers', ['3.D.a.1']],
-            ['3.D.1.b. Organic N fertilizers', ['3.D.a.2']],
-            ['3.D.1.c. Urine and dung deposited by grazing animals', ['3.D.a.3']],
-            ['3.D.1.d. Crop residues', ['3.D.a.4']],
+            ['3.B. Manure management', ['3.B'], 1],
+            ['3.B.1. Cattle(3)', ['3.B.1'], 2],
+            ['Option A:', ['\IGNORE'], 3],
+            ['3.B.1.a. Dairy cattle', ['3.B.1.Aa'], 4],
+            ['3.B.1.b. Non-dairy cattle', ['3.B.1.Ab'], 4],
+            ['Option B (country-specific):', ['\IGNORE'], 3],
+            ['3.B.1.a. Other', ['3.B.1.C'], 4],
+            ['3.B.2. Sheep', ['3.B.2'], 2],
+            ['3.B.3. Swine', ['3.B.3'], 2],
+            ['3.B.4. Other livestock', ['3.B.4'], 2],
+            ['3.B.5. Indirect N2O emissions', ['3.B.5'], 2],
+            ['3.C. Rice cultivation', ['3.C'], 1],
+            ['3.D. Agricultural soils(4,5)', ['3.D'], 1],
+            ['3.D.1. Direct N2O emissions from managed soils', ['3.D.a'], 2],
+            ['3.D.1.a. Inorganic N fertilizers', ['3.D.a.1'], 3],
+            ['3.D.1.b. Organic N fertilizers', ['3.D.a.2'], 3],
+            ['3.D.1.c. Urine and dung deposited by grazing animals', ['3.D.a.3'], 3],
+            ['3.D.1.d. Crop residues', ['3.D.a.4'], 3],
             ['3.D.1.e. Mineralization/immobilization associated with loss/gain of '
-             'soil organic matter', ['3.D.a.5']],
-            ['3.D.1.f. Cultivation of organic soils (i.e. histosols)', ['3.D.a.6']],
-            ['3.D.1.g. Other', ['3.D.a.7']],
-            ['3.D.2. Indirect N2O Emissions from managed soils', ['3.D.b']],
-            ['3.E. Prescribed burning of savannahs', ['3.E']],
-            ['3.F. Field burning of agricultural residues', ['3.F']],
-            ['3.G. Liming', ['3.G']],
-            ['3.H. Urea application', ['3.H']],
-            ['3.I. Other carbon-containing fertilizers', ['3.I']],
-            ['3.J. Other (please specify)', ['3.J']],
-            ['NA', ['\IGNORE']],
+             'soil organic matter', ['3.D.a.5'], 3],
+            ['3.D.1.f. Cultivation of organic soils (i.e. histosols)', ['3.D.a.6'], 3],
+            ['3.D.1.g. Other', ['3.D.a.7'], 3],
+            ['3.D.2. Indirect N2O Emissions from managed soils', ['3.D.b'], 2],
+            ['3.E. Prescribed burning of savannahs', ['3.E'], 1],
+            ['3.F. Field burning of agricultural residues', ['3.F'], 1],
+            ['3.G. Liming', ['3.G'], 1],
+            ['3.H. Urea application', ['3.H'], 1],
+            ['3.I. Other carbon-containing fertilizers', ['3.I'], 1],
+            ['3.J. Other (please specify)', ['3.J'], 1],
+            ['NA', ['\IGNORE'], 2],
         ],
+        "entity_mapping": {
+            'Total GHG emissions (1)': 'KYOTOGHG (AR4GWP100)'
+        },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     # TODO: tables 3.A and 3.B for livestock details as they are not contained in table3
     "Table3.C": {  # rice cultivation details
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 7,
             "lastrow": 25,
@@ -1102,9 +1115,9 @@ CRF2023_AUS = {
         "sector_mapping": [
             ['3.C.1. Irrigated', ['3.C.1']],
             ['3.C.1.a. Continuously flooded', ['3.C.1.a']],
-            ['3.C.1.b. Intermittently flooded', ['3.C.1.a']],
+            ['3.C.1.b. Intermittently flooded', ['3.C.1.b']],
             ['3.C.1.b.i. Single aeration', ['3.C.1.b.i']],
-            ['3.C.1.b.ii. Multiple aeration', ['3.C.1.b.ii']],
+            ['3.C.1.b.ii.Multiple aeration', ['3.C.1.b.ii']],
             ['3.C.2. Rain-fed', ['3.C.2']],
             ['3.C.2.a. Flood-prone', ['3.C.2.a']],
             ['3.C.2.b. Drought-prone', ['3.C.2.b']],
@@ -1122,9 +1135,9 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     "Table3.D": {  # direct and indirect N2O from soils
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 7,
             "lastrow": 23,
@@ -1135,14 +1148,18 @@ CRF2023_AUS = {
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION Description",
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION Value",
                 "IMPLIED EMISSION FACTORS Value",
+                "Fraction (a) FracGASF",
+                "Description Fraction of synthetic fertilizer N applied to soils that "
+                "volatilises as NH3 and NOX",
+                "Value 0.11",
             ],
             "stop_cats": ["", np.nan],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
             ['3.D.1. Direct N2O emissions from managed soils', ['3.D.a']],
-            ['3.D.1.a. Inorganic N fertilizers(3)', ['3.D.a.1']],
-            ['3.D.1.b. Organic N fertilizers(3)', ['3.D.a.2']],
+            ['3.D.1.a. Inorganic N fertilizers (3)', ['3.D.a.1']],
+            ['3.D.1.b. Organic N fertilizers (3)', ['3.D.a.2']],
             ['3.D.1.b.i. Animal manure applied to soils', ['3.D.a.2.a']],
             ['3.D.1.b.ii. Sewage sludge applied to soils', ['3.D.a.2.b']],
             ['3.D.1.b.iii. Other organic fertilizers applied to soils', ['3.D.a.2.c']],
@@ -1153,7 +1170,7 @@ CRF2023_AUS = {
             ['3.D.1.f. Cultivation of organic soils (i.e. histosols) (2)', ['3.D.a.6']],
             ['3.D.1.g. Other', ['3.D.a.7']],
             ['3.D.2. Indirect N2O Emissions from managed soils', ['3.D.b']],
-            ['3.D.2.a. Atmospheric deposition (8)', ['3.D.b.1']],
+            ['3.D.2.a. Atmospheric deposition (6)', ['3.D.b.1']],
             ['3.D.2.b. Nitrogen leaching and run-off', ['3.D.b.2']],
         ],
         "entity_mapping": {
@@ -1162,20 +1179,21 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     "Table3.E": {  # savanna burning details
-        "status": "tested",
+        "status": "TODO", # actually done but empty and crashes
         "table": {
-            "firstrow": 5,
-            "lastrow": 14,
+            "firstrow": 7,
+            "lastrow": 13,
             "header": ['group', 'entity', 'unit'],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION Area of savanna burned',
+                'ACTIVITY DATA AND OTHER RELATED INFORMATION Area of savannah burned',
                 'ACTIVITY DATA AND OTHER RELATED INFORMATION Average above-ground biomass density',
                 'ACTIVITY DATA AND OTHER RELATED INFORMATION Biomass burned',
-                'ACTIVITY DATA AND OTHER RELATED INFORMATION Fraction of savanna burned',
+                'ACTIVITY DATA AND OTHER RELATED INFORMATION Fraction of savannah '
+                'burned',
                 'ACTIVITY DATA AND OTHER RELATED INFORMATION Nitrogen fraction in biomass',
                 'IMPLIED EMISSION FACTORS CH4',
                 'IMPLIED EMISSION FACTORS N2O',
@@ -1185,9 +1203,9 @@ CRF2023_AUS = {
         },
         "sector_mapping": [
             ['3.E.1. Forest land (specify ecological zone) (2)', ['3.E.1'], 0],
-            ['NA', ['\IGNORE']],
+            ['NA', ['\IGNORE'], 1],
             ['3.E.2. Grassland (specify ecological zone) (2)', ['3.E.2'], 0],
-            ['NA', ['\IGNORE']],
+            ['NA', ['\IGNORE'], 1],
         ],
         "entity_mapping": {
             'EMISSIONS (2) CH4': 'CH4',
@@ -1196,7 +1214,7 @@ CRF2023_AUS = {
         "coords_defaults": {
             "class": "Total",
         },
-    },  # tested
+    },  # TODO
     "Table3.F": {  # field burning details
         "status": "TODO",
         "table": {
@@ -1238,7 +1256,7 @@ CRF2023_AUS = {
         },
     },  # TODO
     "Table4": {  # LULUCF overview
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 8,
             "lastrow": 33,
@@ -1279,16 +1297,16 @@ CRF2023_AUS = {
         "entity_mapping": {
             'CH4(2)': 'CH4',
             'N2O(2)': 'N2O',
-            'Net CO2 emissions/removals(1), (2)': 'CO2',
-            #'Total GHG emissions/removals (3)': 'KYOTOGHG (AR4GWP100)'
+            'Net CO2 emissions/removals (1,2)': 'CO2',
+            'Total GHG emissions/removals (3)': 'KYOTOGHG (AR4GWP100)'
         },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     # TODO: all other LULUCF tables
     "Table5": {  # Waste overview
-        "status": "totest",
+        "status": "tested",
         "table": {
             "firstrow": 8,
             "lastrow": 30,
@@ -1314,9 +1332,9 @@ CRF2023_AUS = {
             ['5.D. Wastewater treatment and discharge', ['5.D']],
             ['5.D.1. Domestic wastewater', ['5.D.1']],
             ['5.D.2. Industrial wastewater', ['5.D.2']],
-            ['5.D.3. Other (as specified in table 5.D)', ['5.D.3']],
+            ['5.D.3. Other', ['5.D.3']],
             ['5.E. Other (please specify)', ['5.E']],
-            ['Accidental fires at Solid Waste Disposal Sites', ['5.E.9']],
+            ['Accidential fires at Solid Waste Disposal Sites', ['5.E.9']],
             ['Memo item: (3)', ['\IGNORE']],
             ['5.F.1. Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
             ['5.F.1.a. Annual change in total long-term C storage', ['M.Memo.ACLT']],
@@ -1325,14 +1343,15 @@ CRF2023_AUS = {
         ],
         "entity_mapping": {
             'CO2(1)': 'CO2',
+            'Total GHG emissions (1)': 'KYOTOGHG (AR4GWP100)',
         },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
     # TODO 5.A-D
     "Summary1": {  # Summary 1
-        "status": "totest",
+        "status": "tested",
          "table": {
             "firstrow": 8,
             "lastrow": 70,
@@ -1371,11 +1390,11 @@ CRF2023_AUS = {
             ['3.B. Manure management', ['3.B']],
             ['3.C. Rice cultivation', ['3.C']],
             ['3.D. Agricultural soils', ['3.D']],
-            ['3.E. Prescribed burning of savannas', ['3.E']],
+            ['3.E. Prescribed burning of savannahs', ['3.E']],
             ['3.F. Field burning of agricultural residues', ['3.F']],
             ['3.G. Liming', ['3.G']],
             ['3.H. Urea application', ['3.H']],
-            ['3.I. Other carbon-contining fertilizers', ['3.I']],
+            ['3.I. Other carbon-containing fertilizers', ['3.I']],
             ['3.J. Other', ['3.J']],
             ['4. Land use, land-use change and forestry (5)', ['4']],
             ['4.A. Forest land (5)', ['4.A']],
@@ -1388,13 +1407,13 @@ CRF2023_AUS = {
             ['4.H. Other (5)', ['4.H']],
             ['5. Waste', ['5']],
             ['5.A. Solid waste disposal (6)', ['5.A']],
-            ['5.B. Biological treatment of solid waste (6)', ['5.B']],
+            ['5.B. Biological treatment of solid waste', ['5.B']],
             ['5.C. Incineration and open burning of waste (6)', ['5.C']],
-            ['5.D. Wastewater treatment and discharge (6)', ['5.D']],
+            ['5.D. Wastewater treatment and discharge', ['5.D']],
             ['5.E. Other (6)', ['5.E']],
             ['6. Other (please specify) (7)', ['6']],
             ['NA', ['\IGNORE']],
-            # memo items not read because of empty lines
+            ['', ['\IGNORE']],
             ['Memo items: (8)', ['\IGNORE']],
             ['1.D.1. International bunkers', ['M.Memo.Int']],
             ['1.D.1.a. Aviation', ['M.Memo.Int.Avi']],
@@ -1402,19 +1421,20 @@ CRF2023_AUS = {
             ['1.D.2. Multilateral operations', ['M.Memo.Mult']],
             ['1.D.3. CO2 emissions from biomass', ['M.Memo.Bio']],
             ['1.D.4. CO2 captured', ['M.Memo.CO2Cap']],
-            ['2.F.1. Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
+            ['5.F.1. Long-term storage of C in waste disposal sites', ['M.Memo.LTSW']],
             ['Indirect N2O', ['M.Memo.IndN2O']],
             ['Indirect CO2', ['M.Memo.IndCO2']],
         ],
         "entity_mapping": {
             'NOX': 'NOx',
-            'Net CO2 emissions/removals': 'CO2',
-            'HFCs(1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'Net CO2 emissions/ removals': 'CO2',
+            'HFCs (1)': 'HFCS (AR4GWP100)',
+            'PFCs (1)': 'PFCS (AR4GWP100)',
+            'Unspecified mix of HFCs and PFCs (1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'Total GHG emissions/removals (2)': 'KYOTOGHG (AR4GWP100)',
         },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # to test
+    },  # tested
 }

@@ -90,12 +90,23 @@ def read_crf_for_country(
     # get country name
     country_name = get_country_name(country_code)
 
-    # get specification and available tables
+
+    # get specification
+    # if we only have a single country check if we might have a country specific
+    # specification (currently only Australia, 2023)
     try:
-        crf_spec = getattr(crf, f"CRF{submission_year}")
-        #print(table_spec)
+        crf_spec = getattr(crf, f"CRF{submission_year}_{country_code}")
+        print(f"Using country specific specification: "
+              f"CRF{submission_year}_{country_code}")
     except:
-        raise ValueError(f"No terminology exists for submission year {submission_year}")
+        # no country specific specification, check for general specification
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}")
+        except:
+            raise ValueError(
+                f"No terminology exists for submission year " f"{submission_year}"
+            )
+
 
     tables = [table for table in crf_spec.keys()
               if crf_spec[table]["status"] == "tested"]

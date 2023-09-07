@@ -5,6 +5,7 @@ well as for test-reading to check for new categories etc.
 """
 
 import re
+import os
 import json
 import numpy as np
 import pandas as pd
@@ -246,6 +247,8 @@ def read_crf_table(
     if len(country_codes) == 1:
         try:
             crf_spec = getattr(crf, f"CRF{submission_year}_{country_codes[0]}")
+            print(f"Using country specific specification: " 
+                  f"CRF{submission_year}_{country_codes[0]}")
         except:
             # no country specific specification, check for general specification
             try:
@@ -355,7 +358,10 @@ def read_crf_table_from_file(
         last_row_nan = True
     else:
         last_row_nan = False
-
+    
+    # remove empty columns (for Australia tables start with an empty column)
+    df_raw = df_raw.dropna(how='all', axis=1)
+    
     #### prepare the header (2 row header, first entity, then unit)
     # We do this before removing columns and any other processing to
     # have consistent column names in the configuration and to avoid
@@ -411,7 +417,6 @@ def read_crf_table_from_file(
 
     df_current.iloc[0] = units
     df_current.columns = entities
-
     # remove all columns to ignore
     df_current = df_current.drop(columns=table_properties["cols_to_ignore"])
 
@@ -519,7 +524,6 @@ def read_crf_table_from_file(
     # set index
     df_current = df_current.set_index(index_cols)
     # process the unit information using the primap2 functions
-
     df_current = pm2.pm2io.nir_add_unit_information(df_current, **table_properties["unit_info"])
 
     # convert to long format
@@ -665,10 +669,11 @@ def get_info_from_crf_filename(
     dict with fields:
         party: the party that submitted the data (3 letter UNFCCC_GHG_data)
         submission_year: year of submission
-        data_year: year in which the meissions took place
+        data_year: year in which the emissions took place
         date: date of the submission
         extra: rest of the file name
     """
+    filename = os.path.splitext(filename)[0]
     name_parts = filename.split("_")
     file_info = {}
     file_info["party"] = name_parts[0]
@@ -680,7 +685,11 @@ def get_info_from_crf_filename(
               "could not be converted to int.")
         file_info["data_year"] = name_parts[2]
     file_info["date"] = name_parts[3]
-    file_info["extra"] = name_parts[4]
+    # the last part (time code) is missing for Australia since 2023
+    if len(name_parts) > 4:
+        file_info["extra"] = name_parts[4]
+    else:
+        file_info["extra"] = ""
     return file_info
 
 
