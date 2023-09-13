@@ -1240,7 +1240,7 @@ di_processing_templates = {
             'remove_ts': {
                 '2C': { # inconsistent with other sources
                     'category': ['2.C', '2', '15163', '24540'],
-                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})',
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})', 'CO2',
                                  'C2F6', 'CF4', f'PFCS ({gwp_to_use})', 'SF6' ],
                     'time': ['1994'],
                 },
