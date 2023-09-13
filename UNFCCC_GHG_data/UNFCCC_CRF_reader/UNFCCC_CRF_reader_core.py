@@ -636,8 +636,10 @@ def get_crf_files(
                 input_files = input_files + \
                               filter_filenames(input_folder.glob("*.xlsx"),
                                                **file_filter)
-        else:
-            raise ValueError(f"Folder {input_folder} does not exist")
+        #else:
+        #    raise ValueError(f"Folder {input_folder} does not exist")
+    if len(input_files) == 0:
+        raise ValueError(f"No input files found in {country_folders}")
 
     # make sure no files is in the list twice (happens when multiple input folder
     # contain the same submission which is possible when the country name is changed)
@@ -971,8 +973,9 @@ def get_latest_date_for_country(
         else:
             dates = []
             for folder in country_folders:
-                dates = dates + get_submission_dates(
-                    downloaded_data_path_UNFCCC / folder / f"CRF{submission_year}", file_filter)
+                folder_submission = downloaded_data_path_UNFCCC / folder / f"CRF{submission_year}"
+                if folder_submission.exists():
+                    dates = dates + get_submission_dates(folder_submission, file_filter)
             submission_date = find_latest_date(dates)
     else:
         raise ValueError(f"No data folder found for country {country_code}. "

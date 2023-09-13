@@ -42,6 +42,10 @@ TODO:
 import numpy as np
 from .util import unit_info
 
+# TODO: GWPs now differ by country. This has to be implemented (maybe giving
+#  gwp_to_use as a parameter to the specification)
+gwp_to_use = "AR5GWP100"
+
 CRF2023 = {
     "Table1s1": {
         "status": "tested",
@@ -1643,9 +1647,9 @@ CRF2023 = {
             ['7. Other (as specified in table 2(I).A-H)', ['2.C.7']],
         ],
         "entity_mapping": {
-            'HFCs(1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'HFCs(1)': f'HFCS ({gwp_to_use})',
+            'PFCs(1)': f'PFCS ({gwp_to_use})',
+            'Unspecified mix of HFCs and PFCs(1)': f'UnspMixOfHFCsPFCs ({gwp_to_use})',
         },
         "coords_defaults": {
             "class": "Total",
@@ -1689,9 +1693,9 @@ CRF2023 = {
             ['H. Other (as specified in tables 2(I).A-H and 2(II))(3)', ['2.H']],
         ],
         "entity_mapping": {
-            'HFCs(1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'HFCs(1)': f'HFCS ({gwp_to_use})',
+            'PFCs(1)': f'PFCS ({gwp_to_use})',
+            'Unspecified mix of HFCs and PFCs(1)': f'UnspMixOfHFCsPFCs ({gwp_to_use})',
         },
         "coords_defaults": {
             "class": "Total",
@@ -1804,9 +1808,9 @@ CRF2023 = {
             'HFC-365mfc': 'HFC365mfc',
             'HFC-41': 'HFC41',
             'HFC-43-10mee': 'HFC4310mee',
-            'Unspecified mix of HFCs (1)': 'UnspMixOfHFCs (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
-            'Unspecified mix of PFCs (1)': 'UnspMixOfPFCs (AR4GWP100)',
+            'Unspecified mix of HFCs (1)': f'UnspMixOfHFCs ({gwp_to_use})',
+            'Unspecified mix of HFCs and PFCs(1)': f'UnspMixOfHFCsPFCs ({gwp_to_use})',
+            'Unspecified mix of PFCs (1)': f'UnspMixOfPFCs ({gwp_to_use})',
             'c-C3F6': 'cC3F6',
             'c-C4F8': 'cC4F8',
         },
@@ -2584,9 +2588,9 @@ CRF2023 = {
         "entity_mapping": {
             'NOX': 'NOx',
             'Net CO2 emissions/removals': 'CO2',
-            'HFCs(1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'HFCs(1)': f'HFCS ({gwp_to_use})',
+            'PFCs(1)': f'PFCS ({gwp_to_use})',
+            'Unspecified mix of HFCs and PFCs(1)': f'UnspMixOfHFCsPFCs ({gwp_to_use})',
         },
         "coords_defaults": {
             "class": "Total",
@@ -2637,9 +2641,9 @@ CRF2023 = {
         "entity_mapping": {
             'NOX': 'NOx',
             'Net CO2 emissions/removals': 'CO2',
-            'HFCs (1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'HFCs (1)': f'HFCS ({gwp_to_use})',
+            'PFCs(1)': f'PFCS ({gwp_to_use})',
+            'Unspecified mix of HFCs and PFCs(1)': f'UnspMixOfHFCsPFCs ({gwp_to_use})',
         },
         "coords_defaults": {
             "class": "Total",
@@ -2673,9 +2677,9 @@ CRF2023 = {
         "entity_mapping": {
             'NOX': 'NOx',
             'Net CO2 emissions/removals': 'CO2',
-            'HFCs(1)': 'HFCS (AR4GWP100)',
-            'PFCs(1)': 'PFCS (AR4GWP100)',
-            'Unspecified mix of HFCs and PFCs(1)': 'UnspMixOfHFCsPFCs (AR4GWP100)',
+            'HFCs(1)': f'HFCS ({gwp_to_use})',
+            'PFCs(1)': f'PFCS ({gwp_to_use})',
+            'Unspecified mix of HFCs and PFCs(1)': f'UnspMixOfHFCsPFCs ({gwp_to_use})',
         },
         "coords_defaults": {
             "class": "Total",

@@ -1237,6 +1237,13 @@ di_processing_templates = {
     'IND': {
         'DI2023-05-24': { # 1994,2000, 2010, 2016. Subsectors doffer a bit especilly
             # for 1994 and for LULUCF data
+            'remove_ts': {
+                'agri, waste': { # inconsistent with other sources
+                    'category': ['2.C', '2', '15163', '24540'],
+                    #'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1994'],
+                },
+            },
             'downscale': {
                 'sectors': { # for 1994
                     '1.A': {

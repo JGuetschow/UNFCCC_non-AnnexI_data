@@ -1414,6 +1414,7 @@ CRF2023_AUS = {
             ['6. Other (please specify) (7)', ['6']],
             ['NA', ['\IGNORE']],
             ['', ['\IGNORE']],
+            [np.nan, ['\IGNORE']],
             ['Memo items: (8)', ['\IGNORE']],
             ['1.D.1. International bunkers', ['M.Memo.Int']],
             ['1.D.1.a. Aviation', ['M.Memo.Int.Avi']],
