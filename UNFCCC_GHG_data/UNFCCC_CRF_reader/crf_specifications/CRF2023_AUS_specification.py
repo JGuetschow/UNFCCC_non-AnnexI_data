@@ -708,8 +708,6 @@ CRF2023_AUS = {
                 'ACTIVITY DATA Amount of fuel produced',
                 'IMPLIED EMISSION FACTORS CH4 (3)',
                 'IMPLIED EMISSION FACTORS CO2',
-                'RECOVERY/FLARING (2) CH4',
-                'RECOVERY/FLARING (2) CO2',
             ],
             "stop_cats": ["", np.nan],
             "unit_info": unit_info["default"],
@@ -741,8 +739,10 @@ CRF2023_AUS = {
             ['NA', ['\IGNORE'], 1],
         ],
         "entity_mapping": {
-            'EMISSIONS (1) CH4': 'CH4',
-            'EMISSIONS (1) CO2': 'CO2',
+            'EMISSIONS (1) CH4': 'CH4EMI',
+            'EMISSIONS (1) CO2': 'CO2EMI',
+            'RECOVERY/FLARING (2) CH4': 'CH4REC',
+            'RECOVERY/FLARING (2) CO2': 'CO2REC',
         },
         "coords_defaults": {
             "class": "Total",
@@ -763,7 +763,6 @@ CRF2023_AUS = {
                 'IMPLIED EMISSION FACTORS CO2 (3)',
                 'IMPLIED EMISSION FACTORS CH4',
                 'IMPLIED EMISSION FACTORS N2O',
-                'RECOVERY (2) CO2',
             ],
             "stop_cats": [".", np.nan],
             "unit_info": unit_info["default"],
@@ -808,8 +807,9 @@ CRF2023_AUS = {
         ],
         "entity_mapping": {
             'EMISSIONS CH4 (5)': 'CH4',
-            'EMISSIONS CO2 (4)': 'CO2',
+            'EMISSIONS CO2 (4)': 'CO2EMI',
             'EMISSIONS N2O': 'N2O',
+            "RECOVERY (2) CO2": 'CO2REC',
         },
         "coords_defaults": {
             "class": "Total",
