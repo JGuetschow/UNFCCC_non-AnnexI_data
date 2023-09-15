@@ -44,7 +44,7 @@ from .util import unit_info
 
 # TODO: GWPs now differ by country. This has to be implemented (maybe giving
 #  gwp_to_use as a parameter to the specification)
-gwp_to_use = "AR5GWP100"
+gwp_to_use = "AR4GWP100"
 
 CRF2023 = {
     "Table1s1": {

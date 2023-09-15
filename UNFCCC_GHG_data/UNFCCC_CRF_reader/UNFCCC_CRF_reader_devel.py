@@ -130,6 +130,24 @@ def read_year_to_test_specs(
                     # now convert to native PRIMAP2 format
                     ds_table_pm2 = pm2.pm2io.from_interchange_format(ds_table_if)
 
+                    # if individual data for emissions and removals / recovery exist combine
+                    # them
+                    if "CO2 removals" in ds_table_pm2.data_vars:
+                        # we can just sum to CO2 as in a table either net CO2 exists,
+                        # or separate removals and emissions
+                        ds_table_pm2["CO2"] = ds_table_pm2[["CO2 emissions", "CO2 removals"]].pr.sum(
+                            dim="entity", skipna=True, min_count=1
+                        )
+                        ds_table_pm2["CO2"].attrs["entity"] = "CO2"
+                    
+                    if "CH4 removals" in ds_table_pm2.data_vars:
+                        # we can just sum to CO2 as in a table either net CO2 exists,
+                        # or separate removals and emissions
+                        ds_table_pm2["CH4"] = ds_table_pm2[["CH4 emissions", "CH4 removals"]].pr.sum(
+                            dim="entity", skipna=True, min_count=1
+                        )
+                        ds_table_pm2["CH4"].attrs["entity"] = "CH4"
+
                     # combine per table DS
                     if ds_all is None:
                         ds_all = ds_table_pm2
