@@ -359,9 +359,22 @@ def read_crf_table_from_file(
     else:
         last_row_nan = False
     
-    # remove empty columns (for Australia tables start with an empty column)
-    df_raw = df_raw.dropna(how='all', axis=1)
-    
+
+    cols_to_drop = []
+    # remove empty first column (for Australia tables start with an empty column)
+    # df_raw = df_raw.dropna(how="all", axis=1)
+    if df_raw.iloc[:, 0].isna().all():
+        cols_to_drop.append(df_raw.columns.values[0])
+    # select only first table by cutting everything after a all-nan column (unless
+    # it's the first column)
+    for colIdx in range(1, len(df_raw.columns.values)):
+        if df_raw.iloc[:, colIdx].isna().all():
+            cols_to_drop = cols_to_drop + list(df_raw.columns.values[colIdx : ])
+            break
+
+    if cols_to_drop is not None:
+        df_raw = df_raw.drop(columns=cols_to_drop)
+
     #### prepare the header (2 row header, first entity, then unit)
     # We do this before removing columns and any other processing to
     # have consistent column names in the configuration and to avoid
