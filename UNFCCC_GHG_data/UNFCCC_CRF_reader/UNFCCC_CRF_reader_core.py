@@ -156,6 +156,7 @@ def read_crf_table(
         data_year: Optional[Union[int, List[int]]]=None,
         date: Optional[str]=None,
         folder: Optional[str]=None,
+        debug: Optional[bool]=False,
 ) -> Tuple[pd.DataFrame, List[List], List[List]]:
     """
     Read CRF table for given submission year and country / or countries
@@ -188,6 +189,9 @@ def read_crf_table(
     folder: str (optional)
         Folder that contains the xls files. If not given fodlers are determined by the
         submissions_year and country_code variables
+
+    debug: bool (optional)
+        if true print some debug information like column headers
 
     Returns
     _______
@@ -272,7 +276,7 @@ def read_crf_table(
         try:
             int(file_info["data_year"])
             df_this_file, unknown_rows_this_file, last_row_info_this_file = \
-                read_crf_table_from_file(file, table, crf_spec[table])
+                read_crf_table_from_file(file, table, crf_spec[table], debug=debug)
             if df_all is None:
                 df_all = df_this_file.copy(deep=True)
                 unknown_rows = unknown_rows_this_file
@@ -291,6 +295,7 @@ def read_crf_table_from_file(
         file: Path,
         table: str,
         table_spec: Dict[str, Dict],
+        debug: Optional[bool]=False,
 ) -> Tuple[pd.DataFrame, List[List], List[List]]:
     """
     Read a single CRF table from a given file. This is the core function of the CRF
@@ -306,6 +311,9 @@ def read_crf_table_from_file(
 
     table_spec: Dict[str, Dict]
         Specification for the given table, e.g. CRF2021["Table4"]
+
+    debug: bool (optional)
+        if true print some debug information like column headers
 
     Returns
     _______
@@ -430,6 +438,8 @@ def read_crf_table_from_file(
 
     df_current.iloc[0] = units
     df_current.columns = entities
+    if debug:
+        print(f"Columns present: {entities}")
     # remove all columns to ignore
     df_current = df_current.drop(columns=table_properties["cols_to_ignore"])
 

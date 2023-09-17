@@ -100,7 +100,8 @@ def read_year_to_test_specs(
             for table in tables:
                 # read table for all years
                 ds_table, new_unknown_categories, new_last_row_info = read_crf_table(
-                    country_code, table, submission_year, date=submission_date, data_year=[data_year])
+                    country_code, table, submission_year, date=submission_date,
+                    data_year=[data_year], debug=True)
 
                 # collect messages on unknown rows etc
                 unknown_categories = unknown_categories + new_unknown_categories
