@@ -784,8 +784,8 @@ CRF2023_AUS = {
             ["NA", ["\IGNORE"], 1],
         ],
         "entity_mapping": {
-            "EMISSIONS (1) CH4": "CH4 emissions",
-            "EMISSIONS (1) CO2": "CO2 emissions",
+            "EMISSIONS (1) CH4": "CH4", # emissions",
+            "EMISSIONS (1) CO2": "CO2", # emissions",
             "RECOVERY/FLARING (2) CH4": "CH4 removals",
             "RECOVERY/FLARING (2) CO2": "CO2 removals",
         },
@@ -852,7 +852,7 @@ CRF2023_AUS = {
         ],
         "entity_mapping": {
             "EMISSIONS CH4 (5)": "CH4",
-            "EMISSIONS CO2 (4)": "CO2 emissions",
+            "EMISSIONS CO2 (4)": "CO2", #"CO2 emissions",
             "EMISSIONS N2O": "N2O",
             "RECOVERY (2) CO2": "CO2 removals",
         },

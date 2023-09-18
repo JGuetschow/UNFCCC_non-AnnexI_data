@@ -19,12 +19,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - class
   - provenance
-  - category (CRF2013_2023)
-  - area (ISO3)
   - scenario (PRIMAP)
+  - class
+  - area (ISO3)
   - source
+  - category (CRF2013_2023)
   - entity
   - unit
 data_file: CRF2023_raw_2023-09-17.csv
