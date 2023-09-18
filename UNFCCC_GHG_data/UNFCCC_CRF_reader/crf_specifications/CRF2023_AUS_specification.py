@@ -784,8 +784,10 @@ CRF2023_AUS = {
             ["NA", ["\IGNORE"], 1],
         ],
         "entity_mapping": {
-            "EMISSIONS (1) CH4": "CH4", # emissions",
-            "EMISSIONS (1) CO2": "CO2", # emissions",
+            "EMISSIONS (1) CH4": "CH4 emissions", # this is necessary because there
+            # is an error in the table and the CH4 emissions don't have the removals
+            # subtracted which would be correct according to the footnotes
+            "EMISSIONS (1) CO2": "CO2", #  emissions",
             "RECOVERY/FLARING (2) CH4": "CH4 removals",
             "RECOVERY/FLARING (2) CO2": "CO2 removals",
         },

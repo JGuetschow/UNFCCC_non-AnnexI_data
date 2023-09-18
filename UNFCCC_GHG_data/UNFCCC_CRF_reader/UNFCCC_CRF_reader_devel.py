@@ -133,18 +133,26 @@ def read_year_to_test_specs(
 
                     # if individual data for emissions and removals / recovery exist combine
                     # them
-                    if "CO2 removals" in ds_table_pm2.data_vars:
-                        # we can just sum to CO2 as in a table either net CO2 exists,
-                        # or separate removals and emissions
-                        ds_table_pm2["CO2"] = ds_table_pm2[["CO2 emissions", "CO2 removals"]].pr.sum(
+                    if (('CO2 removals' in ds_table_pm2.data_vars) and
+                            ('CO2 emissions' in ds_table_pm2.data_vars) and not
+                            ('CO2' in ds_table_pm2.data_vars)):
+                        # we can just sum to CO2 as we made sure that it doesn't exist.
+                        # If we have CO2 and removals but not emissions, CO2 already has
+                        # removals subtracted and we do nothing here
+                        ds_table_pm2["CO2"] = ds_table_pm2[["CO2 emissions",
+                                                            "CO2 removals"]].pr.sum(
                             dim="entity", skipna=True, min_count=1
                         )
                         ds_table_pm2["CO2"].attrs["entity"] = "CO2"
-                    
-                    if "CH4 removals" in ds_table_pm2.data_vars:
-                        # we can just sum to CO2 as in a table either net CO2 exists,
-                        # or separate removals and emissions
-                        ds_table_pm2["CH4"] = ds_table_pm2[["CH4 emissions", "CH4 removals"]].pr.sum(
+
+                    if (('CH4 removals' in ds_table_pm2.data_vars) and
+                            ('CH4 emissions' in ds_table_pm2.data_vars) and not
+                            ('CH4' in ds_table_pm2.data_vars)):
+                        # we can just sum to CH4 as we made sure that it doesn't exist.
+                        # If we have CH4 and removals but not emissions, CH4 already has
+                        # removals subtracted and we do nothing here
+                        ds_table_pm2["CH4"] = ds_table_pm2[["CH4 emissions",
+                                                            "CH4 removals"]].pr.sum(
                             dim="entity", skipna=True, min_count=1
                         )
                         ds_table_pm2["CH4"].attrs["entity"] = "CH4"
