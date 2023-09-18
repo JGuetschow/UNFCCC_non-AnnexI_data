@@ -16,9 +16,9 @@ dimensions:
   '*':
   - time
   - category (CRF2013_2023)
+  - source
   - class
   - area (ISO3)
-  - source
   - scenario (PRIMAP)
   - provenance
   - entity
