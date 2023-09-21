@@ -1625,7 +1625,7 @@ di_processing_templates = {
             'remove_ts': {
                 'waste': {
                     'category': ['6', '6.A', '6.B', '6.C', '6.D', '15163', '24540'],
-                    'entities': ['CO2', 'CH4', 'N2O', 'KYOTOGHG (AR4GWP100)'],
+                    'entities': ['CO2', 'CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                     'time': ['1994'],
                 },
             },
