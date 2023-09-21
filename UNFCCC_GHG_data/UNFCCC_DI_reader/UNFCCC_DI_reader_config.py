@@ -2047,8 +2047,8 @@ di_processing_info = {
         'DI2023-05-24': di_processing_templates['JAM']['DI2023-05-24'],
     },
     'JOR': {
-        'default': di_processing_templates['general']['DI2023-05-24'],
-        'DI2023-05-24': di_processing_templates['general']['DI2023-05-24'],
+        'default': di_processing_templates['JOR']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['JOR']['DI2023-05-24'],
     },
     'KEN': {
         'default': di_processing_templates['KEN']['DI2023-05-24'],
