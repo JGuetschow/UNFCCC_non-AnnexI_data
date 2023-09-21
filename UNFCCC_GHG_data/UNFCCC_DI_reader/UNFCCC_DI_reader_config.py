@@ -1171,15 +1171,19 @@ di_processing_templates = {
     },
     # GHA: 1990-2006
     # GIN: 1994, 2000
-    # GMB: 1993, 2000
     'GMB': {
         'DI2023-05-24': { # 1993, 2000
             'remove_ts': {
                 'waste': { # very high in 1994
-                    'category': ['6', '6.A', '6.B'],
+                    'category': ['6', '6.A', '6.B', '15163', '24540'],
                     'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                         'time': ['1993'],
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
             },
         }
     },
@@ -1269,21 +1273,36 @@ di_processing_templates = {
                         'time': ['1994'],
                 },
             },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
+            },
         },
     },
     # JOR: M.AG in 2000 is very low but it's like that in NC2 and no comment on error
     # in comparison in NC3
-    # 'JOR': {
-    #     'DI2023-05-24': {
-    #         'remove_ts': {
-    #             'agri_N2O': {
-    #                 'category': [''],
-    #                 'entities': ['N2O'],
-    #                 'time': ['2000']
-    #             },
-    #         },
-    #     }
-    # }
+    'JOR': {
+        'DI2023-05-24': {
+            'remove_ts': {
+                # 'agri_N2O': {
+                #     'category': [''],
+                #     'entities': ['N2O'],
+                #     'time': ['2000']
+                # },
+                'waste': {
+                    'category': ['6', '6.A', '6.B', '6.C', '6.D', '15163', '24540'],
+                    'entities': ['CH4', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1994'],
+                },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        }
+    },
     'KEN': {
         'DI2023-05-24': { # 1994,1995, 2000, 2005, 2010. Subsectors doffer a bit
             # especilly for 1994
@@ -2000,12 +2019,16 @@ di_processing_info = {
         'DI2023-05-24': di_processing_templates['GEO']['DI2023-05-24'],
     },
     'GMB': {
-        'default': di_processing_templates['general']['copyUnspHFC'],
-        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+        'default': di_processing_templates['general']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['general']['DI2023-05-24'],
     },
     'GNB': {
         'default': di_processing_templates['GNB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['GNB']['DI2023-05-24'],
+    },
+    'GRD': {
+        'default': di_processing_templates['GRD']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['GRD']['DI2023-05-24'],
     },
     'IDN': {
         'default': di_processing_templates['IDN']['DI2023-05-24'],
@@ -2020,12 +2043,12 @@ di_processing_info = {
         'DI2023-05-24': di_processing_templates['general']['copyHFCPFC'],
     },
     'JAM': {
-        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
-        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'default': di_processing_templates['JAM']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['JAM']['DI2023-05-24'],
     },
     'JOR': {
-        'default': di_processing_templates['general']['copyUnspHFC'],
-        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+        'default': di_processing_templates['general']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['general']['DI2023-05-24'],
     },
     'KEN': {
         'default': di_processing_templates['KEN']['DI2023-05-24'],
