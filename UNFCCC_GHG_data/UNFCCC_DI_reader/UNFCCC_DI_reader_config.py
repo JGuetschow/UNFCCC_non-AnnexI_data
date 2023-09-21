@@ -547,6 +547,17 @@ di_processing_templates = {
         },
     },
     # BDI 1998, 2005, 2010, 2015 # data coverage is a bit inconsistent
+    'BDI': {
+        'DI2023-05-24': { # 1994, 2000, 2003, 2006, 2009 (energy sector missing in 200X)
+            'remove_ts': {
+                'M.AG.ELV': { # prescribed burning of savannas and agricultural soils
+                    # are missing for all but 1 year
+                    'category': ['4', '4.B', '4.D', '4.E', '4.F', '15163', '24540'],
+                    'entity': ['N2O', f'KYOTOGHG ({gwp_to_use})']
+                },
+            },
+        },
+    },
     # BEN 1995, 2000 # data coverage a bit inconsistent
     'BFA': { # 1994, 2007, 2008-2017
         'DI2023-05-24': {  # remove 2007, seems to have summed sectors (Agri and LULUCF)
