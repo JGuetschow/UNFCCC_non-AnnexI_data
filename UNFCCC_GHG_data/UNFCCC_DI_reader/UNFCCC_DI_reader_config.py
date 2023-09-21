@@ -1599,10 +1599,8 @@ di_processing_templates = {
                     'time': ['1994'],
                 },
             },
-            'remove_years': {
-                ['1995', '1996', '1997', '1998', '1999'], # only few sectors covered
-                # and data found neither in NC1 nor NC2
-            },
+            'remove_years': ['1995', '1996', '1997', '1998', '1999'],
+            # only few sectors covered and data found neither in NC1 nor NC2
         },
     },
     # PRK: 1990, 1994, 2000, 2002
