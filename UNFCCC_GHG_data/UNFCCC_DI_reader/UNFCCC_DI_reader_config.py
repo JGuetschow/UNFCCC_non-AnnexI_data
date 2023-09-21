@@ -2019,8 +2019,8 @@ di_processing_info = {
         'DI2023-05-24': di_processing_templates['GEO']['DI2023-05-24'],
     },
     'GMB': {
-        'default': di_processing_templates['general']['DI2023-05-24'],
-        'DI2023-05-24': di_processing_templates['general']['DI2023-05-24'],
+        'default': di_processing_templates['GMB']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['GMB']['DI2023-05-24'],
     },
     'GNB': {
         'default': di_processing_templates['GNB']['DI2023-05-24'],
