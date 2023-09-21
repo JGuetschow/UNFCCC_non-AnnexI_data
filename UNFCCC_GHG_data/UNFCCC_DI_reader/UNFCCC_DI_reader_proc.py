@@ -72,7 +72,10 @@ def process_and_save_UNFCCC_DI_for_country(
     )
 
     # save
-    save_DI_country_data(data_processed, raw=False)
+    if data_processed.coords['time'].values.size > 0:
+        save_DI_country_data(data_processed, raw=False)
+    else:
+        print(f"No data left after processing for {country_code}")
 
     return data_processed
 

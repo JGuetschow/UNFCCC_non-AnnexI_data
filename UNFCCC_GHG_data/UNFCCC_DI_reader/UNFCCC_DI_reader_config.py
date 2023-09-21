@@ -1590,7 +1590,21 @@ di_processing_templates = {
             },
         },
     },
-    # PLW: 1994, 1995-1999 (partial), 2000, 2005
+    'PLW': { # 1994, 1995-1999 (partial), 2000, 2005}
+        'DI2023-05-24': {
+            'remove_ts': {
+                'waste': {
+                    'category': ['6', '6.A', '6.B', '6.C', '6.D', '15163', '24540'],
+                    'entities': ['CO2', 'CH4', 'N2O', 'KYOTOGHG (AR4GWP100)'],
+                    'time': ['1994'],
+                },
+            },
+            'remove_years': {
+                ['1995', '1996', '1997', '1998', '1999'], # only few sectors covered
+                # and data found neither in NC1 nor NC2
+            },
+        },
+    },
     # PRK: 1990, 1994, 2000, 2002
     # PRY: 1990, 1994, 2000, 2005, 2011, 2012, 2015, 2017 land use sectors not
     # consistent, more data in BUR3 but not read yet
@@ -1893,12 +1907,12 @@ di_processing_templates = {
         },
     },
     # ZWE:
-    'ZWE': { # 1994, 2000, 2006 consistency of sectors and coverage does not look good,
-    # especially for subsectors
-        'DI2023-05-24': {  # remove all years
-            'remove_years': ['1994', '2000', '2006'],
-        },
-    },
+    # 'ZWE': { # 1994, 2000, 2006 consistency of sectors and coverage does not look good,
+    # # especially for subsectors
+    #     'DI2023-05-24': {  # remove all years
+    #         'remove_years': ['1994', '2000', '2006'],
+    #     },
+    # },
 }
 
 di_processing_info = {
@@ -2019,6 +2033,10 @@ di_processing_info = {
         'default': di_processing_templates['KEN']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['KEN']['DI2023-05-24'],
     },
+    'KIR': {
+        'default': di_processing_templates['KIR']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['KIR']['DI2023-05-24'],
+    },
     'KGZ': {
         'default': di_processing_templates['general']['copyUnspHFC'],
         'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
@@ -2091,6 +2109,10 @@ di_processing_info = {
         'default': di_processing_templates['PHL']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['PHL']['DI2023-05-24'],
     },
+    'PLW': {
+        'default': di_processing_templates['PLW']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['PLW']['DI2023-05-24'],
+    },
     'PRY': {
         'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
         'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
@@ -2147,10 +2169,10 @@ di_processing_info = {
         'default': di_processing_templates['ZMB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ZMB']['DI2023-05-24'],
     },
-    'ZWE': {
-        'default': di_processing_templates['ZWE']['DI2023-05-24'],
-        'DI2023-05-24': di_processing_templates['ZWE']['DI2023-05-24'],
-    },
+    # 'ZWE': {
+    #     'default': di_processing_templates['ZWE']['DI2023-05-24'],
+    #     'DI2023-05-24': di_processing_templates['ZWE']['DI2023-05-24'],
+    # },
 }
 
 basket_copy_HFCPFC = {
