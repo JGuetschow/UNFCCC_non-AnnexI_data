@@ -553,7 +553,7 @@ di_processing_templates = {
                 'M.AG.ELV': { # prescribed burning of savannas and agricultural soils
                     # are missing for all but 1 year
                     'category': ['4', '4.B', '4.D', '4.E', '4.F', '15163', '24540'],
-                    'entity': ['N2O', f'KYOTOGHG ({gwp_to_use})']
+                    'entities': ['N2O', f'KYOTOGHG ({gwp_to_use})']
                 },
             },
         },
@@ -692,11 +692,14 @@ di_processing_templates = {
         'DI2023-05-24': { # 1994, 2000, 2003, 2006, 2009 (energy sector missing in 200X)
             'remove_ts': {
                 'AG_2000': { # inconsistent with other data
-                    'category': ['4', '4.A', '4.B', '4.C', '4.D', '4.E', '4.F'],
+                    'category': ['4', '4.A', '4.B', '4.C', '4.D', '4.E', '4.F',
+                                 '15163', '24540'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                     'time': ['2000'],
                 },
                 'waste_1994': { # inconsistent with other data
-                    'category': ['6', '6.A', '6.B'],
+                    'category': ['6', '6.A', '6.B', '15163', '24540'],
+                    'entities': ['CO2', 'CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                     'time': ['1994'],
                 },
             },
