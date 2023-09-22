@@ -43,7 +43,7 @@ tables_trends = {
         'coords_value_mapping': {
             "unit": "PRIMAP1",
             'entity': {
-                'Net emissions (CO₂-eq)': f'KYOTGHG ({gwp_to_use})',
+                'Net emissions (CO₂-eq)': f'KYOTOGHG ({gwp_to_use})',
                 'CO₂ (Gg)': 'CO2 emissions',
                 'CH₄ (CO₂-eq)': f'CH4 ({gwp_to_use})',
                 'N₂O (CO₂-eq)': f'N2O ({gwp_to_use})',
