@@ -3,6 +3,7 @@
 
 import pandas as pd
 import primap2 as pm2
+import xarray as xr
 import numpy as np
 import camelot
 import locale
@@ -146,6 +147,11 @@ for table in tables_trends.keys():
     # make sure we have str not a number format for the dates
     df_this_table.columns = df_this_table.columns.map(str)
 
+    # make copy of columns if a column is used twice for metadata
+    if 'copy_cols' in current_table.keys():
+        for col in current_table["copy_cols"]:
+            df_this_table[col] = df_this_table[current_table["copy_cols"][col]]
+
     current_table["coords_defaults"].update(coords_defaults)
     # convert to interchange format
     data_current_if = pm2.pm2io.convert_wide_dataframe_if(
@@ -158,14 +164,14 @@ for table in tables_trends.keys():
         convert_str=True,
         time_format='%Y',
     )
-# todo: convert to native format before merge
+
     data_current_pm2 = pm2.pm2io.from_interchange_format(data_current_if)
     if data_trend_pm2 is None:
         data_trend_pm2 = data_current_pm2
     else:
         data_trend_pm2 = data_trend_pm2.pr.merge(data_current_pm2)
 
-data_pm2 = data_inv_pm2.pr.merge(data_trend_pm2, tolerance=0.05) # some rounding in
+data_pm2 = data_inv_pm2.pr.merge(data_trend_pm2, tolerance=0.02) # some rounding in
 # trends needs higher tolerance
 
 data_if = data_pm2.pr.to_interchange_format()
@@ -176,12 +182,13 @@ data_if = data_pm2.pr.to_interchange_format()
 if not output_folder.exists():
     output_folder.mkdir()
 pm2.pm2io.write_interchange_format(
-    output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+    output_folder / (output_filename + coords_terminologies["category"] + "_raw_test"),
     data_if)
 
 encoding = {var: compression for var in data_pm2.data_vars}
 data_pm2.pr.to_netcdf(
-    output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+    output_folder / (output_filename + coords_terminologies["category"] +
+                     "_raw_test.nc"),
     encoding=encoding)
 
 
@@ -189,10 +196,35 @@ data_pm2.pr.to_netcdf(
 data_proc_pm2 = data_pm2
 terminology_proc = coords_terminologies["category"]
 
+# combine CO2 emissions and removals
+temp_CO2 = data_proc_pm2[["CO2 emissions", "CO2 removals"]].pr.sum\
+    (dim="entity", skipna=True, min_count=1)
+data_proc_pm2["CO2"] = data_proc_pm2["CO2"].fillna(temp_CO2)
+
+# create net KYOTOGHG for 0 and 3
+data_proc_pm2["KYOTOGHG removals (AR5GWP100)"] \
+    = xr.full_like(data_proc_pm2["CO2 removals"],
+                   np.nan).pr.quantify(units="Gg CO2 / year")
+
+data_proc_pm2["KYOTOGHG removals (AR5GWP100)"].attrs = {"entity": "KYOTOGHG",
+                                                        "gwp_context": "AR5GWP100"}
+data_proc_pm2["KYOTOGHG removals (AR5GWP100)"] \
+    = data_proc_pm2.pr.gas_basket_contents_sum(
+    basket="KYOTOGHG removals (AR5GWP100)", basket_contents=['CO2 removals'],
+    skipna=True, min_count=1)
+temp_KYOTOGHG = data_proc_pm2[["KYOTOGHG emissions (AR5GWP100)",
+                               "KYOTOGHG removals (AR5GWP100)"]].pr.sum\
+    (dim="entity", skipna=True, min_count=1)
+data_proc_pm2["KYOTOGHG (AR5GWP100)"] \
+    = data_proc_pm2["KYOTOGHG (AR5GWP100)"].fillna(temp_KYOTOGHG)
+
+
 # actual processing
 data_proc_pm2 = process_data_for_country(
     data_proc_pm2,
-    entities_to_ignore=[],
+    entities_to_ignore=['CO2 emissions', 'CO2 removals',
+                        'KYOTOGHG emissions (AR5GWP100)',
+                        'KYOTOGHG removals (AR5GWP100)'],
     gas_baskets={},
     processing_info_country=processing_info_step1,
 )

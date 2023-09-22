@@ -6,14 +6,16 @@ tables_trends = {
         'area': ['177,430,450,142'],
         'cols': ['208,260,311,355,406'],
         'coords_defaults': {
-            'entity': f'KYOTOGHG ({gwp_to_use})',
             'unit': 'GgCO2eq',
         },
         'coords_cols': {
             "category": "Year",
+            "entity": "entity",
         },
-        #'remove_cols': ['Per capita emissions (t)',
-        #                'GDP emissions index (Year 2000 = 100)'],
+        'copy_cols': {
+            # to: from
+            'entity': 'Year',
+        },
         'coords_value_mapping': {
             "unit": "PRIMAP1",
             'category': {
@@ -22,6 +24,13 @@ tables_trends = {
                 'IPPU': '2',
                 'AFOLU': '3',
                 'Waste': '4',
+            },
+            'entity': {
+                'Total emissions': f'KYOTOGHG emissions ({gwp_to_use})',
+                'Energy': f'KYOTOGHG ({gwp_to_use})',
+                'IPPU': f'KYOTOGHG ({gwp_to_use})',
+                'AFOLU': f'KYOTOGHG emissions ({gwp_to_use})',
+                'Waste': f'KYOTOGHG ({gwp_to_use})',
             },
         },
         'label_rows': [0, 1, 2],
@@ -37,12 +46,12 @@ tables_trends = {
         'coords_cols': {
             "entity": "Year",
         },
-        'remove_cols': ['Total GHG emissions (CO₂-eq)',
-                        'Removals (CO₂) (CO₂-eq)',
-                        'CO₂ (Gg)'],
+        'remove_cols': [],
         'coords_value_mapping': {
             "unit": "PRIMAP1",
             'entity': {
+                'Total GHG emissions (CO₂-eq)': f'KYOTOGHG emissions ({gwp_to_use})',
+                'Removals (CO₂) (CO₂-eq)': 'CO2 removals',
                 'Net emissions (CO₂-eq)': f'KYOTOGHG ({gwp_to_use})',
                 'CO₂ (Gg)': 'CO2 emissions',
                 'CH₄ (CO₂-eq)': f'CH4 ({gwp_to_use})',
@@ -56,22 +65,35 @@ tables_trends = {
         'area': ['122,760,496,472'],
         'cols': ['159,212,265,311,355,406,456'],
         'coords_defaults': {
-            'entity': 'CO2',
+            #'entity': 'CO2',
             'unit': 'Gg',
         },
         'coords_cols': {
             "category": "Year",
+            'entity': 'entity',
         },
         'remove_cols': ['Total emissions'],
+        'copy_cols': {
+            # to: from
+            'entity': 'Year',
+        },
         'coords_value_mapping': {
             "unit": "PRIMAP1",
             'category': {
                 'Total net emissions': '0',
                 'Energy': '1',
                 'IPPU': '2',
-                'AFOLU - emissions': 'M.3.EMI',
-                'AFOLU - removals': 'M.3.REM',
+                'AFOLU - emissions': '3',
+                'AFOLU - removals': '3',
                 'Waste': '4',
+            },
+            'entity': {
+                'Total net emissions': 'CO2',
+                'Energy': 'CO2',
+                'IPPU': 'CO2',
+                'AFOLU - emissions': 'CO2 emissions',
+                'AFOLU - removals': 'CO2 removals',
+                'Waste': 'CO2',
             },
         },
         'label_rows':  [0, 1, 2],
@@ -354,8 +376,6 @@ processing_info_step1 = {
               'name': 'Product uses as Substitutes for Ozone Depleting Substances'},
         '2': {'sources': ['2.A', '2.B', '2.C', '2.D', '2.E', '2.F', '2.G'],
               'name': 'IPPU'}, # for HFCs, PFCs, SO2, SF6, N2O (all 0)
-        '3': {'sources': ['M.3.EMI', 'M.3.REM'],
-              'name': 'AFOLU'}, # for CO2
     },
 }
 
@@ -429,5 +449,10 @@ processing_info_step2 =  {
             'entities': [f'HFCS ({gwp_to_use})', f'PFCS ({gwp_to_use})', 'SF6',
                          f'UnspMixOfHFCs ({gwp_to_use})'],
         },
+    },
+    'basket_copy': {
+        'GWPs_to_add': ["SARGWP100", "AR4GWP100", "AR6GWP100"],
+        'entities': ["HFCS", "PFCS", "UnspMixOfHFCs"],
+        'source_GWP': gwp_to_use,
     },
 }
