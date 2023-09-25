@@ -1171,15 +1171,19 @@ di_processing_templates = {
     },
     # GHA: 1990-2006
     # GIN: 1994, 2000
-    # GMB: 1993, 2000
     'GMB': {
         'DI2023-05-24': { # 1993, 2000
             'remove_ts': {
                 'waste': { # very high in 1994
-                    'category': ['6', '6.A', '6.B'],
+                    'category': ['6', '6.A', '6.B', '15163', '24540'],
                     'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                         'time': ['1993'],
                 },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
             },
         }
     },
@@ -1235,8 +1239,16 @@ di_processing_templates = {
         },
     },
     'IND': {
-        'DI2023-05-24': { # 1994,2000, 2010, 2016. Subsectors doffer a bit especilly
+        'DI2023-05-24': { # 1994,2000, 2010, 2016. Subsectors differ a bit especially
             # for 1994 and for LULUCF data
+            'remove_ts': {
+                '2C': { # inconsistent with other sources
+                    'category': ['2.C', '2', '15163', '24540'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})', 'CO2',
+                                 'C2F6', 'CF4', f'PFCS ({gwp_to_use})', 'SF6' ],
+                    'time': ['1994'],
+                },
+            },
             'downscale': {
                 'sectors': { # for 1994
                     '1.A': {
@@ -1261,21 +1273,36 @@ di_processing_templates = {
                         'time': ['1994'],
                 },
             },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs", "UnspMixOfPFCs"],
+                'source_GWP': gwp_to_use,
+            },
         },
     },
     # JOR: M.AG in 2000 is very low but it's like that in NC2 and no comment on error
     # in comparison in NC3
-    # 'JOR': {
-    #     'DI2023-05-24': {
-    #         'remove_ts': {
-    #             'agri_N2O': {
-    #                 'category': [''],
-    #                 'entities': ['N2O'],
-    #                 'time': ['2000']
-    #             },
-    #         },
-    #     }
-    # }
+    'JOR': {
+        'DI2023-05-24': {
+            'remove_ts': {
+                # 'agri_N2O': {
+                #     'category': [''],
+                #     'entities': ['N2O'],
+                #     'time': ['2000']
+                # },
+                'waste': {
+                    'category': ['6', '6.A', '6.B', '6.C', '6.D', '15163', '24540'],
+                    'entities': ['CH4', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1994'],
+                },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        }
+    },
     'KEN': {
         'DI2023-05-24': { # 1994,1995, 2000, 2005, 2010. Subsectors doffer a bit
             # especilly for 1994
@@ -1582,7 +1609,19 @@ di_processing_templates = {
             },
         },
     },
-    # PLW: 1994, 1995-1999 (partial), 2000, 2005
+    'PLW': { # 1994, 1995-1999 (partial), 2000, 2005}
+        'DI2023-05-24': {
+            'remove_ts': {
+                'waste': {
+                    'category': ['6', '6.A', '6.B', '6.C', '6.D', '15163', '24540'],
+                    'entities': ['CO2', 'CH4', 'N2O', 'KYOTOGHG (AR4GWP100)'],
+                    'time': ['1994'],
+                },
+            },
+            'remove_years': ['1995', '1996', '1997', '1998', '1999'],
+            # only few sectors covered and data found neither in NC1 nor NC2
+        },
+    },
     # PRK: 1990, 1994, 2000, 2002
     # PRY: 1990, 1994, 2000, 2005, 2011, 2012, 2015, 2017 land use sectors not
     # consistent, more data in BUR3 but not read yet
@@ -1885,12 +1924,12 @@ di_processing_templates = {
         },
     },
     # ZWE:
-    'ZWE': { # 1994, 2000, 2006 consistency of sectors and coverage does not look good,
-    # especially for subsectors
-        'DI2023-05-24': {  # remove all years
-            'remove_years': ['1994', '2000', '2006'],
-        },
-    },
+    # 'ZWE': { # 1994, 2000, 2006 consistency of sectors and coverage does not look good,
+    # # especially for subsectors
+    #     'DI2023-05-24': {  # remove all years
+    #         'remove_years': ['1994', '2000', '2006'],
+    #     },
+    # },
 }
 
 di_processing_info = {
@@ -1980,12 +2019,16 @@ di_processing_info = {
         'DI2023-05-24': di_processing_templates['GEO']['DI2023-05-24'],
     },
     'GMB': {
-        'default': di_processing_templates['general']['copyUnspHFC'],
-        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+        'default': di_processing_templates['GMB']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['GMB']['DI2023-05-24'],
     },
     'GNB': {
         'default': di_processing_templates['GNB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['GNB']['DI2023-05-24'],
+    },
+    'GRD': {
+        'default': di_processing_templates['GRD']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['GRD']['DI2023-05-24'],
     },
     'IDN': {
         'default': di_processing_templates['IDN']['DI2023-05-24'],
@@ -2000,16 +2043,20 @@ di_processing_info = {
         'DI2023-05-24': di_processing_templates['general']['copyHFCPFC'],
     },
     'JAM': {
-        'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
-        'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+        'default': di_processing_templates['JAM']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['JAM']['DI2023-05-24'],
     },
     'JOR': {
-        'default': di_processing_templates['general']['copyUnspHFC'],
-        'DI2023-05-24': di_processing_templates['general']['copyUnspHFC'],
+        'default': di_processing_templates['JOR']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['JOR']['DI2023-05-24'],
     },
     'KEN': {
         'default': di_processing_templates['KEN']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['KEN']['DI2023-05-24'],
+    },
+    'KIR': {
+        'default': di_processing_templates['KIR']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['KIR']['DI2023-05-24'],
     },
     'KGZ': {
         'default': di_processing_templates['general']['copyUnspHFC'],
@@ -2083,6 +2130,10 @@ di_processing_info = {
         'default': di_processing_templates['PHL']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['PHL']['DI2023-05-24'],
     },
+    'PLW': {
+        'default': di_processing_templates['PLW']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['PLW']['DI2023-05-24'],
+    },
     'PRY': {
         'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
         'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
@@ -2139,10 +2190,10 @@ di_processing_info = {
         'default': di_processing_templates['ZMB']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ZMB']['DI2023-05-24'],
     },
-    'ZWE': {
-        'default': di_processing_templates['ZWE']['DI2023-05-24'],
-        'DI2023-05-24': di_processing_templates['ZWE']['DI2023-05-24'],
-    },
+    # 'ZWE': {
+    #     'default': di_processing_templates['ZWE']['DI2023-05-24'],
+    #     'DI2023-05-24': di_processing_templates['ZWE']['DI2023-05-24'],
+    # },
 }
 
 basket_copy_HFCPFC = {

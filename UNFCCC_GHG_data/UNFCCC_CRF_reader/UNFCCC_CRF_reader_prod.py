@@ -90,12 +90,23 @@ def read_crf_for_country(
     # get country name
     country_name = get_country_name(country_code)
 
-    # get specification and available tables
+
+    # get specification
+    # if we only have a single country check if we might have a country specific
+    # specification (currently only Australia, 2023)
     try:
-        crf_spec = getattr(crf, f"CRF{submission_year}")
-        #print(table_spec)
+        crf_spec = getattr(crf, f"CRF{submission_year}_{country_code}")
+        print(f"Using country specific specification: "
+              f"CRF{submission_year}_{country_code}")
     except:
-        raise ValueError(f"No terminology exists for submission year {submission_year}")
+        # no country specific specification, check for general specification
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}")
+        except:
+            raise ValueError(
+                f"No terminology exists for submission year " f"{submission_year}"
+            )
+
 
     tables = [table for table in crf_spec.keys()
               if crf_spec[table]["status"] == "tested"]
@@ -145,6 +156,32 @@ def read_crf_for_country(
 
             # now convert to native PRIMAP2 format
             ds_table_pm2 = pm2.pm2io.from_interchange_format(ds_table_if)
+
+            # if individual data for emissions and removals / recovery exist combine
+            # them
+            if (('CO2 removals' in ds_table_pm2.data_vars) and
+                    ('CO2 emissions' in ds_table_pm2.data_vars) and not
+                    ('CO2' in ds_table_pm2.data_vars)):
+                # we can just sum to CO2 as we made sure that it doesn't exist.
+                # If we have CO2 and removals but not emissions, CO2 already has
+                # removals subtracted and we do nothing here
+                ds_table_pm2["CO2"] = ds_table_pm2[["CO2 emissions",
+                                                "CO2 removals"]].pr.sum(
+                    dim="entity", skipna=True, min_count=1
+                )
+                ds_table_pm2["CO2"].attrs["entity"] = "CO2"
+
+            if (('CH4 removals' in ds_table_pm2.data_vars) and
+                    ('CH4 emissions' in ds_table_pm2.data_vars) and not
+                    ('CH4' in ds_table_pm2.data_vars)):
+                # we can just sum to CH4 as we made sure that it doesn't exist.
+                # If we have CH4 and removals but not emissions, CH4 already has
+                # removals subtracted and we do nothing here 
+                ds_table_pm2["CH4"] = ds_table_pm2[["CH4 emissions",
+                                                "CH4 removals"]].pr.sum(
+                    dim="entity", skipna=True, min_count=1
+                )
+                ds_table_pm2["CH4"].attrs["entity"] = "CH4"
 
             # combine per table DS
             if ds_all is None:

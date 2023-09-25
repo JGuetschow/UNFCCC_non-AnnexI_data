@@ -2,10 +2,10 @@ attrs:
   references: https://unfccc.int/documents/627150
   rights: ''
   contact: mail@johannes-guestchow.de
-  title: Israel. Biennial update report (BUR). BUR2 Processed on 2023-07-20 Processed
-    on 2023-07-20
-  comment: Read fom pdf by Johannes Gütschow Processed on 2023-07-20 Processed on
-    2023-07-20
+  title: Israel. Biennial update report (BUR). BUR2 Processed on 2023-09-15 Processed
+    on 2023-09-15
+  comment: Read fom pdf by Johannes Gütschow Processed on 2023-09-15 Processed on
+    2023-09-15
   institution: UNFCCC
   cat: category (IPCC2006_PRIMAP)
   area: area (ISO3)
@@ -14,11 +14,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - area (ISO3)
-  - category (IPCC2006_PRIMAP)
-  - source
-  - scenario (PRIMAP)
   - provenance
+  - category (IPCC2006_PRIMAP)
+  - scenario (PRIMAP)
+  - source
+  - area (ISO3)
   - entity
   - unit
 data_file: ISR_BUR2_2021_IPCC2006_PRIMAP.csv

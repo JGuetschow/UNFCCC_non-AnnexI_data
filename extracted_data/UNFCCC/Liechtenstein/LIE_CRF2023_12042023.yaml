@@ -15,11 +15,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - area (ISO3)
   - class
   - category (CRF2013_2023)
   - provenance
   - source
+  - area (ISO3)
   - scenario (PRIMAP)
   - entity
   - unit

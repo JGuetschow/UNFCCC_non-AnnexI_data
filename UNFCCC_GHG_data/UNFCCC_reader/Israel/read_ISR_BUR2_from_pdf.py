@@ -16,7 +16,7 @@ from config_ISR_BUR2 import coords_cols, coords_terminologies, coords_defaults, 
     coords_value_mapping, filter_remove, filter_keep, meta_data
 from config_ISR_BUR2 import cat_conversion, sectors_to_save, downscaling, \
     cats_to_agg, gas_baskets, terminology_proc
-from config_ISR_BUR2 import is_int
+from config_ISR_BUR2 import is_int, basket_copy
 
 ### genral configuration
 input_folder = downloaded_data_path / 'UNFCCC' / 'Israel' / 'BUR2'
@@ -267,7 +267,9 @@ data_proc_pm2 = process_data_for_country(
 
 country_processing_step2 = {
     'downscale': downscaling,
+    'basket_copy': basket_copy,
 }
+
 data_proc_pm2 = process_data_for_country(
     data_proc_pm2,
     entities_to_ignore=[],

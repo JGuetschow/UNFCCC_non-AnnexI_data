@@ -5,6 +5,7 @@ well as for test-reading to check for new categories etc.
 """
 
 import re
+import os
 import json
 import numpy as np
 import pandas as pd
@@ -155,6 +156,7 @@ def read_crf_table(
         data_year: Optional[Union[int, List[int]]]=None,
         date: Optional[str]=None,
         folder: Optional[str]=None,
+        debug: Optional[bool]=False,
 ) -> Tuple[pd.DataFrame, List[List], List[List]]:
     """
     Read CRF table for given submission year and country / or countries
@@ -187,6 +189,9 @@ def read_crf_table(
     folder: str (optional)
         Folder that contains the xls files. If not given fodlers are determined by the
         submissions_year and country_code variables
+
+    debug: bool (optional)
+        if true print some debug information like column headers
 
     Returns
     _______
@@ -241,10 +246,26 @@ def read_crf_table(
                               f"folder={folder}.")
 
     # get specification
-    try:
-        crf_spec = getattr(crf, f"CRF{submission_year}")
-    except:
-        raise ValueError(f"No terminology exists for submission year {submission_year}")
+    # if we only have a single country check if we might have a country specific
+    # specification (currently only Australia, 2023)
+    if len(country_codes) == 1:
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}_{country_codes[0]}")
+            print(f"Using country specific specification: " 
+                  f"CRF{submission_year}_{country_codes[0]}")
+        except:
+            # no country specific specification, check for general specification
+            try:
+                crf_spec = getattr(crf, f"CRF{submission_year}")
+            except:
+                raise ValueError(f"No terminology exists for submission year "
+                                 f"{submission_year}")
+    else:
+        try:
+            crf_spec = getattr(crf, f"CRF{submission_year}")
+        except:
+            raise ValueError(f"No terminology exists for submission year "
+                             f"{submission_year}")
 
     # now loop over files and read them
     df_all = None
@@ -255,7 +276,7 @@ def read_crf_table(
         try:
             int(file_info["data_year"])
             df_this_file, unknown_rows_this_file, last_row_info_this_file = \
-                read_crf_table_from_file(file, table, crf_spec[table])
+                read_crf_table_from_file(file, table, crf_spec[table], debug=debug)
             if df_all is None:
                 df_all = df_this_file.copy(deep=True)
                 unknown_rows = unknown_rows_this_file
@@ -274,6 +295,7 @@ def read_crf_table_from_file(
         file: Path,
         table: str,
         table_spec: Dict[str, Dict],
+        debug: Optional[bool]=False,
 ) -> Tuple[pd.DataFrame, List[List], List[List]]:
     """
     Read a single CRF table from a given file. This is the core function of the CRF
@@ -289,6 +311,9 @@ def read_crf_table_from_file(
 
     table_spec: Dict[str, Dict]
         Specification for the given table, e.g. CRF2021["Table4"]
+
+    debug: bool (optional)
+        if true print some debug information like column headers
 
     Returns
     _______
@@ -341,6 +366,22 @@ def read_crf_table_from_file(
         last_row_nan = True
     else:
         last_row_nan = False
+    
+
+    cols_to_drop = []
+    # remove empty first column (for Australia tables start with an empty column)
+    # df_raw = df_raw.dropna(how="all", axis=1)
+    if df_raw.iloc[:, 0].isna().all():
+        cols_to_drop.append(df_raw.columns.values[0])
+    # select only first table by cutting everything after a all-nan column (unless
+    # it's the first column)
+    for colIdx in range(1, len(df_raw.columns.values)):
+        if df_raw.iloc[:, colIdx].isna().all():
+            cols_to_drop = cols_to_drop + list(df_raw.columns.values[colIdx : ])
+            break
+
+    if cols_to_drop is not None:
+        df_raw = df_raw.drop(columns=cols_to_drop)
 
     #### prepare the header (2 row header, first entity, then unit)
     # We do this before removing columns and any other processing to
@@ -397,7 +438,8 @@ def read_crf_table_from_file(
 
     df_current.iloc[0] = units
     df_current.columns = entities
-
+    if debug:
+        print(f"Columns present: {entities}")
     # remove all columns to ignore
     df_current = df_current.drop(columns=table_properties["cols_to_ignore"])
 
@@ -505,7 +547,6 @@ def read_crf_table_from_file(
     # set index
     df_current = df_current.set_index(index_cols)
     # process the unit information using the primap2 functions
-
     df_current = pm2.pm2io.nir_add_unit_information(df_current, **table_properties["unit_info"])
 
     # convert to long format
@@ -618,8 +659,10 @@ def get_crf_files(
                 input_files = input_files + \
                               filter_filenames(input_folder.glob("*.xlsx"),
                                                **file_filter)
-        else:
-            raise ValueError(f"Folder {input_folder} does not exist")
+        #else:
+        #    raise ValueError(f"Folder {input_folder} does not exist")
+    if len(input_files) == 0:
+        raise ValueError(f"No input files found in {country_folders}")
 
     # make sure no files is in the list twice (happens when multiple input folder
     # contain the same submission which is possible when the country name is changed)
@@ -651,10 +694,11 @@ def get_info_from_crf_filename(
     dict with fields:
         party: the party that submitted the data (3 letter UNFCCC_GHG_data)
         submission_year: year of submission
-        data_year: year in which the meissions took place
+        data_year: year in which the emissions took place
         date: date of the submission
         extra: rest of the file name
     """
+    filename = os.path.splitext(filename)[0]
     name_parts = filename.split("_")
     file_info = {}
     file_info["party"] = name_parts[0]
@@ -666,7 +710,11 @@ def get_info_from_crf_filename(
               "could not be converted to int.")
         file_info["data_year"] = name_parts[2]
     file_info["date"] = name_parts[3]
-    file_info["extra"] = name_parts[4]
+    # the last part (time code) is missing for Australia since 2023
+    if len(name_parts) > 4:
+        file_info["extra"] = name_parts[4]
+    else:
+        file_info["extra"] = ""
     return file_info
 
 
@@ -948,8 +996,9 @@ def get_latest_date_for_country(
         else:
             dates = []
             for folder in country_folders:
-                dates = dates + get_submission_dates(
-                    downloaded_data_path_UNFCCC / folder / f"CRF{submission_year}", file_filter)
+                folder_submission = downloaded_data_path_UNFCCC / folder / f"CRF{submission_year}"
+                if folder_submission.exists():
+                    dates = dates + get_submission_dates(folder_submission, file_filter)
             submission_date = find_latest_date(dates)
     else:
         raise ValueError(f"No data folder found for country {country_code}. "

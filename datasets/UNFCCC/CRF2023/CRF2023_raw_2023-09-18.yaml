@@ -1,0 +1,30 @@
+attrs:
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/2023
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Data submitted in 2023 to the UNFCCC in the common reporting format (CRF)
+    by Australia. Submission date: 13042023'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRF2013_2023)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - c
+  - l
+  - a
+  - s
+  - s
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - category (CRF2013_2023)
+  - source
+  - class
+  - area (ISO3)
+  - scenario (PRIMAP)
+  - provenance
+  - entity
+  - unit
+data_file: CRF2023_raw_2023-09-18.csv

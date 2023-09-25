@@ -420,6 +420,11 @@ gas_baskets = {
     'KYOTOGHG (AR6GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR6GWP100)'],
 }
 
+basket_copy = {
+    'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+    'entities': ["HFCS", "PFCS"],
+    'source_GWP': gwp_to_use,
+}
 
 #### functions
 def is_int(input: str) -> bool:
