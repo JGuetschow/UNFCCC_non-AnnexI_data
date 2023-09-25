@@ -4,7 +4,7 @@ geckodriver.log
 __pycache__
 /JG_test_code/
 .doit.db
-log/*:
+log/*
 UNFCCC_GHG_data/datasets
 UNFCCC_GHG_data/UNFCCC_DI_reader/test_UNFCCC_DI_reader.ipynb
 UNFCCC_GHG_data/UNFCCC_DI_reader/.ipynb_checkpoints/
