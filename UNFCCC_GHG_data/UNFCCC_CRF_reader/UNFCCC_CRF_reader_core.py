@@ -375,9 +375,14 @@ def read_crf_table_from_file(
         cols_to_drop.append(df_raw.columns.values[0])
     # select only first table by cutting everything after a all-nan column (unless
     # it's the first column)
+    if debug:
+        print(f'Header before table end detection: {df_raw.columns.values}')
     for colIdx in range(1, len(df_raw.columns.values)):
-        if df_raw.iloc[:, colIdx].isna().all():
-            cols_to_drop = cols_to_drop + list(df_raw.columns.values[colIdx : ])
+        if ((df_raw.iloc[:, colIdx].isna().all()) &
+                (df_raw.columns[colIdx].startswith('Unnamed'))):
+            cols_to_drop = cols_to_drop + list(df_raw.columns.values[colIdx:])
+            if debug:
+                print(f'cols_to_drop: {cols_to_drop}')
             break
 
     if cols_to_drop is not None:
@@ -402,12 +407,12 @@ def read_crf_table_from_file(
     if "header_fill" in table_properties:
         for row in range(0, len(df_header)):
             if table_properties["header_fill"][row]:
-                header.append(list(df_header.iloc[row].fillna(method="ffill")))
+                header.append(list(df_header.iloc[row].ffill()))
             else:
                 header.append(list(df_header.iloc[row]))
     else:
         for row in range(0, len(df_header)):
-            header.append(list(df_header.iloc[row].fillna(method="ffill")))
+            header.append(list(df_header.iloc[row].ffill()))
 
     # combine all non-unit rows into one
     entities = None
