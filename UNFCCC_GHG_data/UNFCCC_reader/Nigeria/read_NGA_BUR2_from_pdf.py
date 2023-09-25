@@ -182,13 +182,13 @@ data_if = data_pm2.pr.to_interchange_format()
 if not output_folder.exists():
     output_folder.mkdir()
 pm2.pm2io.write_interchange_format(
-    output_folder / (output_filename + coords_terminologies["category"] + "_raw_test"),
+    output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
     data_if)
 
 encoding = {var: compression for var in data_pm2.data_vars}
 data_pm2.pr.to_netcdf(
     output_folder / (output_filename + coords_terminologies["category"] +
-                     "_raw_test.nc"),
+                     "_raw.nc"),
     encoding=encoding)
 
 

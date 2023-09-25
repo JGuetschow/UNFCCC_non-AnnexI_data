@@ -477,6 +477,13 @@ di_processing_templates = {
     #AND: no data
     'ARE': { # 1990, 2000, 2005, 2014. some aggregation for fgases (pfcs) needed
         'DI2023-05-24': {
+            'remove_ts': {
+                'AG_1994': { # inconsistent with other data
+                    'category': ['4',  '4.B', '4.D', '15163', '24540'],
+                    'entities': ['N2O', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1994'],
+                },
+            },
             'agg_tolerance': 0.015,
             'ignore_entities': ["NMVOC"], #errors when aggregating cats
             'aggregate_cats': {
@@ -1967,6 +1974,10 @@ di_processing_info = {
     'AZE': {
         'default': di_processing_templates['AZE']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['AZE']['DI2023-05-24'],
+    },
+    'BDI': {
+        'default': di_processing_templates['BDI']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['BDI']['DI2023-05-24'],
     },
     'BFA': {
         'default': di_processing_templates['BFA']['DI2023-05-24'],
