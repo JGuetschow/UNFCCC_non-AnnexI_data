@@ -1306,11 +1306,18 @@ di_processing_templates = {
     'JOR': {
         'DI2023-05-24': {
             'remove_ts': {
-                # 'agri_N2O': {
-                #     'category': [''],
-                #     'entities': ['N2O'],
-                #     'time': ['2000']
-                # },
+                'agri_2000': { # data are like that in NC2, but completely
+                    # inconsistent with NC1,3
+                    'category': ['4', '4.A', '4.B', '24540', '15163'],
+                    'entities': ['CH4', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['2000'],
+                },
+                'agri_1994': { # inconsistent with later submissions
+                    'category': ['4', '4.B', '4.C', '4.E', '4.F', '4.G',
+                                 '24540', '15163'],
+                    'entities': ['CH4', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1994'],
+                },
                 'waste': {
                     'category': ['6', '6.A', '6.B', '6.C', '6.D', '15163', '24540'],
                     'entities': ['CH4', f'KYOTOGHG ({gwp_to_use})'],
@@ -2126,6 +2133,10 @@ di_processing_info = {
     'MHL': {
         'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
         'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
+    'MKD': {
+        'default': di_processing_templates['MKD']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['MKD']['DI2023-05-24'],
     },
     'MLI': {
         'default': di_processing_templates['MLI']['DI2023-05-24'],
