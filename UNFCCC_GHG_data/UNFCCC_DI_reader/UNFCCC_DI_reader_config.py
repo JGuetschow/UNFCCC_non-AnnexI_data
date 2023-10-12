@@ -1969,7 +1969,7 @@ di_processing_templates = {
         'DI2023-05-24': { # 1990, 1994, 1997, 2000, 2004. Sector coverage a bit
             # inconsistent. 1.A.x
             'remove_ts': {
-                'agri': { # inconsistent propably from two submissions with different
+                'agri': { # inconsistent probably from two submissions with different
                     # methodology
                     'category': ['4', '4.A', '4.B', '4.C', '4.E', '4.F',
                                  '15163', '24540'],
