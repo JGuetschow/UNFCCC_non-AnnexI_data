@@ -1256,7 +1256,7 @@ di_processing_templates = {
             'remove_ts': {
                 'waste': { # inconsistent
                     'category': ['6', '6.B', '6.C', '6.D', '15163', '24540'],
-                    'entities': ['N2O', 'CH$', 'CO2', f'KYOTOGHG ({gwp_to_use})'],
+                    'entities': ['N2O', 'CH4', 'CO2', f'KYOTOGHG ({gwp_to_use})'],
                     'time': ['1995', '2000'],
                 },
                 'livestock': { # inconsistent
@@ -1965,7 +1965,6 @@ di_processing_templates = {
         },
     },
     # UZB: 1990-2012
-    # VCT: 1990, 1994, 1997, 2000, 2004. Sector coverage a bit inconsistent. 1.A.x
     'VCT': {
         'DI2023-05-24': { # 1990, 1994, 1997, 2000, 2004. Sector coverage a bit
             # inconsistent. 1.A.x
@@ -1977,11 +1976,6 @@ di_processing_templates = {
                     'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                     'time': ['1994'],
                 },
-            },
-            'basket_copy': {
-                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
-                'entities': ["UnspMixOfHFCs"],
-                'source_GWP': gwp_to_use,
             },
         },
     },
