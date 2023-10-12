@@ -218,7 +218,7 @@ country_processing_step2 = {
                                     'PFCS (AR4GWP100)', 'SF6'],
                 'sel': {f'category ({coords_terminologies["category"]})':
                     [
-                        '0', '1', '1.A', '1.A.1', '1.A.2', '1.A.3',
+                        '1', '1.A', '1.A.1', '1.A.2', '1.A.3',
                         '1.A.4', '1.A.5', '1.B', '1.B.1', '1.B.2', '1.B.3',
                         '1.C',
                         '2', '2.A', '2.A.1', '2.A.2', '2.A.3', '2.A.4',

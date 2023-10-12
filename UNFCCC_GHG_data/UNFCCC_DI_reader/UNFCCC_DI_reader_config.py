@@ -747,7 +747,7 @@ di_processing_templates = {
                                      '14637', '4', '4.A', '4.B', '4.D',
                                      '6', '6.A', '6.B', '15163', '24540',
                                      ],
-                                'time': ['2000', '2001', '2002', '2003', '2004',
+                                'time': ['1997', '2000', '2001', '2002', '2003', '2004',
                                          '2005', '2006', '2007', '2008', '2009',
                                          '2010'],
                                 },
@@ -956,6 +956,13 @@ di_processing_templates = {
     # DJI: 1994, 2000
     'DMA' :{
         'DI2023-05-24': {  # 1994, 2000, (2001-2017, some dwn)
+            'remove_ts': {
+                'waste_CH4': { # 1994 very inconsistent
+                    'category': ['6', '6.A', '6.B', '15163', '24540'],
+                    'entities': [f'KYOTOGHG ({gwp_to_use})', 'CH4'],
+                    'time': ['1994'],
+                },
+            },
             # LULUCF has gaps, cat 0 assumes 0 for LULUCF in these years
             # we omit aerosols and ghg precusors as only so2 can be downscaled
             'downscale': {
@@ -1101,7 +1108,17 @@ di_processing_templates = {
             },
         },
     },
-    # 'ERI' #1994 1995-1999 (partial coverage, KYOTOGHG and total are incomplete), 2000
+    'ERI': {
+        'DI2023-05-24': { #1994 1995-1999 (partial coverage, KYOTOGHG and total are incomplete), 2000
+            'remove_ts': {
+                'energy_N2O': { # very high in 1994
+                    'category': ['1', '1.A','15163', '24540'],
+                    'entities': ['N2O', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1994'],
+                },
+            },
+        },
+    },
     'ETH': {
         'DI2023-05-24': { # 1990-1993 (downscaling needed), 1994-2013
             'downscale': {
@@ -1234,7 +1251,22 @@ di_processing_templates = {
     },
     # GTM: 1990, 1994, 2000, 2005,
     # GUY: 1990-2004
-    # HND: 1995, 2000, 2005, 2015
+    'HND': {
+        'DI2023-05-24': { # 1995, 2000, 2005, 2015
+            'remove_ts': {
+                'waste': { # inconsistent
+                    'category': ['6', '6.B', '6.C', '6.D', '15163', '24540'],
+                    'entities': ['N2O', 'CH$', 'CO2', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1995', '2000'],
+                },
+                'livestock': { # inconsistent
+                    'category': ['4.B', '4'],
+                    'entities': ['N2O', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['2000'],
+                },
+            },
+        },
+    },
     # HTI: 1994-2000
     'IDN': {
         'DI2023-05-24': { # 1990-1994, 2000
@@ -1459,6 +1491,15 @@ di_processing_templates = {
     # MDA: 1990-2013 (more data in NIR / NC5)
     'MDG': {
         'DI2023-05-24': { # 1994,2000, 2005-2010 (2006-2010 needs downscaling)
+            'remove_ts': {
+                'MAGELV_CH4': { # data from NCs 1 and 2 much lower than NC3 data. we
+                    # also have to remove field burning of agricultural residues and
+                    # Prescribed buning of savannas as they are summed
+                    'category': ['4', '4.C', '4.E', '4.F', '15163', '24540'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                        'time': ['1994', '2000'],
+                },
+            },
             'downscale': {
                 'sectors': {
                     '1': {
@@ -1743,6 +1784,13 @@ di_processing_templates = {
                     },
                 },
             },
+            'remove_ts': {
+                'M.AG.ELV': {
+                    'category': ['4', '4.D', '4.E', '4.F', '15163', '24540'],
+                    'entities': ['N2O', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1993'],
+                },
+            },
         },
     },
     # TGO: more data in BUR / NIR, 1992-1998, 2000, 2005, 2010, 2013-2018 (
@@ -1918,6 +1966,25 @@ di_processing_templates = {
     },
     # UZB: 1990-2012
     # VCT: 1990, 1994, 1997, 2000, 2004. Sector coverage a bit inconsistent. 1.A.x
+    'VCT': {
+        'DI2023-05-24': { # 1990, 1994, 1997, 2000, 2004. Sector coverage a bit
+            # inconsistent. 1.A.x
+            'remove_ts': {
+                'agri': { # inconsistent propably from two submissions with different
+                    # methodology
+                    'category': ['4', '4.A', '4.B', '4.C', '4.E', '4.F',
+                                 '15163', '24540'],
+                    'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
+                    'time': ['1994'],
+                },
+            },
+            'basket_copy': {
+                'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                'entities': ["UnspMixOfHFCs"],
+                'source_GWP': gwp_to_use,
+            },
+        },
+    },
     # missing for CH4 but present for CO2. IPPU is 0, subsectors missing downscaling
     # doesn't wor for all 0 / Nan timeseries
     # VEN: 1999 only
@@ -2042,6 +2109,10 @@ di_processing_info = {
         'default': di_processing_templates['EGY']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['EGY']['DI2023-05-24'],
     },
+    'ERI': {
+        'default': di_processing_templates['ERI']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['ERI']['DI2023-05-24'],
+    },
     'ETH': {
         'default': di_processing_templates['ETH']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['ETH']['DI2023-05-24'],
@@ -2061,6 +2132,10 @@ di_processing_info = {
     'GRD': {
         'default': di_processing_templates['GRD']['DI2023-05-24'],
         'DI2023-05-24': di_processing_templates['GRD']['DI2023-05-24'],
+    },
+    'HND': {
+        'default': di_processing_templates['HND']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['HND']['DI2023-05-24'],
     },
     'IDN': {
         'default': di_processing_templates['IDN']['DI2023-05-24'],
@@ -2221,6 +2296,10 @@ di_processing_info = {
     'UZB': {
         'default': di_processing_templates['general']['copyUnspHFCUnspPFC'],
         'DI2023-05-24': di_processing_templates['general']['copyUnspHFCUnspPFC'],
+    },
+    'VCT': {
+        'default': di_processing_templates['VCT']['DI2023-05-24'],
+        'DI2023-05-24': di_processing_templates['VCT']['DI2023-05-24'],
     },
     'ZMB': {
         'default': di_processing_templates['ZMB']['DI2023-05-24'],
