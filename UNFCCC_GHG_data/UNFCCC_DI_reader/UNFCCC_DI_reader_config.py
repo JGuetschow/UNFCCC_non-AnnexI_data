@@ -724,38 +724,40 @@ di_processing_templates = {
             # downscaling in two steps
             # 2000 - 2012 LULUCF KYOTOGHG
             # later KYOTOGHG to gases using 1997 shares (not ideal)
-            'downscale': {
-                'sectors': {
-                    '5_2000': {
-                        'basket': '5',
-                        'basket_contents': ['5.A', '5.B', '5.C', '5.D'],
-                        'entities': [f'KYOTOGHG ({gwp_to_use})'],
-                        'dim': 'category (BURDI)',
-                        'sel': {'time': ['1997', '2000', '2001', '2002', '2003', '2004',
-                                         '2005', '2006', '2007', '2009', '2010']},
-                        'skipna_evaluation_dims': None,
-                        'skipna': True,
-                    },
-                },
-                'entities': {  # 2000-2010 (1997 as key)
-                    'KYOTO': {
-                        'basket': f'KYOTOGHG ({gwp_to_use})',
-                        'basket_contents': ['CO2', 'CH4', 'N2O'],
-                        'sel': {'category (BURDI)':
-                                    ['1', '1.A', '1.A.1', '1.A.2', '1.A.3', '1.A.4',
-                                     '2', '2.A', '5', '14423', '14424',
-                                     '14637', '4', '4.A', '4.B', '4.D',
-                                     '6', '6.A', '6.B', '15163', '24540',
-                                     ],
-                                'time': ['1997', '2000', '2001', '2002', '2003', '2004',
-                                         '2005', '2006', '2007', '2008', '2009',
-                                         '2010'],
-                                },
-                    },
-                },
-            },
+            # don't use, not consistent with the per gas data available in NC2 (but
+            # not read into the DI portal)
+            # 'downscale': {
+            #     'sectors': {
+            #         '5_2000': {
+            #             'basket': '5',
+            #             'basket_contents': ['5.A', '5.B', '5.C', '5.D'],
+            #             'entities': [f'KYOTOGHG ({gwp_to_use})'],
+            #             'dim': 'category (BURDI)',
+            #             'sel': {'time': ['1997', '2000', '2001', '2002', '2003', '2004',
+            #                              '2005', '2006', '2007', '2009', '2010']},
+            #             'skipna_evaluation_dims': None,
+            #             'skipna': True,
+            #         },
+            #     },
+            #     'entities': {  # 2000-2010 (1997 as key)
+            #         'KYOTO': {
+            #             'basket': f'KYOTOGHG ({gwp_to_use})',
+            #             'basket_contents': ['CO2', 'CH4', 'N2O'],
+            #             'sel': {'category (BURDI)':
+            #                         ['1', '1.A', '1.A.1', '1.A.2', '1.A.3', '1.A.4',
+            #                          '2', '2.A', '5', '14423', '14424',
+            #                          '14637', '4', '4.A', '4.B', '4.D',
+            #                          '6', '6.A', '6.B', '15163', '24540',
+            #                          ],
+            #                     'time': ['1997', '2000', '2001', '2002', '2003', '2004',
+            #                              '2005', '2006', '2007', '2008', '2009',
+            #                              '2010'],
+            #                     },
+            #         },
+            #     },
+            # },
         },
-    }, # TODO: downscaling using external key instead of 1997
+    }, # TODO: downscaling using external key
     # BRN 2010 only (though with full sectors)
     # BTN 1994, 2000, 2015. patchy coverage but no downscaling needed / possible
     # BWA 1994, 2000, 2015. inconsistent coverage
@@ -1974,7 +1976,7 @@ di_processing_templates = {
                     'category': ['4', '4.A', '4.B', '4.C', '4.E', '4.F',
                                  '15163', '24540'],
                     'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
-                    'time': ['1994'],
+                    'time': ['1990', '1994', '1997', '2000', '2004'],
                 },
             },
         },
