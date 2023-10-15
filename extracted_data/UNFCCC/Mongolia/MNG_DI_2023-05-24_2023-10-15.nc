@@ -1,0 +1,1 @@
+MNG_DI_6d45299b31cb8ece89bcb19df071c820_hash.nc
