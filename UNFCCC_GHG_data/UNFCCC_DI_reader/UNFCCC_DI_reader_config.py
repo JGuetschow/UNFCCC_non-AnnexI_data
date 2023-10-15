@@ -698,11 +698,11 @@ di_processing_templates = {
     'BLZ': {
         'DI2023-05-24': { # 1994, 2000, 2003, 2006, 2009 (energy sector missing in 200X)
             'remove_ts': {
-                'AG_2000': { # inconsistent with other data
+                'AG': { # inconsistent with other data
                     'category': ['4', '4.A', '4.B', '4.C', '4.D', '4.E', '4.F',
                                  '15163', '24540'],
                     'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
-                    'time': ['2000'],
+                    'time': ['1994', '2000'],
                 },
                 'waste_1994': { # inconsistent with other data
                     'category': ['6', '6.A', '6.B', '15163', '24540'],
@@ -1973,7 +1973,7 @@ di_processing_templates = {
             'remove_ts': {
                 'agri': { # inconsistent probably from two submissions with different
                     # methodology
-                    'category': ['4', '4.A', '4.B', '4.C', '4.E', '4.F',
+                    'category': ['4', '4.A', '4.B', '4.C', '4.D', '4.E', '4.F',
                                  '15163', '24540'],
                     'entities': ['CH4', 'N2O', f'KYOTOGHG ({gwp_to_use})'],
                     'time': ['1990', '1994', '1997', '2000', '2004'],
