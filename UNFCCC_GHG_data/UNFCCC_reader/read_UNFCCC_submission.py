@@ -10,7 +10,7 @@ from UNFCCC_GHG_data.helper import root_path, get_code_file
 # Find the right function and possible input and output files and
 # read the data using datalad run.
 parser = argparse.ArgumentParser()
-parser.add_argument('--country', help='Country name or UNFCCC_GHG_data')
+parser.add_argument('--country', help='Country name or code')
 parser.add_argument('--submission', help='Submission to read')
 
 args = parser.parse_args()

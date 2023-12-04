@@ -513,7 +513,7 @@ def get_country_code(
             except:
                 raise ValueError(
                     f"Country name {country_name} can not be mapped to "
-                    f"any country UNFCCC_GHG_data. Try using the ISO3 UNFCCC_GHG_data directly."
+                    f"any country code. Try using the ISO3 code directly."
                 )
             if len(country) > 1:
                 country_code = None

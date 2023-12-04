@@ -53,7 +53,7 @@ def read_DI_for_country_datalad(
             explicit=False,
         )
     except IncompleteResultsError as IRE:
-        print(f"IncompleteResultsError occured when running {cmd}: {IRE}")
+        print(f"IncompleteResultsError occurred when running {cmd}: {IRE}")
     except Exception as ex:
         print(f"Exception occurred when running {cmd}")
         print(ex.message)

@@ -180,7 +180,7 @@ read_config = {
 
 # TODO: make individual task for non-UNFCCC submissions
 def task_read_unfccc_submission():
-    """ Read submission for a country (if UNFCCC_GHG_data exists) (not for CRF)"""
+    """ Read submission for a country (if code exists) (not for CRF)"""
     return {
         'actions': [f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_reader/read_UNFCCC_submission.py "
                     f"--country={read_config['country']} --submission={read_config['submission']}",
