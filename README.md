@@ -1,7 +1,86 @@
-# Collaborative UNFCCC non-AnnexI dataset
+# Country greenhouse gas data submitted to the UNFCCC
 This repository aims to organize a collective effort to bring GHG emissions and related data submitted by developing countries (non-AnnexI) to the UNFCCC into a standardized machine readable format. We focus on data not available through the [UNFCCC DI interface](https://di.unfccc.int/) which is mostly data submitted in IPCC 2006 categories.
 
-The code is based on [national-inventory-submissions](https://github.com/openclimatedata/national-inventory-submisions)
+<!--- sec-begin-description -->
+
+Reading country greenhouse gas data submitted to the United Nations Framework Convention on Climate Change (UNFCCC)in different submissions and formats and providing it in a standadized nc and csv format compatible with primap2. Data are read using different methods from APIs, xlsx and csv files as well as pdf files.
+
+
+
+[![CI](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/ci.yaml)
+[![Coverage](https://codecov.io/gh/climate-resource/UNFCCC_non-AnnexI_data/branch/main/graph/badge.svg)](https://codecov.io/gh/climate-resource/UNFCCC_non-AnnexI_data)
+[![Docs](https://readthedocs.org/projects/unfccc-ghg-data/badge/?version=latest)](https://unfccc-ghg-data.readthedocs.io)
+
+**PyPI :**
+[![PyPI](https://img.shields.io/pypi/v/unfccc-ghg-data.svg)](https://pypi.org/project/unfccc-ghg-data/)
+[![PyPI: Supported Python versions](https://img.shields.io/pypi/pyversions/unfccc-ghg-data.svg)](https://pypi.org/project/unfccc-ghg-data/)
+[![PyPI install](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/install.yaml/badge.svg?branch=main)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/install.yaml)
+
+**Other info :**
+[![License](https://img.shields.io/github/license/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/blob/main/LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/commits/main)
+[![Contributors](https://img.shields.io/github/contributors/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/graphs/contributors)
+
+
+<!--- sec-end-description -->
+
+Full documentation can be found at:
+[unfccc-ghg-data.readthedocs.io](https://unfccc-ghg-data.readthedocs.io/en/latest/).
+We recommend reading the docs there because the internal documentation links
+don't render correctly on GitHub's viewer.
+
+## Installation
+
+<!--- sec-begin-installation -->
+
+Country greenhouse gas data submitted to the UNFCCC can be installed with conda or pip:
+
+```bash
+pip install unfccc-ghg-data
+conda install -c conda-forge unfccc-ghg-data
+```
+
+Additional dependencies can be installed using
+
+```bash
+# To add plotting dependencies
+pip install unfccc-ghg-data[plots]
+
+# If you are installing with conda, we recommend
+# installing the extras by hand because there is no stable
+# solution yet (issue here: https://github.com/conda/conda/issues/7502)
+```
+
+<!--- sec-end-installation -->
+
+### For developers
+
+<!--- sec-begin-installation-dev -->
+
+For development, we rely on [poetry](https://python-poetry.org) for all our
+dependency management. To get started, you will need to make sure that poetry
+is installed
+([instructions here](https://python-poetry.org/docs/#installing-with-the-official-installer),
+we found that pipx and pip worked better to install on a Mac).
+
+For all of work, we use our `Makefile`.
+You can read the instructions out and run the commands by hand if you wish,
+but we generally discourage this because it can be error prone.
+In order to create your environment, run `make virtual-environment`.
+
+If there are any issues, the messages from the `Makefile` should guide you
+through. If not, please raise an issue in the [issue tracker][issue_tracker].
+
+For the rest of our developer docs, please see [](development-reference).
+
+[issue_tracker]: https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/issues
+
+<!--- sec-end-installation-dev -->
+
+
+TODO: old README below. reorganize into proper docs.
+
+The code for downloading submissions is based on [national-inventory-submissions](https://github.com/openclimatedata/national-inventory-submisions)
 
 
 **The repository is currently under initial development so a lot of things are still subject to change.**

@@ -1,0 +1,18 @@
+# Changes here will be overwritten by Copier
+_commit: v0.3.0
+_src_path: ../../../helper_tools/copier-core-python-repository/
+email: mail@johannes-guetschow.de
+initial_setup: true
+name: Johannes Gütschow
+notebook_dependencies: false
+pandas_doctests: false
+plot_dependencies: true
+project_description_short: Reading country greenhouse gas data submitted to the United
+    Nations Framework Convention on Climate Change (UNFCCC)in different submissions
+    and formats and providing it in a standadized nc and csv format compatible with
+    primap2. Data are read using different methods from APIs, xlsx and csv files as
+    well as pdf files.
+project_name_human: Country greenhouse gas data submitted to the UNFCCC
+project_name_pip: unfccc-ghg-data
+project_name_python: unfccc_ghg_data
+project_url: https://github.com/JGuetschow/UNFCCC_non-AnnexI_data
