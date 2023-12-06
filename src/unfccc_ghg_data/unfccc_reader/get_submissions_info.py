@@ -4,10 +4,11 @@
 import json
 from pathlib import Path
 
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path, get_country_code, root_path
+from unfccc_ghg_data.helper import (downloaded_data_path, extracted_data_path,
+                                    get_country_code, root_path)
 
-code_path = root_path / "unfccc_ghg_data" / "unfccc_reader"
-
+code_path = root_path / "src" / "unfccc_ghg_data" / "unfccc_reader"
+# TODO: change this to use the code path stored in the helper module
 
 def get_possible_inputs(
         country_name: str,

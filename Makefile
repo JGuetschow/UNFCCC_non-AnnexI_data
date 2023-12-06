@@ -21,6 +21,10 @@ export PRINT_HELP_PYSCRIPT
 help:  ## print short description of each target
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
+.PHONY set_env:
+set_env:  ## set the environment variable
+    export UNFCCC_GHG_ROOT_PATH = .
+
 .PHONY: checks
 checks:  ## run all the linting checks of the codebase
 	@echo "=== pre-commit ==="; poetry run pre-commit run --all-files || echo "--- pre-commit failed ---" >&2; \

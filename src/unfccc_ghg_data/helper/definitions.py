@@ -15,7 +15,7 @@ def get_root_path() -> Path:
     return root_path
 
 root_path = get_root_path()
-code_path = root_path / "unfccc_ghg_data"
+code_path = root_path / "src" / "unfccc_ghg_data"
 log_path = root_path / "log"
 extracted_data_path = root_path / "extracted_data"
 extracted_data_path_UNFCCC = extracted_data_path / "UNFCCC"

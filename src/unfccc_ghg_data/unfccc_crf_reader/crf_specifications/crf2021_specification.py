@@ -1,38 +1,35 @@
-"""CRF2021 specification.
+"""
+CRF2021 specification
+
 Currently not all tables are included. Extend if you need all country
 specific items in categories 2, 3.H-G, 4
 
-tables included:
-* Energy
-    'Table1s1', Table1s2',
-    'Table1.A(a)s1', 'Table1.A(a)s2', 'Table1.A(a)s3', 'Table1.A(a)s4',
-    'Table1.B.1', 'Table1.B.2', 'Table1.C', 'Table1.D',
-* Industrial processes
-    'Table2(I)s1', 'Table2(I)s2',
-    'Table2(II)',
-* Agriculture
-    'Table3s1', 'Table3s2',
-    'Table3.C', 'Table3.D', 'Table3.E',
-* LULUCF
-    'Table4',
-* Waste
-    'Table5', 'Table5.A', 'Table5.B', 'Table5.C', 'Table5.D'
+Tables included:
 
-missing tables are:
-* Energy
-    'Table1.D'
-* Industrial processes
-    'Table2(I).A-Hs1', 'Table2(I).A-Hs2',
-    'Table2(II)B-Hs1', 'Table2(II)B-Hs2',
-* Agriculture
-    'Table3.As1', 'Table3.As2' (no additional emissions data)
-    'Table3.F', 'Table3.G-I',
-* LULUCF
-    All tables except Table4
-* Waste
-    All tables read
+* **Energy:** 'Table1s1', Table1s2',  'Table1.A(a)s1', 'Table1.A(a)s2',
+  'Table1.A(a)s3', 'Table1.A(a)s4', 'Table1.B.1', 'Table1.B.2', 'Table1.C'
+* **Industrial processes:** 'Table2(I)s1', 'Table2(I)s2', 'Table2(II)',
+* **Agriculture:** 'Table3s1', 'Table3s2', 'Table3.C', 'Table3.D', 'Table3.E',
+* **LULUCF:** 'Table4',
+* **Waste:** 'Table5', 'Table5.A', 'Table5.B', 'Table5.C', 'Table5.D'
+* **Summary:** 'Summary1.As1', 'Summary1.As2', 'Summary1.As3',
 
-TODO:
+Missing tables are:
+
+* **Energy:** 'Table1.A(b)', 'Table1.A(c)', 'Table1.A(d)', 'Table1.D'
+* **Industrial processes:** 'Table2(I).A-Hs1', 'Table2(I).A-Hs2', 'Table2(II)B-Hs1',
+  'Table2(II)B-Hs2',
+* **Agriculture:** 'Table3.As1', 'Table3.As2' (no additional emissions data),
+  'Table3.B(a)s1', 'Table3.B(a)s2', 'Table3.B(b)', 'Table3.F', 'Table3.G-I',
+* **LULUCF:** All tables except Table4
+* **Waste**: All tables read
+* **Summary:** 'Summary2', 'Summary3s1', 'Summary3s2',
+* **other:** 'Table6', 'Table7', 'Table8s1', 'Table8s2', 'Table8s3', 'Table8s4',
+  'Table9', 'Table10s1', 'Table10s2', 'Table10s3', 'Table10s4', 'Table10s5',
+  'Table10s6'
+
+## TODO:
+
 * Add missing tables
 * Add activity data
 

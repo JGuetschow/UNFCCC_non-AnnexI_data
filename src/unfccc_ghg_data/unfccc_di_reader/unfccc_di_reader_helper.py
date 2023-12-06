@@ -12,7 +12,7 @@ from unfccc_ghg_data.helper import (
     get_country_name,
     root_path,
 )
-from unfccc_ghg_data.UNFCCC_CRF_reader.UNFCCC_CRF_reader_core import find_latest_date
+from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_core import find_latest_date
 
 from .util import DI_date_format, regex_date
 

@@ -231,15 +231,14 @@ Activity data needed depends on use case. We have listed some use cases and thei
 
 * **PRIMAP-hist**: currently only emissions data is needed. In the future activity data and socioeconomic data might be needed as well. For sectors and gases we refer to the data description available on [zenodo](https://zenodo.org/record/5494497):
 * **FAOSTAT**: FOSTAT uses only data for the AFOLU sector (AFOLU = Agriculture, Forestry, and Other Land Use). However activity data is needed in addition to emissions data. The used sectors and variables are listed in the [FAO to UNFCCC sector mapping document](https://fenixservices.fao.org/faostat/static/documents/GT/Mapping_to_UNFCCC_IPCC.pdf)
-# About this dataset
 
-## General information
 
-This is a DataLad dataset (id: 4d062170-604c-4efd-afbf-5ce7f97e0e63).
+<!--- sec-begin-datalad -->
 
 ## DataLad datasets and how to use them
 
-This repository is a [DataLad](https://www.datalad.org/) dataset. It provides
+This repository is a [DataLad](https://www.datalad.org/) dataset
+(id: 4d062170-604c-4efd-afbf-5ce7f97e0e63). It provides
 fine-grained data access down to the level of individual files, and allows for
 tracking future updates. In order to use this repository for data retrieval,
 [DataLad](https://www.datalad.org/) is required. It is a free and open source
@@ -247,8 +246,10 @@ command line tool, available for all major operating systems, and builds up on
 Git and [git-annex](https://git-annex.branchable.com/) to allow sharing,
 synchronizing, and version controlling collections of large files.
 
-More information on how to install DataLad and [how to install](http://handbook.datalad.org/en/latest/intro/installation.html)
-it can be found in the [DataLad Handbook](https://handbook.datalad.org/en/latest/index.html).
+More information on how to install DataLad and
+[how to install](http://handbook.datalad.org/en/latest/intro/installation.html)
+it can be found in the
+[DataLad Handbook](https://handbook.datalad.org/en/latest/index.html).
 
 ### Get the dataset
 
@@ -306,3 +307,6 @@ DataLad datasets contain their history in the ``git log``.  By running ``git
 log`` (or a tool that displays Git history) in the dataset or on specific
 files, you can find out what has been done to the dataset or to individual
 files by whom, and when.
+
+<!--- sec-end-datalad -->
+

@@ -88,6 +88,9 @@ def read_UNFCCC_DI_for_country_df(
     including all categories, gases, measures, and classifications
     Filtering is done later on conversion to PRIMAP2 format
 
+
+
+
     Parameters
     ----------
     country_code: str
@@ -97,15 +100,18 @@ def read_UNFCCC_DI_for_country_df(
         define which categories to read including filters on classification, measure,
         gases
 
-        cat_groups = {
-            "4.A  Enteric Fermentation": { #4.A  Enteric Fermentation[14577]
-                "measure": [
-                    'Net emissions/removals',
-                    'Total population',
-                ],
-                "gases": ["CH4"],
-            },
-        }
+        .. code-block:: python
+
+            cat_groups = {
+                "4.A  Enteric Fermentation": { #4.A  Enteric Fermentation[14577]
+                    "measure": [
+                        'Net emissions/removals',
+                        'Total population',
+                    ],
+                    "gases": ["CH4"],
+                },
+            }
+
 
     Returns
     -------
@@ -270,15 +276,17 @@ def read_UNFCCC_DI_for_country_df_zenodo(
         define which categories to read including filters on classification, measure,
         gases
 
-        cat_groups = {
-            "4.A  Enteric Fermentation": { #4.A  Enteric Fermentation[14577]
-                "measure": [
-                    'Net emissions/removals',
-                    'Total population',
-                ],
-                "gases": ["CH4"],
-            },
-        }
+        .. code-block:: python
+
+            cat_groups = {
+                "4.A  Enteric Fermentation": { #4.A  Enteric Fermentation[14577]
+                    "measure": [
+                        'Net emissions/removals',
+                        'Total population',
+                    ],
+                    "gases": ["CH4"],
+                },
+            }
 
     Returns
     -------

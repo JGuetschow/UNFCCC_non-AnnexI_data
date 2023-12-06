@@ -83,7 +83,7 @@ def task_download_bur():
         # before download
         'actions': ['datalad run -m "Download BUR submissions" '
                     '-i downloaded_data/UNFCCC/submissions-bur.csv '
-                    'python src/unfccc_ghg_data/unfccc_downloader/download_non-annexI.py --category=BUR',
+                    'python src/unfccc_ghg_data/unfccc_downloader/download_nonannexI.py --category=BUR',
                     f"python src/unfccc_ghg_data/helper/folder_mapping.py "
                     f"--folder=downloaded_data/UNFCCC"
                     ],
@@ -114,7 +114,7 @@ def task_download_nc():
         # before download
         'actions': ['datalad run -m "Download NC submissions" '
                     '-i downloaded_data/UNFCCC/submissions-nc.csv '
-                    'python src/unfccc_ghg_data/unfccc_downloader/download_non-annexI.py --category=NC',
+                    'python src/unfccc_ghg_data/unfccc_downloader/download_nonannexI.py --category=NC',
                     f"python src/unfccc_ghg_data/helper/folder_mapping.py "
                     f"--folder=downloaded_data/UNFCCC"
                     ],

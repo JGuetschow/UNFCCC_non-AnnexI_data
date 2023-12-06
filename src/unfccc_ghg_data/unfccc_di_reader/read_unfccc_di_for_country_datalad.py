@@ -6,12 +6,13 @@ not in the venv.
 
 import argparse
 
-from unfccc_ghg_data.UNFCCC_DI_reader import read_DI_for_country_datalad
+from unfccc_ghg_data.unfccc_di_reader import read_DI_for_country_datalad
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--country', help='Country name or code')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--country', help='Country name or code')
 
-args = parser.parse_args()
-country = args.country
+    args = parser.parse_args()
+    country = args.country
 
-read_DI_for_country_datalad(country)
+    read_DI_for_country_datalad(country)

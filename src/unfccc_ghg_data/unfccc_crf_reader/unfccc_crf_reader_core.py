@@ -204,6 +204,7 @@ def read_crf_table(
     -------
     _______
         Tuple[pd.DataFrame, List[List], List[List]]:
+
         * First return parameter is the data as a pandas DataFrame in long format
         * Second return parameter is a list of unknown categories / row headers
         * Third return parameter holds information on data found in the last read row.
@@ -328,6 +329,7 @@ def read_crf_table_from_file(
     -------
     _______
         Tuple[pd.DataFrame, List[List], List[List]]:
+
         * First return parameter is the data as a pandas DataFrame in long format
         * Second return parameter is a list of unknown categories / row headers
         * Third return parameter holds information on data found in the last read row.
@@ -598,7 +600,6 @@ def get_crf_files(
 
     Parameters
     ----------
-    __________
 
     country_codes: str or list[str]
         ISO 3-letter country code or list of country codes
@@ -619,7 +620,6 @@ def get_crf_files(
 
     Returns
     -------
-    _______
         List[Path]: list of Path objects for the files
     """
     if isinstance(country_codes, str):
@@ -707,20 +707,19 @@ def get_info_from_crf_filename(
 
     Parameters
     ----------
-    __________
 
     filename: str
         The file to analyze (without path)
 
     Returns
     -------
-    _______
-    dict with fields:
-        party: the party that submitted the data (3 letter code)
-        submission_year: year of submission
-        data_year: year in which the emissions took place
-        date: date of the submission
-        extra: rest of the file name
+    dict with fields
+        * party: the party that submitted the data (3 letter code)
+        * submission_year: year of submission
+        * data_year: year in which the emissions took place
+        * date: date of the submission
+        * extra: rest of the file name
+
     """
     filename = os.path.splitext(filename)[0]
     name_parts = filename.split("_")
@@ -753,7 +752,6 @@ def filter_filenames(
 
     Parameters
     ----------
-    __________
     files_to_filter: List[Path]
         List with pathlib.Path objects for the filenames to filter
 
@@ -802,7 +800,6 @@ def check_crf_file_info(
 
     Parameters
     ----------
-    __________
     file_info: Dict
         the file info dict of a CRF xlsx file as returned by
         `get_info_from_crf_filename`
@@ -813,7 +810,6 @@ def check_crf_file_info(
 
     Returns
     -------
-    _______
         bool: `True` if the file info matches the filter and `False` if not
 
     """
@@ -854,7 +850,6 @@ def create_category_tree(
 
     Parameters
     ----------
-    __________
 
     specification: List[List]
         The `sector_mapping` dict of a table specification
@@ -956,7 +951,6 @@ def filter_category(
 
     Parameters
     ----------
-    __________
         mapping: List
             mapping for a single category
         country: str
@@ -964,7 +958,6 @@ def filter_category(
 
     Returns
     -------
-    _______
         List: updated mapping
 
     """
@@ -1000,7 +993,6 @@ def get_latest_date_for_country(
 
     Parameters
     ----------
-    __________
     country: str
         3-letter country code
 
@@ -1009,7 +1001,6 @@ def get_latest_date_for_country(
 
     Returns
     -------
-    _______
         str: string with date
     """
     with open(downloaded_data_path_UNFCCC / "folder_mapping.json") as mapping_file:
@@ -1047,7 +1038,6 @@ def get_submission_dates(
 
     Parameters
     ----------
-    __________
     folder: Path
         Folder to analyze
 
@@ -1056,7 +1046,6 @@ def get_submission_dates(
 
     Returns
     -------
-    _______
         List[str]:
             List of dates as str
     """
@@ -1084,7 +1073,6 @@ def get_submission_parties(
 
     Parameters
     ----------
-    __________
     folder: Path
         Folder to analyze
 
@@ -1093,7 +1081,6 @@ def get_submission_parties(
 
     Returns
     -------
-    _______
         List[str]:
             List of parties as str
     """
@@ -1122,13 +1109,11 @@ def find_latest_date(
 
     Parameters
     ----------
-    __________
     dates: List[str]
         List of dates
 
     Returns
     -------
-    _______
         str: latest date
     """
     if len(dates) > 0:
