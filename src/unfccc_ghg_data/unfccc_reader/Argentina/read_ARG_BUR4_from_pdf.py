@@ -142,7 +142,7 @@ if __name__ == "__main__":
         },
         "unit": "PRIMAP1",
         "orig_cat_name": {
-            "1A3di Navegación marítima y fluvial internacional": "Navegación marítima y fluvial internacional",
+            "1A3di Navegación marítima y fluvial internacional": "Navegación marítima y fluvial internacional", # noqa: E501
         },
     }
 

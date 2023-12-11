@@ -350,46 +350,26 @@ table_defs = {
 }
 
 cat_names_fix = {
-    "Industrias manufactureras y de la 1A2 construcción":
-        "1A2 Industrias manufactureras y de la construcción",
-    "Emisiones fugitivas provenientes de la fabricación 1B de combustibles":
-        "1B Emisiones fugitivas provenientes de la fabricación de combustibles",
-    "Emisiones fugitivas provenientes de la 1B fabricación de combustibles":
-        "1B Emisiones fugitivas provenientes de la fabricación de combustibles",
-    "Emisiones fugitivas provenientes de la fabricación de 1B combustibles":
-        "1B Emisiones fugitivas provenientes de la fabricación de combustibles",
-    "Productos no energéticos de combustibles y de uso 2D de solventes":
-        "2D Productos no energéticos de combustibles y de uso de solventes",
-    "Productos no energéticos de combustibles y de 2D uso de solventes":
-        "2D Productos no energéticos de combustibles y de uso de solventes",
-    "Uso de productos sustitutos de las sustancias que 2F agotan la capa de ozono":
-        "2F Uso de productos sustitutos de las sustancias que agotan la capa de ozono",
-    "Uso de productos sustitutos de las sustancias 2F que agotan la capa de ozono":
-        "2F Uso de productos sustitutos de las sustancias que agotan la capa de ozono",
-    "Fuentes agregadas y fuentes de emisión no CO2 de 3C la tierra":
-        "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra",
-    "Fuentes agregadas y fuentes de emision no CO2 3C de la tierra":
-        "3C Fuentes agregadas y fuentes de emision no CO2 de la tierra",
-    "Fuentes agregadas y fuentes de emisión no CO2 3C de la tierra":
-        "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra",
-    "Fuentes agregadas y fuentes de emisión no 3C CO2 de la tierra":
-        "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra",
-    "Fuentes agregadas y fuentes de emisión no CO2 de la 3C tierra":
-        "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra",
-    "Emisiones directas de N2O en suelos 3C4 gestionados":
-        "3C4 Emisiones directas de N2O en suelos gestionados",
-    "Emisiones indirectas de N2O en suelos 3C5 gestionados":
-        "3C5 Emisiones indirectas de N2O en suelos gestionados",
-    "Emisiones indirectas de N2O por manejo del 3C6 estiércol":
-        "3C6 Emisiones indirectas de N2O por manejo del estiércol",
-    "Emisiones indirectas de N2O por manejo 3C6 del estiércol":
-        "3C6 Emisiones indirectas de N2O por manejo del estiércol",
-    "Emisiones indirectas de N2O por 3C6 manejo del estiércol":
-        "3C6 Emisiones indirectas de N2O por manejo del estiércol",
-    "USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA Y 4 SILVICULTURA":
-        "4 USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA Y SILVICULTURA",
-    "USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA 4 Y SILVICULTURA":
-        "4 USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA Y SILVICULTURA",
+    "Industrias manufactureras y de la 1A2 construcción": "1A2 Industrias manufactureras y de la construcción",  # noqa: E501
+    "Emisiones fugitivas provenientes de la fabricación 1B de combustibles": "1B Emisiones fugitivas provenientes de la fabricación de combustibles", # noqa: E501
+    "Emisiones fugitivas provenientes de la 1B fabricación de combustibles": "1B Emisiones fugitivas provenientes de la fabricación de combustibles", # noqa: E501
+    "Emisiones fugitivas provenientes de la fabricación de 1B combustibles": "1B Emisiones fugitivas provenientes de la fabricación de combustibles", # noqa: E501
+    "Productos no energéticos de combustibles y de uso 2D de solventes": "2D Productos no energéticos de combustibles y de uso de solventes", # noqa: E501
+    "Productos no energéticos de combustibles y de 2D uso de solventes": "2D Productos no energéticos de combustibles y de uso de solventes", # noqa: E501
+    "Uso de productos sustitutos de las sustancias que 2F agotan la capa de ozono": "2F Uso de productos sustitutos de las sustancias que agotan la capa de ozono", # noqa: E501
+    "Uso de productos sustitutos de las sustancias 2F que agotan la capa de ozono": "2F Uso de productos sustitutos de las sustancias que agotan la capa de ozono", # noqa: E501
+    "Fuentes agregadas y fuentes de emisión no CO2 de 3C la tierra": "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra", # noqa: E501
+    "Fuentes agregadas y fuentes de emision no CO2 3C de la tierra": "3C Fuentes agregadas y fuentes de emision no CO2 de la tierra", # noqa: E501
+    "Fuentes agregadas y fuentes de emisión no CO2 3C de la tierra": "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra", # noqa: E501
+    "Fuentes agregadas y fuentes de emisión no 3C CO2 de la tierra": "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra", # noqa: E501
+    "Fuentes agregadas y fuentes de emisión no CO2 de la 3C tierra": "3C Fuentes agregadas y fuentes de emisión no CO2 de la tierra", # noqa: E501
+    "Emisiones directas de N2O en suelos 3C4 gestionados": "3C4 Emisiones directas de N2O en suelos gestionados", # noqa: E501
+    "Emisiones indirectas de N2O en suelos 3C5 gestionados": "3C5 Emisiones indirectas de N2O en suelos gestionados", # noqa: E501
+    "Emisiones indirectas de N2O por manejo del 3C6 estiércol": "3C6 Emisiones indirectas de N2O por manejo del estiércol", # noqa: E501
+    "Emisiones indirectas de N2O por manejo 3C6 del estiércol": "3C6 Emisiones indirectas de N2O por manejo del estiércol", # noqa: E501
+    "Emisiones indirectas de N2O por 3C6 manejo del estiércol": "3C6 Emisiones indirectas de N2O por manejo del estiércol", # noqa: E501
+    "USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA Y 4 SILVICULTURA": "4 USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA Y SILVICULTURA", # noqa: E501
+    "USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA 4 Y SILVICULTURA": "4 USO DE LA TIERRA, CAMBIO DE USO DE LA TIERRA Y SILVICULTURA", # noqa: E501
 }
 
 values_replacement = {
