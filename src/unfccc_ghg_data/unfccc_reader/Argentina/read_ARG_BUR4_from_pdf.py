@@ -2,16 +2,22 @@
 Read Argentina's BUR4 from pdf
 
 This script reads data from Argentina's fourth Binnial Update Report (BUR4).
- Data is read from the pdf file using camelot"""
+Data is read from the pdf file using camelot
+"""
 
+import os
 import sys
 
 import camelot
 import primap2 as pm2
 from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
 
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-from unfccc_ghg_data.helper import gas_baskets, process_data_for_country
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    gas_baskets,
+    process_data_for_country,
+)
 
 # ###
 # configuration
@@ -21,53 +27,49 @@ from unfccc_ghg_data.helper import gas_baskets, process_data_for_country
 #  PRIMAP2 version
 if __name__ == "__main__":
     # folders and files
-    input_folder = downloaded_data_path / 'UNFCCC' / 'Argentina' / \
-                   'BUR4'
-    output_folder = extracted_data_path / 'UNFCCC' / 'Argentina'
+    input_folder = downloaded_data_path / "UNFCCC" / "Argentina" / "BUR4"
+    output_folder = extracted_data_path / "UNFCCC" / "Argentina"
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = 'ARG_BUR4_2022_'
+    output_filename = "ARG_BUR4_2022_"
 
-    pdf_file = '4to_Informe_Bienal_de_la_Rep%C3%BAblica_Argentina.pdf'
+    pdf_file = "4to_Informe_Bienal_de_la_Rep%C3%BAblica_Argentina.pdf"
 
-    # definitions part 1: reading data from pdf and preprocessing for conversion to PRIMAP2 format
+    # definitions part 1: reading data from pdf and preprocessing for conversion to
+    # PRIMAP2 format
+
     # part 1.1 KyotoGHG, CO2, CH4, N2O tables
     #
     pages_to_read = range(232, 244)
     data_start_keyword = "Id#"
     data_end_keyword = "Fuente: Elaboración propia"
-    index_cols = ['Id#', 'Nombre']
-    col_rename = {
-        index_cols[0]: "category",
-        index_cols[1]: "orig_cat_name"
-    }
-    metadata = {
-        "entity": [0, 1],
-        "unit": [0, 2]
-    }
+    index_cols = ["Id#", "Nombre"]
+    col_rename = {index_cols[0]: "category", index_cols[1]: "orig_cat_name"}
+    metadata = {"entity": [0, 1], "unit": [0, 2]}
 
     rows_to_drop = [0]
 
     metadata_mapping = {
-        'unit': {
-            '(GgCO2e)': 'GgCO2e',
-            '(GgCO2)': 'Gg',
-            '(GgN2O)': 'Gg',
-            '(GgCH4)': 'Gg',
-            '(GgGas)': 'Gg',
+        "unit": {
+            "(GgCO2e)": "GgCO2e",
+            "(GgCO2)": "Gg",
+            "(GgN2O)": "Gg",
+            "(GgCH4)": "Gg",
+            "(GgGas)": "Gg",
         }
     }
 
     # part 1.2: fgases table
-    # the f-gases table is in wide format with no sectoral resolution and gases as row header
+    # the f-gases table is in wide format with no sectoral resolution and gases as row
+    # header
     pages_to_read_fgases = range(244, 247)
     data_start_keyword_fgases = "Gas"
-    index_cols_fgases = ['Gas']
+    index_cols_fgases = ["Gas"]
     cols_to_drop_fgases = ["Nombre"]
     metadata_fgases = {
         "unit": [0, 2],
-        "category": '2',
+        "category": "2",
         "orig_cat_name": "PROCESOS INDUSTRIALES Y USO DE PRODUCTOS",
     }
     col_rename_fgases = {
@@ -79,14 +81,14 @@ if __name__ == "__main__":
     cats_remove = ["Information Items", "Memo Items (3)"]
     # manual category codes
     cat_codes_manual = {  # conversion to PRIMAP1 format
-        '1A6': 'MBIO',
-        '1A3di': 'MBKM',
-        '1A3ai': 'MBKA',
-        '1A3di Navegación marítima y fluvial internacional': 'MBKM',
-        'S/N': 'MMULTIOP',
+        "1A6": "MBIO",
+        "1A3di": "MBKM",
+        "1A3ai": "MBKA",
+        "1A3di Navegación marítima y fluvial internacional": "MBKM",
+        "S/N": "MMULTIOP",
     }
 
-    cat_code_regexp = r'(?P<code>^[A-Z0-9]{1,8}).*'
+    cat_code_regexp = r"(?P<code>^[A-Z0-9]{1,8}).*"
 
     time_format = "%Y"
 
@@ -116,32 +118,32 @@ if __name__ == "__main__":
     coords_value_mapping = {
         #    "category": "PRIMAP1",
         "entity": {
-            'HFC-23': 'HFC23',
-            'HFC-32': 'HFC32',
-            'HFC-41': 'HFC41',
-            'HFC-43-10mee': 'HFC4310mee',
-            'HFC-125': 'HFC125',
-            'HFC-134': 'HFC134',
-            'HFC-134a': 'HFC134a',
-            'HFC-152a': 'HFC152a',
-            'HFC-143': 'HFC143',
-            'HFC-143a': 'HFC143a',
-            'HFC-227ea': 'HFC227ea',
-            'HFC-236fa': 'HFC236fa',
-            'HFC-245ca': 'HFC245ca',
-            'HFC-365mfc': 'HFC365mfc',
-            'HFC-245fa': 'HFC245fa',
-            'PFC-143 (CF4)': 'CF4',
-            'PFC-116 (C2F6)': 'C2F6',
-            'PFC-218 (C3F8)': 'C3F8',
-            'PFC-31-10 (C4F10)': 'C4F10',
-            'c-C4F8': 'cC4F8',
-            'PFC-51-144 (C6F14)': 'C6F14',
+            "HFC-23": "HFC23",
+            "HFC-32": "HFC32",
+            "HFC-41": "HFC41",
+            "HFC-43-10mee": "HFC4310mee",
+            "HFC-125": "HFC125",
+            "HFC-134": "HFC134",
+            "HFC-134a": "HFC134a",
+            "HFC-152a": "HFC152a",
+            "HFC-143": "HFC143",
+            "HFC-143a": "HFC143a",
+            "HFC-227ea": "HFC227ea",
+            "HFC-236fa": "HFC236fa",
+            "HFC-245ca": "HFC245ca",
+            "HFC-365mfc": "HFC365mfc",
+            "HFC-245fa": "HFC245fa",
+            "PFC-143 (CF4)": "CF4",
+            "PFC-116 (C2F6)": "C2F6",
+            "PFC-218 (C3F8)": "C3F8",
+            "PFC-31-10 (C4F10)": "C4F10",
+            "c-C4F8": "cC4F8",
+            "PFC-51-144 (C6F14)": "C6F14",
         },
         "unit": "PRIMAP1",
         "orig_cat_name": {
             "1A3di Navegación marítima y fluvial internacional": "Navegación marítima y fluvial internacional",
-        }
+        },
     }
 
     coords_value_filling = {
@@ -172,7 +174,8 @@ if __name__ == "__main__":
         "references": "https://unfccc.int/documents/419772",
         "rights": "XXXX",
         "contact": "mail@johannes-guetschow.de",
-        "title": "Cuarto Informe Bienal de Actualización de la República Argentina a la Convención Marco delas Naciones Unidas Sobre el Cambio Climático",
+        "title": "Cuarto Informe Bienal de Actualización de la República Argentina a "
+        "la Convención Marco delas Naciones Unidas Sobre el Cambio Climático",
         "comment": "Read fom pdf file by Johannes Gütschow",
         "institution": "United Nations Framework Convention on Climate Change (UNFCCC)",
     }
@@ -192,8 +195,9 @@ if __name__ == "__main__":
     data_all = None
     for page in pages_to_read:
         # read current page
-        tables = camelot.read_pdf(str(input_folder / pdf_file), pages=str(page),
-                                  flavor='stream')
+        tables = camelot.read_pdf(
+            str(input_folder / pdf_file), pages=str(page), flavor="stream"
+        )
         df_current = tables[0].df
         rows_to_drop = []
         for index, data in df_current.iterrows():
@@ -212,16 +216,18 @@ if __name__ == "__main__":
         df_current = df_current.drop(rows_to_drop)
         idx_header = df_current.index[df_current[0] == index_cols[0]].tolist()
         df_current = df_current.rename(
-            dict(zip(df_current.columns, list(df_current.loc[idx_header[0]]))), axis=1)
+            dict(zip(df_current.columns, list(df_current.loc[idx_header[0]]))), axis=1
+        )
         df_current = df_current.drop(idx_header)
 
         # for sheet "Aggregate GHGs" fill entity cell
         if page in range(232, 235):
             df_current.iloc[
-                metadata["entity"][0], metadata["entity"][1]] = "KYOTOGHG (SARGWP100)"
+                metadata["entity"][0], metadata["entity"][1]
+            ] = "KYOTOGHG (SARGWP100)"
         # drop all rows where the index cols (category code and name) are both NaN
         # as without one of them there is no category information
-        df_current.dropna(axis=0, how='all', subset=index_cols, inplace=True)
+        df_current = df_current.dropna(axis=0, how="all", subset=index_cols)
         # set index. necessary for the stack operation in the conversion to long format
         # df_current = df_current.set_index(index_cols)
         # add columns
@@ -242,21 +248,27 @@ if __name__ == "__main__":
         df_current = df_current.drop(df_current.index[0])
 
         # fix number format
-        df_current = df_current.apply(lambda x: x.str.replace('.', '', regex=False), axis=1)
-        df_current = df_current.apply(lambda x: x.str.replace(',', '.', regex=False),
-                                      axis=1)
+        df_current = df_current.apply(
+            lambda x: x.str.replace(".", "", regex=False), axis=1
+        )
+        df_current = df_current.apply(
+            lambda x: x.str.replace(",", ".", regex=False), axis=1
+        )
 
-        df_current.rename(columns=col_rename, inplace=True)
+        df_current = df_current.rename(columns=col_rename)
 
         # reindex
-        df_current.reset_index(inplace=True, drop=True)
+        df_current = df_current.reset_index(drop=True)
 
         df_current["category"] = df_current["category"].replace(cat_codes_manual)
+
         # then the regex replacements
-        def repl(m):
-            return convert_ipcc_code_primap_to_primap2('IPC' + m.group('code'))
-        df_current["category"] = df_current["category"].str.replace(cat_code_regexp, repl,
-                                                                    regex=True)
+        def repl(m):  # noqa: D103
+            return convert_ipcc_code_primap_to_primap2("IPC" + m.group("code"))
+
+        df_current["category"] = df_current["category"].str.replace(
+            cat_code_regexp, repl, regex=True
+        )
 
         df_current = df_current.reset_index(drop=True)
 
@@ -274,7 +286,7 @@ if __name__ == "__main__":
             coords_value_filling=coords_value_filling,
             filter_remove=filter_remove,
             filter_keep=filter_keep,
-            meta_data=meta_data
+            meta_data=meta_data,
         )
 
         # convert to PRIMAP2 native format
@@ -289,8 +301,9 @@ if __name__ == "__main__":
     # read fgases
     for page in pages_to_read_fgases:
         # read current page
-        tables = camelot.read_pdf(str(input_folder / pdf_file), pages=str(page),
-                                  flavor='stream')
+        tables = camelot.read_pdf(
+            str(input_folder / pdf_file), pages=str(page), flavor="stream"
+        )
         df_current = tables[0].df
         rows_to_drop = []
         for index, data in df_current.iterrows():
@@ -309,11 +322,12 @@ if __name__ == "__main__":
         df_current = df_current.drop(rows_to_drop)
         idx_header = df_current.index[df_current[0] == index_cols_fgases[0]].tolist()
         df_current = df_current.rename(
-            dict(zip(df_current.columns, list(df_current.loc[idx_header[0]]))), axis=1)
+            dict(zip(df_current.columns, list(df_current.loc[idx_header[0]]))), axis=1
+        )
         df_current = df_current.drop(idx_header)
 
         # drop all rows where the index cols (category code
-        df_current.dropna(axis=0, how='all', subset=index_cols_fgases, inplace=True)
+        df_current = df_current.dropna(axis=0, how="all", subset=index_cols_fgases)
         # set index. necessary for the stack operation in the conversion to long format
         # df_current = df_current.set_index(index_cols)
         # add columns
@@ -324,7 +338,8 @@ if __name__ == "__main__":
                 value = metadata_fgases[col]
             else:
                 value = df_current.iloc[
-                    metadata_fgases[col][0], metadata_fgases[col][1] + inserted]
+                    metadata_fgases[col][0], metadata_fgases[col][1] + inserted
+                ]
                 if col in metadata_mapping.keys():
                     if value in metadata_mapping[col].keys():
                         value = metadata_mapping[col][value]
@@ -339,21 +354,27 @@ if __name__ == "__main__":
         df_current = df_current.drop(df_current.index[0])
 
         # fix number format
-        df_current = df_current.apply(lambda x: x.str.replace('.', '', regex=False), axis=1)
-        df_current = df_current.apply(lambda x: x.str.replace(',', '.', regex=False),
-                                      axis=1)
+        df_current = df_current.apply(
+            lambda x: x.str.replace(".", "", regex=False), axis=1
+        )
+        df_current = df_current.apply(
+            lambda x: x.str.replace(",", ".", regex=False), axis=1
+        )
 
-        df_current.rename(columns=col_rename_fgases, inplace=True)
+        df_current = df_current.rename(columns=col_rename_fgases)
 
         # reindex
-        df_current.reset_index(inplace=True, drop=True)
+        df_current = df_current.reset_index(drop=True)
 
         df_current["category"] = df_current["category"].replace(cat_codes_manual)
-        # then the regex repalcements
-        def repl(m):
-            return convert_ipcc_code_primap_to_primap2('IPC' + m.group('code'))
-        df_current["category"] = df_current["category"].str.replace(cat_code_regexp, repl,
-                                                                    regex=True)
+
+        # then the regex replacements
+        def repl(m):  # noqa: D103
+            return convert_ipcc_code_primap_to_primap2("IPC" + m.group("code"))
+
+        df_current["category"] = df_current["category"].str.replace(
+            cat_code_regexp, repl, regex=True
+        )
 
         df_current = df_current.reset_index(drop=True)
 
@@ -371,7 +392,7 @@ if __name__ == "__main__":
             coords_value_filling=coords_value_filling,
             filter_remove=filter_remove,
             filter_keep=filter_keep,
-            meta_data=meta_data
+            meta_data=meta_data,
         )
 
         # convert to PRIMAP2 native format
@@ -390,19 +411,17 @@ if __name__ == "__main__":
         processing_info_country=None,
     )
 
-
     # ###
     # save data to IF and native format
     # ###
 
     encoding = {var: compression for var in data_all.data_vars}
-    data_all.pr.to_netcdf(output_folder / (output_filename + coords_terminologies[
-        "category"] + ".nc"), encoding=encoding)
+    data_all.pr.to_netcdf(
+        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        encoding=encoding,
+    )
 
     data_if = data_all.pr.to_interchange_format()
-    pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
-
-
-
-
-
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]), data_if
+    )

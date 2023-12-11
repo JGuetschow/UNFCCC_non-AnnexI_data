@@ -19,21 +19,20 @@ from selenium.webdriver.firefox.options import Options
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
 from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
 
-
 if __name__ == "__main__":
     print("Fetching NC submissions ...")
 
     url = "https://unfccc.int/non-annex-I-NCs"
 
-    #print(url)
+    # print(url)
 
     # set options for headless mode
     profile_path = ".firefox"
     options = Options()
-    options.add_argument('-headless')
+    options.add_argument("-headless")
 
     # create profile for headless mode and automatic downloading
-    options.set_preference('profile', profile_path)
+    options.set_preference("profile", profile_path)
 
     # set up selenium driver
     driver = Firefox(options=options)
@@ -64,9 +63,7 @@ if __name__ == "__main__":
             if str(Path(href).parent).endswith("documents"):
                 targets.append({"title": title, "url": href})
 
-
     pattern = re.compile(r"NC ?\d")
-
 
     # Go through sub-pages.
     for target in targets:
@@ -79,7 +76,6 @@ if __name__ == "__main__":
             downloads = downloads + submission_info
         else:
             no_downloads.append({target["title"], url})
-
 
     if len(no_downloads) > 0:
         print("No downloads for ", no_downloads)

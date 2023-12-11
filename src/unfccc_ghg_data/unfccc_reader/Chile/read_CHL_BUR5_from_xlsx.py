@@ -1,12 +1,16 @@
-# this script reads data from Chile's 2020 national inventory which is underlying BUR4
-# Data is read from the xlsx file
+"""
+Read Chile's 2022 inventory from xlsx
+
+This script reads data from Chile's 2022 national inventory which is underlying BUR5.
+Data is read from the xlsx file
+"""
 
 import os
 import sys
 
 import pandas as pd
 import primap2 as pm2
-from .config_chl_bur4 import aggregate_cats, cat_mapping, filter_remove_IPCC2006
+from config_chl_bur4 import aggregate_cats, cat_mapping, filter_remove_IPCC2006
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
@@ -17,43 +21,50 @@ if __name__ == "__main__":
     # ###
 
     # folders and files
-    input_folder = downloaded_data_path / 'UNFCCC' / 'Chile' / 'BUR5'
-    output_folder = extracted_data_path / 'UNFCCC' / 'Chile'
+    input_folder = downloaded_data_path / "UNFCCC" / "Chile" / "BUR5"
+    output_folder = extracted_data_path / "UNFCCC" / "Chile"
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = 'CHL_BUR5_2022_'
+    output_filename = "CHL_BUR5_2022_"
 
-    inventory_file = '2022_GEI_CL.xlsx'
+    inventory_file = "2022_GEI_CL.xlsx"
     years_to_read = range(1990, 2020 + 1)
-    time_format='%Y'
+    time_format = "%Y"
 
     # configuration for conversion to PRIMAP2 data format
     unit_row = "header"
     unit_info = {
-        'regexp_entity': r'(.*)\s\(.*\)$',
-        'regexp_unit': r'.*\s\((.*)\)$',
-        'default_unit': 'kt',
-        'manual_repl_unit': {
-            'kt CO₂ eq': 'ktCO2eq',
-            'HFC (kt CO₂ eq)': 'ktCO2eq',
-            'PFC (kt CO₂ eq)': 'ktCO2eq',
-            'SF₆ (kt CO₂ eq)': 'ktCO2eq',
+        "regexp_entity": r"(.*)\s\(.*\)$",
+        "regexp_unit": r".*\s\((.*)\)$",
+        "default_unit": "kt",
+        "manual_repl_unit": {
+            "kt CO₂ eq": "ktCO2eq",
+            "HFC (kt CO₂ eq)": "ktCO2eq",
+            "PFC (kt CO₂ eq)": "ktCO2eq",
+            "SF₆ (kt CO₂ eq)": "ktCO2eq",
         },
-        'manual_repl_entity': {
-            'kt CO₂ eq': 'KYOTOGHG (AR4GWP100)',
-            'HFC (kt CO₂ eq)': 'HFCS (AR4GWP100)',
-            'PFC (kt CO₂ eq)': 'PFCS (AR4GWP100)',
-            'SF₆ (kt CO₂ eq)': 'SF6 (AR4GWP100)',
-        }
+        "manual_repl_entity": {
+            "kt CO₂ eq": "KYOTOGHG (AR4GWP100)",
+            "HFC (kt CO₂ eq)": "HFCS (AR4GWP100)",
+            "PFC (kt CO₂ eq)": "PFCS (AR4GWP100)",
+            "SF₆ (kt CO₂ eq)": "SF6 (AR4GWP100)",
+        },
     }
-    cols_to_drop = ['Unnamed: 14', 'Unnamed: 16', 'Código IPCC.1',
-                    'Categorías de fuente y sumidero de gases de efecto invernadero.1']
+    cols_to_drop = [
+        "Unnamed: 14",
+        "Unnamed: 16",
+        "Código IPCC.1",
+        "Categorías de fuente y sumidero de gases de efecto invernadero.1",
+    ]
     # columns for category code and original category name
-    index_cols = ['Código IPCC', 'Categorías de fuente y sumidero de gases de efecto invernadero']
+    index_cols = [
+        "Código IPCC",
+        "Categorías de fuente y sumidero de gases de efecto invernadero",
+    ]
 
     # operations on long format DF
-    cols_for_space_stripping = ['category', 'orig_cat_name', 'entity']
+    cols_for_space_stripping = ["category", "orig_cat_name", "entity"]
 
     time_format = "%Y"
 
@@ -83,7 +94,7 @@ if __name__ == "__main__":
         "source": "CHL-GHG-Inventory",
         "provenance": "measured",
         "area": "CHL",
-        "scenario": "BUR5"
+        "scenario": "BUR5",
     }
 
     coords_value_mapping = {
@@ -115,14 +126,14 @@ if __name__ == "__main__":
     }
 
     coords_value_filling = {
-        'category': {  # col to fill
-            'orig_cat_name': {  # col to fill from
-                'Todas las emisiones y las absorciones nacionales': '0',  # from value: to value
-                'Tanque internacional': 'M.BK',
-                'Aviación internacional': 'M.BK.A',
-                'Navegación internacional': 'M.BK.M',
-                'Operaciones multilaterales': 'M.MULTIOP',
-                'Emisiones de CO2 de la biomasa': 'M.BIO',
+        "category": {  # col to fill
+            "orig_cat_name": {  # col to fill from (from value: to value)
+                "Todas las emisiones y las absorciones nacionales": "0",
+                "Tanque internacional": "M.BK",
+                "Aviación internacional": "M.BK.A",
+                "Navegación internacional": "M.BK.M",
+                "Operaciones multilaterales": "M.MULTIOP",
+                "Emisiones de CO2 de la biomasa": "M.BIO",
             }
         }
     }
@@ -132,14 +143,19 @@ if __name__ == "__main__":
             "entity": ["Absorciones CO₂", "Emisiones CO₂"],
         },
         "f2": {
-            "orig_cat_name": ["Partidas informativas", "Todas las emisiones nacionales"],
+            "orig_cat_name": [
+                "Partidas informativas",
+                "Todas las emisiones nacionales",
+            ],
         },
     }
 
     filter_keep = {}
 
     meta_data = {
-        "references": "https://unfccc.int/documents/624735, https://snichile.mma.gob.cl/wp-content/uploads/2023/04/2022_GEI_CL.xlsx",
+        "references": "https://unfccc.int/documents/624735, "
+        "https://snichile.mma.gob.cl/wp-content/uploads/2023/04/"
+        "2022_GEI_CL.xlsx",
         "rights": "",
         "contact": "mail@johannes-guetschow.de.de",
         "title": "Chile: BUR5",
@@ -163,16 +179,24 @@ if __name__ == "__main__":
     for year in years_to_read:
         # read sheet for the year. Each sheet contains several tables,
         # we only read the upper row as the other tables are summary tables
-        df_current = pd.read_excel(input_folder / inventory_file, sheet_name=str(year), skiprows=2, nrows=442, engine="openpyxl")
+        df_current = pd.read_excel(
+            input_folder / inventory_file,
+            sheet_name=str(year),
+            skiprows=2,
+            nrows=442,
+            engine="openpyxl",
+        )
         # drop the columns which are empty and repetition of the metadata for the second block
-        df_current.drop(cols_to_drop, axis=1, inplace=True)
+        df_current = df_current.drop(cols_to_drop, axis=1)
         # drop all rows where the index cols (category code and name) are both NaN
         # as without one of them there is no category information
-        df_current.dropna(axis=0, how='all', subset=index_cols, inplace=True)
+        df_current = df_current.dropna(axis=0, how="all", subset=index_cols)
         # set multi-index. necessary for the stack operation in the conversion to long format
         df_current = df_current.set_index(index_cols)
         # add unit row using information from entity row and add to index
-        df_current = pm2.pm2io.nir_add_unit_information(df_current, unit_row=unit_row, **unit_info)
+        df_current = pm2.pm2io.nir_add_unit_information(
+            df_current, unit_row=unit_row, **unit_info
+        )
         # actual conversion to long format
         df_current = pm2.pm2io.nir_convert_df_to_long(df_current, year)
         # aggregate to one df
@@ -190,7 +214,7 @@ if __name__ == "__main__":
     for col in cols_for_space_stripping:
         df_all[col] = df_all[col].str.strip()
 
-    df_all["category"] = df_all["category"].str.rstrip('.')
+    df_all["category"] = df_all["category"].str.rstrip(".")
 
     data_if = pm2.pm2io.convert_long_dataframe_if(
         df_all,
@@ -206,8 +230,7 @@ if __name__ == "__main__":
         time_format=time_format,
     )
 
-
-    #conversion to PRIMAP2 native format
+    # conversion to PRIMAP2 native format
     data_pm2 = pm2.pm2io.from_interchange_format(data_if)
     # convert back to IF to have units in the fixed format
     data_if = data_pm2.pr.to_interchange_format()
@@ -215,11 +238,16 @@ if __name__ == "__main__":
     # ###
     # save data to IF and native format
     # ###
-    pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]), data_if
+    )
 
     data_pm2 = pm2.pm2io.from_interchange_format(data_if)
     encoding = {var: compression for var in data_pm2.data_vars}
-    data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
+    data_pm2.pr.to_netcdf(
+        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        encoding=encoding,
+    )
 
     # ###
     # conversion to ipcc 2006 categories
@@ -236,10 +264,10 @@ if __name__ == "__main__":
         filter_remove=filter_remove,
         filter_keep=filter_keep,
         meta_data=meta_data,
-        time_format=time_format
+        time_format=time_format,
     )
 
-    cat_label = 'category (' + coords_terminologies_2006["category"] + ')'
+    cat_label = "category (" + coords_terminologies_2006["category"] + ")"
     filter_data(data_if_2006, filter_remove=filter_remove_IPCC2006)
     data_if_2006 = data_if_2006.replace({cat_label: cat_mapping})
 
@@ -252,10 +280,10 @@ if __name__ == "__main__":
             print(f"Aggregating category {cat_to_agg}")
             df_combine = df_test.copy(deep=True)
 
-            time_format = '%Y'
+            time_format = "%Y"
             time_columns = [
                 col
-                for col in df_combine.columns.values
+                for col in df_combine.columns.to_numpy()
                 if matches_time_format(col, time_format)
             ]
 
@@ -263,8 +291,18 @@ if __name__ == "__main__":
                 df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
 
             df_combine = df_combine.groupby(
-                by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity', 'unit']).sum()
-            df_combine = df_combine.drop(columns=["category (IPCC2006_PRIMAP)", "orig_cat_name"])
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum()
+            df_combine = df_combine.drop(
+                columns=["category (IPCC2006_PRIMAP)", "orig_cat_name"]
+            )
 
             df_combine.insert(0, cat_label, cat_to_agg)
             df_combine.insert(1, "orig_cat_name", aggregate_cats[cat_to_agg]["name"])
@@ -275,12 +313,19 @@ if __name__ == "__main__":
         else:
             print(f"no data to aggregate category {cat_to_agg}")
 
-    #conversion to PRIMAP2 native format
+    # conversion to PRIMAP2 native format
     data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if_2006)
     # convert back to IF to have units in the fixed format
     data_if_2006 = data_pm2_2006.pr.to_interchange_format()
 
-    pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies_2006["category"]), data_if_2006)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies_2006["category"]),
+        data_if_2006,
+    )
 
     encoding = {var: compression for var in data_pm2_2006.data_vars}
-    data_pm2_2006.pr.to_netcdf(output_folder / (output_filename + coords_terminologies_2006["category"] + ".nc"), encoding=encoding)
+    data_pm2_2006.pr.to_netcdf(
+        output_folder
+        / (output_filename + coords_terminologies_2006["category"] + ".nc"),
+        encoding=encoding,
+    )

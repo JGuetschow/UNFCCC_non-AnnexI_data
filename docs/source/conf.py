@@ -4,16 +4,15 @@ Configuration file for the Sphinx documentation builder.
 For the full list of built-in configuration values, see the documentation:
 https://www.sphinx-doc.org/en/master/usage/configuration.html
 """
+import os
 from functools import wraps
+from pathlib import Path
 
 from sphinxcontrib_autodocgen import AutoDocGen
 
-import os
-from pathlib import Path
 os.environ["UNFCCC_GHG_ROOT_PATH"] = str(Path("..") / "..")
 
 import unfccc_ghg_data
-
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -58,7 +57,7 @@ extensions = [
     # math support
     "sphinx.ext.mathjax",
     # execute code
-    # "sphinx_exec_code",
+    "sphinx_exec_code",
 ]
 
 # general sphinx settings
@@ -144,10 +143,10 @@ nb_execution_show_tb = True
 nb_execution_timeout = 120
 nb_custom_formats = {".py": ["jupytext.reads", {"fmt": "py:percent"}]}
 
-# # exec-code config
-# exec_code_working_dir = Path('..') / '..'
-# exec_code_source_folders = [Path('..') / '..' / 'src' / 'unfccc_ghg_data']
-# exec_code_example_dir = '.'
+# exec-code config
+exec_code_working_dir = "."  # Path('..') / '..'
+exec_code_source_folders = [Path("..") / ".." / "src" / "unfccc_ghg_data"]
+exec_code_example_dir = "."
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

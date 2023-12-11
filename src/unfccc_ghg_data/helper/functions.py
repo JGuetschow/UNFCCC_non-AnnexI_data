@@ -1,4 +1,4 @@
-""" common functions for unfccc_ghg_data
+"""common functions for unfccc_ghg_data
 
 Functions used by the different readers and downloaders in the unfccc_ghg_data package
 """
@@ -74,8 +74,6 @@ def process_data_for_country(
     xr.Dataset: processed dataset
 
     """
-
-
     # 0: gather information
     countries = list(data_country.coords[data_country.attrs["area"]].values)
     if len(countries) > 1:
@@ -956,9 +954,7 @@ def get_code_file(
                     )
                 else:
                     if print_info:
-                        print(
-                            f"Found code file {file.relative_to(root_path)}"
-                        )
+                        print(f"Found code file {file.relative_to(root_path)}")
                 code_file_path = file
 
     if code_file_path is not None:
@@ -1011,8 +1007,10 @@ def fix_rows(
         new_row = new_row.str.replace("- ", "-")
         # replace spaces in numbers
         pat = r"^(?P<first>[0-9\.,]*)\s(?P<last>[0-9\.,]*)$"
+
         def repl(m):
             return f"{m.group('first')}{m.group('last')}"
+
         new_row = new_row.str.replace(pat, repl, regex=True)
         data.loc[indices_to_merge[0]] = new_row
         data = data.drop(indices_to_merge[1:])

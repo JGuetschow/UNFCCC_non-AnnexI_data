@@ -1,13 +1,23 @@
-# this script reads data from Morocco's BUR3
-# Data is read from pdf
+"""
+Read Morocco's BUR3 from pdf
 
+This script reads data from Morocco's BUR3
+Data are read from pdf using camelot
+
+"""
 import copy
 
 import camelot
 import pandas as pd
 import primap2 as pm2
-from .config_mar_bur3 import (aggregate_cats, cat_mapping, header_defs, remove_cats,
-                              table_defs, zero_cats)
+from config_mar_bur3 import (
+    aggregate_cats,
+    cat_mapping,
+    header_defs,
+    remove_cats,
+    table_defs,
+    zero_cats,
+)
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
@@ -16,11 +26,11 @@ if __name__ == "__main__":
     # ###
     # configuration
     # ###
-    input_folder = downloaded_data_path / 'UNFCCC' / 'Morocco' / 'BUR3'
-    output_folder = extracted_data_path / 'UNFCCC' / 'Morocco'
-    output_filename = 'MAR_BUR3_2022_'
-    inventory_file = 'Morocco_BUR3_Fr.pdf'
-    gwp_to_use = 'AR4GWP100'
+    input_folder = downloaded_data_path / "UNFCCC" / "Morocco" / "BUR3"
+    output_folder = extracted_data_path / "UNFCCC" / "Morocco"
+    output_filename = "MAR_BUR3_2022_"
+    inventory_file = "Morocco_BUR3_Fr.pdf"
+    gwp_to_use = "AR4GWP100"
 
     # years to read
     years = [2010, 2012, 2014, 2016, 2018]
@@ -31,30 +41,28 @@ if __name__ == "__main__":
     # special header as category code and name in one column
     header_long = ["orig_cat_name", "entity", "unit", "time", "data"]
 
-    index_cols = ['Catégories']
+    index_cols = ["Catégories"]
 
     # rows to remove
-    cats_remove = [
-        'Agriculture' # always empty
-    ]
+    cats_remove = ["Agriculture"]  # always empty
 
     # manual category codes
     cat_codes_manual = {
-        '1.A.2.e -Industries agro-alimentaires et du tabac': '1.A.2.e',
-        '1.A.2.f -Industries des minéraux non- métalliques': '1.A.2.f',
+        "1.A.2.e -Industries agro-alimentaires et du tabac": "1.A.2.e",
+        "1.A.2.f -Industries des minéraux non- métalliques": "1.A.2.f",
         #'Agriculture': 'M.AG',
-        '2. PIUP': '2',
-        'UTCATF': 'M.LULUCF',
-        '3.B.1 Terres forestières': 'LU.3.B.1',
-        '3.B.2 Terres cultivées': 'LU.3.B.2',
-        '3.B.3 Prairies': 'LU.3.B.3',
-        '3.B.4 Terres humides': 'LU.3.B.4',
-        '3.B.5 Etablissements': 'LU.3.B.5',
-        '3.B.6 Autres terres': 'LU.3.B.6',
-        '1.B.1.a.i.1 -Exploitation minière': '1.A.1.a.i.1',
+        "2. PIUP": "2",
+        "UTCATF": "M.LULUCF",
+        "3.B.1 Terres forestières": "LU.3.B.1",
+        "3.B.2 Terres cultivées": "LU.3.B.2",
+        "3.B.3 Prairies": "LU.3.B.3",
+        "3.B.4 Terres humides": "LU.3.B.4",
+        "3.B.5 Etablissements": "LU.3.B.5",
+        "3.B.6 Autres terres": "LU.3.B.6",
+        "1.B.1.a.i.1 -Exploitation minière": "1.A.1.a.i.1",
     }
 
-    cat_code_regexp = r'(?P<code>^[a-zA-Z0-9\.]{1,14})\s-\s.*'
+    cat_code_regexp = r"(?P<code>^[a-zA-Z0-9\.]{1,14})\s-\s.*"
 
     coords_terminologies = {
         "area": "ISO3",
@@ -66,32 +74,29 @@ if __name__ == "__main__":
         "source": "MAR-GHG-inventory ",
         "provenance": "measured",
         "area": "MAR",
-        "scenario": "BUR3"
+        "scenario": "BUR3",
     }
 
     coords_value_mapping = {
         "unit": "PRIMAP1",
         "entity": {
-            'HFCs (AR4GWP100)': 'HFCS (AR4GWP100)',
-            'PFCs (AR4GWP100)': 'PFCS (AR4GWP100)',
-            'COVNM': 'NMVOC',
-        }
+            "HFCs (AR4GWP100)": "HFCS (AR4GWP100)",
+            "PFCs (AR4GWP100)": "PFCS (AR4GWP100)",
+            "COVNM": "NMVOC",
+        },
     }
 
+    coords_cols = {"category": "category", "entity": "entity", "unit": "unit"}
 
-    coords_cols = {
-        "category": "category",
-        "entity": "entity",
-        "unit": "unit"
-    }
-
-    #add_coords_cols = {
+    # add_coords_cols = {
     #    "orig_cat_name": ["orig_cat_name", "category"],
-    #}
+    # }
 
     filter_remove = {
         "f1": {
-            "entity": ['Other halogenated gases without CO2 equivalent conversion factors (2)'],
+            "entity": [
+                "Other halogenated gases without CO2 equivalent conversion factors (2)"
+            ],
         },
     }
 
@@ -107,8 +112,9 @@ if __name__ == "__main__":
     ##### read the raw data from pdf #####
     tables = camelot.read_pdf(
         str(input_folder / inventory_file),
-        pages=','.join([str(page) for page in pages_to_read]),
-        flavor='lattice')
+        pages=",".join([str(page) for page in pages_to_read]),
+        flavor="lattice",
+    )
 
     ##### combine tables and convert to long format #####
     df_all = None
@@ -120,8 +126,9 @@ if __name__ == "__main__":
             df_first = tables[sector_tables[0]].df
             if len(sector_tables) > 1:
                 for table in sector_tables[1:]:
-                    df_this_table = pd.concat([df_first, tables[table].df], axis=0,
-                                              join='outer')
+                    df_this_table = pd.concat(
+                        [df_first, tables[table].df], axis=0, join="outer"
+                    )
             else:
                 df_this_table = df_first
 
@@ -130,11 +137,11 @@ if __name__ == "__main__":
             df_this_table.columns = header_defs[sector]
 
             # fix 2018 agri table
-            if (year == 2018) & (sector == "Agriculture"):
+            if (year == 2018) & (sector == "Agriculture"):  # noqa: PLR2004
                 last_shift_row = 25
-                df_temp = df_this_table.iloc[0: last_shift_row, 1:].copy()
-                df_this_table.iloc[0, 1:] = ''
-                df_this_table.iloc[1: last_shift_row + 1, 1:] = df_temp
+                df_temp = df_this_table.iloc[0:last_shift_row, 1:].copy()
+                df_this_table.iloc[0, 1:] = ""
+                df_this_table.iloc[1 : last_shift_row + 1, 1:] = df_temp
 
             # replace line breaks, long hyphens, double, and triple spaces in category names
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("\n", " ")
@@ -144,14 +151,15 @@ if __name__ == "__main__":
 
             # set index and convert to long format
             df_this_table = df_this_table.set_index(index_cols)
-            df_this_table_long = pm2.pm2io.nir_convert_df_to_long(df_this_table, year,
-                                                                  header_long)
+            df_this_table_long = pm2.pm2io.nir_convert_df_to_long(
+                df_this_table, year, header_long
+            )
 
             # print(df_this_table_long.head())
             if df_all is None:
                 df_all = df_this_table_long
             else:
-                df_all = pd.concat([df_all, df_this_table_long], axis=0, join='outer')
+                df_all = pd.concat([df_all, df_this_table_long], axis=0, join="outer")
 
     df_all = df_all.reset_index(drop=True)
 
@@ -166,24 +174,32 @@ if __name__ == "__main__":
     # replace cat names by codes in col "category"
     # first the manual replacements
     df_all["category"] = df_all["category"].replace(cat_codes_manual)
+
     # then the regex replacements
-    def repl(m):
-        return m.group('code')
-    df_all["category"] = df_all["category"].str.replace(cat_code_regexp, repl, regex=True)
+    def repl(m):  # noqa: D103
+        return m.group("code")
+
+    df_all["category"] = df_all["category"].str.replace(
+        cat_code_regexp, repl, regex=True
+    )
     df_all = df_all.reset_index(drop=True)
 
     # prepare numbers for pd.to_numeric
-    df_all.loc[:, "data"] = df_all.loc[:, "data"].str.replace(' ', '')
-    def repl(m):
-        return m.group('part1') + '.' + m.group('part2')
-    df_all.loc[:, 'data'] = df_all.loc[:, 'data'].str.replace(
-        '(?P<part1>[0-9]+),(?P<part2>[0-9\\.]+)$', repl, regex=True)
-    df_all['data'][df_all['data'].isnull()] = 'NaN'
+    df_all.loc[:, "data"] = df_all.loc[:, "data"].str.replace(" ", "")
+
+    def repl(m):  # noqa: D103
+        return m.group("part1") + "." + m.group("part2")
+
+    df_all.loc[:, "data"] = df_all.loc[:, "data"].str.replace(
+        "(?P<part1>[0-9]+),(?P<part2>[0-9\\.]+)$", repl, regex=True
+    )
+    df_all["data"][df_all["data"].isna()] = "NaN"
 
     # add GWP information to entity
     for entity in df_all["entity"].unique():
-        df_all["entity"][(df_all["entity"] == entity) & (
-                    df_all["unit"] == "GgCO2eq")] = f"{entity} ({gwp_to_use})"
+        df_all["entity"][
+            (df_all["entity"] == entity) & (df_all["unit"] == "GgCO2eq")
+        ] = f"{entity} ({gwp_to_use})"
 
     # drop "original_cat_name" as it has non-unique values per category
     df_all = df_all.drop(columns="orig_cat_name")
@@ -196,7 +212,8 @@ if __name__ == "__main__":
         coords_value_mapping=coords_value_mapping,
         filter_remove=filter_remove,
         meta_data=meta_data,
-        convert_str=True
+        convert_str=True,
+        time_format="%Y",
     )
 
     # make sure all col headers are str
@@ -205,7 +222,9 @@ if __name__ == "__main__":
     # conversion to PRIMAP2 native format
     data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 
-    entities_to_convert = ['CO2'] #['N2O', 'SF6', 'CO2', 'CH4'] # CO2 is not converted on
+    entities_to_convert = [
+        "CO2"
+    ]  # ['N2O', 'SF6', 'CO2', 'CH4'] # CO2 is not converted on
     # conversion to IF as data with and without GWP exists. needs to be fixed in primap2
     entities_to_convert = [f"{entity} (AR4GWP100)" for entity in entities_to_convert]
 
@@ -230,38 +249,42 @@ if __name__ == "__main__":
     data_if_2006.attrs = copy.deepcopy(data_if.attrs)
 
     filter_remove_cats = {
-        "cat": {
-            f"category ({coords_terminologies['category']})":
-        remove_cats
-        },
+        "cat": {f"category ({coords_terminologies['category']})": remove_cats},
     }
 
     filter_data(data_if_2006, filter_remove=filter_remove_cats)
 
     # map categories
     data_if_2006 = data_if_2006.replace(
-        {f"category ({coords_terminologies['category']})": cat_mapping})
+        {f"category ({coords_terminologies['category']})": cat_mapping}
+    )
     data_if_2006[f"category ({coords_terminologies['category']})"].unique()
 
     # rename the category col
-    data_if_2006.rename(columns={
-        f"category ({coords_terminologies['category']})": 'category (IPCC2006_PRIMAP)'},
-                        inplace=True)
-    data_if_2006.attrs['attrs']['cat'] = 'category (IPCC2006_PRIMAP)'
-    data_if_2006.attrs['dimensions']['*'] = [
-        'category (IPCC2006_PRIMAP)' if item == f"category ({coords_terminologies['category']})"
-        else item for item in data_if_2006.attrs['dimensions']['*']]
+    data_if_2006 = data_if_2006.rename(
+        columns={
+            f"category ({coords_terminologies['category']})": "category (IPCC2006_PRIMAP)"
+        }
+    )
+    data_if_2006.attrs["attrs"]["cat"] = "category (IPCC2006_PRIMAP)"
+    data_if_2006.attrs["dimensions"]["*"] = [
+        "category (IPCC2006_PRIMAP)"
+        if item == f"category ({coords_terminologies['category']})"
+        else item
+        for item in data_if_2006.attrs["dimensions"]["*"]
+    ]
     # aggregate categories
-    time_format = '%Y'
+    time_format = "%Y"
     time_columns = [
         col
-        for col in data_if_2006.columns.values
+        for col in data_if_2006.columns.to_numpy()
         if matches_time_format(col, time_format)
     ]
 
     for cat_to_agg in aggregate_cats:
         mask = data_if_2006["category (IPCC2006_PRIMAP)"].isin(
-            aggregate_cats[cat_to_agg]["sources"])
+            aggregate_cats[cat_to_agg]["sources"]
+        )
         df_test = data_if_2006[mask]
         # print(df_test)
 
@@ -273,8 +296,15 @@ if __name__ == "__main__":
                 df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
 
             df_combine = df_combine.groupby(
-                by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                    'unit']).sum(min_count=1)
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
             # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
@@ -282,15 +312,16 @@ if __name__ == "__main__":
 
             df_combine = df_combine.reset_index()
 
-            data_if_2006 = pd.concat([data_if_2006, df_combine], axis=0, join='outer')
+            data_if_2006 = pd.concat([data_if_2006, df_combine], axis=0, join="outer")
             data_if_2006 = data_if_2006.reset_index(drop=True)
         else:
             print(f"no data to aggregate category {cat_to_agg}")
 
     for cat in zero_cats:
         entities = data_if_2006["entity"].unique()
-        data_zero = data_if_2006[data_if_2006["category (IPCC2006_PRIMAP)"]=="1"].copy(
-            deep=True)
+        data_zero = data_if_2006[
+            data_if_2006["category (IPCC2006_PRIMAP)"] == "1"
+        ].copy(deep=True)
         data_zero["category (IPCC2006_PRIMAP)"] = cat
         for col in time_columns:
             data_zero[col] = 0
@@ -303,7 +334,6 @@ if __name__ == "__main__":
     # convert back to IF to have units in the fixed format
     data_if_2006 = data_pm2_2006.pr.to_interchange_format()
 
-
     # ###
     # save data to IF and native format
     # ###
@@ -312,17 +342,21 @@ if __name__ == "__main__":
 
     # data in original categories
     pm2.pm2io.write_interchange_format(
-        output_folder / (output_filename + coords_terminologies["category"]), data_if)
+        output_folder / (output_filename + coords_terminologies["category"]), data_if
+    )
 
     encoding = {var: compression for var in data_pm2.data_vars}
     data_pm2.pr.to_netcdf(
         output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
-        encoding=encoding)
+        encoding=encoding,
+    )
 
     # data in 2006 categories
     pm2.pm2io.write_interchange_format(
-        output_folder / (output_filename + "IPCC2006_PRIMAP"), data_if_2006)
+        output_folder / (output_filename + "IPCC2006_PRIMAP"), data_if_2006
+    )
 
     encoding = {var: compression for var in data_pm2_2006.data_vars}
     data_pm2_2006.pr.to_netcdf(
-        output_folder / (output_filename + "IPCC2006_PRIMAP" + ".nc"), encoding=encoding)
+        output_folder / (output_filename + "IPCC2006_PRIMAP" + ".nc"), encoding=encoding
+    )

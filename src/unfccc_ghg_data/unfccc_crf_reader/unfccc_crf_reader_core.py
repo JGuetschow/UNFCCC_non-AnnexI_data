@@ -27,13 +27,13 @@ from .util import NoCRFFilesError
 
 ### reading functions
 def convert_crf_table_to_pm2if(
-        df_table: pd.DataFrame,
-        submission_year: int,
-        entity_mapping: Optional[dict[str,str]]=None,
-        coords_defaults_input: Optional[dict[str,str]]=None,
-        filter_remove_input: Optional[dict[str,dict[str,Union[str,list]]]]=None,
-        filter_keep_input: Optional[dict[str,dict[str,Union[str,list]]]]=None,
-        meta_data_input: Optional[dict[str,str]]=None,
+    df_table: pd.DataFrame,
+    submission_year: int,
+    entity_mapping: Optional[dict[str, str]] = None,
+    coords_defaults_input: Optional[dict[str, str]] = None,
+    filter_remove_input: Optional[dict[str, dict[str, Union[str, list]]]] = None,
+    filter_keep_input: Optional[dict[str, dict[str, Union[str, list]]]] = None,
+    meta_data_input: Optional[dict[str, str]] = None,
 ) -> pd.DataFrame:
     """
     Converts a given pandas long format crf table to PRIMAP2 interchange format
@@ -82,7 +82,7 @@ def convert_crf_table_to_pm2if(
     }
 
     add_coords_cols = {
-    #    "orig_cat_name": ["orig_cat_name", "category"],
+        #    "orig_cat_name": ["orig_cat_name", "category"],
     }
 
     coords_terminologies = {
@@ -108,8 +108,8 @@ def convert_crf_table_to_pm2if(
     if entity_mapping is not None:
         coords_value_mapping["entity"] = entity_mapping
 
-    #coords_value_filling_template = {
-    #}
+    # coords_value_filling_template = {
+    # }
 
     filter_remove = {
         "f1": {
@@ -120,12 +120,10 @@ def convert_crf_table_to_pm2if(
         for key in filter_remove_input.keys():
             filter_remove[key] = filter_remove_input[key]
 
-    filter_keep = {
-    }
+    filter_keep = {}
     if filter_keep_input is not None:
         for key in filter_keep_input.keys():
             filter_keep[key] = filter_keep_input[key]
-
 
     meta_data = {
         "references": f"https://unfccc.int/ghg-inventories-annex-i-parties/{submission_year}",
@@ -146,7 +144,7 @@ def convert_crf_table_to_pm2if(
         coords_defaults=coords_defaults,
         coords_terminologies=coords_terminologies,
         coords_value_mapping=coords_value_mapping,
-        #coords_value_filling=coords_value_filling,
+        # coords_value_filling=coords_value_filling,
         filter_remove=filter_remove,
         filter_keep=filter_keep,
         meta_data=meta_data,
@@ -156,13 +154,13 @@ def convert_crf_table_to_pm2if(
 
 
 def read_crf_table(
-        country_codes: Union[str, list[str]],
-        table: str,
-        submission_year: int,
-        data_year: Optional[Union[int, list[int]]]=None,
-        date: Optional[str]=None,
-        folder: Optional[str]=None,
-        debug: Optional[bool]=False,
+    country_codes: Union[str, list[str]],
+    table: str,
+    submission_year: int,
+    data_year: Optional[Union[int, list[int]]] = None,
+    date: Optional[str] = None,
+    folder: Optional[str] = None,
+    debug: Optional[bool] = False,
 ) -> tuple[pd.DataFrame, list[list], list[list]]:
     """
     Read CRF table for given submission year and country / or countries
@@ -216,13 +214,15 @@ def read_crf_table(
         country_codes = [country_codes]
 
     # get file names and locations
-    input_files = get_crf_files(country_codes=country_codes,
-                                submission_year=submission_year,
-                                data_year=data_year,
-                                date=date,
-                                folder=folder)
+    input_files = get_crf_files(
+        country_codes=country_codes,
+        submission_year=submission_year,
+        data_year=data_year,
+        date=date,
+        folder=folder,
+    )
     # nasty fix for cases where exporting ran overnight and not all files have the same date
-    if (date is not None) and (len(country_codes)==1):
+    if (date is not None) and (len(country_codes) == 1):
         if isinstance(data_year, list):
             expected_files = len(data_year)
         elif isinstance(data_year, int):
@@ -230,17 +230,23 @@ def read_crf_table(
         else:
             expected_files = submission_year - 1990 - 1
         if len(input_files) < expected_files:
-            print(f"Found only {len(input_files)} input files for {country_codes}. "
-                  f"Expected {expected_files}.")
-            print("Possibly exporting run overnight and some files have the previous day as date.")
+            print(
+                f"Found only {len(input_files)} input files for {country_codes}. "
+                f"Expected {expected_files}."
+            )
+            print(
+                "Possibly exporting run overnight and some files have the previous day as date."
+            )
             date_datetime = datetime.strptime(date, "%d%m%Y")
             date_datetime = date_datetime - timedelta(days=1)
             prv_date = date_datetime.strftime("%d%m%Y")
-            more_input_files = get_crf_files(country_codes=country_codes,
-                                             submission_year=submission_year,
-                                             data_year=data_year,
-                                             date=prv_date,
-                                             folder=folder)
+            more_input_files = get_crf_files(
+                country_codes=country_codes,
+                submission_year=submission_year,
+                data_year=data_year,
+                date=prv_date,
+                folder=folder,
+            )
             if len(more_input_files) > 0:
                 print(f"Found {len(more_input_files)} additional input files.")
                 input_files = input_files + more_input_files
@@ -248,11 +254,13 @@ def read_crf_table(
                 print("Found no additional input files")
 
     if input_files == []:
-        raise NoCRFFilesError(f"No files found for {country_codes}, "
-                              f"submission_year={submission_year}, "
-                              f"data_year={data_year}, "
-                              f"date={date}, "
-                              f"folder={folder}.")
+        raise NoCRFFilesError(
+            f"No files found for {country_codes}, "
+            f"submission_year={submission_year}, "
+            f"data_year={data_year}, "
+            f"date={date}, "
+            f"folder={folder}."
+        )
 
     # get specification
     # if we only have a single country check if we might have a country specific
@@ -260,21 +268,25 @@ def read_crf_table(
     if len(country_codes) == 1:
         try:
             crf_spec = getattr(crf, f"CRF{submission_year}_{country_codes[0]}")
-            print(f"Using country specific specification: "
-                  f"CRF{submission_year}_{country_codes[0]}")
+            print(
+                f"Using country specific specification: "
+                f"CRF{submission_year}_{country_codes[0]}"
+            )
         except:
             # no country specific specification, check for general specification
             try:
                 crf_spec = getattr(crf, f"CRF{submission_year}")
             except:
-                raise ValueError(f"No terminology exists for submission year "
-                                 f"{submission_year}")
+                raise ValueError(
+                    f"No terminology exists for submission year " f"{submission_year}"
+                )
     else:
         try:
             crf_spec = getattr(crf, f"CRF{submission_year}")
         except:
-            raise ValueError(f"No terminology exists for submission year "
-                             f"{submission_year}")
+            raise ValueError(
+                f"No terminology exists for submission year " f"{submission_year}"
+            )
 
     # now loop over files and read them
     df_all = None
@@ -284,8 +296,11 @@ def read_crf_table(
         file_info = get_info_from_crf_filename(file.name)
         try:
             int(file_info["data_year"])
-            df_this_file, unknown_rows_this_file, last_row_info_this_file = \
-                read_crf_table_from_file(file, table, crf_spec[table], debug=debug)
+            (
+                df_this_file,
+                unknown_rows_this_file,
+                last_row_info_this_file,
+            ) = read_crf_table_from_file(file, table, crf_spec[table], debug=debug)
             if df_all is None:
                 df_all = df_this_file.copy(deep=True)
                 unknown_rows = unknown_rows_this_file
@@ -301,10 +316,10 @@ def read_crf_table(
 
 
 def read_crf_table_from_file(
-        file: Path,
-        table: str,
-        table_spec: dict[str, dict],
-        debug: Optional[bool]=False,
+    file: Path,
+    table: str,
+    table_spec: dict[str, dict],
+    debug: Optional[bool] = False,
 ) -> tuple[pd.DataFrame, list[list], list[list]]:
     """
     Read a single CRF table from a given file. This is the core function of the CRF
@@ -344,7 +359,6 @@ def read_crf_table_from_file(
             dlds = dl.api.Dataset(root_path)
             dlds.get(file.relative_to(root_path))
 
-
     table_properties = table_spec["table"]
     file_info = get_info_from_crf_filename(file.name)
 
@@ -353,16 +367,23 @@ def read_crf_table_from_file(
     all_cats = [cat[0] for cat in all_cats_mapping]
 
     unique_cats = [cat for (cat, count) in Counter(all_cats).items() if count == 1]
-    unique_cat_tuples = [mapping for mapping in all_cats_mapping if mapping[0] in unique_cats]
-    unique_mapping = dict(zip([tup[0] for tup in unique_cat_tuples],
-                              [tup[1] for tup in unique_cat_tuples]))
+    unique_cat_tuples = [
+        mapping for mapping in all_cats_mapping if mapping[0] in unique_cats
+    ]
+    unique_mapping = dict(
+        zip(
+            [tup[0] for tup in unique_cat_tuples], [tup[1] for tup in unique_cat_tuples]
+        )
+    )
     non_unique_cats = [cat for (cat, count) in Counter(all_cats).items() if count > 1]
 
     # prepare the sector hierarchy
     if non_unique_cats:
         # if we have non-unique categories present we need the information on
         # levels within the category hierarchy
-        category_tree = create_category_tree(all_cats_mapping, table, file_info["party"])
+        category_tree = create_category_tree(
+            all_cats_mapping, table, file_info["party"]
+        )
 
     # prepare index colum information
     cat_col = table_properties["col_for_categories"]
@@ -372,19 +393,36 @@ def read_crf_table_from_file(
     # read the data
     print(f"Reading table {table} for year {file_info['data_year']} from {file.name}.")
     skiprows = table_properties["firstrow"] - 1
-    nrows = table_properties["lastrow"] - skiprows + 1 # read one row more to check if we reached the end
+    nrows = (
+        table_properties["lastrow"] - skiprows + 1
+    )  # read one row more to check if we reached the end
     # we read with user specific NaN treatment as the NaN treatment is part of the conversion to
     # PRIMAP2 format.
-    df_raw = pd.read_excel(file, sheet_name=table, skiprows=skiprows , nrows=nrows, engine="openpyxl",
-                               na_values=['-1.#IND', '-1.#QNAN', '-NaN', '-nan', '1.#IND', '1.#QNAN',
-                                          'NULL', 'NaN', ''], keep_default_na=False)
+    df_raw = pd.read_excel(
+        file,
+        sheet_name=table,
+        skiprows=skiprows,
+        nrows=nrows,
+        engine="openpyxl",
+        na_values=[
+            "-1.#IND",
+            "-1.#QNAN",
+            "-NaN",
+            "-nan",
+            "1.#IND",
+            "1.#QNAN",
+            "NULL",
+            "NaN",
+            "",
+        ],
+        keep_default_na=False,
+    )
 
     if len(df_raw) < nrows:
-        #print(f"read data truncated because of all-nan rows")
+        # print(f"read data truncated because of all-nan rows")
         last_row_nan = True
     else:
         last_row_nan = False
-
 
     cols_to_drop = []
     # remove empty first column (for Australia tables start with an empty column)
@@ -394,13 +432,14 @@ def read_crf_table_from_file(
     # select only first table by cutting everything after a all-nan column (unless
     # it's the first column)
     if debug:
-        print(f'Header before table end detection: {df_raw.columns.values}')
+        print(f"Header before table end detection: {df_raw.columns.values}")
     for colIdx in range(1, len(df_raw.columns.values)):
-        if ((df_raw.iloc[:, colIdx].isna().all()) &
-                (df_raw.columns[colIdx].startswith('Unnamed'))):
+        if (df_raw.iloc[:, colIdx].isna().all()) & (
+            df_raw.columns[colIdx].startswith("Unnamed")
+        ):
             cols_to_drop = cols_to_drop + list(df_raw.columns.values[colIdx:])
             if debug:
-                print(f'cols_to_drop: {cols_to_drop}')
+                print(f"cols_to_drop: {cols_to_drop}")
             break
 
     if cols_to_drop is not None:
@@ -414,7 +453,7 @@ def read_crf_table_from_file(
     # the filling leads to long and a bit confusing headers, but as long
     # as pandas can not fill values of merged cells in all individual cells
     # we have to use some filling algorithm.
-    df_header = df_raw.iloc[0:len(table_properties["header"])-1].copy(deep=True)
+    df_header = df_raw.iloc[0 : len(table_properties["header"]) - 1].copy(deep=True)
     df_header.loc[-1] = df_header.columns.values
     df_header.index = df_header.index + 1
     # replace "Unnamed: X" colum names by nan to fill from left in next step
@@ -447,15 +486,17 @@ def read_crf_table_from_file(
                         entities[col] = f"{entities[col]} {value}"
 
     if units is None:
-        raise ValueError(f"Specification for table {table} does not contain unit information.")
+        raise ValueError(
+            f"Specification for table {table} does not contain unit information."
+        )
 
     # remove double spaces
     entities = [entity.strip() for entity in entities]
-    entities = [re.sub('\\s+', ' ', entity) for entity in entities]
+    entities = [re.sub("\\s+", " ", entity) for entity in entities]
 
     # replace the old header
     if len(header) > 2:
-        df_current = df_raw.drop(index=df_raw.iloc[0:len(header)-2].index)
+        df_current = df_raw.drop(index=df_raw.iloc[0 : len(header) - 2].index)
     else:
         df_current = df_raw
 
@@ -469,11 +510,11 @@ def read_crf_table_from_file(
     # remove double spaces
     for col in cols_for_space_stripping:
         df_current[col] = df_current[col].str.strip()
-        df_current[col] = df_current[col].replace('\\s+', ' ', regex=True)
+        df_current[col] = df_current[col].replace("\\s+", " ", regex=True)
 
     # prepare for sector mapping by initializing result lists and
     # variables
-    new_cats = [[''] * len(table_properties["categories"])] * len(df_current)
+    new_cats = [[""] * len(table_properties["categories"])] * len(df_current)
 
     # copy the header rows which are not part of the index (unit)
     new_cats[0] = [df_current.iloc[0][cat_col]] * len(table_properties["categories"])
@@ -485,7 +526,9 @@ def read_crf_table_from_file(
     if non_unique_cats:
         # need to initialize the tree parsing.
         last_parent = category_tree.get_node("root")
-        all_nodes = set([category_tree.get_node(node).tag for node in category_tree.nodes])
+        all_nodes = set(
+            [category_tree.get_node(node).tag for node in category_tree.nodes]
+        )
 
         for idx in range(1, len(df_current)):
             current_cat = df_current.iloc[idx][cat_col]
@@ -497,8 +540,12 @@ def read_crf_table_from_file(
                 break
 
             # check if current category is a child of the last node
-            children = dict([[child.tag, child.identifier]
-                        for child in category_tree.children(last_parent.identifier)])
+            children = dict(
+                [
+                    [child.tag, child.identifier]
+                    for child in category_tree.children(last_parent.identifier)
+                ]
+            )
             if current_cat in children.keys():
                 # the current category is a child of the current parent
                 # do the mapping
@@ -517,21 +564,39 @@ def read_crf_table_from_file(
                 if current_cat in all_nodes:
                     old_parent = last_parent
 
-                    while (current_cat not in children.keys()) and \
-                            (last_parent.identifier != "root"):
+                    while (current_cat not in children.keys()) and (
+                        last_parent.identifier != "root"
+                    ):
                         last_parent = category_tree.get_node(
-                            last_parent.predecessor(category_tree.identifier))
-                        children = dict([[child.tag, child.identifier]
-                                    for child in category_tree.children(last_parent.identifier)])
+                            last_parent.predecessor(category_tree.identifier)
+                        )
+                        children = dict(
+                            [
+                                [child.tag, child.identifier]
+                                for child in category_tree.children(
+                                    last_parent.identifier
+                                )
+                            ]
+                        )
 
-                    if (last_parent.identifier == "root") and \
-                        (current_cat not in children.keys()):
+                    if (last_parent.identifier == "root") and (
+                        current_cat not in children.keys()
+                    ):
                         # we have not found the category as direct child of any of the
                         # predecessors. Thus it is missing in the specification in
                         # that place
-                        print(f"Unknown category '{current_cat}' found in {table} for {file_info['party']}, "
-                              f"{file_info['data_year']} (last parent: {old_parent.tag}).")
-                        unknown_categories.append([table, file_info["party"], current_cat, file_info['data_year']])
+                        print(
+                            f"Unknown category '{current_cat}' found in {table} for {file_info['party']}, "
+                            f"{file_info['data_year']} (last parent: {old_parent.tag})."
+                        )
+                        unknown_categories.append(
+                            [
+                                table,
+                                file_info["party"],
+                                current_cat,
+                                file_info["data_year"],
+                            ]
+                        )
                         # copy back the parent info to continue with next category
                         last_parent = old_parent
                     else:
@@ -543,8 +608,12 @@ def read_crf_table_from_file(
                         if new_children:
                             last_parent = node
                 else:
-                    print(f"Unknown category '{current_cat}' found in {table} for {file_info['party']}, {file_info['data_year']}.")
-                    unknown_categories.append([table, file_info["party"], current_cat, file_info['data_year']])
+                    print(
+                        f"Unknown category '{current_cat}' found in {table} for {file_info['party']}, {file_info['data_year']}."
+                    )
+                    unknown_categories.append(
+                        [table, file_info["party"], current_cat, file_info["data_year"]]
+                    )
     else:
         for idx in range(1, len(df_current)):
             current_cat = df_current.iloc[idx][cat_col]
@@ -557,30 +626,45 @@ def read_crf_table_from_file(
             if current_cat in all_cats:
                 new_cats[idx] = unique_mapping[current_cat]
                 if (idx == len(df_current) - 1) and not last_row_nan:
-                    print(f"found information in last row: category {current_cat}, row {idx}")
-                    info_last_row.append([table, file_info["party"], current_cat, file_info['data_year']])
+                    print(
+                        f"found information in last row: category {current_cat}, row {idx}"
+                    )
+                    info_last_row.append(
+                        [table, file_info["party"], current_cat, file_info["data_year"]]
+                    )
             else:
-                print(f"Unknown category '{current_cat}' found in {table} for {file_info['party']}, {file_info['data_year']}.")
-                unknown_categories.append([table, file_info["party"], current_cat, file_info['data_year']])
+                print(
+                    f"Unknown category '{current_cat}' found in {table} for {file_info['party']}, {file_info['data_year']}."
+                )
+                unknown_categories.append(
+                    [table, file_info["party"], current_cat, file_info["data_year"]]
+                )
 
     for idx, col in enumerate(table_properties["categories"]):
-        df_current.insert(loc=idx, column=col, value=
-                          [cat[idx] for cat in new_cats])
+        df_current.insert(loc=idx, column=col, value=[cat[idx] for cat in new_cats])
 
     # set index
     df_current = df_current.set_index(index_cols)
     # process the unit information using the primap2 functions
-    df_current = pm2.pm2io.nir_add_unit_information(df_current, **table_properties["unit_info"])
+    df_current = pm2.pm2io.nir_add_unit_information(
+        df_current, **table_properties["unit_info"]
+    )
 
     # convert to long format
-    header_long = table_properties["categories"] + \
-        ["orig_cat_name", "entity", "unit", "time", "data"]
+    header_long = table_properties["categories"] + [
+        "orig_cat_name",
+        "entity",
+        "unit",
+        "time",
+        "data",
+    ]
     df_long = pm2.pm2io.nir_convert_df_to_long(
-        df_current, file_info["data_year"], header_long=header_long)
+        df_current, file_info["data_year"], header_long=header_long
+    )
 
     # add country information
     df_long.insert(0, column="country", value=file_info["party"])
-    #df_long.insert(1, column="submission", value=f"CRF{file_info['submission_year']}")
+    # df_long.insert(1, column="submission", value=f"CRF{file_info['submission_year']}")
     if "coords_defaults" in table_spec.keys():
         for col in table_spec["coords_defaults"]:
             df_long.insert(2, column=col, value=table_spec["coords_defaults"][col])
@@ -589,18 +673,17 @@ def read_crf_table_from_file(
 
 
 def get_crf_files(
-        country_codes: Union[str, list[str]],
-        submission_year: int,
-        data_year: Optional[Union[int, list[int]]] = None,
-        date: Optional[str] = None,
-        folder: Optional[str] = None,
+    country_codes: Union[str, list[str]],
+    submission_year: int,
+    data_year: Optional[Union[int, list[int]]] = None,
+    date: Optional[str] = None,
+    folder: Optional[str] = None,
 ) -> list[Path]:
     """
     Finds all files according to given parameters
 
     Parameters
     ----------
-
     country_codes: str or list[str]
         ISO 3-letter country code or list of country codes
 
@@ -643,14 +726,20 @@ def get_crf_files(
                 new_country_folders = folder_mapping[country_code]
                 if isinstance(new_country_folders, str):
                     # only one folder
-                    country_folders = [*country_folders, data_folder / new_country_folders / submission_folder]
+                    country_folders = [
+                        *country_folders,
+                        data_folder / new_country_folders / submission_folder,
+                    ]
                 else:
-                    country_folders = country_folders + \
-                                      [data_folder / folder / submission_folder
-                                       for folder in new_country_folders]
+                    country_folders = country_folders + [
+                        data_folder / folder / submission_folder
+                        for folder in new_country_folders
+                    ]
             else:
-                raise ValueError(f"No data folder found for country {country_code}. "
-                                 f"Check if folder mapping is up to date.")
+                raise ValueError(
+                    f"No data folder found for country {country_code}. "
+                    f"Check if folder mapping is up to date."
+                )
     else:
         country_folders = [folder]
 
@@ -671,17 +760,17 @@ def get_crf_files(
                     file_filter["party"] = country
                     dates = get_submission_dates(folder, file_filter)
                     file_filter["date"] = find_latest_date(dates)
-                    input_files = input_files + \
-                                  filter_filenames(input_folder.glob("*.xlsx"),
-                                                   **file_filter)
+                    input_files = input_files + filter_filenames(
+                        input_folder.glob("*.xlsx"), **file_filter
+                    )
             else:
                 file_filter = file_filter_template.copy()
                 if date is not None:
                     file_filter["date"] = date
-                input_files = input_files + \
-                              filter_filenames(input_folder.glob("*.xlsx"),
-                                               **file_filter)
-        #else:
+                input_files = input_files + filter_filenames(
+                    input_folder.glob("*.xlsx"), **file_filter
+                )
+        # else:
         #    raise ValueError(f"Folder {input_folder} does not exist")
     if len(input_files) == 0:
         raise ValueError(f"No input files found in {country_folders}")
@@ -699,7 +788,7 @@ def get_crf_files(
 
 
 def get_info_from_crf_filename(
-        filename: str,
+    filename: str,
 ) -> dict[str, Union[int, str]]:
     """
     Parse given file name and return a dict with information
@@ -707,7 +796,6 @@ def get_info_from_crf_filename(
 
     Parameters
     ----------
-
     filename: str
         The file to analyze (without path)
 
@@ -729,8 +817,7 @@ def get_info_from_crf_filename(
     try:
         file_info["data_year"] = int(name_parts[2])
     except:
-        print(f"Data year string {name_parts[2]} "
-              "could not be converted to int.")
+        print(f"Data year string {name_parts[2]} " "could not be converted to int.")
         file_info["data_year"] = name_parts[2]
     file_info["date"] = name_parts[3]
     # the last part (time code) is missing for Australia since 2023
@@ -742,11 +829,11 @@ def get_info_from_crf_filename(
 
 
 def filter_filenames(
-        files_to_filter: list[Path],
-        party: Optional[Union[str, list[str]]] = None,
-        data_year: Optional[Union[int, list[int]]] = None,
-        submission_year: Optional[str] = None,
-        date: Optional[str] = None,
+    files_to_filter: list[Path],
+    party: Optional[Union[str, list[str]]] = None,
+    data_year: Optional[Union[int, list[int]]] = None,
+    submission_year: Optional[str] = None,
+    date: Optional[str] = None,
 ) -> list[Path]:
     """Filter a list of filenames of CRF files
 
@@ -792,8 +879,8 @@ def filter_filenames(
 
 
 def check_crf_file_info(
-        file_info: dict,
-        file_filter: dict,
+    file_info: dict,
+    file_filter: dict,
 ) -> bool:
     """
     Check if a CRF file has given properties
@@ -837,9 +924,9 @@ def check_crf_file_info(
 
 
 def create_category_tree(
-        specification: list[list],
-        table: str,
-        country: Optional[str] = None,
+    specification: list[list],
+    table: str,
+    country: Optional[str] = None,
 ) -> Tree:
     """
     Create a treelib Tree for the categorical hierarchy from a CRF
@@ -850,7 +937,6 @@ def create_category_tree(
 
     Parameters
     ----------
-
     specification: List[List]
         The `sector_mapping` dict of a table specification
 
@@ -866,8 +952,10 @@ def create_category_tree(
     """
     # small sanity check on the specification
     if len(specification[0]) < 3:
-        raise ValueError(f"Error: Specification for Table {table} has non-unique "
-                         "categories and need level specifications")
+        raise ValueError(
+            f"Error: Specification for Table {table} has non-unique "
+            "categories and need level specifications"
+        )
 
     # initialize variables for tree building
     parent_info = [
@@ -888,11 +976,11 @@ def create_category_tree(
     if country is not None:
         # remove country tags from categories and mark categories
         # for other countries for removal
-        specification = [filter_category(mapping, country)
-                         for mapping in specification]
+        specification = [filter_category(mapping, country) for mapping in specification]
         # remove the categories for other countries
-        specification = [mapping for mapping in specification
-                         if mapping[0] != "\\REMOVE"]
+        specification = [
+            mapping for mapping in specification if mapping[0] != "\\REMOVE"
+        ]
 
     # build a tree from specification
     # when looping over the categories present in the table
@@ -903,7 +991,9 @@ def create_category_tree(
         if current_cat_level == last_cat_info["level"]:
             # cat has the same level as preceeding on, so no change to
             # parent node
-            category_tree.create_node(current_cat, idx, parent=parent_info[-1]["id"], data=mapping)
+            category_tree.create_node(
+                current_cat, idx, parent=parent_info[-1]["id"], data=mapping
+            )
         elif current_cat_level == last_cat_info["level"] + 1:
             # the current category is one level further away from
             # the trunk of the tree. This means that
@@ -913,23 +1003,29 @@ def create_category_tree(
                 {
                     "id": last_cat_info["id"],
                     "tag": last_cat_info["category"],
-                    "level": last_cat_info["level"]
+                    "level": last_cat_info["level"],
                 }
             )
             # add the category as new node
-            category_tree.create_node(current_cat, idx, parent=parent_info[-1]["id"], data=mapping)
+            category_tree.create_node(
+                current_cat, idx, parent=parent_info[-1]["id"], data=mapping
+            )
 
         elif current_cat_level < last_cat_info["level"]:
             # the new level is smaller (closer to the trunk)
             # than the last one. Thus we remove all parents
             # from this level on
-            parent_info = parent_info[0: current_cat_level + 1]
-            category_tree.create_node(current_cat, idx, parent=parent_info[-1]["id"], data=mapping)
+            parent_info = parent_info[0 : current_cat_level + 1]
+            category_tree.create_node(
+                current_cat, idx, parent=parent_info[-1]["id"], data=mapping
+            )
         else:
             # increase in levels of more than one is not allowed
-            raise ValueError(f"Error in sector hierarchy for table {table}, category {current_cat}: "
-                             f"Category level is {current_cat_level} and parent level is "
-                             f"{parent_info[-1]['level']}")
+            raise ValueError(
+                f"Error in sector hierarchy for table {table}, category {current_cat}: "
+                f"Category level is {current_cat_level} and parent level is "
+                f"{parent_info[-1]['level']}"
+            )
 
         # set last_cat_info
         last_cat_info["category"] = current_cat
@@ -940,8 +1036,8 @@ def create_category_tree(
 
 
 def filter_category(
-        mapping: list,
-        country: str,
+    mapping: list,
+    country: str,
 ) -> list[str]:
     """
     This function checks if a category mapping is suitable for the given country.
@@ -975,9 +1071,9 @@ def filter_category(
             new_mapping[0] = "\\REMOVE"
         else:
             re_result = re.search(regex_exclude_full, mapping[0])
-            new_mapping[0] = mapping[0][len(re_result.group(1)) + 1:]
+            new_mapping[0] = mapping[0][len(re_result.group(1)) + 1 :]
     elif mapping[0].startswith(string_country):
-        new_mapping[0] = mapping[0][len(string_country) + 1:]
+        new_mapping[0] = mapping[0][len(string_country) + 1 :]
     elif re.match(regex_countries, mapping[0]):
         new_mapping[0] = "\\REMOVE"
 
@@ -985,9 +1081,9 @@ def filter_category(
 
 
 def get_latest_date_for_country(
-        country_code: str,
-        submission_year: int,
-)->str:
+    country_code: str,
+    submission_year: int,
+) -> str:
     """
     Find the latest submission date for a country
 
@@ -1013,26 +1109,36 @@ def get_latest_date_for_country(
         country_folders = folder_mapping[country_code]
         if isinstance(country_folders, str):
             # only one folder
-            submission_date = find_latest_date(get_submission_dates(
-                downloaded_data_path_UNFCCC / country_folders / f"CRF{submission_year}", file_filter))
+            submission_date = find_latest_date(
+                get_submission_dates(
+                    downloaded_data_path_UNFCCC
+                    / country_folders
+                    / f"CRF{submission_year}",
+                    file_filter,
+                )
+            )
         else:
             dates = []
             for folder in country_folders:
-                folder_submission = downloaded_data_path_UNFCCC / folder / f"CRF{submission_year}"
+                folder_submission = (
+                    downloaded_data_path_UNFCCC / folder / f"CRF{submission_year}"
+                )
                 if folder_submission.exists():
                     dates = dates + get_submission_dates(folder_submission, file_filter)
             submission_date = find_latest_date(dates)
     else:
-        raise ValueError(f"No data folder found for country {country_code}. "
-                         f"Check if folder mapping is up to date.")
+        raise ValueError(
+            f"No data folder found for country {country_code}. "
+            f"Check if folder mapping is up to date."
+        )
 
     return submission_date
 
 
 def get_submission_dates(
-        folder: Path,
-        file_filter: dict[str, Union[str, int, list]],
-)->list[str]:
+    folder: Path,
+    file_filter: dict[str, Union[str, int, list]],
+) -> list[str]:
     """
     Returns all submission dates available in a folder
 
@@ -1050,8 +1156,10 @@ def get_submission_dates(
             List of dates as str
     """
     if "date" in file_filter:
-        raise ValueError("'date' present in 'file_filter'. This makes no sense as "
-                         "the function's purpose is to return available dates.")
+        raise ValueError(
+            "'date' present in 'file_filter'. This makes no sense as "
+            "the function's purpose is to return available dates."
+        )
 
     if folder.exists():
         files = filter_filenames(folder.glob("*.xlsx"), **file_filter)
@@ -1065,9 +1173,9 @@ def get_submission_dates(
 
 
 def get_submission_parties(
-        folder: Path,
-        file_filter: dict[str, Union[str, int, list]],
-)->list[str]:
+    folder: Path,
+    file_filter: dict[str, Union[str, int, list]],
+) -> list[str]:
     """
     Returns all submission dates available in a folder
 
@@ -1085,8 +1193,10 @@ def get_submission_parties(
             List of parties as str
     """
     if "party" in file_filter:
-        raise ValueError("'party' present in 'file_filter'. This makes no sense as "
-                         "the function's purpose is to return available parties.")
+        raise ValueError(
+            "'party' present in 'file_filter'. This makes no sense as "
+            "the function's purpose is to return available parties."
+        )
 
     if folder.exists():
         files = filter_filenames(list(folder.glob("*.xlsx")), **file_filter)
@@ -1100,9 +1210,9 @@ def get_submission_parties(
 
 
 def find_latest_date(
-        dates: list[str],
-        date_format: str='%d%m%Y',
-)-> str:
+    dates: list[str],
+    date_format: str = "%d%m%Y",
+) -> str:
     """
     Returns the latest date in a list of dates as str in the format
     ddmmyyyy
@@ -1117,11 +1227,11 @@ def find_latest_date(
         str: latest date
     """
     if len(dates) > 0:
-        dates_datetime = [[date, datetime.strptime(date, date_format)] for date in
-                          dates]
+        dates_datetime = [
+            [date, datetime.strptime(date, date_format)] for date in dates
+        ]
         dates_datetime = sorted(dates_datetime, key=itemgetter(1))
     else:
         raise ValueError("Passed list of dates is empty")
 
     return dates_datetime[-1][0]
-

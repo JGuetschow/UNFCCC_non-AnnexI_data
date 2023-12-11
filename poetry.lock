@@ -1069,6 +1069,20 @@ ssh = ["paramiko"]
 tqdm = ["tqdm"]
 
 [[package]]
+name = "ghostscript"
+version = "0.7"
+description = "Interface to the Ghostscript C-API, both high- and low-level, based on ctypes"
+optional = false
+python-versions = "*"
+files = [
+    {file = "ghostscript-0.7-py2.py3-none-any.whl", hash = "sha256:97c70e27ba6b1cab4ab1d9b4cc82d89b8b53e57971f608ded4950b8aa20c78a7"},
+    {file = "ghostscript-0.7.tar.gz", hash = "sha256:b7875a87098740eb0be3de2d9662d15db727305ca9a6d4b7534a3cc33a4b965a"},
+]
+
+[package.dependencies]
+setuptools = ">=38.6.0"
+
+[[package]]
 name = "globalwarmingpotentials"
 version = "0.9.3"
 description = "Global warming potentials of greenhouse gases from various IPCC reports"
@@ -4375,4 +4389,4 @@ plots = ["matplotlib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "db0b517e6af6c99b04624df636fc38cdf49b3ec8dd6dce24596da1cf5796c0ac"
+content-hash = "3591f5e1b1134c148b9f68e3861beb4961659d1af5cb4dd7360ef5396a682f2e"

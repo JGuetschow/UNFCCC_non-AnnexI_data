@@ -1,12 +1,17 @@
-# this script reads data from Korea's BUR4
-# Data is read from the xlsx file
+"""
+Read Korea's BUR4 from xlsx
+
+This script reads data from Korea's 2020 national inventory which is underlying BUR4
+Data are read from the xlsx file
+
+"""
 
 import os
 import sys
 
 import pandas as pd
 import primap2 as pm2
-from .config_kor_bur4 import cat_codes, cat_name_translations
+from config_kor_bur4 import cat_codes, cat_name_translations
 from primap2.pm2io._data_reading import filter_data
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
@@ -15,42 +20,43 @@ if __name__ == "__main__":
     # ###
     # configuration
     # ###
-    input_folder = downloaded_data_path / 'non-UNFCCC' / 'Republic_of_Korea' / \
-                   '2020-Inventory'
-    output_folder = extracted_data_path / 'UNFCCC' / 'Republic_of_Korea'
+    input_folder = (
+        downloaded_data_path / "non-UNFCCC" / "Republic_of_Korea" / "2020-Inventory"
+    )
+    output_folder = extracted_data_path / "UNFCCC" / "Republic_of_Korea"
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = 'KOR_BUR4_2021_'
+    output_filename = "KOR_BUR4_2021_"
 
-    inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2018).xlsx'
+    inventory_file = "Republic_of_Korea_National_GHG_Inventory_(1990_2018).xlsx"
     years_to_read = range(1990, 2018 + 1)
 
-    sheets_to_read = ['온실가스', 'CO2', 'CH4', 'N2O', 'HFCs', 'PFCs', 'SF6']
+    sheets_to_read = ["온실가스", "CO2", "CH4", "N2O", "HFCs", "PFCs", "SF6"]
     cols_to_read = range(1, 2018 - 1990 + 3)
 
     # columns for category code and original category name
-    index_cols = ['분야·부문/연도']
+    index_cols = ["분야·부문/연도"]
 
     sheet_metadata = {
-        'entity': {
-            '온실가스': 'KYOTOGHG (SARGWP100)',
-            'CO2': 'CO2',
-            'CH4': 'CH4 (SARGWP100)',
-            'N2O': 'N2O (SARGWP100)',
-            'HFCs': 'HFCS (SARGWP100)',
-            'PFCs': 'PFCS (SARGWP100)',
-            'SF6': 'SF6 (SARGWP100)',
+        "entity": {
+            "온실가스": "KYOTOGHG (SARGWP100)",
+            "CO2": "CO2",
+            "CH4": "CH4 (SARGWP100)",
+            "N2O": "N2O (SARGWP100)",
+            "HFCs": "HFCS (SARGWP100)",
+            "PFCs": "PFCS (SARGWP100)",
+            "SF6": "SF6 (SARGWP100)",
         },
-        'unit': {
-            '온실가스': 'Gg CO2 / yr',
-            'CO2': 'Gg CO2 / yr',
-            'CH4': 'Gg CO2 / yr',
-            'N2O': 'Gg CO2 / yr',
-            'HFCs': 'Gg CO2 / yr',
-            'PFCs': 'Gg CO2 / yr',
-            'SF6': 'Gg CO2 / yr',
-        }
+        "unit": {
+            "온실가스": "Gg CO2 / yr",
+            "CO2": "Gg CO2 / yr",
+            "CH4": "Gg CO2 / yr",
+            "N2O": "Gg CO2 / yr",
+            "HFCs": "Gg CO2 / yr",
+            "PFCs": "Gg CO2 / yr",
+            "SF6": "Gg CO2 / yr",
+        },
     }
 
     # definitions for conversion to interchange format
@@ -64,7 +70,7 @@ if __name__ == "__main__":
 
     add_coords_cols = {
         "orig_cat_name": ["orig_cat_name", "category"],
-        "cat_name_translation": ["cat_name_translation", "category"]
+        "cat_name_translation": ["cat_name_translation", "category"],
     }
 
     coords_terminologies = {
@@ -90,21 +96,32 @@ if __name__ == "__main__":
         "f1": {
             "category (IPCC1996_KOR_INV)": "\\IGNORE",
         },
-        "livestock": { # temp until double cat name problem is solved
-            "category (IPCC1996_KOR_INV)": {
-                '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
-                '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
-            }
-        }
+        "livestock": {  # temp until double cat name problem is solved
+            "category (IPCC1996_KOR_INV)": [
+                "4.B.1",
+                "4.B.10",
+                "4.B.2",
+                "4.B.3",
+                "4.B.4",
+                "4.B.5",
+                "4.B.6",
+                "4.B.7",
+                "4.B.8",
+                "4.B.9",
+            ]
+        },
     }
 
     filter_keep = {}
 
     meta_data = {
-        "references": "https://unfccc.int/documents/418616, http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=4856&fileSeq=2",
+        "references": "https://unfccc.int/documents/418616, "
+        "http://www.gir.go.kr/home/file/readDownloadFile.do?"
+        "fileId=4856&fileSeq=2",
         "rights": "",
         "contact": "mail@johannes-guetschow.de.de",
-        "title": "Republic of Korea: BUR4 / National Greenhouse Gas Inventory Report 2020",
+        "title": "Republic of Korea: BUR4 / National Greenhouse Gas Inventory Report "
+        "2020",
         "comment": "Read fom xlsx file by Johannes Gütschow",
         "institution": "United Nations Framework Convention on Climate Change (UNFCCC)",
     }
@@ -126,11 +143,17 @@ if __name__ == "__main__":
 
     for sheet in sheets_to_read:
         # read current sheet (one sheet per gas)
-        df_current = pd.read_excel(input_folder / inventory_file, sheet_name=sheet, skiprows=3, nrows=144, usecols=cols_to_read,
-                                   engine="openpyxl")
+        df_current = pd.read_excel(
+            input_folder / inventory_file,
+            sheet_name=sheet,
+            skiprows=3,
+            nrows=144,
+            usecols=cols_to_read,
+            engine="openpyxl",
+        )
         # drop all rows where the index cols (category code and name) are both NaN
         # as without one of them there is no category information
-        df_current.dropna(axis=0, how='all', subset=index_cols, inplace=True)
+        df_current = df_current.dropna(axis=0, how="all", subset=index_cols)
         # set index. necessary for the stack operation in the conversion to long format
         # df_current = df_current.set_index(index_cols)
         # add columns
@@ -144,7 +167,7 @@ if __name__ == "__main__":
 
     df_all = df_all.reset_index(drop=True)
     # rename category col because filtering produces problems with korean col names
-    df_all.rename(columns={"분야·부문/연도": "category"}, inplace=True)
+    df_all = df_all.rename(columns={"분야·부문/연도": "category"})
 
     # create copies of category col for further processing
     df_all["orig_cat_name"] = df_all["category"]
@@ -163,12 +186,12 @@ if __name__ == "__main__":
         coords_defaults=coords_defaults,
         coords_terminologies=coords_terminologies,
         coords_value_mapping=coords_value_mapping,
-        #coords_value_filling=coords_value_filling,
-        #filter_remove=filter_remove,
-        #filter_keep=filter_keep,
+        # coords_value_filling=coords_value_filling,
+        # filter_remove=filter_remove,
+        # filter_keep=filter_keep,
         meta_data=meta_data,
-        convert_str=True
-        )
+        convert_str=True,
+    )
 
     filter_data(data_if, filter_remove=filter_remove)
 
@@ -181,7 +204,12 @@ if __name__ == "__main__":
     # ###
     if not output_folder.exists():
         output_folder.mkdir()
-    pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]), data_if
+    )
 
     encoding = {var: compression for var in data_pm2.data_vars}
-    data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
+    data_pm2.pr.to_netcdf(
+        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        encoding=encoding,
+    )

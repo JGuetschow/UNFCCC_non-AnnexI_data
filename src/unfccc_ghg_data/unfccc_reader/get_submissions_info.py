@@ -1,19 +1,28 @@
-# helper functions to get information on available submissions
-# and data reading functions for a given country
+"""
+Helper functions for the unfccc_reader
+
+helper functions to get information on available submissions
+and data reading functions for a given country
+"""
 
 import json
 from pathlib import Path
 
-from unfccc_ghg_data.helper import (downloaded_data_path, extracted_data_path,
-                                    get_country_code, root_path)
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    get_country_code,
+    root_path,
+)
 
 code_path = root_path / "src" / "unfccc_ghg_data" / "unfccc_reader"
 # TODO: change this to use the code path stored in the helper module
 
+
 def get_possible_inputs(
-        country_name: str,
-        submission: str,
-        print_info: bool = False,
+    country_name: str,
+    submission: str,
+    print_info: bool = False,
 ) -> list[Path]:
     """
     For given country name and submission find the possible input files
@@ -71,10 +80,10 @@ def get_possible_inputs(
 
 
 def get_possible_outputs(
-        country_name: str,
-        submission: str,
-        print_info: bool = False,
-)-> list[Path]:
+    country_name: str,
+    submission: str,
+    print_info: bool = False,
+) -> list[Path]:
     """
     For given country name and submission find the possible output files
 
@@ -109,11 +118,15 @@ def get_possible_outputs(
             if country_code in folder_mapping:
                 country_folder = folder_mapping[country_code]
                 if not isinstance(country_folder, str):
-                    raise ValueError("Wrong data type in folder mapping json file. Should be str.")
+                    raise ValueError(
+                        "Wrong data type in folder mapping " "json file. Should be str."
+                    )
 
                 output_folder = item / country_folder
                 if output_folder.exists():
-                    for filepath in output_folder.glob(country_code + "_" + submission + "*"):
+                    for filepath in output_folder.glob(
+                        country_code + "_" + submission + "*"
+                    ):
                         output_files.append(filepath.relative_to(root_path))
 
     if print_info:
@@ -125,9 +138,3 @@ def get_possible_outputs(
             print("No output files found")
 
     return output_files
-
-
-
-
-
-

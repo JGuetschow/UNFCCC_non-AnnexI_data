@@ -1,14 +1,24 @@
-# this script reads data from Taiwan's 2022 national inventory
-# Data is read from the english summary pdf
-# TODO: add further GWPs and gas baskets
+"""
+Read Taiwan's 2022 national inventory from pdf
+
+This script reads data from Taiwan's 2022 national inventory
+Data are read from the english summary pdf
+TODO: add further GWPs and gas baskets
+
+"""
 
 import copy
 
 import camelot
 import pandas as pd
 import primap2 as pm2
-from .config_twn_nir2022 import (fix_rows, gwp_to_use, make_wide_table, page_defs,
-                                 table_defs)
+from config_twn_nir2022 import (
+    fix_rows,
+    gwp_to_use,
+    make_wide_table,
+    page_defs,
+    table_defs,
+)
 from primap2.pm2io._data_reading import matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
@@ -17,16 +27,16 @@ if __name__ == "__main__":
     # ###
     # configuration
     # ###
-    input_folder = downloaded_data_path / 'non-UNFCCC' / 'Taiwan'
+    input_folder = downloaded_data_path / "non-UNFCCC" / "Taiwan"
     # TODO: move file to subfolder
-    output_folder = extracted_data_path / 'non-UNFCCC' / 'Taiwan'
+    output_folder = extracted_data_path / "non-UNFCCC" / "Taiwan"
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = 'TWN_inventory_2022_'
-    inventory_file = '00_abstract_en.pdf'
+    output_filename = "TWN_inventory_2022_"
+    inventory_file = "00_abstract_en.pdf"
 
-    cat_code_regexp = r'(?P<code>^[a-zA-Z0-9\.]{1,7})\s.*'
+    cat_code_regexp = r"(?P<code>^[a-zA-Z0-9\.]{1,7})\s.*"
 
     time_format = "%Y"
 
@@ -79,42 +89,49 @@ if __name__ == "__main__":
     # config for part3: mapping to 2006 categpries
 
     cat_mapping = {
-        '3': 'M.AG',
-        '3.A': '3.A.1',
-        '3.B': '3.A.2',
-        '3.C': '3.C.7',
-        '3.D': 'M.3.AS',
-        '3.F': '3.C.1.b',
-        '3.H': '3.C.3',
-        '4': 'M.LULUCF',
-        '5': '4',
-        '5.A': '4.A',
-        '5.B': '4.B',
-        '5.C': '4.C',
-        '5.D': '4.D',
-        '5.D.1': '4.D.1',
-        '5.D.2': '4.D.2',
+        "3": "M.AG",
+        "3.A": "3.A.1",
+        "3.B": "3.A.2",
+        "3.C": "3.C.7",
+        "3.D": "M.3.AS",
+        "3.F": "3.C.1.b",
+        "3.H": "3.C.3",
+        "4": "M.LULUCF",
+        "5": "4",
+        "5.A": "4.A",
+        "5.B": "4.B",
+        "5.C": "4.C",
+        "5.D": "4.D",
+        "5.D.1": "4.D.1",
+        "5.D.2": "4.D.2",
     }
 
     aggregate_cats = {
-        '1.A': {'sources': ['1.A.1', '1.A.2', '1.A.3', '1.A.4'],
-                'name': 'Fuel Combustion Activities'},
-        '1.B': {'sources': ['1.B.1', '1.B.2'], 'name': 'Fugitive Emissions from Fuels'},
-        '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
-        '3.C.1': {'sources': ['3.C.1.b'], 'name': 'Emissions from Biomass Burning'},
-        '3.C.5': {'sources': ['3.C.5.a', '3.C.5.b'],
-                  'name': 'Indirect N2O Emissions from Managed Soils'},
-        '3.C': {'sources': ['3.C.1', '3.C.3', 'M.3.AS', '3.C.7'],
-                'name': 'Aggregate sources and non-CO2 emissions sources on land'},
-        '3': {'sources': ['M.AG', 'M.LULUCF'], 'name': 'AFOLU'},
-        'M.AG.ELV': {'sources': ['3.C'],
-                     'name': 'Agriculture excluding livestock emissions'},
+        "1.A": {
+            "sources": ["1.A.1", "1.A.2", "1.A.3", "1.A.4"],
+            "name": "Fuel Combustion Activities",
+        },
+        "1.B": {"sources": ["1.B.1", "1.B.2"], "name": "Fugitive Emissions from Fuels"},
+        "3.A": {"sources": ["3.A.1", "3.A.2"], "name": "Livestock"},
+        "3.C.1": {"sources": ["3.C.1.b"], "name": "Emissions from Biomass Burning"},
+        "3.C.5": {
+            "sources": ["3.C.5.a", "3.C.5.b"],
+            "name": "Indirect N2O Emissions from Managed Soils",
+        },
+        "3.C": {
+            "sources": ["3.C.1", "3.C.3", "M.3.AS", "3.C.7"],
+            "name": "Aggregate sources and non-CO2 emissions sources on land",
+        },
+        "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},
+        "M.AG.ELV": {
+            "sources": ["3.C"],
+            "name": "Agriculture excluding livestock emissions",
+        },
     }
-
 
     # 2 for NF3, PFCs (from 2.E)
     aggregate_cats_NF3_PFC = {
-        '2': {'sources': ['2.E'], 'name': 'Industrial Process and Product Use Sector'},
+        "2": {"sources": ["2.E"], "name": "Industrial Process and Product Use Sector"},
     }
 
     compression = dict(zlib=True, complevel=9)
@@ -130,10 +147,9 @@ if __name__ == "__main__":
             str(input_folder / inventory_file),
             pages=page,
             **page_defs[page],
-            )
+        )
         for table in new_tables:
             all_tables.append(table.df)
-
 
     # ###
     # convert tables to primap2 format
@@ -148,39 +164,49 @@ if __name__ == "__main__":
         if len(table_def["tables"]) > 1:
             for table in table_def["tables"][1:]:
                 df_this_table = pd.concat(
-                    [df_this_table, all_tables[table]],
-                    axis=0,
-                    join='outer')
+                    [df_this_table, all_tables[table]], axis=0, join="outer"
+                )
 
         # fix for table ES3.6
-        if table_name == 'ES3.6':
+        if table_name == "ES3.6":
             col_idx = df_this_table[0] == "Total CO Emission"
-            df_this_table.loc[col_idx, 1:] = ''
-            df_this_table.loc[col_idx, 0] = 'Total CO2 Emission'
+            df_this_table.loc[col_idx, 1:] = ""
+            df_this_table.loc[col_idx, 0] = "Total CO2 Emission"
 
         df_this_table = df_this_table.reset_index(drop=True)
 
         # fix categories if necessary
         if "fix_cats" in table_def.keys():
             for col in table_def["fix_cats"]:
-                df_this_table[col] = df_this_table[col].replace(table_def["fix_cats"][col])
+                df_this_table[col] = df_this_table[col].replace(
+                    table_def["fix_cats"][col]
+                )
 
         # fix rows
         for col in table_def["rows_to_fix"].keys():
             for n_rows in table_def["rows_to_fix"][col].keys():
                 print(f"Fixing {col}, {n_rows}")
                 # replace line breaks, long hyphens, double, and triple spaces in category names
-                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("\n", " ")
-                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("   ", " ")
-                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("  ", " ")
-                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("-", "-")
-                df_this_table = fix_rows(df_this_table,
-                                         table_def["rows_to_fix"][col][n_rows], col, n_rows)
+                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace(
+                    "\n", " "
+                )
+                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace(
+                    "   ", " "
+                )
+                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace(
+                    "  ", " "
+                )
+                df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace(
+                    "-", "-"
+                )
+                df_this_table = fix_rows(
+                    df_this_table, table_def["rows_to_fix"][col][n_rows], col, n_rows
+                )
 
         # split by entity
         if "gas_splitting" in table_def.keys():
-            col_entity = [''] * len(df_this_table)
-            last_entity = ''
+            col_entity = [""] * len(df_this_table)
+            last_entity = ""
             for i in range(0, len(df_this_table)):
                 current_header = df_this_table[table_def["col_wide_kwd"]].iloc[i]
                 if current_header in table_def["gas_splitting"].keys():
@@ -191,8 +217,12 @@ if __name__ == "__main__":
             table_def["index_cols"].append("entity")
 
         # make a wide table
-        df_this_table = make_wide_table(df_this_table, table_def["wide_keyword"],
-                                        table_def["col_wide_kwd"], table_def["index_cols"])
+        df_this_table = make_wide_table(
+            df_this_table,
+            table_def["wide_keyword"],
+            table_def["col_wide_kwd"],
+            table_def["index_cols"],
+        )
 
         if "drop_rows" in table_def.keys():
             df_this_table = df_this_table.drop(table_def["drop_rows"], axis=0)
@@ -207,11 +237,12 @@ if __name__ == "__main__":
         # add unit
         df_this_table["unit"] = table_def["unit"]
 
-        df_this_table = df_this_table.rename({table_def["index_cols"][0]: "orig_cat_name"},
-                                             axis=1)
+        df_this_table = df_this_table.rename(
+            {table_def["index_cols"][0]: "orig_cat_name"}, axis=1
+        )
 
         # print(table_def["index_cols"][0])
-        # print(df_this_table.columns.values)
+        # print(df_this_table.columns.to_numpy())
 
         # make a copy of the categories row
         df_this_table["category"] = df_this_table["orig_cat_name"]
@@ -219,25 +250,30 @@ if __name__ == "__main__":
         # replace cat names by codes in col "category"
         # first the manual replacements
         df_this_table["category"] = df_this_table["category"].replace(
-            table_def["cat_codes_manual"])
+            table_def["cat_codes_manual"]
+        )
+
         # then the regex replacements
-        def repl(m):
-            return m.group('code')
-        df_this_table["category"] = df_this_table["category"].str.replace(cat_code_regexp,
-                                                                          repl, regex=True)
+        def repl(m):  # noqa: D103
+            return m.group("code")
+
+        df_this_table["category"] = df_this_table["category"].str.replace(
+            cat_code_regexp, repl, regex=True
+        )
 
         ### convert to PRIMAP2 IF
         # remove ','
-        time_format = '%Y'
+        time_format = "%Y"
         time_columns = [
             col
-            for col in df_this_table.columns.values
+            for col in df_this_table.columns.to_numpy()
             if matches_time_format(col, time_format)
         ]
 
         for col in time_columns:
-            df_this_table.loc[:, col] = df_this_table.loc[:, col].str.replace(',', '',
-                                                                              regex=False)
+            df_this_table.loc[:, col] = df_this_table.loc[:, col].str.replace(
+                ",", "", regex=False
+            )
 
         # drop orig_cat_name as it's not unique per category
         df_this_table = df_this_table.drop(columns="orig_cat_name")
@@ -254,7 +290,7 @@ if __name__ == "__main__":
             # coords_value_filling=coords_value_filling,
             # filter_remove=filter_remove,
             # filter_keep=filter_keep,
-            meta_data=meta_data
+            meta_data=meta_data,
         )
 
         this_table_pm2 = pm2.pm2io.from_interchange_format(df_this_table_if)
@@ -267,7 +303,6 @@ if __name__ == "__main__":
     # convert back to IF to have units in the fixed format
     data_if = data_pm2.pr.to_interchange_format()
 
-
     # ###
     # convert to IPCC2006 categories
     # ###
@@ -275,31 +310,36 @@ if __name__ == "__main__":
     data_if_2006
     # filter_data(data_if_2006, filter_remove=filter_remove_IPCC2006)
     data_if_2006 = data_if_2006.replace(
-        {'category (IPCC2006_1996_Taiwan_Inv)': cat_mapping})
+        {"category (IPCC2006_1996_Taiwan_Inv)": cat_mapping}
+    )
 
     # rename the category col
-    data_if_2006.rename(
-        columns={'category (IPCC2006_1996_Taiwan_Inv)': 'category (IPCC2006_PRIMAP)'},
-        inplace=True)
-    data_if_2006.attrs['attrs']['cat'] = 'category (IPCC2006_PRIMAP)'
-    data_if_2006.attrs['dimensions']['*'] = [
-        'category (IPCC2006_PRIMAP)' if item == 'category (IPCC2006_1996_Taiwan_Inv)'
-        else item for item in data_if_2006.attrs['dimensions']['*']]
+    data_if_2006 = data_if_2006.rename(
+        columns={"category (IPCC2006_1996_Taiwan_Inv)": "category (IPCC2006_PRIMAP)"}
+    )
+    data_if_2006.attrs["attrs"]["cat"] = "category (IPCC2006_PRIMAP)"
+    data_if_2006.attrs["dimensions"]["*"] = [
+        "category (IPCC2006_PRIMAP)"
+        if item == "category (IPCC2006_1996_Taiwan_Inv)"
+        else item
+        for item in data_if_2006.attrs["dimensions"]["*"]
+    ]
 
     # aggregate categories
     for cat_to_agg in aggregate_cats:
         mask = data_if_2006["category (IPCC2006_PRIMAP)"].isin(
-            aggregate_cats[cat_to_agg]["sources"])
+            aggregate_cats[cat_to_agg]["sources"]
+        )
         df_test = data_if_2006[mask]
 
         if len(df_test) > 0:
             print(f"Aggregating category {cat_to_agg}")
             df_combine = df_test.copy(deep=True)
 
-            time_format = '%Y'
+            time_format = "%Y"
             time_columns = [
                 col
-                for col in df_combine.columns.values
+                for col in df_combine.columns.to_numpy()
                 if matches_time_format(col, time_format)
             ]
 
@@ -307,8 +347,15 @@ if __name__ == "__main__":
                 df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
 
             df_combine = df_combine.groupby(
-                by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                    'unit']).sum(min_count=1)
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
             # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
@@ -324,19 +371,21 @@ if __name__ == "__main__":
     # aggregate categories
     for cat_to_agg in aggregate_cats_NF3_PFC:
         mask = data_if_2006["category (IPCC2006_PRIMAP)"].isin(
-            aggregate_cats_NF3_PFC[cat_to_agg]["sources"])
+            aggregate_cats_NF3_PFC[cat_to_agg]["sources"]
+        )
         mask_gas = data_if_2006["entity"].isin(
-            [f"NF3 ({gwp_to_use})", f"PFCS ({gwp_to_use})"])
+            [f"NF3 ({gwp_to_use})", f"PFCS ({gwp_to_use})"]
+        )
         df_test = data_if_2006[mask & mask_gas]
 
         if len(df_test) > 0:
             print(f"Aggregating category {cat_to_agg}")
             df_combine = df_test.copy(deep=True)
 
-            time_format = '%Y'
+            time_format = "%Y"
             time_columns = [
                 col
-                for col in df_combine.columns.values
+                for col in df_combine.columns.to_numpy()
                 if matches_time_format(col, time_format)
             ]
 
@@ -344,8 +393,15 @@ if __name__ == "__main__":
                 df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
 
             df_combine = df_combine.groupby(
-                by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                    'unit']).sum(min_count=1)
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
             # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
@@ -362,7 +418,7 @@ if __name__ == "__main__":
     data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if_2006)
 
     # convert to mass units from CO2eq
-    entities_to_convert = ['N2O', 'SF6', 'CH4', 'NF3']
+    entities_to_convert = ["N2O", "SF6", "CH4", "NF3"]
     entities_to_convert = [f"{entity} ({gwp_to_use})" for entity in entities_to_convert]
 
     for entity in entities_to_convert:
@@ -382,19 +438,23 @@ if __name__ == "__main__":
     # save data
     # ###
     # data in original categories
-    pm2.pm2io.write_interchange_format(output_folder /
-                                       (output_filename + coords_terminologies["category"]),
-                                       data_if)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]), data_if
+    )
     encoding = {var: compression for var in data_pm2.data_vars}
-    data_pm2.pr.to_netcdf((output_folder /
-                          (output_filename + coords_terminologies[
-                              "category"])).with_suffix(".nc"),
-                          encoding=encoding)
+    data_pm2.pr.to_netcdf(
+        (
+            output_folder / (output_filename + coords_terminologies["category"])
+        ).with_suffix(".nc"),
+        encoding=encoding,
+    )
 
     # data in 2006 categories
-    pm2.pm2io.write_interchange_format(output_folder /
-                                       (output_filename + "IPCC2006_PRIMAP"), data_if_2006)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + "IPCC2006_PRIMAP"), data_if_2006
+    )
     encoding = {var: compression for var in data_pm2_2006.data_vars}
-    data_pm2_2006.pr.to_netcdf((output_folder /
-                                (output_filename + "IPCC2006_PRIMAP")).with_suffix(".nc"),
-                               encoding=encoding)
+    data_pm2_2006.pr.to_netcdf(
+        (output_folder / (output_filename + "IPCC2006_PRIMAP")).with_suffix(".nc"),
+        encoding=encoding,
+    )

@@ -1,12 +1,17 @@
-# read Singapore fifth BUR from pdf
+"""
+Read Peru's BUR3 from pdf
 
+This script reads data from Peru's BUR3
+Data are read from pdf using camelot
+
+"""
 
 import locale
 
 import camelot
 import pandas as pd
 import primap2 as pm2
-from .config_per_bur3 import (
+from config_per_bur3 import (
     cat_code_regexp,
     cat_codes_manual,
     cat_conversion,
@@ -103,20 +108,22 @@ if __name__ == "__main__":
 
             # drop cols if necessary
             if "drop_cols" in table_defs[page].keys():
-                # print(df_current.columns.values)
+                # print(df_current.columns.to_numpy())
                 df_current = df_current.drop(columns=table_defs[page]["drop_cols"])
             elif "drop_cols" in table_def_templates[table_on_page].keys():
                 df_current = df_current.drop(columns=table_defs[page]["drop_cols"])
 
             # rename category column
-            df_current.rename(
-                columns={table_defs[page]["category_col"]: index_cols[0]}, inplace=True
+            df_current = df_current.rename(
+                columns={table_defs[page]["category_col"]: index_cols[0]}
             )
 
             # replace double \n
             df_current[index_cols[0]] = df_current[index_cols[0]].str.replace("\n", " ")
             # replace double and triple spaces
-            df_current[index_cols[0]] = df_current[index_cols[0]].str.replace("   ", " ")
+            df_current[index_cols[0]] = df_current[index_cols[0]].str.replace(
+                "   ", " "
+            )
             df_current[index_cols[0]] = df_current[index_cols[0]].str.replace("  ", " ")
 
             # fix the split rows
@@ -137,7 +144,7 @@ if __name__ == "__main__":
             # set index
             # df_current = df_current.set_index(index_cols)
             # strip trailing and leading  and remove "^"
-            for col in df_current.columns.values:
+            for col in df_current.columns.to_numpy():
                 df_current[col] = df_current[col].str.strip()
                 df_current[col] = df_current[col].str.replace("^", "")
 
@@ -147,9 +154,9 @@ if __name__ == "__main__":
                 df_this_page = df_current.copy(deep=True)
             else:
                 # find intersecting cols
-                cols_this_page = df_this_page.columns.values
+                cols_this_page = df_this_page.columns.to_numpy()
                 # print(f"cols this page: {cols_this_page}")
-                cols_current = df_current.columns.values
+                cols_current = df_current.columns.to_numpy()
                 # print(f"cols current: {cols_current}")
                 cols_both = list(set(cols_this_page).intersection(set(cols_current)))
                 # print(f"cols both: {cols_both}")
@@ -179,7 +186,9 @@ if __name__ == "__main__":
         # drop the rows with memo items etc
         for cat in cats_remove:
             df_this_page_long = df_this_page_long.drop(
-                df_this_page_long.loc[df_this_page_long.loc[:, index_cols[0]] == cat].index
+                df_this_page_long.loc[
+                    df_this_page_long.loc[:, index_cols[0]] == cat
+                ].index
             )
 
         # make a copy of the categories row
@@ -187,12 +196,14 @@ if __name__ == "__main__":
 
         # replace cat names by codes in col "Categories"
         # first the manual replacements
-        df_this_page_long.loc[:, "category"] = df_this_page_long.loc[:, "category"].replace(
-            cat_codes_manual
-        )
+        df_this_page_long.loc[:, "category"] = df_this_page_long.loc[
+            :, "category"
+        ].replace(cat_codes_manual)
+
         # then the regex replacements
-        def repl(m):
+        def repl(m):  # noqa: D103
             return convert_ipcc_code_primap_to_primap2("IPC" + m.group("code"))
+
         df_this_page_long.loc[:, "category"] = df_this_page_long.loc[
             :, "category"
         ].str.replace(cat_code_regexp, repl, regex=True)
@@ -211,8 +222,10 @@ if __name__ == "__main__":
             ".", ""
         )
         pat = r"^(?P<first>[0-9\.,]*),(?P<last>[0-9\.,]*)$"
-        def repl(m):
+
+        def repl(m):  # noqa: D103
             return f"{m.group('first')}.{m.group('last')}"
+
         df_this_page_long.loc[:, "data"] = df_this_page_long.loc[:, "data"].str.replace(
             pat, repl, regex=True
         )
@@ -265,11 +278,10 @@ if __name__ == "__main__":
 
     encoding = {var: compression for var in data_pm2.data_vars}
     data_pm2.pr.to_netcdf(
-        output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+        output_folder
+        / (output_filename + coords_terminologies["category"] + "_raw.nc"),
         encoding=encoding,
     )
-
-    #### continue here
 
     # ###
     # ## process the data
@@ -288,7 +300,7 @@ if __name__ == "__main__":
     )
 
     # adapt source and metadata
-    current_source = data_proc_pm2.coords["source"].values[0]
+    current_source = data_proc_pm2.coords["source"].to_numpy()[0]
     data_temp = data_proc_pm2.pr.loc[{"source": current_source}]
     data_proc_pm2 = data_proc_pm2.pr.set("source", "BUR_NIR", data_temp)
 
@@ -305,6 +317,7 @@ if __name__ == "__main__":
 
     encoding = {var: compression for var in data_proc_pm2.data_vars}
     data_proc_pm2.pr.to_netcdf(
-        output_folder / (output_filename + coords_terminologies_2006["category"] + ".nc"),
+        output_folder
+        / (output_filename + coords_terminologies_2006["category"] + ".nc"),
         encoding=encoding,
     )

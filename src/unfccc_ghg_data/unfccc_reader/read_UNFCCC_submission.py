@@ -1,28 +1,34 @@
-# this script takes submission and country as input (from doit) and
-# runs the appropriate script to extract the submission data
+"""
+wrapper to read UNFCCC submission
+
+Take submission and country as input (from doit) and
+run the appropriate script to extract the submission data
+
+"""
+
 
 import argparse
 
 import datalad.api
-from .get_submissions_info import (get_possible_inputs, get_possible_outputs)
 
 from unfccc_ghg_data.helper import get_code_file, root_path
+
+from .get_submissions_info import get_possible_inputs, get_possible_outputs
 
 if __name__ == "__main__":
     # Find the right function and possible input and output files and
     # read the data using datalad run.
     parser = argparse.ArgumentParser()
-    parser.add_argument('--country', help='Country name or code')
-    parser.add_argument('--submission', help='Submission to read')
+    parser.add_argument("--country", help="Country name or code")
+    parser.add_argument("--submission", help="Submission to read")
 
     args = parser.parse_args()
 
     country = args.country
     submission = args.submission
 
-
     print(f"Attempting to extract data for {submission} from {country}.")
-    print("#"*80)
+    print("#" * 80)
     print("")
 
     # get the correct script
@@ -35,8 +41,10 @@ if __name__ == "__main__":
         # get possible input files
         input_files = get_possible_inputs(country, submission)
         if not input_files:
-            print(f"No possible input files found for {country}, {submission}. "
-                  f"Something might be wrong here.")
+            print(
+                f"No possible input files found for {country}, {submission}. "
+                f"Something might be wrong here."
+            )
         else:
             print("Found the following input_files:")
             for file in input_files:
@@ -51,8 +59,10 @@ if __name__ == "__main__":
         # get possible output files
         output_files = get_possible_outputs(country, submission)
         if not output_files:
-            print(f"No possible output files found for {country}, {submission}. "
-                  f"This is either the first run or something is wrong.")
+            print(
+                f"No possible output files found for {country}, {submission}. "
+                f"This is either the first run or something is wrong."
+            )
         else:
             print("Found the following output_files:")
             for file in output_files:
@@ -74,6 +84,7 @@ if __name__ == "__main__":
     else:
         # no code found.
         print(f"No code found to read {submission} from {country}")
-        print(f"Use 'doit country_info country={country} to get "
-              f"a list of available submissions and datasets.")
-
+        print(
+            f"Use 'doit country_info country={country} to get "
+            f"a list of available submissions and datasets."
+        )

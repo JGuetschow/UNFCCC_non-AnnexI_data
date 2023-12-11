@@ -1,12 +1,18 @@
-# this script reads data from Korea's 2021 national inventory which is underlying BUR4
-# Data is read from the xlsx file
+"""
+Read Korea's 2021 inventory from xlsx
+
+This script reads data from Korea's 2021 national inventory
+Data are read from the xlsx file
+
+"""
+
 
 import os
 import sys
 
 import pandas as pd
 import primap2 as pm2
-from .config_kor_bur4 import (
+from config_kor_bur4 import (
     aggregate_after_mapping,
     aggregate_before_mapping,
     cat_codes,
@@ -24,42 +30,43 @@ if __name__ == "__main__":
     # ###
     # configuration
     # ###
-    input_folder = downloaded_data_path / 'non-UNFCCC' / 'Republic_of_Korea' / \
-                   '2021-Inventory'
-    output_folder = extracted_data_path / 'non-UNFCCC' / 'Republic_of_Korea'
+    input_folder = (
+        downloaded_data_path / "non-UNFCCC" / "Republic_of_Korea" / "2021-Inventory"
+    )
+    output_folder = extracted_data_path / "non-UNFCCC" / "Republic_of_Korea"
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = 'KOR_2021-Inventory_2021_'
+    output_filename = "KOR_2021-Inventory_2021_"
 
-    inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2019).xlsx'
+    inventory_file = "Republic_of_Korea_National_GHG_Inventory_(1990_2019).xlsx"
     years_to_read = range(1990, 2019 + 1)
 
-    sheets_to_read = ['온실가스', 'CO2', 'CH4', 'N2O', 'HFCs', 'PFCs', 'SF6']
+    sheets_to_read = ["온실가스", "CO2", "CH4", "N2O", "HFCs", "PFCs", "SF6"]
     cols_to_read = range(1, 2019 - 1990 + 3)
 
     # columns for category code and original category name
-    index_cols = ['분야·부문/연도']
+    index_cols = ["분야·부문/연도"]
 
     sheet_metadata = {
-        'entity': {
-            '온실가스': 'KYOTOGHG (SARGWP100)',
-            'CO2': 'CO2',
-            'CH4': 'CH4 (SARGWP100)',
-            'N2O': 'N2O (SARGWP100)',
-            'HFCs': 'HFCS (SARGWP100)',
-            'PFCs': 'PFCS (SARGWP100)',
-            'SF6': 'SF6 (SARGWP100)',
+        "entity": {
+            "온실가스": "KYOTOGHG (SARGWP100)",
+            "CO2": "CO2",
+            "CH4": "CH4 (SARGWP100)",
+            "N2O": "N2O (SARGWP100)",
+            "HFCs": "HFCS (SARGWP100)",
+            "PFCs": "PFCS (SARGWP100)",
+            "SF6": "SF6 (SARGWP100)",
         },
-        'unit': {
-            '온실가스': 'Gg CO2 / yr',
-            'CO2': 'Gg CO2 / yr',
-            'CH4': 'Gg CO2 / yr',
-            'N2O': 'Gg CO2 / yr',
-            'HFCs': 'Gg CO2 / yr',
-            'PFCs': 'Gg CO2 / yr',
-            'SF6': 'Gg CO2 / yr',
-        }
+        "unit": {
+            "온실가스": "Gg CO2 / yr",
+            "CO2": "Gg CO2 / yr",
+            "CH4": "Gg CO2 / yr",
+            "N2O": "Gg CO2 / yr",
+            "HFCs": "Gg CO2 / yr",
+            "PFCs": "Gg CO2 / yr",
+            "SF6": "Gg CO2 / yr",
+        },
     }
 
     # definitions for conversion to interchange format
@@ -73,7 +80,7 @@ if __name__ == "__main__":
 
     add_coords_cols = {
         "orig_cat_name": ["orig_cat_name", "category"],
-        "cat_name_translation": ["cat_name_translation", "category"]
+        "cat_name_translation": ["cat_name_translation", "category"],
     }
 
     coords_terminologies = {
@@ -99,12 +106,20 @@ if __name__ == "__main__":
         "f1": {
             "category (IPCC1996_KOR_INV)": "\\IGNORE",
         },
-        "livestock": { # temp until double cat name problem is solved
+        "livestock": {  # temp until double cat name problem is solved
             "category (IPCC1996_KOR_INV)": [
-                '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
-                '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
+                "4.B.1",
+                "4.B.10",
+                "4.B.2",
+                "4.B.3",
+                "4.B.4",
+                "4.B.5",
+                "4.B.6",
+                "4.B.7",
+                "4.B.8",
+                "4.B.9",
             ]
-        }
+        },
     }
 
     filter_keep = {}
@@ -115,7 +130,8 @@ if __name__ == "__main__":
         "contact": "mail@johannes-guetschow.de",
         "title": "Republic of Korea: National Greenhouse Gas Inventory Report 2021",
         "comment": "Read fom xlsx file by Johannes Gütschow",
-        "institution": "Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory and Research Center",
+        "institution": "Republic of Korea, Ministry of Environment, "
+        "Greenhouse Gas Inventory and Research Center",
     }
 
     cols_for_space_stripping = []
@@ -135,11 +151,17 @@ if __name__ == "__main__":
 
     for sheet in sheets_to_read:
         # read current sheet (one sheet per gas)
-        df_current = pd.read_excel(input_folder / inventory_file, sheet_name=sheet, skiprows=3, nrows=146, usecols=cols_to_read,
-                                   engine="openpyxl")
+        df_current = pd.read_excel(
+            input_folder / inventory_file,
+            sheet_name=sheet,
+            skiprows=3,
+            nrows=146,
+            usecols=cols_to_read,
+            engine="openpyxl",
+        )
         # drop all rows where the index cols (category code and name) are both NaN
         # as without one of them there is no category information
-        df_current.dropna(axis=0, how='all', subset=index_cols, inplace=True)
+        df_current = df_current.dropna(axis=0, how="all", subset=index_cols)
         # set index. necessary for the stack operation in the conversion to long format
         # df_current = df_current.set_index(index_cols)
         # add columns
@@ -153,7 +175,7 @@ if __name__ == "__main__":
 
     df_all = df_all.reset_index(drop=True)
     # rename category col because filtering produces problems with korean col names
-    df_all.rename(columns={"분야·부문/연도": "category"}, inplace=True)
+    df_all = df_all.rename(columns={"분야·부문/연도": "category"})
 
     # create copies of category col for further processing
     df_all["orig_cat_name"] = df_all["category"]
@@ -172,20 +194,22 @@ if __name__ == "__main__":
         coords_defaults=coords_defaults,
         coords_terminologies=coords_terminologies,
         coords_value_mapping=coords_value_mapping,
-        #coords_value_filling=coords_value_filling,
-        #filter_remove=filter_remove,
-        #filter_keep=filter_keep,
+        # coords_value_filling=coords_value_filling,
+        # filter_remove=filter_remove,
+        # filter_keep=filter_keep,
         meta_data=meta_data,
         convert_str=True,
-    copy_df=True, # we need the unchanged DF for the conversion step
-        )
+        copy_df=True,  # we need the unchanged DF for the conversion step
+    )
 
     filter_data(data_if, filter_remove=filter_remove)
 
-    #conversion to PRIMAP2 native format
+    # conversion to PRIMAP2 native format
     data_pm2 = pm2.pm2io.from_interchange_format(data_if)
     # convert back to IF to have units in the fixed format
-    data_pm2 = data_pm2.reset_coords(["orig_cat_name", "cat_name_translation"], drop=True)
+    data_pm2 = data_pm2.reset_coords(
+        ["orig_cat_name", "cat_name_translation"], drop=True
+    )
     data_if = data_pm2.pr.to_interchange_format()
 
     # ###
@@ -193,17 +217,20 @@ if __name__ == "__main__":
     # ###
     if not output_folder.exists():
         output_folder.mkdir()
-    #pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]), data_if
+    )
 
     data_pm2 = pm2.pm2io.from_interchange_format(data_if)
     encoding = {var: compression for var in data_pm2.data_vars}
-    #data_pm2.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
+    data_pm2.pr.to_netcdf(
+        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        encoding=encoding,
+    )
 
     # ###
     # conversion to ipcc 2006 categories
     # ###
-
-
     data_if_2006 = pm2.pm2io.convert_wide_dataframe_if(
         df_all,
         coords_cols=coords_cols,
@@ -216,21 +243,23 @@ if __name__ == "__main__":
         copy_df=True,  # don't mess up the dataframe when testing
     )
 
-    cat_label = 'category (' + coords_terminologies_2006["category"] + ')'
+    cat_label = "category (" + coords_terminologies_2006["category"] + ")"
     # agg before mapping
 
     for cat_to_agg in aggregate_before_mapping:
-        mask = data_if_2006[cat_label].isin(aggregate_before_mapping[cat_to_agg]["sources"])
+        mask = data_if_2006[cat_label].isin(
+            aggregate_before_mapping[cat_to_agg]["sources"]
+        )
         df_test = data_if_2006[mask]
 
         if len(df_test) > 0:
             print(f"Aggregating category {cat_to_agg}")
             df_combine = df_test.copy(deep=True)
 
-            time_format = '%Y'
+            time_format = "%Y"
             time_columns = [
                 col
-                for col in df_combine.columns.values
+                for col in df_combine.columns.to_numpy()
                 if matches_time_format(col, time_format)
             ]
 
@@ -238,20 +267,25 @@ if __name__ == "__main__":
                 df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
 
             df_combine = df_combine.groupby(
-                by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                    'unit']).sum()
-
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum()
 
             df_combine.insert(0, cat_label, cat_to_agg)
-            df_combine.insert(1, "orig_cat_name",
-                              aggregate_before_mapping[cat_to_agg]["name"])
+            df_combine.insert(
+                1, "orig_cat_name", aggregate_before_mapping[cat_to_agg]["name"]
+            )
 
             df_combine = df_combine.reset_index()
 
             if cat_to_agg in aggregate_before_mapping[cat_to_agg]["sources"]:
-                filter_this_cat = {
-                    "f": {cat_label: cat_to_agg}
-                }
+                filter_this_cat = {"f": {cat_label: cat_to_agg}}
                 filter_data(data_if_2006, filter_remove=filter_this_cat)
 
             data_if_2006 = pd.concat([data_if_2006, df_combine])
@@ -268,17 +302,19 @@ if __name__ == "__main__":
     # agg after mapping
 
     for cat_to_agg in aggregate_after_mapping:
-        mask = data_if_2006[cat_label].isin(aggregate_after_mapping[cat_to_agg]["sources"])
+        mask = data_if_2006[cat_label].isin(
+            aggregate_after_mapping[cat_to_agg]["sources"]
+        )
         df_test = data_if_2006[mask]
 
         if len(df_test) > 0:
             print(f"Aggregating category {cat_to_agg}")
             df_combine = df_test.copy(deep=True)
 
-            time_format = '%Y'
+            time_format = "%Y"
             time_columns = [
                 col
-                for col in df_combine.columns.values
+                for col in df_combine.columns.to_numpy()
                 if matches_time_format(col, time_format)
             ]
 
@@ -286,36 +322,49 @@ if __name__ == "__main__":
                 df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
 
             df_combine = df_combine.groupby(
-                by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                    'unit']).sum()
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum()
 
             df_combine.insert(0, cat_label, cat_to_agg)
-            df_combine.insert(1, "orig_cat_name",
-                              aggregate_after_mapping[cat_to_agg]["name"])
+            df_combine.insert(
+                1, "orig_cat_name", aggregate_after_mapping[cat_to_agg]["name"]
+            )
 
             df_combine = df_combine.reset_index()
 
             if cat_to_agg in aggregate_after_mapping[cat_to_agg]["sources"]:
-                filter_this_cat = {
-                    "f": {cat_label: cat_to_agg}
-                }
+                filter_this_cat = {"f": {cat_label: cat_to_agg}}
                 filter_data(data_if_2006, filter_remove=filter_this_cat)
 
             data_if_2006 = pd.concat([data_if_2006, df_combine])
         else:
             print(f"no data to aggregate category {cat_to_agg}")
 
-
-    #conversion to PRIMAP2 native format
+    # conversion to PRIMAP2 native format
     data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if_2006)
     # convert back to IF to have units in the fixed format
-    data_pm2_2006 = data_pm2_2006.reset_coords(["orig_cat_name", "cat_name_translation"],
-                                           drop=True)
+    data_pm2_2006 = data_pm2_2006.reset_coords(
+        ["orig_cat_name", "cat_name_translation"], drop=True
+    )
     data_if_2006 = data_pm2_2006.pr.to_interchange_format()
     # save IPCC2006 data
 
     filter_data(data_if_2006, filter_remove=filter_remove_after_agg)
-    pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies_2006["category"]), data_if_2006)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies_2006["category"]),
+        data_if_2006,
+    )
 
     encoding = {var: compression for var in data_pm2_2006.data_vars}
-    data_pm2_2006.pr.to_netcdf(output_folder / (output_filename + coords_terminologies_2006["category"] + ".nc"), encoding=encoding)
+    data_pm2_2006.pr.to_netcdf(
+        output_folder
+        / (output_filename + coords_terminologies_2006["category"] + ".nc"),
+        encoding=encoding,
+    )

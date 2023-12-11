@@ -22,6 +22,7 @@ opencv-python = "^4.8.1.78"
 unfccc-di-api = "^4.0.0"
 dask = "^2023.12.0"
 sphinx-exec-code = "^0.10"
+ghostscript = "^0.7"
 
 [tool.poetry.extras]
 plots = ["matplotlib"]

@@ -1,41 +1,41 @@
-# Montenegro BUR 3
-# Code to read the emissions inventory contained in Montenegro's third BUR from pdf
-# and convert into PRIMAP2 format
+"""
+Read Montenegro's BUR3 from pdf
+
+This script reads data from Montenegro's BUR3
+Data are read from pdf using camelot
+
+"""
+
 
 # ###
 # imports
 # ###
 import copy
 import re
-from pathlib import Path
 
 import camelot
 import pandas as pd
 import primap2 as pm2
-from .config_mne_bur3 import aggregate_cats, cat_mapping, drop_data
+from config_mne_bur3 import aggregate_cats, cat_mapping, drop_data
 from primap2.pm2io._data_reading import matches_time_format
+
+from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
 
 if __name__ == "__main__":
     # ###
     # configuration
     # ###
 
-    # folders and files
-    root_path = Path(__file__).parents[3].absolute()
-    root_path = root_path.resolve()
-    downloaded_data_path = root_path / "downloaded_data"
-    extracted_data_path = root_path / "extracted_data"
-
-    input_folder = downloaded_data_path / 'UNFCCC' / 'Montenegro' / 'BUR3'
-    output_folder = extracted_data_path / 'UNFCCC' / 'Montenegro'
-    output_filename = 'MNE_BUR3_2022_'
+    input_folder = downloaded_data_path / "UNFCCC" / "Montenegro" / "BUR3"
+    output_folder = extracted_data_path / "UNFCCC" / "Montenegro"
+    output_filename = "MNE_BUR3_2022_"
     compression = dict(zlib=True, complevel=9)
 
-    inventory_file_pdf = 'NIR-2021_MNE_Finalversion.pdf'
+    inventory_file_pdf = "NIR-2021_MNE_Finalversion.pdf"
 
     # reading and processing
     years_to_read = range(1990, 2018 + 1)
-    pages_to_read = range(535,583)
+    pages_to_read = range(535, 583)
 
     pos_entity = [0, 0]
     cat_code_col = 0
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     regex_unit = r"\((.*)\)"
     regex_entity = r"^(.*)\s\("
 
-    gwp_to_use = 'AR4GWP100'
+    gwp_to_use = "AR4GWP100"
 
     # conversion to PRIMAP2 format
 
@@ -61,28 +61,28 @@ if __name__ == "__main__":
     }
 
     coords_value_mapping = {
-        'unit': 'PRIMAP1',
-        'entity': {
+        "unit": "PRIMAP1",
+        "entity": {
             f"GHG ({gwp_to_use})": f"KYOTOGHG ({gwp_to_use})",
             f"HFC ({gwp_to_use})": f"HFCS ({gwp_to_use})",
             f"PFC ({gwp_to_use})": f"PFCS ({gwp_to_use})",
         },
-        'category': {
-            'Total national GHG emissions (with LULUCF)': '0',
-            'Total national GHG emissions (without LULUCF)': 'M.0.EL',
-            'International Bunkers': 'M.BK',
-            '1.A.3.a.i': 'M.BK.A',
-            '1.A.3.d.i': 'M.BK.M',
-            'CO2 from Biomass Combustion for Energy Production': 'M.BIO',
-            '6 Other': '6',
-            '2 H': '2.H',
+        "category": {
+            "Total national GHG emissions (with LULUCF)": "0",
+            "Total national GHG emissions (without LULUCF)": "M.0.EL",
+            "International Bunkers": "M.BK",
+            "1.A.3.a.i": "M.BK.A",
+            "1.A.3.d.i": "M.BK.M",
+            "CO2 from Biomass Combustion for Energy Production": "M.BIO",
+            "6 Other": "6",
+            "2 H": "2.H",
         },
     }
 
     coords_value_filling = {
         "category": {
             "orig_cat_name": {
-                'International Bunkers': 'M.BK',
+                "International Bunkers": "M.BK",
             },
         },
     }
@@ -103,7 +103,8 @@ if __name__ == "__main__":
         "references": "https://unfccc.int/documents/461972",
         "rights": "",
         "contact": "mail@johannes-guetschow.de",
-        "title": "Montenegro. Biennial update report (BUR). BUR 3. National inventory report.",
+        "title": "Montenegro. Biennial update report (BUR). "
+        "BUR 3. National inventory report.",
         "comment": "Read fom pdf file by Johannes Gütschow",
         "institution": "United Nations Framework Convention on Climate Change (UNFCCC)",
     }
@@ -111,7 +112,11 @@ if __name__ == "__main__":
     # ###
     # Read all time series table from pdf
     # ###
-    tables = camelot.read_pdf(str(input_folder / inventory_file_pdf), pages=','.join([str(page) for page in pages_to_read]), flavor='lattice')
+    tables = camelot.read_pdf(
+        str(input_folder / inventory_file_pdf),
+        pages=",".join([str(page) for page in pages_to_read]),
+        flavor="lattice",
+    )
 
     # ###
     # process tables and combine them using the pm2 pr.merge function
@@ -142,11 +147,14 @@ if __name__ == "__main__":
 
         # remove ',' in numbers
         years = df_current_table.columns[2:]
-        def repl(m):
+
+        def repl(m):  # noqa: D103
             return m.group("part1") + m.group("part2")
+
         for year in years:
             df_current_table.loc[:, year] = df_current_table.loc[:, year].str.replace(
-                '(?P<part1>[0-9]+),(?P<part2>[0-9\\.]+)$', repl, regex=True)
+                "(?P<part1>[0-9]+),(?P<part2>[0-9\\.]+)$", repl, regex=True
+            )
 
         # add entity and unit cols
         df_current_table["entity"] = entity
@@ -156,13 +164,15 @@ if __name__ == "__main__":
             to_drop = drop_data[i]
             if "cats" in to_drop.keys():
                 mask = df_current_table["category"].isin(to_drop["cats"])
-                df_current_table = df_current_table.drop(df_current_table[mask].index,
-                                                         axis=0)
+                df_current_table = df_current_table.drop(
+                    df_current_table[mask].index, axis=0
+                )
             if "years" in to_drop.keys():
                 df_current_table = df_current_table.drop(columns=to_drop["years"])
 
         df_current_table["category"] = df_current_table["category"].fillna(
-            value=df_current_table["orig_cat_name"])
+            value=df_current_table["orig_cat_name"]
+        )
 
         df_current_table = df_current_table.drop(columns="orig_cat_name")
 
@@ -191,7 +201,7 @@ if __name__ == "__main__":
     # ###
 
     # convert to mass units from CO2eq
-    entities_to_convert = ['N2O', 'SF6', 'CH4']
+    entities_to_convert = ["N2O", "SF6", "CH4"]
     entities_to_convert = [f"{entity} ({gwp_to_use})" for entity in entities_to_convert]
 
     # for entity in entities_to_convert:
@@ -215,21 +225,28 @@ if __name__ == "__main__":
 
     # map categories
     data_if_2006 = data_if_2006.replace(
-        {f"category ({coords_terminologies['category']})": cat_mapping})
+        {f"category ({coords_terminologies['category']})": cat_mapping}
+    )
     data_if_2006[f"category ({coords_terminologies['category']})"].unique()
 
     # rename the category col
-    data_if_2006.rename(columns={
-        f"category ({coords_terminologies['category']})": 'category (IPCC2006_PRIMAP)'},
-                        inplace=True)
-    data_if_2006.attrs['attrs']['cat'] = 'category (IPCC2006_PRIMAP)'
-    data_if_2006.attrs['dimensions']['*'] = [
-        'category (IPCC2006_PRIMAP)' if item == f"category ({coords_terminologies['category']})"
-        else item for item in data_if_2006.attrs['dimensions']['*']]
+    data_if_2006 = data_if_2006.rename(
+        columns={
+            f"category ({coords_terminologies['category']})": "category (IPCC2006_PRIMAP)"
+        }
+    )
+    data_if_2006.attrs["attrs"]["cat"] = "category (IPCC2006_PRIMAP)"
+    data_if_2006.attrs["dimensions"]["*"] = [
+        "category (IPCC2006_PRIMAP)"
+        if item == f"category ({coords_terminologies['category']})"
+        else item
+        for item in data_if_2006.attrs["dimensions"]["*"]
+    ]
     # aggregate categories
     for cat_to_agg in aggregate_cats:
         mask = data_if_2006["category (IPCC2006_PRIMAP)"].isin(
-            aggregate_cats[cat_to_agg]["sources"])
+            aggregate_cats[cat_to_agg]["sources"]
+        )
         df_test = data_if_2006[mask]
         # print(df_test)
 
@@ -237,10 +254,10 @@ if __name__ == "__main__":
             print(f"Aggregating category {cat_to_agg}")
             df_combine = df_test.copy(deep=True)
 
-            time_format = '%Y'
+            time_format = "%Y"
             time_columns = [
                 col
-                for col in df_combine.columns.values
+                for col in df_combine.columns.to_numpy()
                 if matches_time_format(col, time_format)
             ]
 
@@ -248,8 +265,15 @@ if __name__ == "__main__":
                 df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
 
             df_combine = df_combine.groupby(
-                by=['source', 'scenario (PRIMAP)', 'provenance', 'area (ISO3)', 'entity',
-                    'unit']).sum(min_count=1)
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
             # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
@@ -257,7 +281,7 @@ if __name__ == "__main__":
 
             df_combine = df_combine.reset_index()
 
-            data_if_2006 = pd.concat([data_if_2006, df_combine], axis=0, join='outer')
+            data_if_2006 = pd.concat([data_if_2006, df_combine], axis=0, join="outer")
             data_if_2006 = data_if_2006.reset_index(drop=True)
         else:
             print(f"no data to aggregate category {cat_to_agg}")
@@ -268,7 +292,6 @@ if __name__ == "__main__":
     # convert back to IF to have units in the fixed format
     data_if_2006 = data_pm2_2006.pr.to_interchange_format()
 
-
     # ###
     # save data to IF and native format
     # ###
@@ -276,13 +299,22 @@ if __name__ == "__main__":
         output_folder.mkdir()
 
     # data in original categories
-    pm2.pm2io.write_interchange_format(output_folder / (output_filename + coords_terminologies["category"]), data_if)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]), data_if
+    )
 
     encoding = {var: compression for var in data_all.data_vars}
-    data_all.pr.to_netcdf(output_folder / (output_filename + coords_terminologies["category"] + ".nc"), encoding=encoding)
+    data_all.pr.to_netcdf(
+        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        encoding=encoding,
+    )
 
     # data in 2006 categories
-    pm2.pm2io.write_interchange_format(output_folder / (output_filename + "IPCC2006_PRIMAP"), data_if_2006)
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + "IPCC2006_PRIMAP"), data_if_2006
+    )
 
     encoding = {var: compression for var in data_pm2_2006.data_vars}
-    data_pm2_2006.pr.to_netcdf(output_folder / (output_filename + "IPCC2006_PRIMAP" + ".nc"), encoding=encoding)
+    data_pm2_2006.pr.to_netcdf(
+        output_folder / (output_filename + "IPCC2006_PRIMAP" + ".nc"), encoding=encoding
+    )

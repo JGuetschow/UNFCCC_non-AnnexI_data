@@ -40,6 +40,10 @@ black:  ## format the code using black
 ruff-fixes:  ## fix the code using ruff
 	poetry run ruff src tests scripts docs/source/conf.py docs/source/notebooks/*.py --fix
 
+.PHONY: ruff-fixes-current
+ruff-fixes-current:  ## fix the code using ruff
+	poetry run ruff src/unfccc_ghg_data/unfccc_reader --fix
+
 
 .PHONY: test
 test:  ## run the tests
