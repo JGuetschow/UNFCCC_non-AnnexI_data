@@ -570,7 +570,8 @@ di_processing_templates = {
         'DI2023-05-24': {  # remove 2007, seems to have summed sectors (Agri and LULUCF)
             # and missing sectors (e.g. 1,2 for CH4, N2O), Agri. burning (4.E,
             # 4.F) missing for 2008-2017
-            'remove_years': ['2007'],
+            # 1994 energy sector is not consistent with other years
+            'remove_years': ['1994', '2007'],
             'basket_copy': {
                 'GWPs_to_add': ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
                 'entities': ["UnspMixOfHFCs"],
