@@ -1,0 +1,1170 @@
+# TODO! delete this if env variable is set correctly
+# set environment variable (only for jupyter notebook)
+import os
+os.environ["UNFCCC_GHG_ROOT_PATH"] = "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data"
+
+import camelot
+import primap2 as pm2
+import pandas as pd
+import numpy as np
+import re
+from datetime import date
+import xarray as xr
+from pathlib import Path
+import warnings
+from UNFCCC_GHG_data.helper import process_data_for_country
+#warnings.filterwarnings("ignore")
+
+from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
+
+# ###
+# configuration
+# ###
+
+input_folder = downloaded_data_path / 'UNFCCC' / 'Guinea' / 'BUR1'
+output_folder = extracted_data_path / 'UNFCCC' / 'Guinea'
+if not output_folder.exists():
+    output_folder.mkdir()
+
+pdf_file = "Rapport_IGES-Guinee-BUR1_VF.pdf"
+output_filename = 'GIN_BUR1_2023_'
+compression = dict(zlib=True, complevel=9)
+
+# primap2 format conversion
+coords_cols = {
+    "category": "category",
+    "entity": "entity",
+    "unit": "unit",
+}
+
+coords_defaults = {
+    "source": "GIN-GHG-Inventory",
+    "provenance": "measured",
+    "area": "GIN",
+    "scenario": "BUR1",
+}
+
+coords_terminologies = {
+    "area": "ISO3",
+    # TODO check if this is correct
+    "category": "IPCC1996_2006_GIN_Inv",
+    "scenario": "PRIMAP",
+}
+
+# gwp conversion is mentioned on page 20 in the report
+gwp_to_use = "AR4GWP100"
+coords_value_mapping = {
+    'main' : {
+        "unit": "PRIMAP1",
+        "category": "PRIMAP1",
+        "entity": {
+            'HFCs': f"HFCS ({gwp_to_use})",
+            'PFCs': f"PFCS ({gwp_to_use})",
+            'SF6' : f"SF6 ({gwp_to_use})",
+            'NMVOCs': 'NMVOC',
+        }
+    },
+    'energy' : {
+        "unit": "PRIMAP1",
+        "category": "PRIMAP1",
+        "entity": {
+            'NMVOCs': 'NMVOC',
+        }
+    },
+    'lulucf' : {
+        "unit": "PRIMAP1",
+        "category": "PRIMAP1",
+        "entity": {
+            'NMVOCs': 'NMVOC',
+        }
+    },
+    'waste' : {
+        "unit": "PRIMAP1",
+        "category": "PRIMAP1",
+        "entity": {
+            'NMVOCs': 'NMVOC',
+        }
+    },
+    'trend' : {
+        "unit": "PRIMAP1",
+        "category": "PRIMAP1",
+        "entity": {
+            'NMVOCs': 'NMVOC',
+        }
+    },
+}
+
+# TODO! Don't add MEMO if remove later
+filter_remove = {
+    'f_memo': {"category": "MEMO"},
+}
+
+meta_data = {
+    "references": "https://unfccc.int/BURs",
+    "rights": "", # unknown
+    "contact": "daniel-busch@climate-resource.de",
+    "title": "Guinea. Biennial update report (BUR). BUR1",
+    "comment": "Read fom pdf by Daniel Busch",
+    "institution": "UNFCCC",
+}
+
+page_def_templates = {
+    '110': {
+        "area": ['36,718,589,87'],
+        "cols": ['290,340,368,392,425,445,465,497,535,564'],
+    },
+    '111': {
+        "area": ['36,736,587,107'],
+        "cols": ['293,335,369,399,424,445,468,497,535,565'],
+    },
+    '112': {
+        "area": ['35,733,588,106'],
+        "cols": ['293,335,369,399,424,445,468,497,535,565'],
+    },
+    '113': {
+        "area": ['35,733,588,106'],
+        "cols": ['293,335,365,399,424,445,468,497,535,565'],
+    },
+    '131' : {
+                "area": ['36,718,590,83'],
+                "cols": ['293,332,370,406,442,480,516,554'],
+            },
+}
+
+# for main table
+header_inventory = ['Greenhouse gas source and sink categories',
+                   'CO2', 'CH4', "N2O", 'HFCs', 'PFCs', 'SF6', 'NOx', 'CO', 'NMVOCs','SO2'
+                   ]
+
+unit_inventory = ['-'] + ['Gg'] * len(header_inventory) # one extra for the category columns
+unit_inventory[4] = "GgCO2eq"
+unit_inventory[5] = "GgCO2eq"
+unit_inventory[6] = "GgCO2eq"
+
+# for energy tables
+header_energy = ['Greenhouse gas source and sink categories',
+                   'CO2', 'CH4', "N2O", 'NOx', 'CO', 'NMVOCs','SO2'
+                ]
+unit_energy = ['-'] + ['Gg'] * len(header_energy) # one extra for the category columns
+
+# for lulucf tables
+header_lulucf = ['Greenhouse gas source and sink categories', 'CO2', 'CH4', "N2O", 'NOx', 'CO', 'NMVOCs']
+unit_lulucf = ['-'] + ['Gg'] * (len(header_lulucf) - 1)
+
+# for waste table
+header_waste = ['Greenhouse gas source and sink categories', 'CO2', 'CH4', "N2O", 'NOx', 'CO', 'NMVOCs', 'SO2']
+unit_waste = ['-'] + ['Gg'] * (len(header_waste) - 1)
+
+# for trend table (unit is always Gg for this table)
+header_trend = ['data1990', 'data1995', "data2000", 'data2005', 'data2010', 'data2015', 'data2018', 'data2019']
+
+
+# define config dict
+inv_conf = {
+    'header': header_inventory,
+    'unit': unit_inventory,
+    'header_energy' : header_energy,
+    'unit_energy' : unit_energy,
+    'header_lulucf' : header_lulucf,
+    'unit_lulucf' : unit_lulucf,
+    'header_waste' : header_waste,
+    'unit_waste' : unit_waste,
+    'header_trend' : header_trend,
+    'entity_row': 0,
+    'unit_row': 1,
+    'index_cols': "Greenhouse gas source and sink categories",
+    'year': {'110' : 1990,
+             '111' : 2000,
+             '112' : 2010,
+             '113' : 2019,
+             '116' : 1990,
+             '117' : 2000,
+             '118' : 2010,
+             '119' : 2019,
+             '124' : 1990,
+             '125' : 2000,
+             '126' : 2010,
+             '127' : 2019,
+            },
+    'header_long': ["orig_cat_name", "entity", "unit", "time", "data"],
+    "cat_code_regexp" : r'^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*',
+    "cat_codes_manual" : {
+        'main' : {
+            'Éléments pour mémoire': 'MEMO',
+            'Soutes internationales': 'M.BK',
+            '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
+            '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
+            '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
+            'Total des émissions et absorptions nationales': "0",
+            '2A5: Autre': '2A5',
+        },
+        'energy' : {
+            'International Bunkers': 'MEMO',
+            '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
+            '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
+            '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
+        }
+    },
+}
+
+# read main tables
+pages = ['110', '111', '112', '113']
+df_all_dict = {}
+for page in pages :
+
+    print("-" * 45)
+    print(f"Reading table from page {page}.")
+
+    tables_inventory_original = camelot.read_pdf(
+        str(input_folder / pdf_file),
+        pages=page,
+        table_areas=page_def_templates[page]["area"],
+        columns=page_def_templates[page]["cols"],
+        flavor="stream",
+        split_text=True)
+
+    print("Reading complete.")
+
+    df_inventory = tables_inventory_original[0].df.copy()
+
+    # move broken text in correct row (page 113 is fine)
+    if page in ['110', '111', '112'] :
+        df_inventory.at[4, 0] = "1.A.1 - Industries énergétiques"
+        df_inventory = df_inventory.drop(index=3)
+        df_inventory.at[8, 0] = "1.A.4 - Autres secteurs"
+        df_inventory = df_inventory.drop(index=7)
+
+    # add header and unit
+    df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
+    df_inventory = pd.concat([df_header, df_inventory], axis=0, join='outer').reset_index(drop=True)
+    df_inventory = pm2.pm2io.nir_add_unit_information(df_inventory,
+                                                      unit_row=inv_conf["unit_row"],
+                                                      entity_row=inv_conf["entity_row"],
+                                                      regexp_entity=".*",
+                                                      regexp_unit=".*",
+                                                      default_unit="Gg")
+
+    print("Added unit information.")
+
+    # set index
+    df_inventory = df_inventory.set_index(inv_conf["index_cols"])
+
+    # convert to long format
+    df_inventory_long = pm2.pm2io.nir_convert_df_to_long(df_inventory, inv_conf["year"][page],
+                                                         inv_conf["header_long"])
+
+    # extract category from tuple
+    df_inventory_long["orig_cat_name"] = df_inventory_long["orig_cat_name"].str[0]
+
+    # prep for conversion to PM2 IF and native format
+    # make a copy of the categories row
+    df_inventory_long["category"] = df_inventory_long["orig_cat_name"]
+
+    # replace cat names by codes in col "category"
+    # first the manual replacements
+    # TODO: move this to config section
+    #    inv_conf["cat_codes_manual"]['main'] = {
+    #            'Éléments pour mémoire': 'MEMO',
+    #            'Soutes internationales': 'M.BK',
+    #            '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
+    #            '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
+    #            '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
+    #            'Total des émissions et absorptions nationales': "0",
+    #            '2A5: Autre': '2A5',
+    #        }
+    df_inventory_long["category"] = \
+        df_inventory_long["category"].replace(inv_conf["cat_codes_manual"]['main'])
+
+    df_inventory_long["category"] = df_inventory_long["category"].str.replace(".", "")
+
+    # then the regex replacements
+    repl = lambda m : m.group('code')
+    df_inventory_long["category"] = \
+        df_inventory_long["category"].str.replace(inv_conf["cat_code_regexp"], repl,
+                                                  regex=True)
+
+    df_inventory_long = df_inventory_long.reset_index(drop=True)
+
+    df_inventory_long["data"] = df_inventory_long["data"].str.replace(",", ".")
+    df_inventory_long["data"] = df_inventory_long["data"].str.replace("NE1", "NE")
+
+    # make sure all col headers are str
+    df_inventory_long.columns = df_inventory_long.columns.map(str)
+    df_inventory_long = df_inventory_long.drop(columns=["orig_cat_name"])
+
+    df_all_dict[page] = df_inventory_long
+
+df_all = pd.concat([df_all_dict['110'], df_all_dict['111'], df_all_dict['112'], df_all_dict['113']],
+                   axis=0,
+                   join='outer').reset_index(drop=True)
+
+print("Converting to interchange format.")
+df_all_IF = pm2.pm2io.convert_long_dataframe_if(
+    df_all,
+    coords_cols=coords_cols,
+    # add_coords_cols=add_coords_cols,
+    coords_defaults=coords_defaults,
+    coords_terminologies=coords_terminologies,
+    coords_value_mapping=coords_value_mapping['main'],
+    # coords_value_filling=coords_value_filling,
+    filter_remove=filter_remove,
+    # filter_keep=filter_keep,
+    meta_data=meta_data,
+    convert_str=True,
+    time_format="%Y",
+)
+
+# There are different values for the same categories in the main and lulucf table
+# it looks like in the main table they put the value from 1990 again for 2019 again
+# it's unlikely that the value is exactly the same for 1990 and 2019
+# so I assume the other one is correct
+df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3") & (df_all_IF["entity"] == "CO") , "2019"] = 27.406
+df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C") & (df_all_IF["entity"] == "CO") , "2019"] = 27.406
+df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C.1") & (df_all_IF["entity"] == "CO") , "2019"] = 27.406
+
+# Values for category 3 and N2O are identical for 1990 and 2019
+# The sum of the sub-categories does not equal the value of the parent category
+# The value  in the lulucf table should therefore be the correct one
+df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3") & (df_all_IF["entity"] == "N2O") , "1990"] = 2.190
+
+# Values for category 3 and NOx are identical for 1990 and 2019
+# Replacing the duplicate value with the value from the lulucf table
+df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3") & (df_all_IF["entity"] == "NOx") , "2019"] = 1.644
+df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C") & (df_all_IF["entity"] == "NOx") , "2019"] = 1.644
+df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C.1") & (df_all_IF["entity"] == "NOx") , "2019"] = 1.644
+
+### convert to primap2 format ###
+data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
+
+# Read sector tables
+pages = ['116', '117', '118', '119']
+df_energy_dict = {}
+for page in pages :
+    print("-" * 45)
+    print(f"Reading table from page {page}.")
+
+    tables_inventory_original = camelot.read_pdf(
+        str(input_folder / pdf_file),
+        pages=page,
+        flavor="lattice",
+        split_text=True
+    )
+
+    print("Reading complete.")
+
+    # cut last two lines of second table to ignore additional information regarding biomass for energy production
+    df_energy_year = pd.concat([tables_inventory_original[0].df[2 :],
+                                tables_inventory_original[1].df[3 :-2]],
+                               axis=0,
+                               join='outer').reset_index(drop=True)
+
+    # drop duplicate lines - 1.A.3.d.i / 1.A.3.a.i / 1.A.5.c
+    # TODO: better to find the index of the line and then drop it by the index
+    df_energy_year = df_energy_year.drop(index=[27, 32, 50])
+
+    # add header and unit
+    df_header = pd.DataFrame([inv_conf["header_energy"], inv_conf["unit_energy"]])
+
+    df_energy_year = pd.concat([df_header, df_energy_year], axis=0, join='outer').reset_index(drop=True)
+
+    df_energy_year = pm2.pm2io.nir_add_unit_information(df_energy_year,
+                                                        unit_row=inv_conf["unit_row"],
+                                                        entity_row=inv_conf["entity_row"],
+                                                        regexp_entity=".*",
+                                                        regexp_unit=".*",
+                                                        default_unit="Gg")
+
+    print("Added unit information.")
+    # set index
+    df_energy_year = df_energy_year.set_index(inv_conf["index_cols"])
+
+    # convert to long format
+    df_energy_year_long = pm2.pm2io.nir_convert_df_to_long(df_energy_year, inv_conf["year"][page],
+                                                           inv_conf["header_long"])
+
+    # extract from tuple
+    df_energy_year_long["orig_cat_name"] = df_energy_year_long["orig_cat_name"].str[0]
+
+    # prep for conversion to PM2 IF and native format
+    # make a copy of the categories row
+    df_energy_year_long["category"] = df_energy_year_long["orig_cat_name"]
+
+    # replace individual categories
+    # TODO: move to config section
+    # inv_conf["cat_codes_manual"]['energy'] = {
+    #        'International Bunkers': 'MEMO',
+    #        '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
+    #        '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
+    #        '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
+    #    }
+
+    # replace cat names by codes in col "category"
+    # first the manual replacements
+    df_energy_year_long["category"] = df_energy_year_long["category"].str.replace('\n', '')
+    df_energy_year_long["category"] = \
+        df_energy_year_long["category"].replace(inv_conf["cat_codes_manual"]['energy'])
+
+    df_energy_year_long["category"] = df_energy_year_long["category"].str.replace(".", "")
+
+    # inv_conf["cat_code_regexp"] = r'^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*'
+
+    # then the regex replacements
+    repl = lambda m : m.group('code')
+    df_energy_year_long["category"] = \
+        df_energy_year_long["category"].str.replace(inv_conf["cat_code_regexp"], repl,
+                                                    regex=True)
+
+    df_energy_year_long = df_energy_year_long.reset_index(drop=True)
+
+    df_energy_year_long["data"] = df_energy_year_long["data"].str.replace(",", ".")
+    df_energy_year_long["data"] = df_energy_year_long["data"].str.replace("NE1", "NE")
+
+    # make sure all col headers are str
+    df_energy_year_long.columns = df_energy_year_long.columns.map(str)
+    df_energy_year_long = df_energy_year_long.drop(columns=["orig_cat_name"])
+
+    df_energy_dict[page] = df_energy_year_long
+
+df_energy = pd.concat([df_energy_dict['116'], df_energy_dict['117'], df_energy_dict['118'], df_energy_dict['119']],
+                      axis=0,
+                      join='outer').reset_index(drop=True)
+
+print("Converting to interchange format.")
+df_energy_IF = pm2.pm2io.convert_long_dataframe_if(
+    df_energy,
+    coords_cols=coords_cols,
+    # add_coords_cols=add_coords_cols,
+    coords_defaults=coords_defaults,
+    coords_terminologies=coords_terminologies,
+    coords_value_mapping=coords_value_mapping['energy'],
+    # coords_value_filling=coords_value_filling,
+    filter_remove=filter_remove,
+    # filter_keep=filter_keep,
+    meta_data=meta_data,
+    convert_str=True,
+    time_format="%Y",
+)
+
+### convert to primap2 format ###
+data_pm2_energy = pm2.pm2io.from_interchange_format(df_energy_IF)
+
+
+
+# 3. Read in LULUCF table - pages 124, 125, 126, 127
+pages = ['124', '125', '126', '127']
+df_lulucf_dict = {}
+for page in pages :
+    print("-" * 45)
+    print(f"Reading table from page {page}.")
+
+    tables_inventory_original = camelot.read_pdf(
+        str(input_folder / pdf_file),
+        pages=page,
+        flavor="lattice",
+        split_text=True
+    )
+    print("Reading complete.")
+
+    if page == '127' :
+        # table on page 127 has one extra row at the top
+        # and one extra category 3.A.1.j
+        df_lulucf_year = tables_inventory_original[0].df[3 :]
+        # rename duplicate categories in tables
+        # TODO move to config section
+        replace_categories = [(19, "3.A.2.a.i - Vaches laitières"),
+                              (20, "3.A.2.a.ii - Autres bovins"),
+                              (21, "3.A.2.b - Buffle"),
+                              (22, "3.A.2.c - Ovins"),
+                              (23, "3.A.2.d - Caprins"),
+                              (24, "3.A.2.e - Chameaux"),
+                              (25, "3.A.2.f - Chevaux"),
+                              (26, "3.A.2.g - Mules et ânes"),
+                              (27, "3.A.2.h - Porcins"),
+                              (28, "3.A.2.i - Volailles"),
+                              (29, "3.A.2.j - Autres (préciser)"), ]
+        for index, category_name in replace_categories :
+            df_lulucf_year.at[index, 0] = category_name
+    else :
+        # cut first two lines
+        df_lulucf_year = tables_inventory_original[0].df[2 :]
+
+        # TODO move to config section
+        replace_categories = [(17, "3.A.2.a.i - Vaches laitières"),
+                              (18, "3.A.2.a.ii - Autres bovins"),
+                              (19, "3.A.2.b - Buffle"),
+                              (20, "3.A.2.c - Ovins"),
+                              (21, "3.A.2.d - Caprins"),
+                              (22, "3.A.2.e - Chameaux"),
+                              (23, "3.A.2.f - Chevaux"),
+                              (24, "3.A.2.g - Mules et ânes"),
+                              (25, "3.A.2.h - Porcins"),
+                              (26, "3.A.2.i - Volailles"), ]
+        for index, category_name in replace_categories :
+            df_lulucf_year.at[index, 0] = category_name
+
+    # add header and unit
+    df_header = pd.DataFrame([inv_conf["header_lulucf"], inv_conf["unit_lulucf"]])
+
+    df_lulucf_year = pd.concat([df_header, df_lulucf_year], axis=0, join='outer').reset_index(drop=True)
+
+    df_lulucf_year = pm2.pm2io.nir_add_unit_information(df_lulucf_year,
+                                                        unit_row=inv_conf["unit_row"],
+                                                        entity_row=inv_conf["entity_row"],
+                                                        regexp_entity=".*",
+                                                        regexp_unit=".*",
+                                                        default_unit="Gg")
+
+    print("Added unit information.")
+
+    # set index
+    df_lulucf_year = df_lulucf_year.set_index(inv_conf["index_cols"])
+
+    # convert to long format
+    df_lulucf_year_long = pm2.pm2io.nir_convert_df_to_long(df_lulucf_year, inv_conf["year"][page],
+                                                           inv_conf["header_long"])
+
+    df_lulucf_year_long["orig_cat_name"] = df_lulucf_year_long["orig_cat_name"].str[0]  # extract from tuple
+
+    # prep for conversion to PM2 IF and native format
+    # make a copy of the categories row
+    df_lulucf_year_long["category"] = df_lulucf_year_long["orig_cat_name"]
+
+    # regex replacements
+    repl = lambda m : m.group('code')
+    df_lulucf_year_long["category"] = \
+        df_lulucf_year_long["category"].str.replace(inv_conf["cat_code_regexp"], repl,
+                                                    regex=True)
+
+    df_lulucf_year_long = df_lulucf_year_long.reset_index(drop=True)
+
+    df_lulucf_year_long["data"] = df_lulucf_year_long["data"].str.replace(",", ".")
+    df_lulucf_year_long["data"] = df_lulucf_year_long["data"].str.replace("NE1", "NE")
+
+    # make sure all col headers are str
+    df_lulucf_year_long.columns = df_lulucf_year_long.columns.map(str)
+    df_lulucf_year_long = df_lulucf_year_long.drop(columns=["orig_cat_name"])
+
+    df_lulucf_dict[page] = df_lulucf_year_long
+
+df_lulucf = pd.concat([df_lulucf_dict['124'], df_lulucf_dict['125'], df_lulucf_dict['126'], df_lulucf_dict['127']],
+                      axis=0,
+                      join='outer').reset_index(drop=True)
+
+print("Converting to interchange format.")
+df_lulucf_IF = pm2.pm2io.convert_long_dataframe_if(
+    df_lulucf,
+    coords_cols=coords_cols,
+    # add_coords_cols=add_coords_cols,
+    coords_defaults=coords_defaults,
+    coords_terminologies=coords_terminologies,
+    coords_value_mapping=coords_value_mapping['lulucf'],
+    # coords_value_filling=coords_value_filling,
+    filter_remove=filter_remove,
+    # filter_keep=filter_keep,
+    meta_data=meta_data,
+    convert_str=True,
+    time_format="%Y",
+)
+
+### convert to primap2 format ###
+data_pm2_lulucf = pm2.pm2io.from_interchange_format(df_lulucf_IF)
+
+# 4. Read in Waste tables - pages 128, 130
+# There are three tables for three years on page 128
+# and another tabel on page 130
+
+# read three tables
+page = '128'
+tables_inventory_original_128 = camelot.read_pdf(
+    str(input_folder / pdf_file),
+    pages=page,
+    flavor="lattice",
+    split_text=True
+)
+
+# read last table
+page = '130'
+tables_inventory_original_130 = camelot.read_pdf(
+    str(input_folder / pdf_file),
+    pages=page,
+    flavor="lattice",
+    split_text=True
+)
+
+# save to dict
+df_waste_years = {
+    '1990' : tables_inventory_original_128[0].df,
+    '2000' : tables_inventory_original_128[1].df,
+    '2010' : tables_inventory_original_128[2].df,
+    '2019' : tables_inventory_original_130[0].df,
+}
+
+df_waste_dict = {}
+for year in df_waste_years.keys() :
+    print("-" * 45)
+    print(f"Processing table for {year}.")
+
+    df_waste_year = df_waste_years[year][2 :]
+
+    # add header and unit
+    df_header = pd.DataFrame([inv_conf["header_waste"], inv_conf["unit_waste"]])
+
+    df_waste_year = pd.concat([df_header, df_waste_year], axis=0, join='outer').reset_index(drop=True)
+
+    df_waste_year = pm2.pm2io.nir_add_unit_information(df_waste_year,
+                                                       unit_row=inv_conf["unit_row"],
+                                                       entity_row=inv_conf["entity_row"],
+                                                       regexp_entity=".*",
+                                                       regexp_unit=".*",
+                                                       default_unit="Gg")
+
+    print("Added unit information.")
+
+    # set index
+    df_waste_year = df_waste_year.set_index(inv_conf["index_cols"])
+
+    # convert to long format
+    df_waste_year_long = pm2.pm2io.nir_convert_df_to_long(df_waste_year, year,
+                                                          inv_conf["header_long"])
+
+    df_waste_year_long["orig_cat_name"] = df_waste_year_long["orig_cat_name"].str[0]
+
+    # prep for conversion to PM2 IF and native format
+    # make a copy of the categories row
+    df_waste_year_long["category"] = df_waste_year_long["orig_cat_name"]
+
+    # regex replacements
+    repl = lambda m : m.group('code')
+    df_waste_year_long["category"] = \
+        df_waste_year_long["category"].str.replace(inv_conf["cat_code_regexp"], repl,
+                                                   regex=True)
+
+    df_waste_year_long = df_waste_year_long.reset_index(drop=True)
+
+    df_waste_year_long["category"] = df_waste_year_long["category"].str.replace(".", "")
+    df_waste_year_long["data"] = df_waste_year_long["data"].str.replace(",", ".")
+    df_waste_year_long["data"] = df_waste_year_long["data"].str.replace("NE1", "NE")
+
+    # make sure all col headers are str
+    df_waste_year_long.columns = df_waste_year_long.columns.map(str)
+    df_waste_year_long = df_waste_year_long.drop(columns=["orig_cat_name"])
+
+    df_waste_dict[year] = df_waste_year_long
+
+df_waste = pd.concat([df_waste_dict['1990'], df_waste_dict['2000'], df_waste_dict['2010'], df_waste_dict['2019']],
+                     axis=0,
+                     join='outer').reset_index(drop=True)
+
+print("Converting to interchange format.")
+df_waste_IF = pm2.pm2io.convert_long_dataframe_if(
+    df_waste,
+    coords_cols=coords_cols,
+    # add_coords_cols=add_coords_cols,
+    coords_defaults=coords_defaults,
+    coords_terminologies=coords_terminologies,
+    coords_value_mapping=coords_value_mapping['waste'],
+    # coords_value_filling=coords_value_filling,
+    filter_remove=filter_remove,
+    # filter_keep=filter_keep,
+    meta_data=meta_data,
+    convert_str=True,
+    time_format="%Y",
+)
+
+### convert to primap2 format ###
+data_pm2_waste = pm2.pm2io.from_interchange_format(df_waste_IF)
+
+# 5. Read in trend tables - pages 131 - 137
+# %matplotlib widget
+# camelot.plot(tables_inventory_original[0], kind='text')
+
+df_main_dict = {}
+pages = ['131', '132', '133', '134', '135', '136', '137']
+entities = ['CO2', 'CH4', 'N2O', 'NOx', 'CO', 'NMVOCs', 'SO2']
+
+# for this set of tables every page is a different entity
+for page, entity in zip(pages, entities) :
+
+    print("-" * 45)
+    print(f"Reading table for page {page} and entity {entity}.")
+
+    # first table needs to be read in with flavor="stream"
+    # flavor="lattice" raises an error, maybe camelot issue
+    # see https://github.com/atlanhq/camelot/issues/306
+    # or because characters in first row almost reach
+    # the table grid
+    if page == '131' :
+        tables_inventory_original = camelot.read_pdf(
+            str(input_folder / pdf_file),
+            pages=page,
+            table_areas=page_def_templates[page]["area"],
+            columns=page_def_templates[page]["cols"],
+            flavor="stream",
+            split_text=True
+        )
+
+        df_trend_entity = tables_inventory_original[0].df[1 :]
+
+        # these rows are different to the main table and don't make sense
+        row_to_delete = df_trend_entity.index[df_trend_entity[0] == '3.D - Autres'][0]
+        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
+
+        row_to_delete = df_trend_entity.index[df_trend_entity[0] == '3.D.1 - Produits ligneux récoltés'][0]
+        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
+
+        row_to_delete = df_trend_entity.index[df_trend_entity[0] == '3.D.2 - Autres (veuillez spécifier)'][0]
+        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
+
+    else :
+        tables_inventory_original = camelot.read_pdf(
+            str(input_folder / pdf_file),
+            pages=page,
+            flavor="lattice",
+            split_text=True)
+        df_trend_entity = tables_inventory_original[0].df[3 :]
+
+    print(f"Reading complete.")
+
+    # add columns
+    # 'data' prefix is needed for pd.wide_to_long() later
+    columns_years = ['data1990', 'data1995', "data2000", 'data2005', 'data2010', 'data2015', 'data2018', 'data2019']
+    df_trend_entity.columns = ['orig_cat_name'] + columns_years
+
+    # unit is always Gg
+    df_trend_entity.loc[:, 'unit'] = 'Gg'
+
+    # only one entity per table
+    df_trend_entity.loc[:, 'entity'] = entity
+
+    df_trend_entity.loc[:, "category"] = df_trend_entity["orig_cat_name"]
+
+    # delete rows that are just a headline or empty
+    # row_to_delete = df_trend_entity.index[df_trend_entity['category'] == 'Éléments pour mémoire'][0]
+    # df_trend_entity = df_trend_entity.drop(index = row_to_delete)
+
+    # in the first table there is no empty line
+    if page != '131' :
+        row_to_delete = df_trend_entity.index[df_trend_entity['category'] == ''][0]
+        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
+
+    inv_conf["cat_code_regexp"] = r'^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*'
+
+    df_trend_entity["category"] = df_trend_entity["category"].replace(
+        {
+            'Total des émissions et absorptions nationales' : "0",
+            '2A5: Autre' : '2A5',
+            'Éléments pour mémoire' : 'MEMO',
+            'Soutes internationales' : 'M.BK',
+            '1.A.3.a.i - Aviation internationale (soutes internationales)' : 'M.BK.A',
+            '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
+            '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
+        })
+
+    df_trend_entity.loc[:, "category"] = df_trend_entity["category"].str.replace(".", "")
+    df_trend_entity.loc[:, "category"] = df_trend_entity["category"].str.replace("\n", "")
+
+    repl = lambda m : m.group('code')
+    df_trend_entity.loc[:, "category"] = \
+        df_trend_entity["category"].str.replace(inv_conf["cat_code_regexp"], repl,
+                                                regex=True)
+
+    df_trend_entity = df_trend_entity.reset_index(drop=True)
+
+    print(f"Created category codes.")
+
+    if entity == 'CO' :
+        df_trend_entity = df_trend_entity.drop(columns=['data2010', 'data2000', 'data2019'])
+        columns_years = ['data1990', 'data1995', 'data2005', 'data2015', 'data2018']
+
+    for year in columns_years :
+        df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace(",", ".")
+        df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace("NE1", "NE")
+
+    # make sure all col headers are str
+    df_trend_entity.columns = df_trend_entity.columns.map(str)
+
+    df_trend_entity = df_trend_entity.drop(columns=["orig_cat_name"])
+
+    # TODO wide in IF gibt es convert_wide_dataframe_if
+    df_trend_entity_long = pd.wide_to_long(df_trend_entity, stubnames='data', i='category', j='time')
+
+    print(f"Converted to long format.")
+
+    df_trend_entity_long = df_trend_entity_long.reset_index()
+
+    df_main_dict[page] = df_trend_entity_long
+
+print("Converting to interchange format.")
+
+df_trend_all = pd.concat([df_main_dict['131'],
+                          df_main_dict['132'],
+                          df_main_dict['133'],
+                          df_main_dict['134'],
+                          df_main_dict['135'],
+                          df_main_dict['136'],
+                          df_main_dict['137'],
+                          ], axis=0, join='outer').reset_index(drop=True)
+
+df_trend_IF = pm2.pm2io.convert_long_dataframe_if(
+    df_trend_all,
+    coords_cols=coords_cols,
+    # add_coords_cols=add_coords_cols,
+    coords_defaults=coords_defaults,
+    coords_terminologies=coords_terminologies,
+    coords_value_mapping=coords_value_mapping['trend'],
+    # coords_value_filling=coords_value_filling,
+    filter_remove=filter_remove,
+    # filter_keep=filter_keep,
+    meta_data=meta_data,
+    convert_str=True,
+    time_format="%Y",
+)
+
+# values in main table are assumed to be correct
+#df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.D") & (df_trend_IF["entity"] == "CO2") , "2019"] = 0
+#df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.D.1") & (df_trend_IF["entity"] == "CO2") , "2019"] = np.nan
+
+# CH4 - values in main table are assumed to be correct
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CH4") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CH4") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CH4") , "2000"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CH4") , "2000"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CH4") , "2010"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CH4") , "2010"] = np.nan
+
+# CO - values in main table are assumed to be correct
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "1.A.2") & (df_trend_IF["entity"] == "CO") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CO") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CO") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CO") , "2000"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CO") , "2000"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CO") , "2010"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CO") , "2010"] = np.nan
+
+# N2O - values in main table are assumed to be correct
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "1.A.2") & (df_trend_IF["entity"] == "N2O") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "N2O") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "N2O") , "1990"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "N2O") , "2000"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "N2O") , "2000"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "N2O") , "2010"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "N2O") , "2010"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "N2O") , "2019"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "N2O") , "2019"] = np.nan
+
+# NOx - values in main table are assumed to be correct
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C") & (df_trend_IF["entity"] == "NOx") , "2019"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C.1") & (df_trend_IF["entity"] == "NOx") , "2019"] = np.nan
+df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3") & (df_trend_IF["entity"] == "NOx") , "2019"] = np.nan
+
+# NMVOC - values in main table are assumed to be correct
+entity = 'NMVOC'
+for category, year in [
+    ('0', '2000'),
+    ('1', '2000'),
+    ('1.A','2000'),
+    ('1.A.1','2000'),
+    ('1.A.2','2000'),
+    ('1.A.3','2000'),
+    ('1.A.4','2000'),
+    ('2','2000'),
+    ('2.H', '2000'),
+    ('2.H.2', '2000'),
+    ('0','2010'),
+    ('1','2010'),
+    ('1.A','2010'),
+    ('1.A.1','2010'),
+    ('1.A.2','2010'),
+    ('1.A.3','2010'),
+    ('1.A.4','2010'),
+    ('2','2010'),
+]:
+    df_trend_IF.loc[
+        (df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == category) & (df_trend_IF["entity"] == entity) , year] = np.nan
+
+### convert to primap2 format ###
+data_pm2_trend = pm2.pm2io.from_interchange_format(df_trend_IF)
+
+# Combine tables and save to IF and native format
+#### combine
+
+
+# discrepancies larger than 0.86 for area (ISO3)=GIN,
+# category (IPCC1996_2006_GIN_Inv)=1.A.2, entity=NMVOC
+# 1990-01-01  0.800000, 2000-01-01  0.800000, 2010-01-01  0.869848
+# and
+# (ISO3)=GIN, category (IPCC1996_2006_GIN_Inv)=1.A.2, time=1262304000000000000 (2019?)
+# The values in the table are different / one is wrong
+# merge main and energy
+data_pm2 = data_pm2_main.pr.merge(data_pm2_energy,tolerance=1)
+
+# merge lulucf
+data_pm2 = data_pm2.pr.merge(data_pm2_lulucf,tolerance=0.11)
+
+# merge waste
+# increasing tolerance to merge values for 4.C, 1990, N2O - 0.003 in sector table, 0.0034 in main table
+data_pm2 = data_pm2.pr.merge(data_pm2_waste,tolerance=0.15)
+
+# merge trend
+data_pm2 = data_pm2.pr.merge(data_pm2_trend,tolerance=0.11)
+
+# convert back to IF to have units in the fixed format ( per year / per a / per annum)
+data_if = data_pm2.pr.to_interchange_format()
+
+# ###
+# save data to IF and native format
+# ###
+pm2.pm2io.write_interchange_format(
+   output_folder / (output_filename + coords_terminologies["category"] + "_raw"), data_if)
+
+encoding = {var: compression for var in data_pm2.data_vars}
+data_pm2.pr.to_netcdf(
+   output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+   encoding=encoding)
+
+data_proc_pm2 = data_pm2
+
+country_processing_step1 = {
+    'aggregate_cats': {
+        'M.3.C.AG': {'sources': ['3.C.1', '3.C.2', '3.C.3', '3.C.4', '3.C.5',
+                                 '3.C.6', '3.C.7', '3.C.8'],
+                     'name': 'Aggregate sources and non-CO2 emissions sources on land '
+                             '(Agriculture)'},
+        'M.3.D.AG': {'sources': ['3.D.2'],
+                     'name': 'Other (Agriculture)'},
+        'M.AG.ELV': {'sources': ['M.3.C.AG', 'M.3.D.AG'],
+                     'name': 'Agriculture excluding livestock'},
+        'M.AG': {'sources': ['3.A', 'M.AG.ELV'],
+                     'name': 'Agriculture'},
+        'M.3.D.LU': {'sources': ['3.D.1'],
+                     'name': 'Other (LULUCF)'},
+        'M.LULUCF': {'sources': ['3.B', 'M.3.D.LU'],
+                     'name': 'LULUCF'},
+        'M.0.EL': {'sources': ['1', '2', 'M.AG', '4'],
+                     'name': 'National total emissions excluding LULUCF'},
+    },
+    'basket_copy': {
+        'GWPs_to_add': ["SARGWP100", "AR5GWP100", "AR6GWP100"],
+        'entities': ["HFCS", "PFCS"],
+        'source_GWP': gwp_to_use,
+    },
+}
+
+gas_baskets = {
+    'FGASES (SARGWP100)': ['HFCS (SARGWP100)', 'PFCS (SARGWP100)', 'SF6', 'NF3'],
+    'FGASES (AR4GWP100)': ['HFCS (AR4GWP100)', 'PFCS (AR4GWP100)', 'SF6', 'NF3'],
+    'FGASES (AR5GWP100)':['HFCS (AR5GWP100)', 'PFCS (AR5GWP100)', 'SF6', 'NF3'],
+    'FGASES (AR6GWP100)':['HFCS (AR6GWP100)', 'PFCS (AR6GWP100)', 'SF6', 'NF3'],
+    'KYOTOGHG (SARGWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (SARGWP100)'],
+    'KYOTOGHG (AR4GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR4GWP100)'],
+    'KYOTOGHG (AR5GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR5GWP100)'],
+    'KYOTOGHG (AR6GWP100)': ['CO2', 'CH4', 'N2O', 'FGASES (AR6GWP100)'],
+}
+
+# actual processing
+#data_proc_pm2 = process_data_for_country(
+#    data_proc_pm2,
+#    gas_baskets=gas_baskets,
+#    entities_to_ignore=[],
+#    processing_info_country=country_processing_step1,
+#)
+
+
+# All steps from process_data_for_country
+# """
+# Process data from DI interface (where necessary).
+# * Downscaling including subtraction of time series
+# * country specific sector aggregation
+# * Conversion to IPCC2006 categories
+# * general sector and gas basket aggregation (in new categories)
+# """
+entities_to_ignore=[],
+processing_info_country=country_processing_step1,
+
+# 0: gather information
+data_country = data_proc_pm2
+countries = list(data_country.coords[data_country.attrs["area"]].values)
+if len(countries) > 1:
+    raise ValueError(
+        f"Found {len(countries)} countries. Only single country data "
+        f"can be processed by this function. countries: {countries}"
+    )
+else:
+    country_code = countries[0]
+
+# get category terminology
+cat_col = data_country.attrs["cat"]
+temp = re.findall(r"\((.*)\)", cat_col)
+cat_terminology_in = temp[0]
+
+# get scenario
+scenarios = list(data_country.coords[data_country.attrs["scen"]].values)
+if len(scenarios) > 1:
+    raise ValueError(
+        f"Found {len(scenarios)} scenarios. Only single scenario data "
+        f"can be processed by this function. Scenarios: {scenarios}"
+    )
+scenario = scenarios[0]
+
+# get source
+sources = list(data_country.coords["source"].values)
+if len(sources) > 1:
+    raise ValueError(
+        f"Found {len(sources)} sources. Only single source data "
+        f"can be processed by this function. Sources: {sources}"
+    )
+source = sources[0]
+
+# check if category name column present
+# TODO: replace 'name' in config by  'additional_cols' dict that defines the cols
+#  and the values
+if "orig_cat_name" in data_country.coords:
+    cat_name_present = True
+else:
+    cat_name_present = False
+
+# 1: general processing
+# remove unused cats
+data_country = data_country.dropna(f"category ({cat_terminology_in})", how="all")
+# remove unused years
+data_country = data_country.dropna(f"time", how="all")
+# remove variables only containing nan
+nan_vars_country = [
+    var
+    for var in data_country.data_vars
+    if bool(data_country[var].isnull().all().data) is True
+]
+print(f"removing all-nan variables: {nan_vars_country}")
+data_country = data_country.drop_vars(nan_vars_country)
+
+tolerance = 0.01
+agg_tolerance = tolerance
+
+aggregate_cats_current = country_processing_step1["aggregate_cats"]
+
+print(
+    f"Aggregating categories for country {country_code}, source {source}, "
+    f"scenario {scenario}"
+)
+for cat_to_agg in aggregate_cats_current:
+    print(f"Category: {cat_to_agg}")
+    source_cats = aggregate_cats_current[cat_to_agg]["sources"]
+    data_agg = data_country.pr.loc[{"category": source_cats}].pr.sum(
+        dim="category", skipna=True, min_count=1
+    )
+    #data_agg = data_country.pr.loc[{"category": source_cats}]
+    nan_vars = [
+        var
+        for var in data_agg.data_vars
+        if data_agg[var].isnull().all().data is True
+    ]
+    data_agg = data_agg.drop(nan_vars)
+    if len(data_agg.data_vars) > 0:
+        data_agg = data_agg.expand_dims(
+            [f"category (" f"{cat_terminology_in})"]
+        )
+        data_agg = data_agg.assign_coords(
+            coords={
+                f"category ({cat_terminology_in})": (
+                    f"category ({cat_terminology_in})",
+                    [cat_to_agg],
+                )
+            }
+        )
+        if cat_name_present:
+            cat_name = aggregate_cats_current[cat_to_agg]["name"]
+            data_agg = data_agg.assign_coords(
+                coords={
+                    "orig_cat_name": (
+                        f"category ({cat_terminology_in})",
+                        [cat_name],
+                    )
+                }
+            )
+        data_country = data_country.pr.merge(
+            data_agg, tolerance=agg_tolerance
+        )
+    else:
+        print(f"no data to aggregate category {cat_to_agg}")
+
+from UNFCCC_GHG_data.helper import GWP_factors
+
+# copy HFCs and PFCs with default factors
+GWPs_to_add = country_processing_step1["basket_copy"]["GWPs_to_add"]
+entities = country_processing_step1["basket_copy"]["entities"]
+source_GWP = country_processing_step1["basket_copy"]["source_GWP"]
+for entity in entities:
+    data_source = data_country[f"{entity} ({source_GWP})"]
+    for GWP in GWPs_to_add:
+        data_GWP = (
+            data_source * GWP_factors[f"{source_GWP}_to_{GWP}"][entity]
+        )
+        data_GWP.attrs["entity"] = entity
+        data_GWP.attrs["gwp_context"] = GWP
+        data_country[f"{entity} ({GWP})"] = data_GWP
+
+
+
+# create gas baskets
+entities_present = set(data_country.data_vars)
+for basket in gas_baskets.keys():
+    basket_contents_present = [
+        gas for gas in gas_baskets[basket] if gas in entities_present
+    ]
+    if len(basket_contents_present) > 0:
+        if basket in list(data_country.data_vars):
+            data_country[basket] = data_country.pr.fill_na_gas_basket_from_contents(
+                basket=basket,
+                basket_contents=basket_contents_present,
+                skipna=True,
+                min_count=1,
+            )
+        else:
+            try:
+                # print(data_country.data_vars)
+                data_country[basket] = xr.full_like(
+                    data_country["CO2"], np.nan
+                ).pr.quantify(units="Gg CO2 / year")
+                data_country[basket].attrs = {
+                    "entity": basket.split(" ")[0],
+                    "gwp_context": basket.split(" ")[1][1:-1],
+                }
+                data_country[basket] = data_country.pr.gas_basket_contents_sum(
+                    basket=basket,
+                    basket_contents=basket_contents_present,
+                    min_count=1,
+                )
+                entities_present.add(basket)
+            except Exception as ex:
+                print(
+                    f"No gas basket created for {country_code}, {source}, "
+                    f"{scenario}: {ex}"
+                )
+
+
+
+# amend title and comment
+data_country.attrs["comment"] = (
+    data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
+)
+data_country.attrs["title"] = (
+    data_country.attrs["title"] + f" Processed on " f"{date.today()}"
+)
+
+data_proc_pm2 = data_country
+
+# ###
+# save processed data to IF and native format
+# ###
+terminology_proc = coords_terminologies['category']
+
+data_proc_if = data_proc_pm2.pr.to_interchange_format()
+if not output_folder.exists():
+    output_folder.mkdir()
+pm2.pm2io.write_interchange_format(
+    output_folder / (output_filename + terminology_proc), data_proc_if)
+
+encoding = {var: compression for var in data_proc_pm2.data_vars}
+data_proc_pm2.pr.to_netcdf(
+    output_folder / (output_filename + terminology_proc + ".nc"),
+    encoding=encoding)
