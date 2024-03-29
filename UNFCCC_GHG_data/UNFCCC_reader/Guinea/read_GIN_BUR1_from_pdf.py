@@ -128,6 +128,9 @@ df_all_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
+# TODO: here the wrong values are replaced with the correct values. In the other
+# tables the wrong values are set to np.nan. It has the same effect but
+# it would be better to unify the approach.
 # There are different values for the same categories in the main and the lulucf table
 # it looks like in the main table they put the value from 1990 for 2019 again
 # it's unlikely that the value is exactly the same for 1990 and 2019
@@ -174,8 +177,17 @@ for page in pages :
                                axis=0,
                                join='outer').reset_index(drop=True)
 
-    # TODO: better to find the index of the line and then drop it by the index
-    df_energy_year = df_energy_year.drop(index=[27, 32, 50])
+    row_to_delete = df_energy_year.index[
+        df_energy_year[0] == '1.A.3.a.i - Aviation internationale (Soutes internationales)'][0]
+    df_energy_year = df_energy_year.drop(index=row_to_delete)
+
+    row_to_delete = df_energy_year.index[
+        df_energy_year[0] == '1.A.3.d.i - Navigation internationale (soutes internationales)'][0]
+    df_energy_year = df_energy_year.drop(index=row_to_delete)
+
+    row_to_delete = df_energy_year.index[
+        df_energy_year[0] == '1.A.5.c - Opérations multilatérales (Éléments pour information)'][0]
+    df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     # add header and unit
     df_header = pd.DataFrame([inv_conf["header_energy"], inv_conf["unit_energy"]])
