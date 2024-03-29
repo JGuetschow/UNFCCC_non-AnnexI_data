@@ -10,10 +10,6 @@ import numpy as np
 import re
 from datetime import date
 import xarray as xr
-from pathlib import Path
-import warnings
-from UNFCCC_GHG_data.helper import process_data_for_country
-#warnings.filterwarnings("ignore")
 
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 from config_GIN_BUR1 import coords_cols, coords_defaults, coords_terminologies
@@ -33,7 +29,10 @@ pdf_file = "Rapport_IGES-Guinee-BUR1_VF.pdf"
 output_filename = 'GIN_BUR1_2023_'
 compression = dict(zlib=True, complevel=9)
 
+# ###
 # read main tables
+# ###
+
 pages = ['110', '111', '112', '113']
 df_all_dict = {}
 for page in pages :
@@ -86,24 +85,12 @@ for page in pages :
     # make a copy of the categories row
     df_inventory_long["category"] = df_inventory_long["orig_cat_name"]
 
-    # replace cat names by codes in col "category"
-    # first the manual replacements
-    # TODO: move this to config section
-    #    inv_conf["cat_codes_manual"]['main'] = {
-    #            'Éléments pour mémoire': 'MEMO',
-    #            'Soutes internationales': 'M.BK',
-    #            '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
-    #            '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
-    #            '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
-    #            'Total des émissions et absorptions nationales': "0",
-    #            '2A5: Autre': '2A5',
-    #        }
     df_inventory_long["category"] = \
         df_inventory_long["category"].replace(inv_conf["cat_codes_manual"]['main'])
 
     df_inventory_long["category"] = df_inventory_long["category"].str.replace(".", "")
 
-    # then the regex replacements
+    # regex replacements
     repl = lambda m : m.group('code')
     df_inventory_long["category"] = \
         df_inventory_long["category"].str.replace(inv_conf["cat_code_regexp"], repl,
@@ -120,6 +107,7 @@ for page in pages :
 
     df_all_dict[page] = df_inventory_long
 
+# combine tables from all pages
 df_all = pd.concat([df_all_dict['110'], df_all_dict['111'], df_all_dict['112'], df_all_dict['113']],
                    axis=0,
                    join='outer').reset_index(drop=True)
@@ -140,8 +128,8 @@ df_all_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
-# There are different values for the same categories in the main and lulucf table
-# it looks like in the main table they put the value from 1990 again for 2019 again
+# There are different values for the same categories in the main and the lulucf table
+# it looks like in the main table they put the value from 1990 for 2019 again
 # it's unlikely that the value is exactly the same for 1990 and 2019
 # so I assume the other one is correct
 df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3") & (df_all_IF["entity"] == "CO") , "2019"] = 27.406
@@ -162,7 +150,9 @@ df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C.1") & (df_a
 ### convert to primap2 format ###
 data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 
-# Read sector tables
+# ###
+# Read energy sector tables
+# ###
 pages = ['116', '117', '118', '119']
 df_energy_dict = {}
 for page in pages :
@@ -184,7 +174,6 @@ for page in pages :
                                axis=0,
                                join='outer').reset_index(drop=True)
 
-    # drop duplicate lines - 1.A.3.d.i / 1.A.3.a.i / 1.A.5.c
     # TODO: better to find the index of the line and then drop it by the index
     df_energy_year = df_energy_year.drop(index=[27, 32, 50])
 
@@ -215,15 +204,6 @@ for page in pages :
     # make a copy of the categories row
     df_energy_year_long["category"] = df_energy_year_long["orig_cat_name"]
 
-    # replace individual categories
-    # TODO: move to config section
-    # inv_conf["cat_codes_manual"]['energy'] = {
-    #        'International Bunkers': 'MEMO',
-    #        '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
-    #        '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
-    #        '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
-    #    }
-
     # replace cat names by codes in col "category"
     # first the manual replacements
     df_energy_year_long["category"] = df_energy_year_long["category"].str.replace('\n', '')
@@ -231,8 +211,6 @@ for page in pages :
         df_energy_year_long["category"].replace(inv_conf["cat_codes_manual"]['energy'])
 
     df_energy_year_long["category"] = df_energy_year_long["category"].str.replace(".", "")
-
-    # inv_conf["cat_code_regexp"] = r'^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*'
 
     # then the regex replacements
     repl = lambda m : m.group('code')
@@ -251,6 +229,7 @@ for page in pages :
 
     df_energy_dict[page] = df_energy_year_long
 
+# combine all tables
 df_energy = pd.concat([df_energy_dict['116'], df_energy_dict['117'], df_energy_dict['118'], df_energy_dict['119']],
                       axis=0,
                       join='outer').reset_index(drop=True)
@@ -275,8 +254,9 @@ df_energy_IF = pm2.pm2io.convert_long_dataframe_if(
 data_pm2_energy = pm2.pm2io.from_interchange_format(df_energy_IF)
 
 
-
-# 3. Read in LULUCF table - pages 124, 125, 126, 127
+# ###
+# 3. Read in LULUCF table
+# ###
 pages = ['124', '125', '126', '127']
 df_lulucf_dict = {}
 for page in pages :
@@ -395,11 +375,14 @@ df_lulucf_IF = pm2.pm2io.convert_long_dataframe_if(
 ### convert to primap2 format ###
 data_pm2_lulucf = pm2.pm2io.from_interchange_format(df_lulucf_IF)
 
+# ###
 # 4. Read in Waste tables - pages 128, 130
-# There are three tables for three years on page 128
-# and another tabel on page 130
+# ###
 
-# read three tables
+# There are three tables for three years on page 128
+# and another table for the last year on page 130
+
+# read the first three tables
 page = '128'
 tables_inventory_original_128 = camelot.read_pdf(
     str(input_folder / pdf_file),
@@ -500,9 +483,9 @@ df_waste_IF = pm2.pm2io.convert_long_dataframe_if(
 ### convert to primap2 format ###
 data_pm2_waste = pm2.pm2io.from_interchange_format(df_waste_IF)
 
+# ###
 # 5. Read in trend tables - pages 131 - 137
-# %matplotlib widget
-# camelot.plot(tables_inventory_original[0], kind='text')
+# ###
 
 df_main_dict = {}
 pages = ['131', '132', '133', '134', '135', '136', '137']
@@ -575,6 +558,7 @@ for page, entity in zip(pages, entities) :
 
     inv_conf["cat_code_regexp"] = r'^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*'
 
+    # TODO! this should go to the config as well
     df_trend_entity["category"] = df_trend_entity["category"].replace(
         {
             'Total des émissions et absorptions nationales' : "0",
@@ -598,6 +582,8 @@ for page, entity in zip(pages, entities) :
 
     print(f"Created category codes.")
 
+    # for entity CO, these years don't make sense
+    # TODO check again why
     if entity == 'CO' :
         df_trend_entity = df_trend_entity.drop(columns=['data2010', 'data2000', 'data2019'])
         columns_years = ['data1990', 'data1995', 'data2005', 'data2015', 'data2018']
@@ -646,6 +632,7 @@ df_trend_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
+# TODO what happened to the CO2 category here?
 # values in main table are assumed to be correct
 #df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.D") & (df_trend_IF["entity"] == "CO2") , "2019"] = 0
 #df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.D.1") & (df_trend_IF["entity"] == "CO2") , "2019"] = np.nan
@@ -711,11 +698,12 @@ for category, year in [
 ### convert to primap2 format ###
 data_pm2_trend = pm2.pm2io.from_interchange_format(df_trend_IF)
 
-# Combine tables and save to IF and native format
-#### combine
+# ###
+# Combine tables
+# ###
 
-
-# discrepancies larger than 0.86 for area (ISO3)=GIN,
+# merge main and energy
+# There are discrepancies larger than 0.86 for area (ISO3)=GIN,
 # category (IPCC1996_2006_GIN_Inv)=1.A.2, entity=NMVOC
 # 1990-01-01  0.800000, 2000-01-01  0.800000, 2010-01-01  0.869848
 # and
@@ -750,24 +738,9 @@ data_pm2.pr.to_netcdf(
 
 data_proc_pm2 = data_pm2
 
-
-# actual processing
-#data_proc_pm2 = process_data_for_country(
-#    data_proc_pm2,
-#    gas_baskets=gas_baskets,
-#    entities_to_ignore=[],
-#    processing_info_country=country_processing_step1,
-#)
-
-
-# All steps from process_data_for_country
-# """
-# Process data from DI interface (where necessary).
-# * Downscaling including subtraction of time series
-# * country specific sector aggregation
-# * Conversion to IPCC2006 categories
-# * general sector and gas basket aggregation (in new categories)
-# """
+# ###
+# process according to process_data_for_country
+# ###
 entities_to_ignore=[],
 processing_info_country=country_processing_step1,
 
@@ -842,7 +815,6 @@ for cat_to_agg in aggregate_cats_current:
     data_agg = data_country.pr.loc[{"category": source_cats}].pr.sum(
         dim="category", skipna=True, min_count=1
     )
-    #data_agg = data_country.pr.loc[{"category": source_cats}]
     nan_vars = [
         var
         for var in data_agg.data_vars
