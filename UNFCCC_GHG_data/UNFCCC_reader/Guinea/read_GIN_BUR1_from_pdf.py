@@ -1,5 +1,4 @@
-# TODO! delete this if env variable is set correctly
-# set environment variable (only for jupyter notebook)
+# TODO! Set env via doit and delete this when it works
 import os
 os.environ["UNFCCC_GHG_ROOT_PATH"] = "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data"
 
@@ -82,7 +81,6 @@ for page in pages :
     df_inventory_long["orig_cat_name"] = df_inventory_long["orig_cat_name"].str[0]
 
     # prep for conversion to PM2 IF and native format
-    # make a copy of the categories row
     df_inventory_long["category"] = df_inventory_long["orig_cat_name"]
 
     df_inventory_long["category"] = \
@@ -116,25 +114,18 @@ print("Converting to interchange format.")
 df_all_IF = pm2.pm2io.convert_long_dataframe_if(
     df_all,
     coords_cols=coords_cols,
-    # add_coords_cols=add_coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping['main'],
-    # coords_value_filling=coords_value_filling,
     filter_remove=filter_remove,
-    # filter_keep=filter_keep,
     meta_data=meta_data,
     convert_str=True,
     time_format="%Y",
 )
 
-# TODO: here the wrong values are replaced with the correct values. In the other
-# tables the wrong values are set to np.nan. It has the same effect but
-# it would be better to unify the approach.
-# There are different values for the same categories in the main and the lulucf table
-# it looks like in the main table they put the value from 1990 for 2019 again
-# it's unlikely that the value is exactly the same for 1990 and 2019
-# so I assume the other one is correct
+# There are inconsistent values in the main and the lulucf table
+# It looks like they put the values from 1990 again for 2019 in the main table.
+# The values from the lulucf table are assumed to be the correct ones.
 df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3") & (df_all_IF["entity"] == "CO") , "2019"] = 27.406
 df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C") & (df_all_IF["entity"] == "CO") , "2019"] = 27.406
 df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C.1") & (df_all_IF["entity"] == "CO") , "2019"] = 27.406
@@ -156,6 +147,7 @@ data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 # ###
 # Read energy sector tables
 # ###
+
 pages = ['116', '117', '118', '119']
 df_energy_dict = {}
 for page in pages :
