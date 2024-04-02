@@ -6,8 +6,8 @@ import sys
 import pandas as pd
 import primap2 as pm2
 
-from config_KOR_BUR4 import cat_name_translations, cat_codes
-from config_KOR_BUR4 import remove_cats, aggregate_before_mapping, cat_mapping, \
+from config_KOR_INV2023 import cat_name_translations, cat_codes, fix_rows
+from config_KOR_INV2023 import remove_cats, aggregate_before_mapping, cat_mapping, \
     aggregate_after_mapping, coords_terminologies_2006, filter_remove_2006, \
     filter_remove_after_agg
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
@@ -25,11 +25,11 @@ if not output_folder.exists():
 
 output_filename = 'KOR_2023-Inventory_2023_'
 
-inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2020).xlsx'
+inventory_file = 'Republic_of_Korea_National_GHG_Inventory_(1990_2021).xlsx'
 years_to_read = range(1990, 2020 + 1)
 
 sheets_to_read = ['온실가스', 'CO2', 'CH4', 'N2O', 'HFCs', 'PFCs', 'SF6']
-cols_to_read = range(1, 2020 - 1990 + 3)
+cols_to_read = range(1, 2021 - 1990 + 3)
 
 # columns for category UNFCCC_GHG_data and original category name
 index_cols = ['분야·부문/연도']
@@ -92,21 +92,22 @@ filter_remove = {
     "f1": {
         "category (IPCC1996_KOR_INV)": "\IGNORE",
     },
-    "livestock": { # temp until double cat name problem is solved
-        "category (IPCC1996_KOR_INV)": [
-            '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
-            '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
-        ]
-    }
+    # "livestock": { # temp until double cat name problem is solved
+    #     "category (IPCC1996_KOR_INV)": [
+    #         '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
+    #         '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
+    #     ]
+    # }
 }
 
 filter_keep = {}
 
 meta_data = {
-    "references": "http://www.gir.go.kr/home/file/readDownloadFile.do?fileId=5810&fileSeq=3",
+    "references": "http://www.gir.go.kr/home/board/read.do?pagerOffset=0&maxPageItems=10&maxIndexPages="
+                  "10&searchKey=&searchValue=&menuId=36&boardId=62&boardMasterId=2&boardCategoryId=",
     "rights": "",
     "contact": "mail@johannes-guetschow.de",
-    "title": "Republic of Korea: National Greenhouse Gas Inventory Report 2022",
+    "title": "Republic of Korea: National Greenhouse Gas Inventory Report 2023",
     "comment": "Read fom xlsx file by Johannes Gütschow",
     "institution": "Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory and Research Center",
 }
@@ -129,6 +130,7 @@ os.chdir(script_dir_name)
 df_all = None
 
 for sheet in sheets_to_read:
+    print(f"Reading sheet {sheet}.")
     # read current sheet (one sheet per gas)
     df_current = pd.read_excel(input_folder / inventory_file, sheet_name=sheet, skiprows=3, nrows=146, usecols=cols_to_read,
                                engine="openpyxl")
@@ -139,6 +141,19 @@ for sheet in sheets_to_read:
     # df_current = df_current.set_index(index_cols)
     # make sure all col headers are str
     df_current.columns = df_current.columns.map(str)
+
+    # fix the double category issue in livestock
+    lastrow = None
+    for i, row in df_current.iterrows():
+        if row["분야·부문/연도"] in fix_rows:
+            if lastrow == 'A.  장내발효':
+                df_current.iloc[i]["분야·부문/연도"] = f'A.{df_current.iloc[i]["분야·부문/연도"]}'
+            elif lastrow == 'B.  가축분뇨처리':
+                df_current.iloc[i]["분야·부문/연도"] = f'B.{df_current.iloc[i]["분야·부문/연도"]}'
+            else:
+                raise ValueError(f'Row to fix, but no fix defined {lastrow}, {row["분야·부문/연도"]}')
+        else:
+            lastrow = row["분야·부문/연도"]
     # add columns
     for col in sheet_metadata.keys():
         df_current.insert(1, col, sheet_metadata[col][sheet])
