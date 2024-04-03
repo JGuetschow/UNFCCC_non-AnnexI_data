@@ -29,7 +29,7 @@ output_filename = 'GIN_BUR1_2023_'
 compression = dict(zlib=True, complevel=9)
 
 # ###
-# read main tables
+# 1. Read in main tables
 # ###
 
 pages = ['110', '111', '112', '113']
@@ -145,7 +145,7 @@ df_all_IF.loc[(df_all_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.C.1") & (df_a
 data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 
 # ###
-# Read energy sector tables
+# 2. Read energy sector tables
 # ###
 
 pages = ['116', '117', '118', '119']
@@ -242,13 +242,10 @@ print("Converting to interchange format.")
 df_energy_IF = pm2.pm2io.convert_long_dataframe_if(
     df_energy,
     coords_cols=coords_cols,
-    # add_coords_cols=add_coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping['energy'],
-    # coords_value_filling=coords_value_filling,
     filter_remove=filter_remove,
-    # filter_keep=filter_keep,
     meta_data=meta_data,
     convert_str=True,
     time_format="%Y",
@@ -261,6 +258,7 @@ data_pm2_energy = pm2.pm2io.from_interchange_format(df_energy_IF)
 # ###
 # 3. Read in LULUCF table
 # ###
+
 pages = ['124', '125', '126', '127']
 df_lulucf_dict = {}
 for page in pages :
@@ -279,8 +277,8 @@ for page in pages :
         # table on page 127 has one extra row at the top
         # and one extra category 3.A.1.j
         df_lulucf_year = tables_inventory_original[0].df[3 :]
-        # rename duplicate categories in tables
-        # TODO move to config section
+        # 3.A.1.a.i to 3.A.1.j exist twice.
+        # Rename duplicate categories in tables.
         replace_categories = [(19, "3.A.2.a.i - Vaches laitières"),
                               (20, "3.A.2.a.ii - Autres bovins"),
                               (21, "3.A.2.b - Buffle"),
@@ -297,8 +295,7 @@ for page in pages :
     else :
         # cut first two lines
         df_lulucf_year = tables_inventory_original[0].df[2 :]
-
-        # TODO move to config section
+        # On pages 124-126 the wrong categories are slightly different
         replace_categories = [(17, "3.A.2.a.i - Vaches laitières"),
                               (18, "3.A.2.a.ii - Autres bovins"),
                               (19, "3.A.2.b - Buffle"),
@@ -364,13 +361,10 @@ print("Converting to interchange format.")
 df_lulucf_IF = pm2.pm2io.convert_long_dataframe_if(
     df_lulucf,
     coords_cols=coords_cols,
-    # add_coords_cols=add_coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping['lulucf'],
-    # coords_value_filling=coords_value_filling,
     filter_remove=filter_remove,
-    # filter_keep=filter_keep,
     meta_data=meta_data,
     convert_str=True,
     time_format="%Y",
@@ -472,13 +466,10 @@ print("Converting to interchange format.")
 df_waste_IF = pm2.pm2io.convert_long_dataframe_if(
     df_waste,
     coords_cols=coords_cols,
-    # add_coords_cols=add_coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping['waste'],
-    # coords_value_filling=coords_value_filling,
     filter_remove=filter_remove,
-    # filter_keep=filter_keep,
     meta_data=meta_data,
     convert_str=True,
     time_format="%Y",
@@ -498,15 +489,26 @@ entities = ['CO2', 'CH4', 'N2O', 'NOx', 'CO', 'NMVOCs', 'SO2']
 # for this set of tables every page is a different entity
 for page, entity in zip(pages, entities) :
 
+    # The table for CO seems completely mixed up and should not be considered.
+    # The total CO values for 1990 equal the values in the main table.
+    # The total CO values for 1995 equal the values for 2000 in the main table.
+    # The total CO values for 2000 equal the values for 2010 in the main table.
+    # The total CO values for 2005 are identical to the 2019 values in the same table.
+    # The total CO values for 2010 are identical to the 1990 values in the same table.
+    # The total CO values for 2019 are identical to the 1995 values in the same table.
+    # And so on.
+    if entity == 'CO':
+        continue
+
     print("-" * 45)
     print(f"Reading table for page {page} and entity {entity}.")
 
-    # first table needs to be read in with flavor="stream"
-    # flavor="lattice" raises an error, maybe camelot issue
-    # see https://github.com/atlanhq/camelot/issues/306
-    # or because characters in first row almost reach
-    # the table grid
-    if page == '131' :
+    # First table must be read in with flavor="stream", as
+    # flavor="lattice" raises an error. Maybe camelot issue
+    # see https://github.com/atlanhq/camelot/issues/306,
+    # or because characters in first row almost touch
+    # the table grid.
+    if page == '131':
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file),
             pages=page,
@@ -518,7 +520,10 @@ for page, entity in zip(pages, entities) :
 
         df_trend_entity = tables_inventory_original[0].df[1 :]
 
-        # these rows are different to the main table and don't make sense
+        # The categories 3.D / 3.D.1 / 3.D.2 contain values different to the main table
+        # They should also not contain negative values according to IPCC methodology:
+        # https://www.ipcc-nggip.iges.or.jp/public/2006gl/
+        # Therefore, the rows are deleted from the table.
         row_to_delete = df_trend_entity.index[df_trend_entity[0] == '3.D - Autres'][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
@@ -538,10 +543,12 @@ for page, entity in zip(pages, entities) :
 
     print(f"Reading complete.")
 
-    # add columns
+    # Add columns
     # 'data' prefix is needed for pd.wide_to_long() later
     columns_years = ['data1990', 'data1995', "data2000", 'data2005', 'data2010', 'data2015', 'data2018', 'data2019']
     df_trend_entity.columns = ['orig_cat_name'] + columns_years
+
+    df_trend_entity = df_trend_entity.copy()
 
     # unit is always Gg
     df_trend_entity.loc[:, 'unit'] = 'Gg'
@@ -551,28 +558,13 @@ for page, entity in zip(pages, entities) :
 
     df_trend_entity.loc[:, "category"] = df_trend_entity["orig_cat_name"]
 
-    # delete rows that are just a headline or empty
-    # row_to_delete = df_trend_entity.index[df_trend_entity['category'] == 'Éléments pour mémoire'][0]
-    # df_trend_entity = df_trend_entity.drop(index = row_to_delete)
-
-    # in the first table there is no empty line
+    # Delete empty line for pages 132-137.
     if page != '131' :
         row_to_delete = df_trend_entity.index[df_trend_entity['category'] == ''][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
-    inv_conf["cat_code_regexp"] = r'^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*'
-
-    # TODO! this should go to the config as well
     df_trend_entity["category"] = df_trend_entity["category"].replace(
-        {
-            'Total des émissions et absorptions nationales' : "0",
-            '2A5: Autre' : '2A5',
-            'Éléments pour mémoire' : 'MEMO',
-            'Soutes internationales' : 'M.BK',
-            '1.A.3.a.i - Aviation internationale (soutes internationales)' : 'M.BK.A',
-            '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
-            '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
-        })
+        inv_conf['cat_codes_manual']['trend'])
 
     df_trend_entity.loc[:, "category"] = df_trend_entity["category"].str.replace(".", "")
     df_trend_entity.loc[:, "category"] = df_trend_entity["category"].str.replace("\n", "")
@@ -585,12 +577,6 @@ for page, entity in zip(pages, entities) :
     df_trend_entity = df_trend_entity.reset_index(drop=True)
 
     print(f"Created category codes.")
-
-    # for entity CO, these years don't make sense
-    # TODO check again why
-    if entity == 'CO' :
-        df_trend_entity = df_trend_entity.drop(columns=['data2010', 'data2000', 'data2019'])
-        columns_years = ['data1990', 'data1995', 'data2005', 'data2015', 'data2018']
 
     for year in columns_years :
         df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace(",", ".")
@@ -616,7 +602,6 @@ df_trend_all = pd.concat([df_main_dict['131'],
                           df_main_dict['132'],
                           df_main_dict['133'],
                           df_main_dict['134'],
-                          df_main_dict['135'],
                           df_main_dict['136'],
                           df_main_dict['137'],
                           ], axis=0, join='outer').reset_index(drop=True)
@@ -624,22 +609,14 @@ df_trend_all = pd.concat([df_main_dict['131'],
 df_trend_IF = pm2.pm2io.convert_long_dataframe_if(
     df_trend_all,
     coords_cols=coords_cols,
-    # add_coords_cols=add_coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping['trend'],
-    # coords_value_filling=coords_value_filling,
     filter_remove=filter_remove,
-    # filter_keep=filter_keep,
     meta_data=meta_data,
     convert_str=True,
     time_format="%Y",
 )
-
-# TODO what happened to the CO2 category here?
-# values in main table are assumed to be correct
-#df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.D") & (df_trend_IF["entity"] == "CO2") , "2019"] = 0
-#df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3.D.1") & (df_trend_IF["entity"] == "CO2") , "2019"] = np.nan
 
 # CH4 - values in main table are assumed to be correct
 df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CH4") , "1990"] = np.nan
@@ -648,15 +625,6 @@ df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (d
 df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CH4") , "2000"] = np.nan
 df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CH4") , "2010"] = np.nan
 df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CH4") , "2010"] = np.nan
-
-# CO - values in main table are assumed to be correct
-df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "1.A.2") & (df_trend_IF["entity"] == "CO") , "1990"] = np.nan
-df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CO") , "1990"] = np.nan
-df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CO") , "1990"] = np.nan
-df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CO") , "2000"] = np.nan
-df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CO") , "2000"] = np.nan
-df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK") & (df_trend_IF["entity"] == "CO") , "2010"] = np.nan
-df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "M.BK.A") & (df_trend_IF["entity"] == "CO") , "2010"] = np.nan
 
 # N2O - values in main table are assumed to be correct
 df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "1.A.2") & (df_trend_IF["entity"] == "N2O") , "1990"] = np.nan
@@ -677,6 +645,7 @@ df_trend_IF.loc[(df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == "3") & (df_t
 # NMVOC - values in main table are assumed to be correct
 entity = 'NMVOC'
 for category, year in [
+    ('1.A.2','1990'),
     ('0', '2000'),
     ('1', '2000'),
     ('1.A','2000'),
@@ -695,6 +664,7 @@ for category, year in [
     ('1.A.3','2010'),
     ('1.A.4','2010'),
     ('2','2010'),
+    ('1.A.2','2019'),
 ]:
     df_trend_IF.loc[
         (df_trend_IF["category (IPCC1996_2006_GIN_Inv)"] == category) & (df_trend_IF["entity"] == entity) , year] = np.nan
@@ -707,13 +677,9 @@ data_pm2_trend = pm2.pm2io.from_interchange_format(df_trend_IF)
 # ###
 
 # merge main and energy
-# There are discrepancies larger than 0.86 for area (ISO3)=GIN,
-# category (IPCC1996_2006_GIN_Inv)=1.A.2, entity=NMVOC
-# 1990-01-01  0.800000, 2000-01-01  0.800000, 2010-01-01  0.869848
-# and
-# (ISO3)=GIN, category (IPCC1996_2006_GIN_Inv)=1.A.2, time=1262304000000000000 (2019?)
-# The values in the table are different / one is wrong
-# merge main and energy
+# There are discrepancies larger than 0.86 for area category 1.A.2, entity NMVOC,
+# years 1990, 2000, 2010, 2019
+# It is assumed the main table has the correct values.
 data_pm2 = data_pm2_main.pr.merge(data_pm2_energy,tolerance=1)
 
 # merge lulucf
@@ -730,8 +696,9 @@ data_pm2 = data_pm2.pr.merge(data_pm2_trend,tolerance=0.11)
 data_if = data_pm2.pr.to_interchange_format()
 
 # ###
-# save data to IF and native format
+# Save raw data to IF and native format.
 # ###
+
 pm2.pm2io.write_interchange_format(
    output_folder / (output_filename + coords_terminologies["category"] + "_raw"), data_if)
 
@@ -740,16 +707,17 @@ data_pm2.pr.to_netcdf(
    output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
    encoding=encoding)
 
-data_proc_pm2 = data_pm2
 
 # ###
-# process according to process_data_for_country
+# Processing
 # ###
-entities_to_ignore=[],
-processing_info_country=country_processing_step1,
 
-# 0: gather information
-data_country = data_proc_pm2
+entities_to_ignore=[]
+processing_info_country=country_processing_step1
+
+# Gather information
+data_country = data_pm2
+
 countries = list(data_country.coords[data_country.attrs["area"]].values)
 if len(countries) > 1:
     raise ValueError(
@@ -783,8 +751,6 @@ if len(sources) > 1:
 source = sources[0]
 
 # check if category name column present
-# TODO: replace 'name' in config by  'additional_cols' dict that defines the cols
-#  and the values
 if "orig_cat_name" in data_country.coords:
     cat_name_present = True
 else:
@@ -869,8 +835,6 @@ for entity in entities:
         data_GWP.attrs["gwp_context"] = GWP
         data_country[f"{entity} ({GWP})"] = data_GWP
 
-
-
 # create gas baskets
 entities_present = set(data_country.data_vars)
 for basket in gas_baskets.keys():
@@ -917,14 +881,17 @@ data_country.attrs["title"] = (
     data_country.attrs["title"] + f" Processed on " f"{date.today()}"
 )
 
-data_proc_pm2 = data_country
+
 
 # ###
 # save processed data to IF and native format
 # ###
+data_proc_pm2 = data_country
+
 terminology_proc = coords_terminologies['category']
 
 data_proc_if = data_proc_pm2.pr.to_interchange_format()
+
 if not output_folder.exists():
     output_folder.mkdir()
 pm2.pm2io.write_interchange_format(
@@ -934,4 +901,5 @@ encoding = {var: compression for var in data_proc_pm2.data_vars}
 data_proc_pm2.pr.to_netcdf(
     output_folder / (output_filename + terminology_proc + ".nc"),
     encoding=encoding)
+
 print("Saved processed data.")

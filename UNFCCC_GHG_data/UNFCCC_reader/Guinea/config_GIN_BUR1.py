@@ -172,7 +172,16 @@ inv_conf = {
             '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
             '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
             '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
-        }
+        },
+        'trend': {
+            'Total des émissions et absorptions nationales' : "0",
+            '2A5: Autre' : '2A5',
+            'Éléments pour mémoire' : 'MEMO',
+            'Soutes internationales' : 'M.BK',
+            '1.A.3.a.i - Aviation internationale (soutes internationales)' : 'M.BK.A',
+            '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
+            '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
+        },
     },
 }
 
