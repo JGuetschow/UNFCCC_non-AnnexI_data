@@ -158,6 +158,10 @@ original_names = [
     '5. 농경지에서 농업용 석회시용으로 인한 CO2 배출',
     '6. 농경지에서 바이오매스 연소에 의한 배출',
     'G. 기타',
+    '3. 습지에서 배수로 인한 Non-CH4 배출', # new codes in 2022 inventory start here
+    '3. 초지에서 농업용 석회시용으로 인한 CH4 배출',
+    '4. 산림지에서 배수로 인한 Non-CH4 배출',
+    '5. 농경지에서 농업용 석회시용으로 인한 CH4 배출',
 ]
 translations = [
     ['Total emissions', 'M.0.EL'],
@@ -319,6 +323,12 @@ translations = [
     ['5. CO2 emission from agricultural lime application in agricultural land', '5.B.5'],
     ['6. Emissions from burning biomass on agricultural land', '5.B.6'],
     ['G. Others', '5.G'],
+    ['3. Non-CH4 emissions due to drainage from wetlands', 'M.5.D.1.drain'], # new codes in 2022 inventory start here
+    ['4. CH4 emissions from agricultural lime application on grassland',
+     'M.4.D.1.lime.grass'],
+    ['5. Non-CH4 emissions from drainage from forest land', 'M.5.A.1.drain'],
+    ['6. CH4 emissions from agricultural lime application in agricultural fields',
+     'M.4.D.1.lime.field'],
 ]
 cat_name_translations = dict(zip(original_names, [cat[0] for cat in translations]))
 cat_codes = dict(zip(original_names, [cat[1] for cat in translations]))
@@ -350,10 +360,14 @@ remove_cats = [
     '5.D', '5.D.1', '5.D.2', '5.D.3', '5.D.4',
     '5.E', '5.F',
     '5.G', '5.B.6', # for 2021 NIR
+    'M.5.A.1.drain', 'M.5.D.1.drain', # for 2022 / 2023 NIR
+    'M.4.D.1.lime.field', 'M.4.D.1.lime.grass',
 ]
 
 aggregate_before_mapping = {
     '2006.2.D.4': {'sources': ['2.A.5', '2.A.6'], 'name': 'Other'},
+    '2006.3.C.2': {'sources': ['M.4.D.1.lime.grass', 'M.4.D.1.lime.grass'],
+                   'name': 'Liming'},
     '2006.3.C.4': {'sources': ['4.D.1', '4.D.2'],
                    'name': 'Direct N2O Emissions from Managed Soils'},
     '2006.M.3C1AG': {'sources': ['4.E', '4.F'], 'name': 'Biomass burning Agriculture'},
@@ -404,6 +418,7 @@ cat_mapping = {
     '4.B.9': '3.A.2.i',
     '4.B.10': '3.A.2.j',
     '4.C': '3.C.7',
+    '2006.3.C.2': '3.C.2',
     '2006.3.C.4': '3.C.4',
     '4.D.3': '3.C.5',
     '2006.M.3C1AG': 'M.3.C.1.AG',
@@ -434,9 +449,10 @@ aggregate_after_mapping = {
             'name': 'Product uses as Substitutes for Ozone Depleting Substances'},
     '2.G': {'sources': ['2.G.1', '2.G.2'], 'name': 'Other Product Manufacture and Use'},
     '3.A': {'sources': ['3.A.1', '3.A.2'], 'name': 'Livestock'},
-    '3.C': {'sources': ['3.C.4', '3.C.5', '3.C.7'],
+    '3.C.1': {'sources': ['M.3.C.1.AG'], 'name': 'Emissions from Biomass Burning'},
+    '3.C': {'sources': ['3.C.1', '3.C.2', '3.C.4', '3.C.5', '3.C.7'],
                  'name': 'Aggregate sources and non-CO2 emissions sources on land'},
-    'M.3.C.AG': {'sources': ['3.C.4', '3.C.5', '3.C.7'],
+    'M.3.C.AG': {'sources': ['M.3.C.1.AG', '3.C.2', '3.C.4', '3.C.5', '3.C.7'],
                  'name': 'Aggregate sources and non-CO2 emissions sources on land ('
                          'Agriculture)'},
     'M.AG.ELV': {'sources': ['M.3.C.AG'], 'name': 'Agriculture excluding livestock'},
@@ -453,12 +469,12 @@ filter_remove_2006 = {
     "f1": {
         "category (IPCC2006_PRIMAP)": "\IGNORE",
     },
-    "livestock": {  # temp until double cat name problem is solved
-        "category (IPCC2006_PRIMAP)": [
-            '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
-            '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
-        ]
-    },
+    # "livestock": {  # temp until double cat name problem is solved
+    #     "category (IPCC2006_PRIMAP)": [
+    #         '4.B.1', '4.B.10', '4.B.2', '4.B.3', '4.B.4',
+    #         '4.B.5', '4.B.6', '4.B.7', '4.B.8', '4.B.9',
+    #     ]
+    # },
     "fmap": {
         "category (IPCC2006_PRIMAP)": remove_cats
     },

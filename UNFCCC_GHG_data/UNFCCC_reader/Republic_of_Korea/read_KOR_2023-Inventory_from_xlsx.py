@@ -79,7 +79,7 @@ coords_defaults = {
     "source": "KOR-GHG-Inventory",
     "provenance": "measured",
     "area": "KOR",
-    "scenario": "INV2022",
+    "scenario": "INV2023",
 }
 
 coords_value_mapping = {
