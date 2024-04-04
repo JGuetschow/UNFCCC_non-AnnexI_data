@@ -79,7 +79,7 @@ def process_data_for_country(
     # remove unused cats
     data_country = data_country.dropna(f"category ({cat_terminology_in})", how="all")
     # remove unused years
-    data_country = data_country.dropna(f"time", how="all")
+    data_country = data_country.dropna("time", how="all")
     # remove variables only containing nan
     nan_vars_country = [
         var
@@ -292,9 +292,9 @@ def process_data_for_country(
             #  gas baskets?
             for case in processing_info_country["aggregate_gases"].keys():
                 case_info = processing_info_country["aggregate_gases"][case]
-                data_country[
-                    case_info["basket"]
-                ] = data_country.pr.fill_na_gas_basket_from_contents(**case_info)
+                data_country[case_info["basket"]] = (
+                    data_country.pr.fill_na_gas_basket_from_contents(**case_info)
+                )
 
     # 3: map categories
     if category_conversion is not None:
@@ -625,7 +625,7 @@ def get_country_submissions(
 
     country_submissions = {}
     if print_sub:
-        print(f"#" * 80)
+        print("#" * 80)
         print(f"The following submissions are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
@@ -697,7 +697,7 @@ def get_country_datasets(
     rep_data = {}
     # data
     if print_ds:
-        print(f"#" * 80)
+        print("#" * 80)
         print(f"The following datasets are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
@@ -735,9 +735,9 @@ def get_country_datasets(
                     # process filename to get submission
                     parts = dataset.split("_")
                     if parts[0] != country_code:
-                        cleaned_datasets_current_folder[
-                            f"Wrong code: {parts[0]}"
-                        ] = dataset
+                        cleaned_datasets_current_folder[f"Wrong code: {parts[0]}"] = (
+                            dataset
+                        )
                     else:
                         terminology = "_".join(parts[3:])
                         key = f"{parts[1]} ({parts[2]}, {terminology})"
@@ -757,7 +757,7 @@ def get_country_datasets(
                         if code_file:
                             data_info = data_info + f"code: {code_file.name}"
                         else:
-                            data_info = data_info + f"code: not found"
+                            data_info = data_info + "code: not found"
 
                         cleaned_datasets_current_folder[key] = data_info
 
@@ -775,7 +775,7 @@ def get_country_datasets(
 
     # legacy data
     if print_ds:
-        print(f"#" * 80)
+        print("#" * 80)
         print(f"The following legacy datasets are available for {country_name}")
     legacy_data = {}
     for item in data_folder_legacy.iterdir():
@@ -978,11 +978,12 @@ def fix_rows(
         data = data.drop(indices_to_merge[1:])
     return data
 
+
 def assert_values(
-        df : pd.DataFrame,
-        test_case : tuple[str | float | int],
-        category_column : str ="category (IPCC1996_2006_GIN_Inv)",
-        entity_column : str ='entity',
+    df: pd.DataFrame,
+    test_case: tuple[str | float | int],
+    category_column: str = "category (IPCC1996_2006_GIN_Inv)",
+    entity_column: str = "entity",
 ) -> None:
     """
     Check if an individual value in a dataframe matches the expected value.
@@ -1005,20 +1006,36 @@ def assert_values(
     year = test_case[2]
     expected_value = test_case[3]
 
-    assert (type(expected_value) == float) or (type(expected_value) == int), "This function only works for numbers. Use assert_nan_values to check for NaNs and empty values."
+    assert (
+        (type(expected_value) == float) or (type(expected_value) == int)
+    ), "This function only works for numbers. Use assert_nan_values to check for NaNs and empty values."
 
-    arr = df.loc[(df[category_column] == category) & (df[entity_column] == entity), year].values
+    arr = df.loc[
+        (df[category_column] == category) & (df[entity_column] == entity), year
+    ].values
 
     # Assert the category exists in the data frame
-    assert category in df[category_column].unique(), f"{category} is not a valid category. Choose from {df[category_column].unique()}"
+    assert (
+        category in df[category_column].unique()
+    ), f"{category} is not a valid category. Choose from {df[category_column].unique()}"
 
-    # Assert the category exists in the data frame
-    assert entity in df[entity_column].unique(), f"{entity} is not a valid entity. Choose from {df[entity_column].unique()}"
+    # Assert the entity exists in the data frame
+    assert (
+        entity in df[entity_column].unique()
+    ), f"{entity} is not a valid entity. Choose from {df[entity_column].unique()}"
 
-    assert arr.size > 0, f"No value found for category {category}, entity {entity}, year {year}!"
+    assert (
+        arr.size > 0
+    ), f"No value found for category {category}, entity {entity}, year {year}!"
 
-    assert arr.size <= 1, f"More than one value found for category {category}, entity {entity}, year {year}!"
+    assert (
+        arr.size <= 1
+    ), f"More than one value found for category {category}, entity {entity}, year {year}!"
 
-    assert arr[0] == test_case[3], f"Expected value {expected_value}, actual value is {arr[0]}"
+    assert (
+        arr[0] == test_case[3]
+    ), f"Expected value {expected_value}, actual value is {arr[0]}"
 
-    print(f"Value for category {category}, entity {entity}, year {year} is as expected.")
+    print(
+        f"Value for category {category}, entity {entity}, year {year} is as expected."
+    )
