@@ -10,6 +10,7 @@ from datetime import date
 from copy import deepcopy
 from typing import Dict, List, Optional
 from pathlib import Path
+import warnings
 from .definitions import custom_country_mapping, custom_folders
 from .definitions import root_path, downloaded_data_path, extracted_data_path
 from .definitions import legacy_data_path, code_path
@@ -1039,9 +1040,6 @@ def assert_values(
     print(
         f"Value for category {category}, entity {entity}, year {year} is as expected."
     )
-
-
-import warnings
 
 
 def assert_nan_values(
