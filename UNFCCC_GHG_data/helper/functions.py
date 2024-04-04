@@ -1051,7 +1051,8 @@ def assert_nan_values(
     entity_column: str = "entity",
 ) -> None:
     """
-    Check if a value in a dataframe is NaN.
+    Check if values that are empty or NE or NE1 in the PDF tables
+    are not present in the dataset.
 
     Input
     -----
