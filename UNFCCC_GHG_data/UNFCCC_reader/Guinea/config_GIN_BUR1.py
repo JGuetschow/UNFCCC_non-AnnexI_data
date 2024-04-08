@@ -39,7 +39,7 @@ coords_value_mapping = {
             "NMVOCs": "NMVOC",
         },
     },
-    "afolu": {
+    "lulucf": {
         "unit": "PRIMAP1",
         "category": "PRIMAP1",
         "entity": {
@@ -68,7 +68,7 @@ filter_remove = {
 }
 
 meta_data = {
-    "references": "https://unfccc.int/BURs",
+    "references": "https://unfccc.int/documents/629549",
     "rights": "",  # unknown
     "contact": "daniel-busch@climate-resource.de",
     "title": "Guinea. Biennial update report (BUR). BUR1",
@@ -135,8 +135,8 @@ header_energy = [
 ]
 unit_energy = ["-"] + ["Gg"] * len(header_energy)  # one extra for the category columns
 
-# for afolu tables
-header_afolu = [
+# for lulucf tables
+header_lulucf = [
     "Greenhouse gas source and sink categories",
     "CO2",
     "CH4",
@@ -145,7 +145,7 @@ header_afolu = [
     "CO",
     "NMVOCs",
 ]
-unit_afolu = ["-"] + ["Gg"] * (len(header_afolu) - 1)
+unit_lulucf = ["-"] + ["Gg"] * (len(header_lulucf) - 1)
 
 # for waste table
 header_waste = [
@@ -179,8 +179,8 @@ inv_conf = {
     "unit": unit_inventory,
     "header_energy": header_energy,
     "unit_energy": unit_energy,
-    "header_afolu": header_afolu,
-    "unit_afolu": unit_afolu,
+    "header_lulucf": header_lulucf,
+    "unit_lulucf": unit_lulucf,
     "header_waste": header_waste,
     "unit_waste": unit_waste,
     "header_trend": header_trend,
@@ -214,7 +214,7 @@ inv_conf = {
             "2A5: Autre": "2A5",
         },
         "energy": {
-            "International Bunkers": "MEMO",
+            "International Bunkers": "M.BK",
             "1.A.3.a.i - Aviation internationale (soutes internationales)": "M.BK.A",
             "1.A.3.d.i - Navigation internationale (soutes internationales)": "M.BK.M",
             "1.A.5.c - Opérations multilatérales": "M.MULTIOP",
