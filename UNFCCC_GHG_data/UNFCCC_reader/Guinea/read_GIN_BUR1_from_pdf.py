@@ -808,6 +808,18 @@ df_trend_IF.loc[
 
 # NOx - values in main table are assumed to be correct
 df_trend_IF.loc[
+    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "NOx"),
+    "1990",
+] = np.nan
+df_trend_IF.loc[
+    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "NOx"),
+    "2000",
+] = np.nan
+df_trend_IF.loc[
+    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "NOx"),
+    "2010",
+] = np.nan
+df_trend_IF.loc[
     (df_trend_IF[category_column] == "3.C") & (df_trend_IF["entity"] == "NOx"),
     "2019",
 ] = np.nan
@@ -824,6 +836,7 @@ df_trend_IF.loc[
 entity = "NMVOC"
 for category, year in [
     ("1.A.2", "1990"),
+    ("M.BK", "1990"),
     ("0", "2000"),
     ("1", "2000"),
     ("1.A", "2000"),
@@ -834,6 +847,7 @@ for category, year in [
     ("2", "2000"),
     ("2.H", "2000"),
     ("2.H.2", "2000"),
+    ("M.BK", "2000"),
     ("0", "2010"),
     ("1", "2010"),
     ("1.A", "2010"),
@@ -842,6 +856,7 @@ for category, year in [
     ("1.A.3", "2010"),
     ("1.A.4", "2010"),
     ("2", "2010"),
+    ("M.BK", "2010"),
     ("1.A.2", "2019"),
 ]:
     df_trend_IF.loc[
