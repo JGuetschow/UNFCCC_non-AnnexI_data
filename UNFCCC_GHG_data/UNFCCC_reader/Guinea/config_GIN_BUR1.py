@@ -68,7 +68,7 @@ filter_remove = {
 }
 
 meta_data = {
-    "references": "https://unfccc.int/BURs",
+    "references": "https://unfccc.int/documents/629549",
     "rights": "", # unknown
     "contact": "daniel-busch@climate-resource.de",
     "title": "Guinea. Biennial update report (BUR). BUR1",
