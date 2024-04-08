@@ -15,7 +15,7 @@ coords_defaults = {
 coords_terminologies = {
     "area": "ISO3",
     # TODO check if this is correct
-    "category": "IPCC1996_2006_GIN_Inv",
+    "category": "IPCC2006_PRIMAP",
     "scenario": "PRIMAP",
 }
 
