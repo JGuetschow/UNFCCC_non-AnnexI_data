@@ -179,6 +179,47 @@ df_all_IF.loc[
     "2019",
 ] = 1.644
 
+# International bunkers
+# NOx
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NOx"),
+    "1990",
+] = 0.001
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NOx"),
+    "2000",
+] = 0.003
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NOx"),
+    "2010",
+] = 0.052
+# CO
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "CO"),
+    "1990",
+] = 0.0002
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "CO"),
+    "2000",
+] = 0.0006
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "CO"),
+    "2010",
+] = 0.01
+# NMVOC
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NMVOC"),
+    "1990",
+] = 0.0001
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NMVOC"),
+    "2000",
+] = 0.0002
+df_all_IF.loc[
+    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NMVOC"),
+    "2010",
+] = 0.003
+
 ### convert to primap2 format ###
 data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 

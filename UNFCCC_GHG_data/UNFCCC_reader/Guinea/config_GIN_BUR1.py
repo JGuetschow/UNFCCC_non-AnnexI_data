@@ -39,7 +39,7 @@ coords_value_mapping = {
             "NMVOCs": "NMVOC",
         },
     },
-    "lulucf": {
+    "afolu": {
         "unit": "PRIMAP1",
         "category": "PRIMAP1",
         "entity": {
@@ -135,8 +135,8 @@ header_energy = [
 ]
 unit_energy = ["-"] + ["Gg"] * len(header_energy)  # one extra for the category columns
 
-# for lulucf tables
-header_lulucf = [
+# for afolu tables
+header_afolu = [
     "Greenhouse gas source and sink categories",
     "CO2",
     "CH4",
@@ -145,7 +145,7 @@ header_lulucf = [
     "CO",
     "NMVOCs",
 ]
-unit_lulucf = ["-"] + ["Gg"] * (len(header_lulucf) - 1)
+unit_afolu = ["-"] + ["Gg"] * (len(header_afolu) - 1)
 
 # for waste table
 header_waste = [
@@ -179,8 +179,8 @@ inv_conf = {
     "unit": unit_inventory,
     "header_energy": header_energy,
     "unit_energy": unit_energy,
-    "header_lulucf": header_lulucf,
-    "unit_lulucf": unit_lulucf,
+    "header_afolu": header_afolu,
+    "unit_afolu": unit_afolu,
     "header_waste": header_waste,
     "unit_waste": unit_waste,
     "header_trend": header_trend,
