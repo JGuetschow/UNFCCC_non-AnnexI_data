@@ -168,7 +168,7 @@ inv_conf = {
             '2A5: Autre': '2A5',
         },
         'energy' : {
-            'International Bunkers': 'MEMO',
+            'International Bunkers': 'M.BK',
             '1.A.3.a.i - Aviation internationale (soutes internationales)': 'M.BK.A',
             '1.A.3.d.i - Navigation internationale (soutes internationales)' : 'M.BK.M',
             '1.A.5.c - Opérations multilatérales' : 'M.MULTIOP',
