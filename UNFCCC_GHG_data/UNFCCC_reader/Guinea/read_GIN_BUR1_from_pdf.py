@@ -14,7 +14,7 @@ from datetime import date
 import xarray as xr
 
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
-from UNFCCC_GHG_data.helper.functions import find_and_replace_values
+from UNFCCC_GHG_data.helper.functions import find_and_replace_values, process_data_for_country
 from config_GIN_BUR1 import coords_cols, coords_defaults, coords_terminologies
 from config_GIN_BUR1 import (
     coords_value_mapping,
@@ -700,20 +700,31 @@ data_if = data_pm2.pr.to_interchange_format()
 # Save raw data to IF and native format.
 # ###
 
-pm2.pm2io.write_interchange_format(
-    output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
-    data_if,
-)
-
-encoding = {var : compression for var in data_pm2.data_vars}
-data_pm2.pr.to_netcdf(
-    output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
-    encoding=encoding,
-)
+# pm2.pm2io.write_interchange_format(
+#     output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+#     data_if,
+# )
+# 
+# encoding = {var : compression for var in data_pm2.data_vars}
+# data_pm2.pr.to_netcdf(
+#     output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+#     encoding=encoding,
+# )
 
 # ###
 # Processing
 # ###
+
+data_pm2_processed = process_data_for_country(
+    data_country=data_pm2,
+    entities_to_ignore=[],
+    gas_baskets=gas_baskets,
+    filter_dims=None,  # leaving this explicit for now
+    cat_terminology_out=None,
+    category_conversion=None,
+    sectors_out=None,
+    processing_info_country=country_processing_step1,
+)
 
 entities_to_ignore = []
 processing_info_country = country_processing_step1
@@ -874,10 +885,12 @@ data_country.attrs["title"] = (
         data_country.attrs["title"] + f" Processed on " f"{date.today()}"
 )
 
+assert data_country.equals(data_pm2_processed)
+
 # ###
 # save processed data to IF and native format
 # ###
-data_proc_pm2 = data_country
+data_proc_pm2 = data_pm2_processed
 
 terminology_proc = coords_terminologies["category"]
 
