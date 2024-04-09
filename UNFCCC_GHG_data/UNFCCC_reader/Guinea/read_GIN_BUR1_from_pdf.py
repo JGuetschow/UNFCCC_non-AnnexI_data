@@ -14,6 +14,7 @@ from datetime import date
 import xarray as xr
 
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
+from UNFCCC_GHG_data.helper.functions import find_and_replace_values
 from config_GIN_BUR1 import coords_cols, coords_defaults, coords_terminologies
 from config_GIN_BUR1 import (
     coords_value_mapping,
@@ -21,7 +22,7 @@ from config_GIN_BUR1 import (
     meta_data,
     page_def_templates,
 )
-from config_GIN_BUR1 import inv_conf, country_processing_step1, gas_baskets
+from config_GIN_BUR1 import inv_conf, country_processing_step1, gas_baskets, replace_info
 
 # ###
 # configuration
@@ -29,7 +30,7 @@ from config_GIN_BUR1 import inv_conf, country_processing_step1, gas_baskets
 
 input_folder = downloaded_data_path / "UNFCCC" / "Guinea" / "BUR1"
 output_folder = extracted_data_path / "UNFCCC" / "Guinea"
-if not output_folder.exists():
+if not output_folder.exists() :
     output_folder.mkdir()
 
 pdf_file = "Rapport_IGES-Guinee-BUR1_VF.pdf"
@@ -43,7 +44,7 @@ compression = dict(zlib=True, complevel=9)
 
 pages = ["110", "111", "112", "113"]
 df_main = None
-for page in pages:
+for page in pages :
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -61,7 +62,7 @@ for page in pages:
     df_inventory = tables_inventory_original[0].df.copy()
 
     # move broken text in correct row (page 113 is fine)
-    if page in ["110", "111", "112"]:
+    if page in ["110", "111", "112"] :
         df_inventory.at[4, 0] = "1.A.1 - Industries énergétiques"
         df_inventory = df_inventory.drop(index=3)
         df_inventory.at[8, 0] = "1.A.4 - Autres secteurs"
@@ -103,8 +104,12 @@ for page in pages:
 
     df_inventory_long["category"] = df_inventory_long["category"].str.replace(".", "")
 
+
     # regex replacements
-    repl = lambda m: m.group("code")
+    def repl(m) :
+        return m.group("code")
+
+
     df_inventory_long["category"] = df_inventory_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
     )
@@ -118,9 +123,9 @@ for page in pages:
     df_inventory_long.columns = df_inventory_long.columns.map(str)
     df_inventory_long = df_inventory_long.drop(columns=["orig_cat_name"])
 
-    if df_main is None:
+    if df_main is None :
         df_main = df_inventory_long
-    else:
+    else :
         df_main = pd.concat(
             [df_main, df_inventory_long],
             axis=0,
@@ -140,85 +145,10 @@ df_all_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
-# There are inconsistent values in the main and the afolu table
-# It looks like they put the values from 1990 again for 2019 in the main table.
-# The values from the afolu table are assumed to be the correct ones.
-df_all_IF.loc[
-    (df_all_IF[category_column] == "3") & (df_all_IF["entity"] == "CO"),
-    "2019",
-] = 27.406
-df_all_IF.loc[
-    (df_all_IF[category_column] == "3.C") & (df_all_IF["entity"] == "CO"),
-    "2019",
-] = 27.406
-df_all_IF.loc[
-    (df_all_IF[category_column] == "3.C.1") & (df_all_IF["entity"] == "CO"),
-    "2019",
-] = 27.406
-
-# Values for category 3 and N2O are identical for 1990 and 2019
-# The sum of the sub-categories does not equal the value of the parent category
-# The value  in the afolu table should therefore be the correct one
-df_all_IF.loc[
-    (df_all_IF[category_column] == "3") & (df_all_IF["entity"] == "N2O"),
-    "1990",
-] = 2.190
-
-# Values for category 3 and NOx are identical for 1990 and 2019
-# Replacing the duplicate value with the value from the afolu table
-df_all_IF.loc[
-    (df_all_IF[category_column] == "3") & (df_all_IF["entity"] == "NOx"),
-    "2019",
-] = 1.644
-df_all_IF.loc[
-    (df_all_IF[category_column] == "3.C") & (df_all_IF["entity"] == "NOx"),
-    "2019",
-] = 1.644
-df_all_IF.loc[
-    (df_all_IF[category_column] == "3.C.1") & (df_all_IF["entity"] == "NOx"),
-    "2019",
-] = 1.644
-
-# International bunkers
-# NOx
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NOx"),
-    "1990",
-] = 0.001
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NOx"),
-    "2000",
-] = 0.003
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NOx"),
-    "2010",
-] = 0.052
-# CO
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "CO"),
-    "1990",
-] = 0.0002
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "CO"),
-    "2000",
-] = 0.0006
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "CO"),
-    "2010",
-] = 0.01
-# NMVOC
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NMVOC"),
-    "1990",
-] = 0.0001
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NMVOC"),
-    "2000",
-] = 0.0002
-df_all_IF.loc[
-    (df_all_IF[category_column] == "M.BK") & (df_all_IF["entity"] == "NMVOC"),
-    "2010",
-] = 0.003
+df_all_IF = find_and_replace_values(df=df_all_IF,
+                                    replace_info=replace_info['main'],
+                                    category_column=category_column
+                                    )
 
 ### convert to primap2 format ###
 data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
@@ -229,7 +159,7 @@ data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 
 pages = ["116", "117", "118", "119"]
 df_energy = None
-for page in pages:
+for page in pages :
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -241,7 +171,7 @@ for page in pages:
 
     # cut last two lines of second table to ignore additional information regarding biomass for energy production
     df_energy_year = pd.concat(
-        [tables_inventory_original[0].df[2:], tables_inventory_original[1].df[3:-2]],
+        [tables_inventory_original[0].df[2 :], tables_inventory_original[1].df[3 :-2]],
         axis=0,
         join="outer",
     ).reset_index(drop=True)
@@ -249,19 +179,19 @@ for page in pages:
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
         == "1.A.3.a.i - Aviation internationale (Soutes internationales)"
-    ][0]
+        ][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
         == "1.A.3.d.i - Navigation internationale (soutes internationales)"
-    ][0]
+        ][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
         == "1.A.5.c - Opérations multilatérales (Éléments pour information)"
-    ][0]
+        ][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     # add header and unit
@@ -309,8 +239,12 @@ for page in pages:
         ".", ""
     )
 
+
     # then the regex replacements
-    repl = lambda m: m.group("code")
+    def repl(m) :
+        return m.group("code")
+
+
     df_energy_year_long["category"] = df_energy_year_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
     )
@@ -324,9 +258,9 @@ for page in pages:
     df_energy_year_long.columns = df_energy_year_long.columns.map(str)
     df_energy_year_long = df_energy_year_long.drop(columns=["orig_cat_name"])
 
-    if df_energy is None:
+    if df_energy is None :
         df_energy = df_energy_year_long
-    else:
+    else :
         df_energy = pd.concat(
             [df_energy, df_energy_year_long],
             axis=0,
@@ -349,14 +283,13 @@ df_energy_IF = pm2.pm2io.convert_long_dataframe_if(
 ### convert to primap2 format ###
 data_pm2_energy = pm2.pm2io.from_interchange_format(df_energy_IF)
 
-
 # ###
 # 3. Read in afolu table
 # ###
 
 pages = ["124", "125", "126", "127"]
 df_afolu = None
-for page in pages:
+for page in pages :
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -365,10 +298,10 @@ for page in pages:
     )
     print("Reading complete.")
 
-    if page == "127":
+    if page == "127" :
         # table on page 127 has one extra row at the top
         # and one extra category 3.A.1.j
-        df_afolu_year = tables_inventory_original[0].df[3:]
+        df_afolu_year = tables_inventory_original[0].df[3 :]
         # 3.A.1.a.i to 3.A.1.j exist twice.
         # Rename duplicate categories in tables.
         replace_categories = [
@@ -384,11 +317,11 @@ for page in pages:
             (28, "3.A.2.i - Volailles"),
             (29, "3.A.2.j - Autres (préciser)"),
         ]
-        for index, category_name in replace_categories:
+        for index, category_name in replace_categories :
             df_afolu_year.at[index, 0] = category_name
-    else:
+    else :
         # cut first two lines
-        df_afolu_year = tables_inventory_original[0].df[2:]
+        df_afolu_year = tables_inventory_original[0].df[2 :]
         # On pages 124-126 the wrong categories are slightly different
         replace_categories = [
             (17, "3.A.2.a.i - Vaches laitières"),
@@ -402,7 +335,7 @@ for page in pages:
             (25, "3.A.2.h - Porcins"),
             (26, "3.A.2.i - Volailles"),
         ]
-        for index, category_name in replace_categories:
+        for index, category_name in replace_categories :
             df_afolu_year.at[index, 0] = category_name
 
     # add header and unit
@@ -439,8 +372,12 @@ for page in pages:
     # make a copy of the categories row
     df_afolu_year_long["category"] = df_afolu_year_long["orig_cat_name"]
 
+
     # regex replacements
-    repl = lambda m: m.group("code")
+    def repl(m) :
+        return m.group("code")
+
+
     df_afolu_year_long["category"] = df_afolu_year_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
     )
@@ -454,9 +391,9 @@ for page in pages:
     df_afolu_year_long.columns = df_afolu_year_long.columns.map(str)
     df_afolu_year_long = df_afolu_year_long.drop(columns=["orig_cat_name"])
 
-    if df_afolu is None:
+    if df_afolu is None :
         df_afolu = df_afolu_year_long
-    else:
+    else :
         df_afolu = pd.concat(
             [df_afolu, df_afolu_year_long],
             axis=0,
@@ -500,18 +437,18 @@ tables_inventory_original_130 = camelot.read_pdf(
 
 # save to dict
 df_waste_years = {
-    "1990": tables_inventory_original_128[0].df,
-    "2000": tables_inventory_original_128[1].df,
-    "2010": tables_inventory_original_128[2].df,
-    "2019": tables_inventory_original_130[0].df,
+    "1990" : tables_inventory_original_128[0].df,
+    "2000" : tables_inventory_original_128[1].df,
+    "2010" : tables_inventory_original_128[2].df,
+    "2019" : tables_inventory_original_130[0].df,
 }
 
 df_waste = None
-for year in df_waste_years.keys():
+for year in df_waste_years.keys() :
     print("-" * 45)
     print(f"Processing table for {year}.")
 
-    df_waste_year = df_waste_years[year][2:]
+    df_waste_year = df_waste_years[year][2 :]
 
     # add header and unit
     df_header = pd.DataFrame([inv_conf["header_waste"], inv_conf["unit_waste"]])
@@ -545,8 +482,12 @@ for year in df_waste_years.keys():
     # make a copy of the categories row
     df_waste_year_long["category"] = df_waste_year_long["orig_cat_name"]
 
+
     # regex replacements
-    repl = lambda m: m.group("code")
+    def repl(m) :
+        return m.group("code")
+
+
     df_waste_year_long["category"] = df_waste_year_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
     )
@@ -561,9 +502,9 @@ for year in df_waste_years.keys():
     df_waste_year_long.columns = df_waste_year_long.columns.map(str)
     df_waste_year_long = df_waste_year_long.drop(columns=["orig_cat_name"])
 
-    if df_waste is None:
+    if df_waste is None :
         df_waste = df_waste_year_long
-    else:
+    else :
         df_waste = pd.concat(
             [df_waste, df_waste_year_long],
             axis=0,
@@ -595,7 +536,7 @@ pages = ["131", "132", "133", "134", "135", "136", "137"]
 entities = ["CO2", "CH4", "N2O", "NOx", "CO", "NMVOCs", "SO2"]
 
 # for this set of tables every page is a different entity
-for page, entity in zip(pages, entities):
+for page, entity in zip(pages, entities) :
     # The table for CO seems completely mixed up and should not be considered.
     # The total CO values for 1990 equal the values in the main table.
     # The total CO values for 1995 equal the values for 2000 in the main table.
@@ -604,7 +545,7 @@ for page, entity in zip(pages, entities):
     # The total CO values for 2010 are identical to the 1990 values in the same table.
     # The total CO values for 2019 are identical to the 1995 values in the same table.
     # And so on.
-    if entity == "CO":
+    if entity == "CO" :
         continue
 
     print("-" * 45)
@@ -615,7 +556,7 @@ for page, entity in zip(pages, entities):
     # see https://github.com/atlanhq/camelot/issues/306,
     # or because characters in first row almost touch
     # the table grid.
-    if page == "131":
+    if page == "131" :
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file),
             pages=page,
@@ -625,7 +566,7 @@ for page, entity in zip(pages, entities):
             split_text=True,
         )
 
-        df_trend_entity = tables_inventory_original[0].df[1:]
+        df_trend_entity = tables_inventory_original[0].df[1 :]
 
         # The categories 3.D / 3.D.1 / 3.D.2 contain values different to the main table
         # They should also not contain negative values according to IPCC methodology:
@@ -636,19 +577,19 @@ for page, entity in zip(pages, entities):
 
         row_to_delete = df_trend_entity.index[
             df_trend_entity[0] == "3.D.1 - Produits ligneux récoltés"
-        ][0]
+            ][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
         row_to_delete = df_trend_entity.index[
             df_trend_entity[0] == "3.D.2 - Autres (veuillez spécifier)"
-        ][0]
+            ][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
-    else:
+    else :
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file), pages=page, flavor="lattice", split_text=True
         )
-        df_trend_entity = tables_inventory_original[0].df[3:]
+        df_trend_entity = tables_inventory_original[0].df[3 :]
 
     print("Reading complete.")
 
@@ -677,7 +618,7 @@ for page, entity in zip(pages, entities):
     df_trend_entity.loc[:, "category"] = df_trend_entity["orig_cat_name"]
 
     # Delete empty line for pages 132-137.
-    if page != "131":
+    if page != "131" :
         row_to_delete = df_trend_entity.index[df_trend_entity["category"] == ""][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
@@ -692,7 +633,11 @@ for page, entity in zip(pages, entities):
         "\n", ""
     )
 
-    repl = lambda m: m.group("code")
+
+    def repl(m) :
+        return m.group("code")
+
+
     df_trend_entity.loc[:, "category"] = df_trend_entity["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
     )
@@ -701,7 +646,7 @@ for page, entity in zip(pages, entities):
 
     print("Created category codes.")
 
-    for year in columns_years:
+    for year in columns_years :
         df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace(",", ".")
         df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace("NE1", "NE")
 
@@ -719,9 +664,9 @@ for page, entity in zip(pages, entities):
 
     df_trend_entity_long = df_trend_entity_long.reset_index()
 
-    if df_trend is None:
+    if df_trend is None :
         df_trend = df_trend_entity_long
-    else:
+    else :
         df_trend = pd.concat(
             [df_trend, df_trend_entity_long],
             axis=0,
@@ -742,127 +687,9 @@ df_trend_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
-# CH4 - values in main table are assumed to be correct
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "CH4"),
-    "1990",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK.A") & (df_trend_IF["entity"] == "CH4"),
-    "1990",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "CH4"),
-    "2000",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK.A") & (df_trend_IF["entity"] == "CH4"),
-    "2000",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "CH4"),
-    "2010",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK.A") & (df_trend_IF["entity"] == "CH4"),
-    "2010",
-] = np.nan
-
-# N2O - values in main table are assumed to be correct
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "1.A.2") & (df_trend_IF["entity"] == "N2O"),
-    "1990",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "N2O"),
-    "1990",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK.A") & (df_trend_IF["entity"] == "N2O"),
-    "1990",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "N2O"),
-    "2000",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK.A") & (df_trend_IF["entity"] == "N2O"),
-    "2000",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "N2O"),
-    "2010",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK.A") & (df_trend_IF["entity"] == "N2O"),
-    "2010",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "N2O"),
-    "2019",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK.A") & (df_trend_IF["entity"] == "N2O"),
-    "2019",
-] = np.nan
-
-# NOx - values in main table are assumed to be correct
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "NOx"),
-    "1990",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "NOx"),
-    "2000",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "M.BK") & (df_trend_IF["entity"] == "NOx"),
-    "2010",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "3.C") & (df_trend_IF["entity"] == "NOx"),
-    "2019",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "3.C.1") & (df_trend_IF["entity"] == "NOx"),
-    "2019",
-] = np.nan
-df_trend_IF.loc[
-    (df_trend_IF[category_column] == "3") & (df_trend_IF["entity"] == "NOx"),
-    "2019",
-] = np.nan
-
-# NMVOC - values in main table are assumed to be correct
-entity = "NMVOC"
-for category, year in [
-    ("1.A.2", "1990"),
-    ("M.BK", "1990"),
-    ("0", "2000"),
-    ("1", "2000"),
-    ("1.A", "2000"),
-    ("1.A.1", "2000"),
-    ("1.A.2", "2000"),
-    ("1.A.3", "2000"),
-    ("1.A.4", "2000"),
-    ("2", "2000"),
-    ("2.H", "2000"),
-    ("2.H.2", "2000"),
-    ("M.BK", "2000"),
-    ("0", "2010"),
-    ("1", "2010"),
-    ("1.A", "2010"),
-    ("1.A.1", "2010"),
-    ("1.A.2", "2010"),
-    ("1.A.3", "2010"),
-    ("1.A.4", "2010"),
-    ("2", "2010"),
-    ("M.BK", "2010"),
-    ("1.A.2", "2019"),
-]:
-    df_trend_IF.loc[
-        (df_trend_IF[category_column] == category) & (df_trend_IF["entity"] == entity),
-        year,
-    ] = np.nan
+df_trend_IF = find_and_replace_values(df=df_trend_IF,
+                                      replace_info=replace_info["trend"],
+                                      category_column=category_column)
 
 ### convert to primap2 format ###
 data_pm2_trend = pm2.pm2io.from_interchange_format(df_trend_IF)
@@ -875,16 +702,20 @@ data_pm2_trend = pm2.pm2io.from_interchange_format(df_trend_IF)
 # There are discrepancies larger than 0.86 for area category 1.A.2, entity NMVOC,
 # years 1990, 2000, 2010, 2019
 # It is assumed the main table has the correct values.
+print("Merging main and energy table.")
 data_pm2 = data_pm2_main.pr.merge(data_pm2_energy, tolerance=1)
 
 # merge afolu
+print("Merging afolu table.")
 data_pm2 = data_pm2.pr.merge(data_pm2_afolu, tolerance=0.11)
 
 # merge waste
 # increasing tolerance to merge values for 4.C, 1990, N2O - 0.003 in sector table, 0.0034 in main table
+print("Merging waste table.")
 data_pm2 = data_pm2.pr.merge(data_pm2_waste, tolerance=0.15)
 
 # merge trend
+print("Merging trend table.")
 data_pm2 = data_pm2.pr.merge(data_pm2_trend, tolerance=0.11)
 
 # convert back to IF to have units in the fixed format ( per year / per a / per annum)
@@ -899,12 +730,11 @@ pm2.pm2io.write_interchange_format(
     data_if,
 )
 
-encoding = {var: compression for var in data_pm2.data_vars}
+encoding = {var : compression for var in data_pm2.data_vars}
 data_pm2.pr.to_netcdf(
     output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
     encoding=encoding,
 )
-
 
 # ###
 # Processing
@@ -917,12 +747,12 @@ processing_info_country = country_processing_step1
 data_country = data_pm2
 
 countries = list(data_country.coords[data_country.attrs["area"]].values)
-if len(countries) > 1:
+if len(countries) > 1 :
     raise ValueError(
         f"Found {len(countries)} countries. Only single country data "
         f"can be processed by this function. countries: {countries}"
     )
-else:
+else :
     country_code = countries[0]
 
 # get category terminology
@@ -932,7 +762,7 @@ cat_terminology_in = temp[0]
 
 # get scenario
 scenarios = list(data_country.coords[data_country.attrs["scen"]].values)
-if len(scenarios) > 1:
+if len(scenarios) > 1 :
     raise ValueError(
         f"Found {len(scenarios)} scenarios. Only single scenario data "
         f"can be processed by this function. Scenarios: {scenarios}"
@@ -941,7 +771,7 @@ scenario = scenarios[0]
 
 # get source
 sources = list(data_country.coords["source"].values)
-if len(sources) > 1:
+if len(sources) > 1 :
     raise ValueError(
         f"Found {len(sources)} sources. Only single source data "
         f"can be processed by this function. Sources: {sources}"
@@ -949,9 +779,9 @@ if len(sources) > 1:
 source = sources[0]
 
 # check if category name column present
-if "orig_cat_name" in data_country.coords:
+if "orig_cat_name" in data_country.coords :
     cat_name_present = True
-else:
+else :
     cat_name_present = False
 
 # 1: general processing
@@ -977,38 +807,38 @@ print(
     f"Aggregating categories for country {country_code}, source {source}, "
     f"scenario {scenario}"
 )
-for cat_to_agg in aggregate_cats_current:
+for cat_to_agg in aggregate_cats_current :
     print(f"Category: {cat_to_agg}")
     source_cats = aggregate_cats_current[cat_to_agg]["sources"]
-    data_agg = data_country.pr.loc[{"category": source_cats}].pr.sum(
+    data_agg = data_country.pr.loc[{"category" : source_cats}].pr.sum(
         dim="category", skipna=True, min_count=1
     )
     nan_vars = [
         var for var in data_agg.data_vars if data_agg[var].isnull().all().data is True
     ]
     data_agg = data_agg.drop(nan_vars)
-    if len(data_agg.data_vars) > 0:
+    if len(data_agg.data_vars) > 0 :
         data_agg = data_agg.expand_dims([f"category (" f"{cat_terminology_in})"])
         data_agg = data_agg.assign_coords(
             coords={
-                f"category ({cat_terminology_in})": (
+                f"category ({cat_terminology_in})" : (
                     f"category ({cat_terminology_in})",
                     [cat_to_agg],
                 )
             }
         )
-        if cat_name_present:
+        if cat_name_present :
             cat_name = aggregate_cats_current[cat_to_agg]["name"]
             data_agg = data_agg.assign_coords(
                 coords={
-                    "orig_cat_name": (
+                    "orig_cat_name" : (
                         f"category ({cat_terminology_in})",
                         [cat_name],
                     )
                 }
             )
         data_country = data_country.pr.merge(data_agg, tolerance=agg_tolerance)
-    else:
+    else :
         print(f"no data to aggregate category {cat_to_agg}")
 
 from UNFCCC_GHG_data.helper import GWP_factors
@@ -1017,9 +847,9 @@ from UNFCCC_GHG_data.helper import GWP_factors
 GWPs_to_add = country_processing_step1["basket_copy"]["GWPs_to_add"]
 entities = country_processing_step1["basket_copy"]["entities"]
 source_GWP = country_processing_step1["basket_copy"]["source_GWP"]
-for entity in entities:
+for entity in entities :
     data_source = data_country[f"{entity} ({source_GWP})"]
-    for GWP in GWPs_to_add:
+    for GWP in GWPs_to_add :
         data_GWP = data_source * GWP_factors[f"{source_GWP}_to_{GWP}"][entity]
         data_GWP.attrs["entity"] = entity
         data_GWP.attrs["gwp_context"] = GWP
@@ -1027,27 +857,27 @@ for entity in entities:
 
 # create gas baskets
 entities_present = set(data_country.data_vars)
-for basket in gas_baskets.keys():
+for basket in gas_baskets.keys() :
     basket_contents_present = [
         gas for gas in gas_baskets[basket] if gas in entities_present
     ]
-    if len(basket_contents_present) > 0:
-        if basket in list(data_country.data_vars):
+    if len(basket_contents_present) > 0 :
+        if basket in list(data_country.data_vars) :
             data_country[basket] = data_country.pr.fill_na_gas_basket_from_contents(
                 basket=basket,
                 basket_contents=basket_contents_present,
                 skipna=True,
                 min_count=1,
             )
-        else:
-            try:
+        else :
+            try :
                 # print(data_country.data_vars)
                 data_country[basket] = xr.full_like(
                     data_country["CO2"], np.nan
                 ).pr.quantify(units="Gg CO2 / year")
                 data_country[basket].attrs = {
-                    "entity": basket.split(" ")[0],
-                    "gwp_context": basket.split(" ")[1][1:-1],
+                    "entity" : basket.split(" ")[0],
+                    "gwp_context" : basket.split(" ")[1][1 :-1],
                 }
                 data_country[basket] = data_country.pr.gas_basket_contents_sum(
                     basket=basket,
@@ -1055,21 +885,19 @@ for basket in gas_baskets.keys():
                     min_count=1,
                 )
                 entities_present.add(basket)
-            except Exception as ex:
+            except Exception as ex :
                 print(
                     f"No gas basket created for {country_code}, {source}, "
                     f"{scenario}: {ex}"
                 )
 
-
 # amend title and comment
 data_country.attrs["comment"] = (
-    data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
+        data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
 )
 data_country.attrs["title"] = (
-    data_country.attrs["title"] + f" Processed on " f"{date.today()}"
+        data_country.attrs["title"] + f" Processed on " f"{date.today()}"
 )
-
 
 # ###
 # save processed data to IF and native format
@@ -1080,13 +908,13 @@ terminology_proc = coords_terminologies["category"]
 
 data_proc_if = data_proc_pm2.pr.to_interchange_format()
 
-if not output_folder.exists():
+if not output_folder.exists() :
     output_folder.mkdir()
 pm2.pm2io.write_interchange_format(
     output_folder / (output_filename + terminology_proc), data_proc_if
 )
 
-encoding = {var: compression for var in data_proc_pm2.data_vars}
+encoding = {var : compression for var in data_proc_pm2.data_vars}
 data_proc_pm2.pr.to_netcdf(
     output_folder / (output_filename + terminology_proc + ".nc"), encoding=encoding
 )
