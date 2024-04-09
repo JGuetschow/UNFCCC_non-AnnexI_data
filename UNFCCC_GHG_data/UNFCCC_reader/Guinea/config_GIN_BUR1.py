@@ -1,104 +1,103 @@
 # primap2 format conversion
 coords_cols = {
-    "category": "category",
-    "entity": "entity",
-    "unit": "unit",
+    "category" : "category",
+    "entity" : "entity",
+    "unit" : "unit",
 }
 
 coords_defaults = {
-    "source": "GIN-GHG-Inventory",
-    "provenance": "measured",
-    "area": "GIN",
-    "scenario": "BUR1",
+    "source" : "GIN-GHG-Inventory",
+    "provenance" : "measured",
+    "area" : "GIN",
+    "scenario" : "BUR1",
 }
 
 coords_terminologies = {
-    "area": "ISO3",
+    "area" : "ISO3",
     # TODO check if this is correct
-    "category": "IPCC2006_PRIMAP",
-    "scenario": "PRIMAP",
+    "category" : "IPCC2006_PRIMAP",
+    "scenario" : "PRIMAP",
 }
 
 # gwp conversion is mentioned on page 20 in the report
 gwp_to_use = "AR4GWP100"
 coords_value_mapping = {
-    "main": {
-        "unit": "PRIMAP1",
-        "category": "PRIMAP1",
-        "entity": {
-            "HFCs": f"HFCS ({gwp_to_use})",
-            "PFCs": f"PFCS ({gwp_to_use})",
-            "SF6": f"SF6 ({gwp_to_use})",
-            "NMVOCs": "NMVOC",
+    "main" : {
+        "unit" : "PRIMAP1",
+        "category" : "PRIMAP1",
+        "entity" : {
+            "HFCs" : f"HFCS ({gwp_to_use})",
+            "PFCs" : f"PFCS ({gwp_to_use})",
+            "SF6" : f"SF6 ({gwp_to_use})",
+            "NMVOCs" : "NMVOC",
         },
     },
-    "energy": {
-        "unit": "PRIMAP1",
-        "category": "PRIMAP1",
-        "entity": {
-            "NMVOCs": "NMVOC",
+    "energy" : {
+        "unit" : "PRIMAP1",
+        "category" : "PRIMAP1",
+        "entity" : {
+            "NMVOCs" : "NMVOC",
         },
     },
-    "afolu": {
-        "unit": "PRIMAP1",
-        "category": "PRIMAP1",
-        "entity": {
-            "NMVOCs": "NMVOC",
+    "afolu" : {
+        "unit" : "PRIMAP1",
+        "category" : "PRIMAP1",
+        "entity" : {
+            "NMVOCs" : "NMVOC",
         },
     },
-    "waste": {
-        "unit": "PRIMAP1",
-        "category": "PRIMAP1",
-        "entity": {
-            "NMVOCs": "NMVOC",
+    "waste" : {
+        "unit" : "PRIMAP1",
+        "category" : "PRIMAP1",
+        "entity" : {
+            "NMVOCs" : "NMVOC",
         },
     },
-    "trend": {
-        "unit": "PRIMAP1",
-        "category": "PRIMAP1",
-        "entity": {
-            "NMVOCs": "NMVOC",
+    "trend" : {
+        "unit" : "PRIMAP1",
+        "category" : "PRIMAP1",
+        "entity" : {
+            "NMVOCs" : "NMVOC",
         },
     },
 }
 
 # TODO! Don't add MEMO if remove later
 filter_remove = {
-    "f_memo": {"category": "MEMO"},
+    "f_memo" : {"category" : "MEMO"},
 }
 
 meta_data = {
-    "references": "https://unfccc.int/documents/629549",
-    "rights": "",  # unknown
-    "contact": "daniel-busch@climate-resource.de",
-    "title": "Guinea. Biennial update report (BUR). BUR1",
-    "comment": "Read fom pdf by Daniel Busch",
-    "institution": "UNFCCC",
+    "references" : "https://unfccc.int/documents/629549",
+    "rights" : "",  # unknown
+    "contact" : "daniel-busch@climate-resource.de",
+    "title" : "Guinea. Biennial update report (BUR). BUR1",
+    "comment" : "Read fom pdf by Daniel Busch",
+    "institution" : "UNFCCC",
 }
 
 page_def_templates = {
-    "110": {
-        "area": ["36,718,589,87"],
-        "cols": ["290,340,368,392,425,445,465,497,535,564"],
+    "110" : {
+        "area" : ["36,718,589,87"],
+        "cols" : ["290,340,368,392,425,445,465,497,535,564"],
     },
-    "111": {
-        "area": ["36,736,587,107"],
-        "cols": ["293,335,369,399,424,445,468,497,535,565"],
+    "111" : {
+        "area" : ["36,736,587,107"],
+        "cols" : ["293,335,369,399,424,445,468,497,535,565"],
     },
-    "112": {
-        "area": ["35,733,588,106"],
-        "cols": ["293,335,369,399,424,445,468,497,535,565"],
+    "112" : {
+        "area" : ["35,733,588,106"],
+        "cols" : ["293,335,369,399,424,445,468,497,535,565"],
     },
-    "113": {
-        "area": ["35,733,588,106"],
-        "cols": ["293,335,365,399,424,445,468,497,535,565"],
+    "113" : {
+        "area" : ["35,733,588,106"],
+        "cols" : ["293,335,365,399,424,445,468,497,535,565"],
     },
-    "131": {
-        "area": ["36,718,590,83"],
-        "cols": ["293,332,370,406,442,480,516,554"],
+    "131" : {
+        "area" : ["36,718,590,83"],
+        "cols" : ["293,332,370,406,442,480,516,554"],
     },
 }
-
 
 # for main table
 header_inventory = [
@@ -172,69 +171,68 @@ header_trend = [
     "data2019",
 ]
 
-
 # define config dict
 inv_conf = {
-    "header": header_inventory,
-    "unit": unit_inventory,
-    "header_energy": header_energy,
-    "unit_energy": unit_energy,
-    "header_afolu": header_afolu,
-    "unit_afolu": unit_afolu,
-    "header_waste": header_waste,
-    "unit_waste": unit_waste,
-    "header_trend": header_trend,
-    "entity_row": 0,
-    "unit_row": 1,
-    "index_cols": "Greenhouse gas source and sink categories",
-    "year": {
-        "110": 1990,
-        "111": 2000,
-        "112": 2010,
-        "113": 2019,
-        "116": 1990,
-        "117": 2000,
-        "118": 2010,
-        "119": 2019,
-        "124": 1990,
-        "125": 2000,
-        "126": 2010,
-        "127": 2019,
+    "header" : header_inventory,
+    "unit" : unit_inventory,
+    "header_energy" : header_energy,
+    "unit_energy" : unit_energy,
+    "header_afolu" : header_afolu,
+    "unit_afolu" : unit_afolu,
+    "header_waste" : header_waste,
+    "unit_waste" : unit_waste,
+    "header_trend" : header_trend,
+    "entity_row" : 0,
+    "unit_row" : 1,
+    "index_cols" : "Greenhouse gas source and sink categories",
+    "year" : {
+        "110" : 1990,
+        "111" : 2000,
+        "112" : 2010,
+        "113" : 2019,
+        "116" : 1990,
+        "117" : 2000,
+        "118" : 2010,
+        "119" : 2019,
+        "124" : 1990,
+        "125" : 2000,
+        "126" : 2010,
+        "127" : 2019,
     },
-    "header_long": ["orig_cat_name", "entity", "unit", "time", "data"],
-    "cat_code_regexp": r"^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*",
-    "cat_codes_manual": {
-        "main": {
-            "Éléments pour mémoire": "MEMO",
-            "Soutes internationales": "M.BK",
-            "1.A.3.a.i - Aviation internationale (soutes internationales)": "M.BK.A",
-            "1.A.3.d.i - Navigation internationale (soutes internationales)": "M.BK.M",
-            "1.A.5.c - Opérations multilatérales": "M.MULTIOP",
-            "Total des émissions et absorptions nationales": "0",
-            "2A5: Autre": "2A5",
+    "header_long" : ["orig_cat_name", "entity", "unit", "time", "data"],
+    "cat_code_regexp" : r"^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*",
+    "cat_codes_manual" : {
+        "main" : {
+            "Éléments pour mémoire" : "MEMO",
+            "Soutes internationales" : "M.BK",
+            "1.A.3.a.i - Aviation internationale (soutes internationales)" : "M.BK.A",
+            "1.A.3.d.i - Navigation internationale (soutes internationales)" : "M.BK.M",
+            "1.A.5.c - Opérations multilatérales" : "M.MULTIOP",
+            "Total des émissions et absorptions nationales" : "0",
+            "2A5: Autre" : "2A5",
         },
-        "energy": {
-            "International Bunkers": "M.BK",
-            "1.A.3.a.i - Aviation internationale (soutes internationales)": "M.BK.A",
-            "1.A.3.d.i - Navigation internationale (soutes internationales)": "M.BK.M",
-            "1.A.5.c - Opérations multilatérales": "M.MULTIOP",
+        "energy" : {
+            "International Bunkers" : "M.BK",
+            "1.A.3.a.i - Aviation internationale (soutes internationales)" : "M.BK.A",
+            "1.A.3.d.i - Navigation internationale (soutes internationales)" : "M.BK.M",
+            "1.A.5.c - Opérations multilatérales" : "M.MULTIOP",
         },
-        "trend": {
-            "Total des émissions et absorptions nationales": "0",
-            "2A5: Autre": "2A5",
-            "Éléments pour mémoire": "MEMO",
-            "Soutes internationales": "M.BK",
-            "1.A.3.a.i - Aviation internationale (soutes internationales)": "M.BK.A",
-            "1.A.3.d.i - Navigation internationale (soutes internationales)": "M.BK.M",
-            "1.A.5.c - Opérations multilatérales": "M.MULTIOP",
+        "trend" : {
+            "Total des émissions et absorptions nationales" : "0",
+            "2A5: Autre" : "2A5",
+            "Éléments pour mémoire" : "MEMO",
+            "Soutes internationales" : "M.BK",
+            "1.A.3.a.i - Aviation internationale (soutes internationales)" : "M.BK.A",
+            "1.A.3.d.i - Navigation internationale (soutes internationales)" : "M.BK.M",
+            "1.A.5.c - Opérations multilatérales" : "M.MULTIOP",
         },
     },
 }
 
 country_processing_step1 = {
-    "aggregate_cats": {
-        "M.3.C.AG": {
-            "sources": [
+    "aggregate_cats" : {
+        "M.3.C.AG" : {
+            "sources" : [
                 "3.C.1",
                 "3.C.2",
                 "3.C.3",
@@ -244,38 +242,38 @@ country_processing_step1 = {
                 "3.C.7",
                 "3.C.8",
             ],
-            "name": "Aggregate sources and non-CO2 emissions sources on land "
-            "(Agriculture)",
+            "name" : "Aggregate sources and non-CO2 emissions sources on land "
+                     "(Agriculture)",
         },
-        "M.3.D.AG": {"sources": ["3.D.2"], "name": "Other (Agriculture)"},
-        "M.AG.ELV": {
-            "sources": ["M.3.C.AG", "M.3.D.AG"],
-            "name": "Agriculture excluding livestock",
+        "M.3.D.AG" : {"sources" : ["3.D.2"], "name" : "Other (Agriculture)"},
+        "M.AG.ELV" : {
+            "sources" : ["M.3.C.AG", "M.3.D.AG"],
+            "name" : "Agriculture excluding livestock",
         },
-        "M.AG": {"sources": ["3.A", "M.AG.ELV"], "name": "Agriculture"},
-        "M.3.D.LU": {"sources": ["3.D.1"], "name": "Other (LULUCF)"},
-        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"], "name": "LULUCF"},
-        "M.0.EL": {
-            "sources": ["1", "2", "M.AG", "4"],
-            "name": "National total emissions excluding LULUCF",
+        "M.AG" : {"sources" : ["3.A", "M.AG.ELV"], "name" : "Agriculture"},
+        "M.3.D.LU" : {"sources" : ["3.D.1"], "name" : "Other (LULUCF)"},
+        "M.LULUCF" : {"sources" : ["3.B", "M.3.D.LU"], "name" : "LULUCF"},
+        "M.0.EL" : {
+            "sources" : ["1", "2", "M.AG", "4"],
+            "name" : "National total emissions excluding LULUCF",
         },
     },
-    "basket_copy": {
-        "GWPs_to_add": ["SARGWP100", "AR5GWP100", "AR6GWP100"],
-        "entities": ["HFCS", "PFCS"],
-        "source_GWP": gwp_to_use,
+    "basket_copy" : {
+        "GWPs_to_add" : ["SARGWP100", "AR5GWP100", "AR6GWP100"],
+        "entities" : ["HFCS", "PFCS"],
+        "source_GWP" : gwp_to_use,
     },
 }
 
 gas_baskets = {
-    "FGASES (SARGWP100)": ["HFCS (SARGWP100)", "PFCS (SARGWP100)", "SF6", "NF3"],
-    "FGASES (AR4GWP100)": ["HFCS (AR4GWP100)", "PFCS (AR4GWP100)", "SF6", "NF3"],
-    "FGASES (AR5GWP100)": ["HFCS (AR5GWP100)", "PFCS (AR5GWP100)", "SF6", "NF3"],
-    "FGASES (AR6GWP100)": ["HFCS (AR6GWP100)", "PFCS (AR6GWP100)", "SF6", "NF3"],
-    "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O", "FGASES (SARGWP100)"],
-    "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR4GWP100)"],
-    "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR5GWP100)"],
-    "KYOTOGHG (AR6GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR6GWP100)"],
+    "FGASES (SARGWP100)" : ["HFCS (SARGWP100)", "PFCS (SARGWP100)", "SF6", "NF3"],
+    "FGASES (AR4GWP100)" : ["HFCS (AR4GWP100)", "PFCS (AR4GWP100)", "SF6", "NF3"],
+    "FGASES (AR5GWP100)" : ["HFCS (AR5GWP100)", "PFCS (AR5GWP100)", "SF6", "NF3"],
+    "FGASES (AR6GWP100)" : ["HFCS (AR6GWP100)", "PFCS (AR6GWP100)", "SF6", "NF3"],
+    "KYOTOGHG (SARGWP100)" : ["CO2", "CH4", "N2O", "FGASES (SARGWP100)"],
+    "KYOTOGHG (AR4GWP100)" : ["CO2", "CH4", "N2O", "FGASES (AR4GWP100)"],
+    "KYOTOGHG (AR5GWP100)" : ["CO2", "CH4", "N2O", "FGASES (AR5GWP100)"],
+    "KYOTOGHG (AR6GWP100)" : ["CO2", "CH4", "N2O", "FGASES (AR6GWP100)"],
 }
 
 replace_info = {
@@ -284,63 +282,93 @@ replace_info = {
         ("3.C", "CO", "2019", 27.406),
         ("3.C.1", "CO", "2019", 27.406),
         ("3", "N2O", "1990", 2.190),
-        ("3","NOx","2019",1.644),
-        ("3.C","NOx","2019",1.644),
-        ("3.C.1","NOx","2019",1.644),
-        ("M.BK","NOx","1990",0.001),
-        ("M.BK","NOx","2000",0.003),
-        ("M.BK","NOx","2010",0.052),
-        ("M.BK","CO","1990",0.0002),
-        ("M.BK","CO","2000",0.0006),
-        ("M.BK","CO","2010",0.01),
-        ("M.BK","NMVOC","1990",0.0001),
-        ("M.BK","NMVOC","2000",0.0002),
-        ("M.BK","NMVOC","2010",0.003),
-],
+        ("3", "NOx", "2019", 1.644),
+        ("3.C", "NOx", "2019", 1.644),
+        ("3.C.1", "NOx", "2019", 1.644),
+        ("M.BK", "NOx", "1990", 0.001),
+        ("M.BK", "NOx", "2000", 0.003),
+        ("M.BK", "NOx", "2010", 0.052),
+        ("M.BK", "CO", "1990", 0.0002),
+        ("M.BK", "CO", "2000", 0.0006),
+        ("M.BK", "CO", "2010", 0.01),
+        ("M.BK", "NMVOC", "1990", 0.0001),
+        ("M.BK", "NMVOC", "2000", 0.0002),
+        ("M.BK", "NMVOC", "2010", 0.003),
+    ],
     'trend' : [
-    ("M.BK","CH4","1990"),
-    ("M.BK.A","CH4","1990"),
-    ("M.BK","CH4","2000"),
-    ("M.BK.A","CH4","2000"),
-    ("M.BK","CH4","2010"),
-    ("M.BK.A","CH4","2010"),
-    ("1.A.2","N2O","1990"),
-    ("M.BK","N2O","1990"),
-    ("M.BK.A","N2O","1990"),
-    ("M.BK","N2O","2000"),
-    ("M.BK.A","N2O","2000"),
-    ("M.BK","N2O","2010"),
-    ("M.BK.A","N2O","2010"),
-    ("M.BK","N2O","2019"),
-    ("M.BK.A","N2O","2019"),
-    ("M.BK","NOx","1990"),
-    ("M.BK","NOx","2000"),
-    ("M.BK","NOx","2010"),
-    ("3.C","NOx","2019"),
-    ("3.C.1","NOx","2019"),
-    ("3","NOx","2019"),
-    ("1.A.2","NMVOC", "1990"),
-    ("M.BK","NMVOC", "1990"),
-    ("0","NMVOC", "2000"),
-    ("1","NMVOC", "2000"),
-    ("1.A","NMVOC", "2000"),
-    ("1.A.1","NMVOC", "2000"),
-    ("1.A.2","NMVOC", "2000"),
-    ("1.A.3","NMVOC", "2000"),
-    ("1.A.4","NMVOC", "2000"),
-    ("2","NMVOC", "2000"),
-    ("2.H","NMVOC", "2000"),
-    ("2.H.2","NMVOC", "2000"),
-    ("M.BK","NMVOC", "2000"),
-    ("0","NMVOC", "2010"),
-    ("1","NMVOC", "2010"),
-    ("1.A","NMVOC", "2010"),
-    ("1.A.1","NMVOC", "2010"),
-    ("1.A.2","NMVOC", "2010"),
-    ("1.A.3","NMVOC", "2010"),
-    ("1.A.4","NMVOC", "2010"),
-    ("2","NMVOC", "2010"),
-    ("M.BK","NMVOC", "2010"),
-    ("1.A.2","NMVOC", "2019"),
-],
+        ("M.BK", "CH4", "1990"),
+        ("M.BK.A", "CH4", "1990"),
+        ("M.BK", "CH4", "2000"),
+        ("M.BK.A", "CH4", "2000"),
+        ("M.BK", "CH4", "2010"),
+        ("M.BK.A", "CH4", "2010"),
+        ("1.A.2", "N2O", "1990"),
+        ("M.BK", "N2O", "1990"),
+        ("M.BK.A", "N2O", "1990"),
+        ("M.BK", "N2O", "2000"),
+        ("M.BK.A", "N2O", "2000"),
+        ("M.BK", "N2O", "2010"),
+        ("M.BK.A", "N2O", "2010"),
+        ("M.BK", "N2O", "2019"),
+        ("M.BK.A", "N2O", "2019"),
+        ("M.BK", "NOx", "1990"),
+        ("M.BK", "NOx", "2000"),
+        ("M.BK", "NOx", "2010"),
+        ("3.C", "NOx", "2019"),
+        ("3.C.1", "NOx", "2019"),
+        ("3", "NOx", "2019"),
+        ("1.A.2", "NMVOC", "1990"),
+        ("M.BK", "NMVOC", "1990"),
+        ("0", "NMVOC", "2000"),
+        ("1", "NMVOC", "2000"),
+        ("1.A", "NMVOC", "2000"),
+        ("1.A.1", "NMVOC", "2000"),
+        ("1.A.2", "NMVOC", "2000"),
+        ("1.A.3", "NMVOC", "2000"),
+        ("1.A.4", "NMVOC", "2000"),
+        ("2", "NMVOC", "2000"),
+        ("2.H", "NMVOC", "2000"),
+        ("2.H.2", "NMVOC", "2000"),
+        ("M.BK", "NMVOC", "2000"),
+        ("0", "NMVOC", "2010"),
+        ("1", "NMVOC", "2010"),
+        ("1.A", "NMVOC", "2010"),
+        ("1.A.1", "NMVOC", "2010"),
+        ("1.A.2", "NMVOC", "2010"),
+        ("1.A.3", "NMVOC", "2010"),
+        ("1.A.4", "NMVOC", "2010"),
+        ("2", "NMVOC", "2010"),
+        ("M.BK", "NMVOC", "2010"),
+        ("1.A.2", "NMVOC", "2019"),
+    ],
+}
+
+replace_categories = {
+    'afolu' : {
+        '124-126' : [
+            (17, "3.A.2.a.i - Vaches laitières"),
+            (18, "3.A.2.a.ii - Autres bovins"),
+            (19, "3.A.2.b - Buffle"),
+            (20, "3.A.2.c - Ovins"),
+            (21, "3.A.2.d - Caprins"),
+            (22, "3.A.2.e - Chameaux"),
+            (23, "3.A.2.f - Chevaux"),
+            (24, "3.A.2.g - Mules et ânes"),
+            (25, "3.A.2.h - Porcins"),
+            (26, "3.A.2.i - Volailles"),
+        ],
+        '127' : [
+            (19, "3.A.2.a.i - Vaches laitières"),
+            (20, "3.A.2.a.ii - Autres bovins"),
+            (21, "3.A.2.b - Buffle"),
+            (22, "3.A.2.c - Ovins"),
+            (23, "3.A.2.d - Caprins"),
+            (24, "3.A.2.e - Chameaux"),
+            (25, "3.A.2.f - Chevaux"),
+            (26, "3.A.2.g - Mules et ânes"),
+            (27, "3.A.2.h - Porcins"),
+            (28, "3.A.2.i - Volailles"),
+            (29, "3.A.2.j - Autres (préciser)"),
+        ],
+    }
 }

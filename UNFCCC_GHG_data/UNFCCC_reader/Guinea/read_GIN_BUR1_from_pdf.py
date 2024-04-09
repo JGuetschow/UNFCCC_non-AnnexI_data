@@ -22,7 +22,7 @@ from config_GIN_BUR1 import (
     meta_data,
     page_def_templates,
 )
-from config_GIN_BUR1 import inv_conf, country_processing_step1, gas_baskets, replace_info
+from config_GIN_BUR1 import inv_conf, country_processing_step1, gas_baskets, replace_info, replace_categories
 
 # ###
 # configuration
@@ -304,38 +304,13 @@ for page in pages :
         df_afolu_year = tables_inventory_original[0].df[3 :]
         # 3.A.1.a.i to 3.A.1.j exist twice.
         # Rename duplicate categories in tables.
-        replace_categories = [
-            (19, "3.A.2.a.i - Vaches laitières"),
-            (20, "3.A.2.a.ii - Autres bovins"),
-            (21, "3.A.2.b - Buffle"),
-            (22, "3.A.2.c - Ovins"),
-            (23, "3.A.2.d - Caprins"),
-            (24, "3.A.2.e - Chameaux"),
-            (25, "3.A.2.f - Chevaux"),
-            (26, "3.A.2.g - Mules et ânes"),
-            (27, "3.A.2.h - Porcins"),
-            (28, "3.A.2.i - Volailles"),
-            (29, "3.A.2.j - Autres (préciser)"),
-        ]
-        for index, category_name in replace_categories :
+        for index, category_name in replace_categories['afolu']['127'] :
             df_afolu_year.at[index, 0] = category_name
     else :
         # cut first two lines
         df_afolu_year = tables_inventory_original[0].df[2 :]
         # On pages 124-126 the wrong categories are slightly different
-        replace_categories = [
-            (17, "3.A.2.a.i - Vaches laitières"),
-            (18, "3.A.2.a.ii - Autres bovins"),
-            (19, "3.A.2.b - Buffle"),
-            (20, "3.A.2.c - Ovins"),
-            (21, "3.A.2.d - Caprins"),
-            (22, "3.A.2.e - Chameaux"),
-            (23, "3.A.2.f - Chevaux"),
-            (24, "3.A.2.g - Mules et ânes"),
-            (25, "3.A.2.h - Porcins"),
-            (26, "3.A.2.i - Volailles"),
-        ]
-        for index, category_name in replace_categories :
+        for index, category_name in replace_categories['afolu']['124-126'] :
             df_afolu_year.at[index, 0] = category_name
 
     # add header and unit
