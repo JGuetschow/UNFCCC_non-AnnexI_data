@@ -169,9 +169,8 @@ for page in pages:
 
     print("Reading complete.")
 
-    # cut last two lines of second table to ignore additional information regarding biomass for energy production
     df_energy_year = pd.concat(
-        [tables_inventory_original[0].df[2:], tables_inventory_original[1].df[3:-2]],
+        [tables_inventory_original[0].df[2:], tables_inventory_original[1].df[3:]],
         axis=0,
         join="outer",
     ).reset_index(drop=True)
@@ -181,6 +180,17 @@ for page in pages:
         == "1.A.3.a.i - Aviation internationale (Soutes internationales)"
     ][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
+
+    if page == "119":
+        row_to_delete = df_energy_year.index[df_energy_year[0] == "Information Items"][
+            0
+        ]
+        df_energy_year = df_energy_year.drop(index=row_to_delete)
+    else:
+        row_to_delete = df_energy_year.index[
+            df_energy_year[0] == "Éléments pour information"
+        ][0]
+        df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
