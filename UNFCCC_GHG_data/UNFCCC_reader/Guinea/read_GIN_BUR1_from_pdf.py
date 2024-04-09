@@ -10,7 +10,8 @@ import primap2 as pm2
 import pandas as pd
 
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
-from UNFCCC_GHG_data.helper.functions import find_and_replace_values, process_data_for_country
+from UNFCCC_GHG_data.helper.functions import process_data_for_country
+from UNFCCC_GHG_data.helper.functions_temp import find_and_replace_values
 from config_GIN_BUR1 import coords_cols, coords_defaults, coords_terminologies
 from config_GIN_BUR1 import (
     coords_value_mapping,
@@ -18,7 +19,13 @@ from config_GIN_BUR1 import (
     meta_data,
     page_def_templates,
 )
-from config_GIN_BUR1 import inv_conf, country_processing_step1, gas_baskets, replace_info, replace_categories
+from config_GIN_BUR1 import (
+    inv_conf,
+    country_processing_step1,
+    gas_baskets,
+    replace_info,
+    replace_categories,
+)
 
 # ###
 # configuration
@@ -26,7 +33,7 @@ from config_GIN_BUR1 import inv_conf, country_processing_step1, gas_baskets, rep
 
 input_folder = downloaded_data_path / "UNFCCC" / "Guinea" / "BUR1"
 output_folder = extracted_data_path / "UNFCCC" / "Guinea"
-if not output_folder.exists() :
+if not output_folder.exists():
     output_folder.mkdir()
 
 pdf_file = "Rapport_IGES-Guinee-BUR1_VF.pdf"
@@ -40,7 +47,7 @@ compression = dict(zlib=True, complevel=9)
 
 pages = ["110", "111", "112", "113"]
 df_main = None
-for page in pages :
+for page in pages:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -58,7 +65,7 @@ for page in pages :
     df_inventory = tables_inventory_original[0].df.copy()
 
     # move broken text in correct row (page 113 is fine)
-    if page in ["110", "111", "112"] :
+    if page in ["110", "111", "112"]:
         df_inventory.at[4, 0] = "1.A.1 - Industries énergétiques"
         df_inventory = df_inventory.drop(index=3)
         df_inventory.at[8, 0] = "1.A.4 - Autres secteurs"
@@ -100,11 +107,9 @@ for page in pages :
 
     df_inventory_long["category"] = df_inventory_long["category"].str.replace(".", "")
 
-
     # regex replacements
-    def repl(m) :
+    def repl(m):
         return m.group("code")
-
 
     df_inventory_long["category"] = df_inventory_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
@@ -119,9 +124,9 @@ for page in pages :
     df_inventory_long.columns = df_inventory_long.columns.map(str)
     df_inventory_long = df_inventory_long.drop(columns=["orig_cat_name"])
 
-    if df_main is None :
+    if df_main is None:
         df_main = df_inventory_long
-    else :
+    else:
         df_main = pd.concat(
             [df_main, df_inventory_long],
             axis=0,
@@ -141,10 +146,9 @@ df_all_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
-df_all_IF = find_and_replace_values(df=df_all_IF,
-                                    replace_info=replace_info['main'],
-                                    category_column=category_column
-                                    )
+df_all_IF = find_and_replace_values(
+    df=df_all_IF, replace_info=replace_info["main"], category_column=category_column
+)
 
 ### convert to primap2 format ###
 data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
@@ -155,7 +159,7 @@ data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 
 pages = ["116", "117", "118", "119"]
 df_energy = None
-for page in pages :
+for page in pages:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -167,7 +171,7 @@ for page in pages :
 
     # cut last two lines of second table to ignore additional information regarding biomass for energy production
     df_energy_year = pd.concat(
-        [tables_inventory_original[0].df[2 :], tables_inventory_original[1].df[3 :-2]],
+        [tables_inventory_original[0].df[2:], tables_inventory_original[1].df[3:-2]],
         axis=0,
         join="outer",
     ).reset_index(drop=True)
@@ -175,19 +179,19 @@ for page in pages :
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
         == "1.A.3.a.i - Aviation internationale (Soutes internationales)"
-        ][0]
+    ][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
         == "1.A.3.d.i - Navigation internationale (soutes internationales)"
-        ][0]
+    ][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
         == "1.A.5.c - Opérations multilatérales (Éléments pour information)"
-        ][0]
+    ][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     # add header and unit
@@ -235,11 +239,9 @@ for page in pages :
         ".", ""
     )
 
-
     # then the regex replacements
-    def repl(m) :
+    def repl(m):
         return m.group("code")
-
 
     df_energy_year_long["category"] = df_energy_year_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
@@ -254,9 +256,9 @@ for page in pages :
     df_energy_year_long.columns = df_energy_year_long.columns.map(str)
     df_energy_year_long = df_energy_year_long.drop(columns=["orig_cat_name"])
 
-    if df_energy is None :
+    if df_energy is None:
         df_energy = df_energy_year_long
-    else :
+    else:
         df_energy = pd.concat(
             [df_energy, df_energy_year_long],
             axis=0,
@@ -285,7 +287,7 @@ data_pm2_energy = pm2.pm2io.from_interchange_format(df_energy_IF)
 
 pages = ["124", "125", "126", "127"]
 df_afolu = None
-for page in pages :
+for page in pages:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -294,19 +296,19 @@ for page in pages :
     )
     print("Reading complete.")
 
-    if page == "127" :
+    if page == "127":
         # table on page 127 has one extra row at the top
         # and one extra category 3.A.1.j
-        df_afolu_year = tables_inventory_original[0].df[3 :]
+        df_afolu_year = tables_inventory_original[0].df[3:]
         # 3.A.1.a.i to 3.A.1.j exist twice.
         # Rename duplicate categories in tables.
-        for index, category_name in replace_categories['afolu']['127'] :
+        for index, category_name in replace_categories["afolu"]["127"]:
             df_afolu_year.at[index, 0] = category_name
-    else :
+    else:
         # cut first two lines
-        df_afolu_year = tables_inventory_original[0].df[2 :]
+        df_afolu_year = tables_inventory_original[0].df[2:]
         # On pages 124-126 the wrong categories are slightly different
-        for index, category_name in replace_categories['afolu']['124-126'] :
+        for index, category_name in replace_categories["afolu"]["124-126"]:
             df_afolu_year.at[index, 0] = category_name
 
     # add header and unit
@@ -343,11 +345,9 @@ for page in pages :
     # make a copy of the categories row
     df_afolu_year_long["category"] = df_afolu_year_long["orig_cat_name"]
 
-
     # regex replacements
-    def repl(m) :
+    def repl(m):
         return m.group("code")
-
 
     df_afolu_year_long["category"] = df_afolu_year_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
@@ -362,9 +362,9 @@ for page in pages :
     df_afolu_year_long.columns = df_afolu_year_long.columns.map(str)
     df_afolu_year_long = df_afolu_year_long.drop(columns=["orig_cat_name"])
 
-    if df_afolu is None :
+    if df_afolu is None:
         df_afolu = df_afolu_year_long
-    else :
+    else:
         df_afolu = pd.concat(
             [df_afolu, df_afolu_year_long],
             axis=0,
@@ -408,18 +408,18 @@ tables_inventory_original_130 = camelot.read_pdf(
 
 # save to dict
 df_waste_years = {
-    "1990" : tables_inventory_original_128[0].df,
-    "2000" : tables_inventory_original_128[1].df,
-    "2010" : tables_inventory_original_128[2].df,
-    "2019" : tables_inventory_original_130[0].df,
+    "1990": tables_inventory_original_128[0].df,
+    "2000": tables_inventory_original_128[1].df,
+    "2010": tables_inventory_original_128[2].df,
+    "2019": tables_inventory_original_130[0].df,
 }
 
 df_waste = None
-for year in df_waste_years.keys() :
+for year in df_waste_years.keys():
     print("-" * 45)
     print(f"Processing table for {year}.")
 
-    df_waste_year = df_waste_years[year][2 :]
+    df_waste_year = df_waste_years[year][2:]
 
     # add header and unit
     df_header = pd.DataFrame([inv_conf["header_waste"], inv_conf["unit_waste"]])
@@ -453,11 +453,9 @@ for year in df_waste_years.keys() :
     # make a copy of the categories row
     df_waste_year_long["category"] = df_waste_year_long["orig_cat_name"]
 
-
     # regex replacements
-    def repl(m) :
+    def repl(m):
         return m.group("code")
-
 
     df_waste_year_long["category"] = df_waste_year_long["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
@@ -473,9 +471,9 @@ for year in df_waste_years.keys() :
     df_waste_year_long.columns = df_waste_year_long.columns.map(str)
     df_waste_year_long = df_waste_year_long.drop(columns=["orig_cat_name"])
 
-    if df_waste is None :
+    if df_waste is None:
         df_waste = df_waste_year_long
-    else :
+    else:
         df_waste = pd.concat(
             [df_waste, df_waste_year_long],
             axis=0,
@@ -507,7 +505,7 @@ pages = ["131", "132", "133", "134", "135", "136", "137"]
 entities = ["CO2", "CH4", "N2O", "NOx", "CO", "NMVOCs", "SO2"]
 
 # for this set of tables every page is a different entity
-for page, entity in zip(pages, entities) :
+for page, entity in zip(pages, entities):
     # The table for CO seems completely mixed up and should not be considered.
     # The total CO values for 1990 equal the values in the main table.
     # The total CO values for 1995 equal the values for 2000 in the main table.
@@ -516,7 +514,7 @@ for page, entity in zip(pages, entities) :
     # The total CO values for 2010 are identical to the 1990 values in the same table.
     # The total CO values for 2019 are identical to the 1995 values in the same table.
     # And so on.
-    if entity == "CO" :
+    if entity == "CO":
         continue
 
     print("-" * 45)
@@ -527,7 +525,7 @@ for page, entity in zip(pages, entities) :
     # see https://github.com/atlanhq/camelot/issues/306,
     # or because characters in first row almost touch
     # the table grid.
-    if page == "131" :
+    if page == "131":
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file),
             pages=page,
@@ -537,7 +535,7 @@ for page, entity in zip(pages, entities) :
             split_text=True,
         )
 
-        df_trend_entity = tables_inventory_original[0].df[1 :]
+        df_trend_entity = tables_inventory_original[0].df[1:]
 
         # The categories 3.D / 3.D.1 / 3.D.2 contain values different to the main table
         # They should also not contain negative values according to IPCC methodology:
@@ -548,19 +546,19 @@ for page, entity in zip(pages, entities) :
 
         row_to_delete = df_trend_entity.index[
             df_trend_entity[0] == "3.D.1 - Produits ligneux récoltés"
-            ][0]
+        ][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
         row_to_delete = df_trend_entity.index[
             df_trend_entity[0] == "3.D.2 - Autres (veuillez spécifier)"
-            ][0]
+        ][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
-    else :
+    else:
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file), pages=page, flavor="lattice", split_text=True
         )
-        df_trend_entity = tables_inventory_original[0].df[3 :]
+        df_trend_entity = tables_inventory_original[0].df[3:]
 
     print("Reading complete.")
 
@@ -589,7 +587,7 @@ for page, entity in zip(pages, entities) :
     df_trend_entity.loc[:, "category"] = df_trend_entity["orig_cat_name"]
 
     # Delete empty line for pages 132-137.
-    if page != "131" :
+    if page != "131":
         row_to_delete = df_trend_entity.index[df_trend_entity["category"] == ""][0]
         df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
@@ -604,10 +602,8 @@ for page, entity in zip(pages, entities) :
         "\n", ""
     )
 
-
-    def repl(m) :
+    def repl(m):
         return m.group("code")
-
 
     df_trend_entity.loc[:, "category"] = df_trend_entity["category"].str.replace(
         inv_conf["cat_code_regexp"], repl, regex=True
@@ -617,7 +613,7 @@ for page, entity in zip(pages, entities) :
 
     print("Created category codes.")
 
-    for year in columns_years :
+    for year in columns_years:
         df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace(",", ".")
         df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace("NE1", "NE")
 
@@ -635,9 +631,9 @@ for page, entity in zip(pages, entities) :
 
     df_trend_entity_long = df_trend_entity_long.reset_index()
 
-    if df_trend is None :
+    if df_trend is None:
         df_trend = df_trend_entity_long
-    else :
+    else:
         df_trend = pd.concat(
             [df_trend, df_trend_entity_long],
             axis=0,
@@ -658,9 +654,9 @@ df_trend_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
-df_trend_IF = find_and_replace_values(df=df_trend_IF,
-                                      replace_info=replace_info["trend"],
-                                      category_column=category_column)
+df_trend_IF = find_and_replace_values(
+    df=df_trend_IF, replace_info=replace_info["trend"], category_column=category_column
+)
 
 ### convert to primap2 format ###
 data_pm2_trend = pm2.pm2io.from_interchange_format(df_trend_IF)
@@ -701,7 +697,7 @@ pm2.pm2io.write_interchange_format(
     data_if,
 )
 
-encoding = {var : compression for var in data_pm2.data_vars}
+encoding = {var: compression for var in data_pm2.data_vars}
 data_pm2.pr.to_netcdf(
     output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
     encoding=encoding,
@@ -731,13 +727,13 @@ terminology_proc = coords_terminologies["category"]
 
 data_proc_if = data_proc_pm2.pr.to_interchange_format()
 
-if not output_folder.exists() :
+if not output_folder.exists():
     output_folder.mkdir()
 pm2.pm2io.write_interchange_format(
     output_folder / (output_filename + terminology_proc), data_proc_if
 )
 
-encoding = {var : compression for var in data_proc_pm2.data_vars}
+encoding = {var: compression for var in data_proc_pm2.data_vars}
 data_proc_pm2.pr.to_netcdf(
     output_folder / (output_filename + terminology_proc + ".nc"), encoding=encoding
 )

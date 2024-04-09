@@ -79,7 +79,7 @@ def process_data_for_country(
     # remove unused cats
     data_country = data_country.dropna(f"category ({cat_terminology_in})", how="all")
     # remove unused years
-    data_country = data_country.dropna("time", how="all")
+    data_country = data_country.dropna(f"time", how="all")
     # remove variables only containing nan
     nan_vars_country = [
         var
@@ -431,7 +431,7 @@ def convert_categories(
             nan_vars = [
                 var
                 for var in data_agg.data_vars
-                if data_agg[var].isnull().all().data is True
+                if data_agg[var].isnull().all().data == True
             ]
             data_agg = data_agg.drop(nan_vars)
             if len(data_agg.data_vars) > 0:
@@ -625,7 +625,7 @@ def get_country_submissions(
 
     country_submissions = {}
     if print_sub:
-        print("#" * 80)
+        print(f"#" * 80)
         print(f"The following submissions are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
@@ -697,7 +697,7 @@ def get_country_datasets(
     rep_data = {}
     # data
     if print_ds:
-        print("#" * 80)
+        print(f"#" * 80)
         print(f"The following datasets are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
@@ -757,7 +757,7 @@ def get_country_datasets(
                         if code_file:
                             data_info = data_info + f"code: {code_file.name}"
                         else:
-                            data_info = data_info + "code: not found"
+                            data_info = data_info + f"code: not found"
 
                         cleaned_datasets_current_folder[key] = data_info
 
@@ -775,7 +775,7 @@ def get_country_datasets(
 
     # legacy data
     if print_ds:
-        print("#" * 80)
+        print(f"#" * 80)
         print(f"The following legacy datasets are available for {country_name}")
     legacy_data = {}
     for item in data_folder_legacy.iterdir():
@@ -972,58 +972,8 @@ def fix_rows(
         new_row = new_row.str.replace("- ", "-")
         # replace spaces in numbers
         pat = r"^(?P<first>[0-9\.,]*)\s(?P<last>[0-9\.,]*)$"
-        def repl(m):
-            return f"{m.group('first')}{m.group('last')}"
+        repl = lambda m: f"{m.group('first')}{m.group('last')}"
         new_row = new_row.str.replace(pat, repl, regex=True)
         data.loc[indices_to_merge[0]] = new_row
         data = data.drop(indices_to_merge[1:])
     return data
-
-
-def find_and_replace_values(df: pd.DataFrame,
-                            replace_info : list[tuple[str | float]],
-                            category_column : str,
-                            entity_column : str ='entity',
-                            ) -> pd.DataFrame:
-    """
-    Find values and replace single values in a dataframe.
-    
-    Input
-    -----
-    df
-        Input data frame
-    replace_info
-        Category, entity, year, and new value. Don't put a new value if you would like to replace with nan.
-        For example [("3.C", "CO", "2019", 3.423)] or [("3.C", "CO", "2019")]
-    category_column
-        The name of the column that contains the categories.
-    entity_column
-        The name of the column that contains the categories.
-        
-    Output
-    ------
-        Data frame with updated values.
-        
-    """
-    for replace_info_value in replace_info:
-        
-        category = replace_info_value[0]
-        entity = replace_info_value[1]
-        year = replace_info_value[2]
-
-        if len(replace_info_value) == 4:
-            new_value = replace_info_value[3]
-        elif len(replace_info_value) == 3:
-            new_value = np.nan
-        else:
-            raise AssertionError(f'Expected tuple of length 3 or 4. Got {replace_info_value}')
-
-        index = df.loc[
-            (df[category_column] == category) & (df[entity_column] == entity),
-        ].index[0]
-        
-        # pandas recommends using .at[] for changing single values
-        df.at[index, year] = new_value
-        print(f"Set value for {category}, {entity}, {year} to {new_value}.")
-
-    return df
