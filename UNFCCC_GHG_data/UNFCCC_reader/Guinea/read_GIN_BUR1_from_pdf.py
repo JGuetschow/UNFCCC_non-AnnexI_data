@@ -8,10 +8,6 @@ os.environ["UNFCCC_GHG_ROOT_PATH"] = (
 import camelot
 import primap2 as pm2
 import pandas as pd
-import numpy as np
-import re
-from datetime import date
-import xarray as xr
 
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 from UNFCCC_GHG_data.helper.functions import find_and_replace_values, process_data_for_country
@@ -700,22 +696,22 @@ data_if = data_pm2.pr.to_interchange_format()
 # Save raw data to IF and native format.
 # ###
 
-# pm2.pm2io.write_interchange_format(
-#     output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
-#     data_if,
-# )
-# 
-# encoding = {var : compression for var in data_pm2.data_vars}
-# data_pm2.pr.to_netcdf(
-#     output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
-#     encoding=encoding,
-# )
+pm2.pm2io.write_interchange_format(
+    output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+    data_if,
+)
+
+encoding = {var : compression for var in data_pm2.data_vars}
+data_pm2.pr.to_netcdf(
+    output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+    encoding=encoding,
+)
 
 # ###
 # Processing
 # ###
 
-data_pm2_processed = process_data_for_country(
+data_proc_pm2 = process_data_for_country(
     data_country=data_pm2,
     entities_to_ignore=[],
     gas_baskets=gas_baskets,
@@ -726,171 +722,10 @@ data_pm2_processed = process_data_for_country(
     processing_info_country=country_processing_step1,
 )
 
-entities_to_ignore = []
-processing_info_country = country_processing_step1
-
-# Gather information
-data_country = data_pm2
-
-countries = list(data_country.coords[data_country.attrs["area"]].values)
-if len(countries) > 1 :
-    raise ValueError(
-        f"Found {len(countries)} countries. Only single country data "
-        f"can be processed by this function. countries: {countries}"
-    )
-else :
-    country_code = countries[0]
-
-# get category terminology
-cat_col = data_country.attrs["cat"]
-temp = re.findall(r"\((.*)\)", cat_col)
-cat_terminology_in = temp[0]
-
-# get scenario
-scenarios = list(data_country.coords[data_country.attrs["scen"]].values)
-if len(scenarios) > 1 :
-    raise ValueError(
-        f"Found {len(scenarios)} scenarios. Only single scenario data "
-        f"can be processed by this function. Scenarios: {scenarios}"
-    )
-scenario = scenarios[0]
-
-# get source
-sources = list(data_country.coords["source"].values)
-if len(sources) > 1 :
-    raise ValueError(
-        f"Found {len(sources)} sources. Only single source data "
-        f"can be processed by this function. Sources: {sources}"
-    )
-source = sources[0]
-
-# check if category name column present
-if "orig_cat_name" in data_country.coords :
-    cat_name_present = True
-else :
-    cat_name_present = False
-
-# 1: general processing
-# remove unused cats
-data_country = data_country.dropna(f"category ({cat_terminology_in})", how="all")
-# remove unused years
-data_country = data_country.dropna("time", how="all")
-# remove variables only containing nan
-nan_vars_country = [
-    var
-    for var in data_country.data_vars
-    if bool(data_country[var].isnull().all().data) is True
-]
-print(f"removing all-nan variables: {nan_vars_country}")
-data_country = data_country.drop_vars(nan_vars_country)
-
-tolerance = 0.01
-agg_tolerance = tolerance
-
-aggregate_cats_current = country_processing_step1["aggregate_cats"]
-
-print(
-    f"Aggregating categories for country {country_code}, source {source}, "
-    f"scenario {scenario}"
-)
-for cat_to_agg in aggregate_cats_current :
-    print(f"Category: {cat_to_agg}")
-    source_cats = aggregate_cats_current[cat_to_agg]["sources"]
-    data_agg = data_country.pr.loc[{"category" : source_cats}].pr.sum(
-        dim="category", skipna=True, min_count=1
-    )
-    nan_vars = [
-        var for var in data_agg.data_vars if data_agg[var].isnull().all().data is True
-    ]
-    data_agg = data_agg.drop(nan_vars)
-    if len(data_agg.data_vars) > 0 :
-        data_agg = data_agg.expand_dims([f"category (" f"{cat_terminology_in})"])
-        data_agg = data_agg.assign_coords(
-            coords={
-                f"category ({cat_terminology_in})" : (
-                    f"category ({cat_terminology_in})",
-                    [cat_to_agg],
-                )
-            }
-        )
-        if cat_name_present :
-            cat_name = aggregate_cats_current[cat_to_agg]["name"]
-            data_agg = data_agg.assign_coords(
-                coords={
-                    "orig_cat_name" : (
-                        f"category ({cat_terminology_in})",
-                        [cat_name],
-                    )
-                }
-            )
-        data_country = data_country.pr.merge(data_agg, tolerance=agg_tolerance)
-    else :
-        print(f"no data to aggregate category {cat_to_agg}")
-
-from UNFCCC_GHG_data.helper import GWP_factors
-
-# copy HFCs and PFCs with default factors
-GWPs_to_add = country_processing_step1["basket_copy"]["GWPs_to_add"]
-entities = country_processing_step1["basket_copy"]["entities"]
-source_GWP = country_processing_step1["basket_copy"]["source_GWP"]
-for entity in entities :
-    data_source = data_country[f"{entity} ({source_GWP})"]
-    for GWP in GWPs_to_add :
-        data_GWP = data_source * GWP_factors[f"{source_GWP}_to_{GWP}"][entity]
-        data_GWP.attrs["entity"] = entity
-        data_GWP.attrs["gwp_context"] = GWP
-        data_country[f"{entity} ({GWP})"] = data_GWP
-
-# create gas baskets
-entities_present = set(data_country.data_vars)
-for basket in gas_baskets.keys() :
-    basket_contents_present = [
-        gas for gas in gas_baskets[basket] if gas in entities_present
-    ]
-    if len(basket_contents_present) > 0 :
-        if basket in list(data_country.data_vars) :
-            data_country[basket] = data_country.pr.fill_na_gas_basket_from_contents(
-                basket=basket,
-                basket_contents=basket_contents_present,
-                skipna=True,
-                min_count=1,
-            )
-        else :
-            try :
-                # print(data_country.data_vars)
-                data_country[basket] = xr.full_like(
-                    data_country["CO2"], np.nan
-                ).pr.quantify(units="Gg CO2 / year")
-                data_country[basket].attrs = {
-                    "entity" : basket.split(" ")[0],
-                    "gwp_context" : basket.split(" ")[1][1 :-1],
-                }
-                data_country[basket] = data_country.pr.gas_basket_contents_sum(
-                    basket=basket,
-                    basket_contents=basket_contents_present,
-                    min_count=1,
-                )
-                entities_present.add(basket)
-            except Exception as ex :
-                print(
-                    f"No gas basket created for {country_code}, {source}, "
-                    f"{scenario}: {ex}"
-                )
-
-# amend title and comment
-data_country.attrs["comment"] = (
-        data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
-)
-data_country.attrs["title"] = (
-        data_country.attrs["title"] + f" Processed on " f"{date.today()}"
-)
-
-assert data_country.equals(data_pm2_processed)
 
 # ###
 # save processed data to IF and native format
 # ###
-data_proc_pm2 = data_pm2_processed
 
 terminology_proc = coords_terminologies["category"]
 
