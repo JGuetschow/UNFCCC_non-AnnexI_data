@@ -67,6 +67,16 @@ filter_remove = {
     "f_memo": {"category": "MEMO"},
 }
 
+# filter_remove_new = {
+#     "energy": {
+#         "f_memo": {
+#             "category": "1.A.3.a.i - Aviation internationale (Soutes internationales)",
+#             "category": "Information Items",
+#             "category": "Éléments pour information",
+#         },
+#     }
+# }
+
 meta_data = {
     "references": "https://unfccc.int/documents/629549",
     "rights": "",  # unknown
@@ -171,6 +181,25 @@ header_trend = [
     "data2019",
 ]
 
+set_value = {
+    "main": {
+        "110": [
+            (4, 0, "1.A.1 - Industries énergétiques"),
+            (8, 0, "1.A.4 - Autres secteurs"),
+        ],
+        "111": [
+            (4, 0, "1.A.1 - Industries énergétiques"),
+            (8, 0, "1.A.4 - Autres secteurs"),
+        ],
+        "112": [
+            (4, 0, "1.A.1 - Industries énergétiques"),
+            (8, 0, "1.A.4 - Autres secteurs"),
+        ],
+    }
+}
+
+delete_row = {"main": {"110": [3, 7], "111": [3, 7], "112": [3, 7]}}
+
 # define config dict
 inv_conf = {
     "header": header_inventory,
@@ -185,6 +214,7 @@ inv_conf = {
     "entity_row": 0,
     "unit_row": 1,
     "index_cols": "Greenhouse gas source and sink categories",
+    "pages_to_read": {"main": ["110", "111", "112", "113"], "energy": []},
     "year": {
         "110": 1990,
         "111": 2000,

@@ -16,6 +16,7 @@ from config_GIN_BUR1 import coords_cols, coords_defaults, coords_terminologies
 from config_GIN_BUR1 import (
     coords_value_mapping,
     filter_remove,
+    # filter_remove_new,
     meta_data,
     page_def_templates,
 )
@@ -25,6 +26,8 @@ from config_GIN_BUR1 import (
     gas_baskets,
     replace_info,
     replace_categories,
+    set_value,
+    delete_row,
 )
 
 # ###
@@ -45,9 +48,9 @@ compression = dict(zlib=True, complevel=9)
 # 1. Read in main tables
 # ###
 
-pages = ["110", "111", "112", "113"]
+
 df_main = None
-for page in pages:
+for page in inv_conf['pages_to_read']['main']:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -65,11 +68,14 @@ for page in pages:
     df_inventory = tables_inventory_original[0].df.copy()
 
     # move broken text in correct row (page 113 is fine)
-    if page in ["110", "111", "112"]:
-        df_inventory.at[4, 0] = "1.A.1 - Industries énergétiques"
-        df_inventory = df_inventory.drop(index=3)
-        df_inventory.at[8, 0] = "1.A.4 - Autres secteurs"
-        df_inventory = df_inventory.drop(index=7)
+    # set category names (they moved one row up)
+    if page in set_value['main'].keys():
+        for idx, col, value in set_value['main'][page]:
+            df_inventory.at[idx, col] = value
+    # delete empty row
+    if page in delete_row['main'].keys():
+        for idx in delete_row['main'][page]:
+            df_inventory = df_inventory.drop(index=idx)
 
     # add header and unit
     df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
@@ -182,20 +188,16 @@ for page in pages:
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     if page == "119":
-        row_to_delete = df_energy_year.index[df_energy_year[0] == "Information Items"][
-            0
-        ]
+        row_to_delete = df_energy_year.index[df_energy_year[0] == "Information Items"][0]
         df_energy_year = df_energy_year.drop(index=row_to_delete)
     else:
         row_to_delete = df_energy_year.index[
-            df_energy_year[0] == "Éléments pour information"
-        ][0]
+            df_energy_year[0] == "Éléments pour information"][0]
         df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     row_to_delete = df_energy_year.index[
         df_energy_year[0]
-        == "1.A.3.d.i - Navigation internationale (soutes internationales)"
-    ][0]
+        == "1.A.3.d.i - Navigation internationale (soutes internationales)"][0]
     df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     row_to_delete = df_energy_year.index[
