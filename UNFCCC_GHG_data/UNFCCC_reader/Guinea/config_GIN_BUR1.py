@@ -14,7 +14,6 @@ coords_defaults = {
 
 coords_terminologies = {
     "area": "ISO3",
-    # TODO check if this is correct
     "category": "IPCC2006_PRIMAP",
     "scenario": "PRIMAP",
 }
@@ -62,7 +61,6 @@ coords_value_mapping = {
     },
 }
 
-# TODO! Don't add MEMO if remove later
 filter_remove = {
     "f_memo": {"category": "MEMO"},
 }
