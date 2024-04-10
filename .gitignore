@@ -11,10 +11,6 @@ log/*
 UNFCCC_GHG_data/datasets
 UNFCCC_GHG_data/UNFCCC_DI_reader/test_UNFCCC_DI_reader.ipynb
 UNFCCC_GHG_data/UNFCCC_DI_reader/.ipynb_checkpoints/
-#downloaded_data/UNFCCC/Argentina/NDC_Second_2021-11-02/Actualización_meta_de_emisiones_2030.pdf
-#downloaded_data/UNFCCC/Chile/NDC_First_2020-04-09/NDC_Chile_2020_español.pdf
-#downloaded_data/UNFCCC/Costa_Rica/NDC_First_2020-12-29/Contribución_Nacionalmente_Determinada_de_Costa_Rica_2020_-_Versión_Completa.pdf
-#downloaded_data/UNFCCC/Peru/NDC_First_2020-12-18/Reporte_de_Actualización_de_las_NDC_del_Perú.pdf
 *.autosave
 #UNFCCC_GHG_data/UNFCCC_DI_reader
 build
