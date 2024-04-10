@@ -10,7 +10,6 @@ from datetime import date
 from copy import deepcopy
 from typing import Dict, List, Optional
 from pathlib import Path
-import warnings
 from .definitions import custom_country_mapping, custom_folders
 from .definitions import root_path, downloaded_data_path, extracted_data_path
 from .definitions import legacy_data_path, code_path
@@ -80,7 +79,7 @@ def process_data_for_country(
     # remove unused cats
     data_country = data_country.dropna(f"category ({cat_terminology_in})", how="all")
     # remove unused years
-    data_country = data_country.dropna("time", how="all")
+    data_country = data_country.dropna(f"time", how="all")
     # remove variables only containing nan
     nan_vars_country = [
         var
@@ -293,9 +292,9 @@ def process_data_for_country(
             #  gas baskets?
             for case in processing_info_country["aggregate_gases"].keys():
                 case_info = processing_info_country["aggregate_gases"][case]
-                data_country[case_info["basket"]] = (
-                    data_country.pr.fill_na_gas_basket_from_contents(**case_info)
-                )
+                data_country[
+                    case_info["basket"]
+                ] = data_country.pr.fill_na_gas_basket_from_contents(**case_info)
 
     # 3: map categories
     if category_conversion is not None:
@@ -626,7 +625,7 @@ def get_country_submissions(
 
     country_submissions = {}
     if print_sub:
-        print("#" * 80)
+        print(f"#" * 80)
         print(f"The following submissions are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
@@ -698,7 +697,7 @@ def get_country_datasets(
     rep_data = {}
     # data
     if print_ds:
-        print("#" * 80)
+        print(f"#" * 80)
         print(f"The following datasets are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
@@ -736,9 +735,9 @@ def get_country_datasets(
                     # process filename to get submission
                     parts = dataset.split("_")
                     if parts[0] != country_code:
-                        cleaned_datasets_current_folder[f"Wrong code: {parts[0]}"] = (
-                            dataset
-                        )
+                        cleaned_datasets_current_folder[
+                            f"Wrong code: {parts[0]}"
+                        ] = dataset
                     else:
                         terminology = "_".join(parts[3:])
                         key = f"{parts[1]} ({parts[2]}, {terminology})"
@@ -758,7 +757,7 @@ def get_country_datasets(
                         if code_file:
                             data_info = data_info + f"code: {code_file.name}"
                         else:
-                            data_info = data_info + "code: not found"
+                            data_info = data_info + f"code: not found"
 
                         cleaned_datasets_current_folder[key] = data_info
 
@@ -776,7 +775,7 @@ def get_country_datasets(
 
     # legacy data
     if print_ds:
-        print("#" * 80)
+        print(f"#" * 80)
         print(f"The following legacy datasets are available for {country_name}")
     legacy_data = {}
     for item in data_folder_legacy.iterdir():
@@ -978,111 +977,3 @@ def fix_rows(
         data.loc[indices_to_merge[0]] = new_row
         data = data.drop(indices_to_merge[1:])
     return data
-
-
-def assert_values(
-    df: pd.DataFrame,
-    test_case: tuple[str | float | int],
-    category_column: str = "category (IPCC1996_2006_GIN_Inv)",
-    entity_column: str = "entity",
-) -> None:
-    """
-    Check if a value in a dataframe matches the expected value.
-
-    Input
-    -----
-    df
-        The data frame to check.
-    test_case
-        The combination of parameters and the expected value.
-        Use the format (category, entity, year, expected_value).
-    category_column
-        The columns where to look for the category.
-    entity_column
-        The column where to look for the entity.
-
-    """
-    category = test_case[0]
-    entity = test_case[1]
-    year = test_case[2]
-    expected_value = test_case[3]
-
-    assert (
-        (type(expected_value) == float) or (type(expected_value) == int)
-    ), "This function only works for numbers. Use assert_nan_values to check for NaNs and empty values."
-
-    arr = df.loc[
-        (df[category_column] == category) & (df[entity_column] == entity), year
-    ].values
-
-    # Assert the category exists in the data frame
-    assert (
-        category in df[category_column].unique()
-    ), f"{category} is not a valid category. Choose from {df[category_column].unique()}"
-
-    # Assert the entity exists in the data frame
-    assert (
-        entity in df[entity_column].unique()
-    ), f"{entity} is not a valid entity. Choose from {df[entity_column].unique()}"
-
-    assert (
-        arr.size > 0
-    ), f"No value found for category {category}, entity {entity}, year {year}!"
-
-    assert (
-        arr.size <= 1
-    ), f"More than one value found for category {category}, entity {entity}, year {year}!"
-
-    assert (
-        arr[0] == test_case[3]
-    ), f"Expected value {expected_value}, actual value is {arr[0]}"
-
-    print(
-        f"Value for category {category}, entity {entity}, year {year} is as expected."
-    )
-
-
-def assert_nan_values(
-    df: pd.DataFrame,
-    test_case: tuple[str, ...],
-    category_column: str = "category (IPCC1996_2006_GIN_Inv)",
-    entity_column: str = "entity",
-) -> None:
-    """
-    Check if values that are empty or NE or NE1 in the PDF tables
-    are not present in the dataset.
-
-    Input
-    -----
-    df
-        The data frame to check.
-    test_case
-        The combination of parameters and the expected value.
-        Use the format (category, entity, year).
-    category_column
-        The columns where to look for the category.
-    entity_column
-        The column where to look for the entity.
-
-    """
-    category = test_case[0]
-    entity = test_case[1]
-    year = test_case[2]
-
-    if category not in df[category_column].unique():
-        warning_string = f"{category} is not in the data set. Either all values for this category are NaN or wrong category."
-        warnings.warn(warning_string)
-        return
-
-    if entity not in df[entity_column].unique():
-        warning_string = f"{entity} is not in the data set. Either all values for this entity are NaN or wrong entity."
-        warnings.warn(warning_string)
-        return
-
-    arr = df.loc[
-        (df[category_column] == category) & (df[entity_column] == entity), year
-    ].values
-
-    assert np.isnan(arr[0]), f"Value is {arr[0]} and not NaN."
-
-    print(f"Value for category {category}, entity {entity}, year {year} is NaN.")
