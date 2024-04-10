@@ -59,7 +59,6 @@ for page in inv_conf["pages_to_read"]["main"]:
 
     df_inventory = tables_inventory_original[0].df.copy()
 
-    # move broken text in correct row (page 113 is fine)
     # set category names (they moved one row up)
     if page in set_value["main"].keys():
         for idx, col, value in set_value["main"][page]:
@@ -562,7 +561,7 @@ for page, entity in zip(pages, entities):
 
     df_trend_entity = df_trend_entity.drop(columns=["orig_cat_name"])
 
-    # TODO wide in IF gibt es convert_wide_dataframe_if
+    # TODO better to use pm2.pm2io.convert_wide_dataframe_if
     df_trend_entity_long = pd.wide_to_long(
         df_trend_entity, stubnames="data", i="category", j="time"
     )
