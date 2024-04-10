@@ -1,7 +1,6 @@
 .idea
 .DS_Store
 venv
-notebooks
 geckodriver.log
 __pycache__
 /JG_test_code/
