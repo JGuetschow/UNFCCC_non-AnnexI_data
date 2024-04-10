@@ -1,9 +1,9 @@
 # TODO! Set env via doit and delete this when it works
-import os
-
-os.environ["UNFCCC_GHG_ROOT_PATH"] = (
-    "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data"
-)
+# import os
+#
+# os.environ["UNFCCC_GHG_ROOT_PATH"] = (
+#     "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data"
+# )
 
 import camelot
 import primap2 as pm2
@@ -19,6 +19,7 @@ from config_GIN_BUR1 import (
     # filter_remove_new,
     meta_data,
     page_def_templates,
+    delete_rows_by_category
 )
 from config_GIN_BUR1 import (
     inv_conf,
@@ -47,7 +48,6 @@ compression = dict(zlib=True, complevel=9)
 # ###
 # 1. Read in main tables
 # ###
-
 
 df_main = None
 for page in inv_conf['pages_to_read']['main']:
@@ -163,9 +163,8 @@ data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 # 2. Read energy sector tables
 # ###
 
-pages = ["116", "117", "118", "119"]
 df_energy = None
-for page in pages:
+for page in inv_conf['pages_to_read']['energy']:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -181,30 +180,13 @@ for page in pages:
         join="outer",
     ).reset_index(drop=True)
 
-    row_to_delete = df_energy_year.index[
-        df_energy_year[0]
-        == "1.A.3.a.i - Aviation internationale (Soutes internationales)"
-    ][0]
-    df_energy_year = df_energy_year.drop(index=row_to_delete)
-
-    if page == "119":
-        row_to_delete = df_energy_year.index[df_energy_year[0] == "Information Items"][0]
-        df_energy_year = df_energy_year.drop(index=row_to_delete)
-    else:
+    # TODO This step should be done in pm2.pm2io.convert_long_dataframe_if()
+    for row in delete_rows_by_category['energy'][page]:
         row_to_delete = df_energy_year.index[
-            df_energy_year[0] == "Éléments pour information"][0]
+            df_energy_year[0]
+            == row
+            ][0]
         df_energy_year = df_energy_year.drop(index=row_to_delete)
-
-    row_to_delete = df_energy_year.index[
-        df_energy_year[0]
-        == "1.A.3.d.i - Navigation internationale (soutes internationales)"][0]
-    df_energy_year = df_energy_year.drop(index=row_to_delete)
-
-    row_to_delete = df_energy_year.index[
-        df_energy_year[0]
-        == "1.A.5.c - Opérations multilatérales (Éléments pour information)"
-    ][0]
-    df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     # add header and unit
     df_header = pd.DataFrame([inv_conf["header_energy"], inv_conf["unit_energy"]])

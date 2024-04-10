@@ -200,6 +200,25 @@ set_value = {
 
 delete_row = {"main": {"110": [3, 7], "111": [3, 7], "112": [3, 7]}}
 
+delete_rows_by_category = {'energy' : {"116" : ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
+                                                "Éléments pour information",
+                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
+                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"],
+                                       "117" : ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
+                                                "Éléments pour information",
+                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
+                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"],
+                                       "118": ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
+                                                "Éléments pour information",
+                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
+                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"],
+                                       "119" : ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
+                                                "Information Items",
+                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
+                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"]
+                                       }
+                           }
+
 # define config dict
 inv_conf = {
     "header": header_inventory,
@@ -214,7 +233,7 @@ inv_conf = {
     "entity_row": 0,
     "unit_row": 1,
     "index_cols": "Greenhouse gas source and sink categories",
-    "pages_to_read": {"main": ["110", "111", "112", "113"], "energy": []},
+    "pages_to_read": {"main": ["110", "111", "112", "113"], "energy": ["116", "117", "118", "119"]},
     "year": {
         "110": 1990,
         "111": 2000,
