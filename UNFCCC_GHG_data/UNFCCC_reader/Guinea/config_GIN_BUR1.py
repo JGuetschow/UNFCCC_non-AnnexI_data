@@ -67,16 +67,6 @@ filter_remove = {
     "f_memo": {"category": "MEMO"},
 }
 
-# filter_remove_new = {
-#     "energy": {
-#         "f_memo": {
-#             "category": "1.A.3.a.i - Aviation internationale (Soutes internationales)",
-#             "category": "Information Items",
-#             "category": "Éléments pour information",
-#         },
-#     }
-# }
-
 meta_data = {
     "references": "https://unfccc.int/documents/629549",
     "rights": "",  # unknown
@@ -170,7 +160,9 @@ header_waste = [
 unit_waste = ["-"] + ["Gg"] * (len(header_waste) - 1)
 
 # for trend table (unit is always Gg for this table)
+# 'data' prefix is needed for pd.wide_to_long() later
 header_trend = [
+    "orig_cat_name",
     "data1990",
     "data1995",
     "data2000",
@@ -200,24 +192,52 @@ set_value = {
 
 delete_row = {"main": {"110": [3, 7], "111": [3, 7], "112": [3, 7]}}
 
-delete_rows_by_category = {'energy' : {"116" : ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
-                                                "Éléments pour information",
-                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
-                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"],
-                                       "117" : ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
-                                                "Éléments pour information",
-                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
-                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"],
-                                       "118": ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
-                                                "Éléments pour information",
-                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
-                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"],
-                                       "119" : ["1.A.3.a.i - Aviation internationale (Soutes internationales)",
-                                                "Information Items",
-                                                "1.A.3.d.i - Navigation internationale (soutes internationales)",
-                                                "1.A.5.c - Opérations multilatérales (Éléments pour information)"]
-                                       }
-                           }
+delete_rows_by_category = {
+    "energy": {
+        "116": [
+            "1.A.3.a.i - Aviation internationale (Soutes internationales)",
+            "Éléments pour information",
+            "1.A.3.d.i - Navigation internationale (soutes internationales)",
+            "1.A.5.c - Opérations multilatérales (Éléments pour information)",
+        ],
+        "117": [
+            "1.A.3.a.i - Aviation internationale (Soutes internationales)",
+            "Éléments pour information",
+            "1.A.3.d.i - Navigation internationale (soutes internationales)",
+            "1.A.5.c - Opérations multilatérales (Éléments pour information)",
+        ],
+        "118": [
+            "1.A.3.a.i - Aviation internationale (Soutes internationales)",
+            "Éléments pour information",
+            "1.A.3.d.i - Navigation internationale (soutes internationales)",
+            "1.A.5.c - Opérations multilatérales (Éléments pour information)",
+        ],
+        "119": [
+            "1.A.3.a.i - Aviation internationale (Soutes internationales)",
+            "Information Items",
+            "1.A.3.d.i - Navigation internationale (soutes internationales)",
+            "1.A.5.c - Opérations multilatérales (Éléments pour information)",
+        ],
+    },
+    "trend": {
+        # The categories 3.D / 3.D.1 / 3.D.2 contain values different to the main table
+        # They should also not contain negative values according to IPCC methodology:
+        # https://www.ipcc-nggip.iges.or.jp/public/2006gl/
+        # Therefore, the rows are deleted from the table.
+        "131": [
+            "3.D - Autres",
+            "3.D.1 - Produits ligneux récoltés",
+            "3.D.2 - Autres (veuillez spécifier)",
+        ],
+        # Delete empty line for pages 132-137.
+        "132": [""],
+        "133": [""],
+        "134": [""],
+        "135": [""],
+        "136": [""],
+        "137": [""],
+    },
+}
 
 # define config dict
 inv_conf = {
@@ -233,7 +253,22 @@ inv_conf = {
     "entity_row": 0,
     "unit_row": 1,
     "index_cols": "Greenhouse gas source and sink categories",
-    "pages_to_read": {"main": ["110", "111", "112", "113"], "energy": ["116", "117", "118", "119"]},
+    "pages_to_read": {
+        "main": ["110", "111", "112", "113"],
+        "energy": ["116", "117", "118", "119"],
+        "afolu": ["124", "125", "126", "127"],
+        "waste": ["128", "130"],
+        # The table for CO (page 135) seems completely mixed up and should not be considered.
+        # The total CO values for 1990 equal the values in the main table.
+        # The total CO values for 1995 equal the values for 2000 in the main table.
+        # The total CO values for 2000 equal the values for 2010 in the main table.
+        # The total CO values for 2005 are identical to the 2019 values in the same table.
+        # The total CO values for 2010 are identical to the 1990 values in the same table.
+        # The total CO values for 2019 are identical to the 1995 values in the same table.
+        # And so on.
+        "trend": ["131", "132", "133", "134", "136", "137"],
+    },
+    "entity_for_page": {"trend": ["CO2", "CH4", "N2O", "NOx", "NMVOCs", "SO2"]},
     "year": {
         "110": 1990,
         "111": 2000,

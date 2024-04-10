@@ -1,10 +1,3 @@
-# TODO! Set env via doit and delete this when it works
-# import os
-#
-# os.environ["UNFCCC_GHG_ROOT_PATH"] = (
-#     "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data"
-# )
-
 import camelot
 import primap2 as pm2
 import pandas as pd
@@ -16,10 +9,9 @@ from config_GIN_BUR1 import coords_cols, coords_defaults, coords_terminologies
 from config_GIN_BUR1 import (
     coords_value_mapping,
     filter_remove,
-    # filter_remove_new,
     meta_data,
     page_def_templates,
-    delete_rows_by_category
+    delete_rows_by_category,
 )
 from config_GIN_BUR1 import (
     inv_conf,
@@ -50,7 +42,7 @@ compression = dict(zlib=True, complevel=9)
 # ###
 
 df_main = None
-for page in inv_conf['pages_to_read']['main']:
+for page in inv_conf["pages_to_read"]["main"]:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -69,12 +61,12 @@ for page in inv_conf['pages_to_read']['main']:
 
     # move broken text in correct row (page 113 is fine)
     # set category names (they moved one row up)
-    if page in set_value['main'].keys():
-        for idx, col, value in set_value['main'][page]:
+    if page in set_value["main"].keys():
+        for idx, col, value in set_value["main"][page]:
             df_inventory.at[idx, col] = value
     # delete empty row
-    if page in delete_row['main'].keys():
-        for idx in delete_row['main'][page]:
+    if page in delete_row["main"].keys():
+        for idx in delete_row["main"][page]:
             df_inventory = df_inventory.drop(index=idx)
 
     # add header and unit
@@ -164,7 +156,7 @@ data_pm2_main = pm2.pm2io.from_interchange_format(df_all_IF)
 # ###
 
 df_energy = None
-for page in inv_conf['pages_to_read']['energy']:
+for page in inv_conf["pages_to_read"]["energy"]:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -181,11 +173,8 @@ for page in inv_conf['pages_to_read']['energy']:
     ).reset_index(drop=True)
 
     # TODO This step should be done in pm2.pm2io.convert_long_dataframe_if()
-    for row in delete_rows_by_category['energy'][page]:
-        row_to_delete = df_energy_year.index[
-            df_energy_year[0]
-            == row
-            ][0]
+    for row in delete_rows_by_category["energy"][page]:
+        row_to_delete = df_energy_year.index[df_energy_year[0] == row][0]
         df_energy_year = df_energy_year.drop(index=row_to_delete)
 
     # add header and unit
@@ -279,9 +268,8 @@ data_pm2_energy = pm2.pm2io.from_interchange_format(df_energy_IF)
 # 3. Read in afolu table
 # ###
 
-pages = ["124", "125", "126", "127"]
 df_afolu = None
-for page in pages:
+for page in inv_conf["pages_to_read"]["afolu"]:
     print("-" * 45)
     print(f"Reading table from page {page}.")
 
@@ -331,9 +319,7 @@ for page in pages:
         df_afolu_year, inv_conf["year"][page], inv_conf["header_long"]
     )
 
-    df_afolu_year_long["orig_cat_name"] = df_afolu_year_long["orig_cat_name"].str[
-        0
-    ]  # extract from tuple
+    df_afolu_year_long["orig_cat_name"] = df_afolu_year_long["orig_cat_name"].str[0]
 
     # prep for conversion to PM2 IF and native format
     # make a copy of the categories row
@@ -389,18 +375,18 @@ data_pm2_afolu = pm2.pm2io.from_interchange_format(df_afolu_IF)
 # and another table for the last year on page 130
 
 # read the first three tables
-page = "128"
+page = inv_conf["pages_to_read"]["waste"][0]
 tables_inventory_original_128 = camelot.read_pdf(
     str(input_folder / pdf_file), pages=page, flavor="lattice", split_text=True
 )
 
 # read last table
-page = "130"
+page = inv_conf["pages_to_read"]["waste"][1]
 tables_inventory_original_130 = camelot.read_pdf(
     str(input_folder / pdf_file), pages=page, flavor="lattice", split_text=True
 )
 
-# save to dict
+# combine in a dict
 df_waste_years = {
     "1990": tables_inventory_original_128[0].df,
     "2000": tables_inventory_original_128[1].df,
@@ -495,22 +481,11 @@ data_pm2_waste = pm2.pm2io.from_interchange_format(df_waste_IF)
 # ###
 
 df_trend = None
-pages = ["131", "132", "133", "134", "135", "136", "137"]
-entities = ["CO2", "CH4", "N2O", "NOx", "CO", "NMVOCs", "SO2"]
+pages = inv_conf["pages_to_read"]["trend"]
+entities = inv_conf["entity_for_page"]["trend"]
 
 # for this set of tables every page is a different entity
 for page, entity in zip(pages, entities):
-    # The table for CO seems completely mixed up and should not be considered.
-    # The total CO values for 1990 equal the values in the main table.
-    # The total CO values for 1995 equal the values for 2000 in the main table.
-    # The total CO values for 2000 equal the values for 2010 in the main table.
-    # The total CO values for 2005 are identical to the 2019 values in the same table.
-    # The total CO values for 2010 are identical to the 1990 values in the same table.
-    # The total CO values for 2019 are identical to the 1995 values in the same table.
-    # And so on.
-    if entity == "CO":
-        continue
-
     print("-" * 45)
     print(f"Reading table for page {page} and entity {entity}.")
 
@@ -531,23 +506,6 @@ for page, entity in zip(pages, entities):
 
         df_trend_entity = tables_inventory_original[0].df[1:]
 
-        # The categories 3.D / 3.D.1 / 3.D.2 contain values different to the main table
-        # They should also not contain negative values according to IPCC methodology:
-        # https://www.ipcc-nggip.iges.or.jp/public/2006gl/
-        # Therefore, the rows are deleted from the table.
-        row_to_delete = df_trend_entity.index[df_trend_entity[0] == "3.D - Autres"][0]
-        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
-
-        row_to_delete = df_trend_entity.index[
-            df_trend_entity[0] == "3.D.1 - Produits ligneux récoltés"
-        ][0]
-        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
-
-        row_to_delete = df_trend_entity.index[
-            df_trend_entity[0] == "3.D.2 - Autres (veuillez spécifier)"
-        ][0]
-        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
-
     else:
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file), pages=page, flavor="lattice", split_text=True
@@ -556,19 +514,12 @@ for page, entity in zip(pages, entities):
 
     print("Reading complete.")
 
-    # Add columns
-    # 'data' prefix is needed for pd.wide_to_long() later
-    columns_years = [
-        "data1990",
-        "data1995",
-        "data2000",
-        "data2005",
-        "data2010",
-        "data2015",
-        "data2018",
-        "data2019",
-    ]
-    df_trend_entity.columns = ["orig_cat_name"] + columns_years
+    if page in delete_rows_by_category["trend"].keys():
+        for category in delete_rows_by_category["trend"][page]:
+            row_to_delete = df_trend_entity.index[df_trend_entity[0] == category][0]
+            df_trend_entity = df_trend_entity.drop(index=row_to_delete)
+
+    df_trend_entity.columns = inv_conf["header_trend"]
 
     df_trend_entity = df_trend_entity.copy()
 
@@ -579,11 +530,6 @@ for page, entity in zip(pages, entities):
     df_trend_entity.loc[:, "entity"] = entity
 
     df_trend_entity.loc[:, "category"] = df_trend_entity["orig_cat_name"]
-
-    # Delete empty line for pages 132-137.
-    if page != "131":
-        row_to_delete = df_trend_entity.index[df_trend_entity["category"] == ""][0]
-        df_trend_entity = df_trend_entity.drop(index=row_to_delete)
 
     df_trend_entity["category"] = df_trend_entity["category"].replace(
         inv_conf["cat_codes_manual"]["trend"]
@@ -607,7 +553,7 @@ for page, entity in zip(pages, entities):
 
     print("Created category codes.")
 
-    for year in columns_years:
+    for year in inv_conf["header_trend"][1:]:
         df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace(",", ".")
         df_trend_entity.loc[:, year] = df_trend_entity[year].str.replace("NE1", "NE")
 
@@ -711,7 +657,6 @@ data_proc_pm2 = process_data_for_country(
     sectors_out=None,
     processing_info_country=country_processing_step1,
 )
-
 
 # ###
 # save processed data to IF and native format
