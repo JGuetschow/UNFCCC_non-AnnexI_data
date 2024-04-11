@@ -10,7 +10,16 @@ import pandas as pd
 
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
 
-from config_BDI_BUR1 import coords_terminologies, inv_conf
+from config_BDI_BUR1 import (
+    inv_conf,
+    meta_data,
+    filter_remove,
+    coords_value_mapping,
+    coords_terminologies,
+    coords_defaults,
+    coords_cols,
+    years_to_read,
+)
 
 # ###
 # configuration
@@ -32,13 +41,15 @@ compression = dict(zlib=True, complevel=9)
 # ###
 
 # table for the year 2005
-year = "2005"
-years_to_read = ["2005", "2006"]
+
 df_all = None
 for year in years_to_read:
+    print("-" * 60)
+    print(f"Reading year {year}.")
+    print("-" * 60)
     df_year = None
     for page in inv_conf[year]["pages_to_read"]:
-        print("-" * 45)
+        print("-" * 20)
         print(f"Reading table from page {page}.")
 
         tables_inventory_original = camelot.read_pdf(
@@ -67,7 +78,19 @@ for year in years_to_read:
     for column in df_year.columns:
         df_year[column] = df_year[column].str.replace("\n", "")
 
-    df_header = pd.DataFrame([inv_conf[year]["header"], inv_conf[year]["unit"]])
+    # fix broken values in cells
+    if "fix_values" in inv_conf[year].keys():
+        for index, column, value in inv_conf[year]["fix_values"]:
+            df_year.at[index, column] = value
+
+    # delete extra columns
+    if "delete_columns" in inv_conf[year].keys():
+        for column in inv_conf[year]["delete_columns"]:
+            print(f"Delete columns {column} for year {year}")
+            df_year = df_year.drop(columns=column)
+        df_year.columns = range(df_year.columns.size)
+
+    df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
 
     df_year = pd.concat([df_header, df_year[2:]], axis=0, join="outer").reset_index(
         drop=True
@@ -102,8 +125,9 @@ for year in years_to_read:
     # replace cat names by codes in col "category"
     # first the manual replacements
     df_year_long["category"] = df_year_long["category"].str.replace("\n", "")
+
     df_year_long["category"] = df_year_long["category"].replace(
-        inv_conf["2005"]["cat_codes_manual"]
+        inv_conf["cat_codes_manual"]
     )
 
     df_year_long["category"] = df_year_long["category"].str.replace(".", "")
@@ -125,6 +149,8 @@ for year in years_to_read:
     df_year_long.columns = df_year_long.columns.map(str)
     df_year_long = df_year_long.drop(columns=["orig_cat_name"])
 
+    assert "1A3di" not in df_year_long["category"].unique()
+
     if df_all is None:
         df_all = df_year_long
     else:
@@ -133,3 +159,21 @@ for year in years_to_read:
             axis=0,
             join="outer",
         ).reset_index(drop=True)
+
+
+print("Converting to interchange format.")
+df_all_IF = pm2.pm2io.convert_long_dataframe_if(
+    df_all,
+    coords_cols=coords_cols,
+    coords_defaults=coords_defaults,
+    coords_terminologies=coords_terminologies,
+    coords_value_mapping=coords_value_mapping,
+    filter_remove=filter_remove,
+    meta_data=meta_data,
+    convert_str=True,
+    time_format="%Y",
+)
+
+print("Converting to primap2 format.")
+### convert to primap2 format ###
+data_pm2_all = pm2.pm2io.from_interchange_format(df_all_IF)
