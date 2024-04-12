@@ -1,9 +1,3 @@
-import os
-
-os.environ["UNFCCC_GHG_ROOT_PATH"] = (
-    "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data"
-)
-
 import camelot
 import primap2 as pm2
 import pandas as pd
@@ -19,9 +13,9 @@ from config_BDI_BUR1 import (
     coords_terminologies,
     coords_defaults,
     coords_cols,
-    years_to_read,
     gas_baskets,
     country_processing_step1,
+    inv_conf_per_year,
 )
 
 # ###
@@ -43,27 +37,20 @@ compression = dict(zlib=True, complevel=9)
 # 1. Read in tables
 # ###
 
-# table for the year 2005
-
 df_all = None
-for year in years_to_read:
+for year in inv_conf_per_year.keys():
     print("-" * 60)
     print(f"Reading year {year}.")
     print("-" * 60)
     df_year = None
-    for page in inv_conf[year]["pages_to_read"]:
-        print("-" * 20)
+    for page in inv_conf_per_year[year]["pages_to_read"]:
         print(f"Reading table from page {page}.")
-
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file),
             pages=page,
-            # table_areas=page_def_templates[page]["area"],
-            # columns=page_def_templates[page]["cols"],
             flavor="lattice",
             split_text=True,
         )
-
         print("Reading complete.")
 
         df_page = tables_inventory_original[0].df
@@ -77,19 +64,19 @@ for year in years_to_read:
                 join="outer",
             ).reset_index(drop=True)
 
+    print(f"Concatenating all tables for {year}.")
     # remove line breaks
     for column in df_year.columns:
         df_year[column] = df_year[column].str.replace("\n", "")
 
     # fix broken values in cells
-    if "fix_values" in inv_conf[year].keys():
-        for index, column, value in inv_conf[year]["fix_values"]:
+    if "fix_values" in inv_conf_per_year[year].keys():
+        for index, column, value in inv_conf_per_year[year]["fix_values"]:
             df_year.at[index, column] = value
 
     # delete extra columns
-    if "delete_columns" in inv_conf[year].keys():
-        for column in inv_conf[year]["delete_columns"]:
-            print(f"Delete columns {column} for year {year}")
+    if "delete_columns" in inv_conf_per_year[year].keys():
+        for column in inv_conf_per_year[year]["delete_columns"]:
             df_year = df_year.drop(columns=column)
         df_year.columns = range(df_year.columns.size)
 
@@ -146,13 +133,14 @@ for year in years_to_read:
     df_year_long = df_year_long.reset_index(drop=True)
 
     df_year_long["data"] = df_year_long["data"].str.replace(",", ".")
-    df_year_long["data"] = df_year_long["data"].str.replace("NE1", "NE")
+
+    # TODO: I don't think there are NE1 in the tables.
+    # df_year_long["data"] = df_year_long["data"].str.replace("NE1", "NE")
 
     # make sure all col headers are str
     df_year_long.columns = df_year_long.columns.map(str)
-    df_year_long = df_year_long.drop(columns=["orig_cat_name"])
 
-    assert "1A3di" not in df_year_long["category"].unique()
+    df_year_long = df_year_long.drop(columns=["orig_cat_name"])
 
     if df_all is None:
         df_all = df_year_long
@@ -163,7 +151,7 @@ for year in years_to_read:
             join="outer",
         ).reset_index(drop=True)
 
-
+### convert to interchange format ###
 print("Converting to interchange format.")
 df_all_IF = pm2.pm2io.convert_long_dataframe_if(
     df_all,
@@ -177,8 +165,9 @@ df_all_IF = pm2.pm2io.convert_long_dataframe_if(
     time_format="%Y",
 )
 
-print("Converting to primap2 format.")
+
 ### convert to primap2 format ###
+print("Converting to primap2 format.")
 data_pm2 = pm2.pm2io.from_interchange_format(df_all_IF)
 
 
@@ -208,13 +197,12 @@ data_proc_pm2 = process_data_for_country(
     data_country=data_pm2,
     entities_to_ignore=[],
     gas_baskets=gas_baskets,
-    filter_dims=None,  # leaving this explicit for now
+    filter_dims=None,
     cat_terminology_out=None,
     category_conversion=None,
     sectors_out=None,
     processing_info_country=country_processing_step1,
 )
-
 
 # ###
 # save processed data to IF and native format

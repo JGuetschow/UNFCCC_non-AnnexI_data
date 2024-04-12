@@ -4,25 +4,6 @@ coords_terminologies = {
     "scenario": "PRIMAP",
 }
 
-# TODO: This is duplicate inormation
-years_to_read = [
-    "2005",
-    "2006",
-    "2007",
-    "2008",
-    "2009",
-    "2010",
-    "2011",
-    "2012",
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-]
-
 # define config dict
 inv_conf = {
     "entity_row": 0,
@@ -65,12 +46,15 @@ inv_conf = {
         "International Bunkers": "M.BK",
         "1.A.3.a.i - International Aviation (International Bunkers) (1)": "M.BK.A",
         "1.A.3.d.i - International water-borne navigation (International bunkers) (1)": "M.BK.M",
-        # TODO: handle with regex
+        # TODO: Handle with regex instead of explicitly adding all options.
         "1.A.3.d.i - International water-borne navigation (International                      bunkers) (1)": "M.BK.M",
         "1.A.3.d.i - International water-borne navigation (International bunkers)                      (1)": "M.BK.M",
         "1.A.5.c - Multilateral Operations (1)(2)": "M.MULTIOP",
         "Total National Emissions and Removals": "0",
     },
+}
+
+inv_conf_per_year = {
     "2005": {
         "pages_to_read": ["197", "198", "199", "200"],
     },
@@ -103,11 +87,14 @@ inv_conf = {
     },
     "2015": {
         "pages_to_read": ["241", "242", "243", "244"],
+        # Some values move to wrong columns
         "fix_values": [
             (2, 10, "21,529"),
             (1, 12, "NMVOCs"),
             (2, 12, "0"),
         ],
+        # for this table an additional column is created
+        # that needs to be deleted
         "delete_columns": [11],
     },
     "2016": {
@@ -159,8 +146,6 @@ coords_value_mapping = {
         "PFCs": f"PFCS ({gwp_to_use})",
         "SF6": f"SF6 ({gwp_to_use})",
         "NMVOCs": "NMVOC",
-        # "Other halogenated gases with CO2 equivalent conversion factors" : "PLACEHOLDER halo gases co2eq",
-        # "Other halogenated gases without CO2 equivalent conversion factors" : "PLACEHOLDER halo gases"
     },
 }
 
