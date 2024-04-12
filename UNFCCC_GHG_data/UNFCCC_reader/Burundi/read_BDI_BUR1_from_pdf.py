@@ -9,6 +9,7 @@ import primap2 as pm2
 import pandas as pd
 
 from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path
+from UNFCCC_GHG_data.helper.functions import process_data_for_country
 
 from config_BDI_BUR1 import (
     inv_conf,
@@ -19,6 +20,8 @@ from config_BDI_BUR1 import (
     coords_defaults,
     coords_cols,
     years_to_read,
+    gas_baskets,
+    country_processing_step1,
 )
 
 # ###
@@ -176,4 +179,60 @@ df_all_IF = pm2.pm2io.convert_long_dataframe_if(
 
 print("Converting to primap2 format.")
 ### convert to primap2 format ###
-data_pm2_all = pm2.pm2io.from_interchange_format(df_all_IF)
+data_pm2 = pm2.pm2io.from_interchange_format(df_all_IF)
+
+
+# ###
+# Save raw data to IF and native format.
+# ###
+
+data_if = data_pm2.pr.to_interchange_format()
+
+pm2.pm2io.write_interchange_format(
+    output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+    data_if,
+)
+
+encoding = {var: compression for var in data_pm2.data_vars}
+data_pm2.pr.to_netcdf(
+    output_folder / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+    encoding=encoding,
+)
+
+
+# ###
+# Processing
+# ###
+
+data_proc_pm2 = process_data_for_country(
+    data_country=data_pm2,
+    entities_to_ignore=[],
+    gas_baskets=gas_baskets,
+    filter_dims=None,  # leaving this explicit for now
+    cat_terminology_out=None,
+    category_conversion=None,
+    sectors_out=None,
+    processing_info_country=country_processing_step1,
+)
+
+
+# ###
+# save processed data to IF and native format
+# ###
+
+terminology_proc = coords_terminologies["category"]
+
+data_proc_if = data_proc_pm2.pr.to_interchange_format()
+
+if not output_folder.exists():
+    output_folder.mkdir()
+pm2.pm2io.write_interchange_format(
+    output_folder / (output_filename + terminology_proc), data_proc_if
+)
+
+encoding = {var: compression for var in data_proc_pm2.data_vars}
+data_proc_pm2.pr.to_netcdf(
+    output_folder / (output_filename + terminology_proc + ".nc"), encoding=encoding
+)
+
+print("Saved processed data.")

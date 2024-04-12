@@ -144,8 +144,13 @@ coords_terminologies = {
     "scenario": "PRIMAP",
 }
 
-
-gwp_to_use = "AR4GWP100"
+# Page 64: The global warming potentials (GWPs) recommended by the IPCC Fifth Assessment Report (AR5)
+# and based on the annex to Decision 18/CMA.1 have been used to convert GHGs other than CO2
+# into their equivalent. These GWPs provide a consistent basis for comparing the relative effect
+# of emissions of all GHGs standardized over a 100-year period by converting emissions of other
+# GHGs into those of CO2. The values adopted for the three direct GHGs are 1 for CO2, 28 for CH4
+# and 265 for N2O.
+gwp_to_use = "AR5GWP100"
 coords_value_mapping = {
     "unit": "PRIMAP1",
     "category": "PRIMAP1",
@@ -177,4 +182,51 @@ meta_data = {
     "title": "Burundi. Biennial update report (BUR). BUR1",
     "comment": "Read fom pdf by Daniel Busch",
     "institution": "UNFCCC",
+}
+
+country_processing_step1 = {
+    "aggregate_cats": {
+        "M.3.C.AG": {
+            "sources": [
+                "3.C.1",
+                "3.C.2",
+                "3.C.3",
+                "3.C.4",
+                "3.C.5",
+                "3.C.6",
+                "3.C.7",
+                "3.C.8",
+            ],
+            "name": "Aggregate sources and non-CO2 emissions sources on land "
+            "(Agriculture)",
+        },
+        "M.3.D.AG": {"sources": ["3.D.2"], "name": "Other (Agriculture)"},
+        "M.AG.ELV": {
+            "sources": ["M.3.C.AG", "M.3.D.AG"],
+            "name": "Agriculture excluding livestock",
+        },
+        "M.AG": {"sources": ["3.A", "M.AG.ELV"], "name": "Agriculture"},
+        "M.3.D.LU": {"sources": ["3.D.1"], "name": "Other (LULUCF)"},
+        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"], "name": "LULUCF"},
+        "M.0.EL": {
+            "sources": ["1", "2", "M.AG", "4"],
+            "name": "National total emissions excluding LULUCF",
+        },
+    },
+    "basket_copy": {
+        "GWPs_to_add": ["SARGWP100", "AR4GWP100", "AR6GWP100"],
+        "entities": ["HFCS", "PFCS"],
+        "source_GWP": gwp_to_use,
+    },
+}
+
+gas_baskets = {
+    "FGASES (SARGWP100)": ["HFCS (SARGWP100)", "PFCS (SARGWP100)", "SF6", "NF3"],
+    "FGASES (AR4GWP100)": ["HFCS (AR4GWP100)", "PFCS (AR4GWP100)", "SF6", "NF3"],
+    "FGASES (AR5GWP100)": ["HFCS (AR5GWP100)", "PFCS (AR5GWP100)", "SF6", "NF3"],
+    "FGASES (AR6GWP100)": ["HFCS (AR6GWP100)", "PFCS (AR6GWP100)", "SF6", "NF3"],
+    "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O", "FGASES (SARGWP100)"],
+    "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR4GWP100)"],
+    "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR5GWP100)"],
+    "KYOTOGHG (AR6GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR6GWP100)"],
 }
