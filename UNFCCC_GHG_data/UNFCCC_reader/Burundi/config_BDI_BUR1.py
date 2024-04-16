@@ -19,7 +19,7 @@ inv_conf = {
         "HFCs",
         "PFCs",
         "SF6",
-        "Other halogenated gases with CO2 equivalent conversion factors",
+        "other halogenated gases",
         "Other halogenated gases without CO2 equivalent conversion factors",
         "NOx",
         "CO",
@@ -152,9 +152,9 @@ coords_value_mapping = {
 filter_remove = {
     "f_memo": {"category": "MEMO"},
     "f_empty": {"category": ""},
-    "f1": {
-        "entity": ["Other halogenated gases with CO2 equivalent conversion factors"],
-    },
+    # "f1": {
+    #     "entity": ["Other halogenated gases with CO2 equivalent conversion factors"],
+    # },
     "f2": {
         "entity": ["Other halogenated gases without CO2 equivalent conversion factors"],
     },
