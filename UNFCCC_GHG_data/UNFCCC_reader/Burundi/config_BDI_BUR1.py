@@ -194,7 +194,7 @@ country_processing_step1 = {
         "M.3.D.LU": {"sources": ["3.D.1"], "name": "Other (LULUCF)"},
         "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"], "name": "LULUCF"},
         "M.0.EL": {
-            "sources": ["1", "2", "M.AG", "4"],
+            "sources": ["1", "2", "M.AG", "4", "5"],
             "name": "National total emissions excluding LULUCF",
         },
     },
