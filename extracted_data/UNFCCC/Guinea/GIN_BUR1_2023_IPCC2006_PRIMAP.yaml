@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/documents/629549
+  rights: ''
+  contact: daniel-busch@climate-resource.de
+  title: Guinea. Biennial update report (BUR). BUR1 Processed on 2024-04-16
+  comment: Read fom pdf by Daniel Busch Processed on 2024-04-16
+  institution: UNFCCC
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - category (IPCC2006_PRIMAP)
+  - source
+  - area (ISO3)
+  - provenance
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: GIN_BUR1_2023_IPCC2006_PRIMAP.csv
