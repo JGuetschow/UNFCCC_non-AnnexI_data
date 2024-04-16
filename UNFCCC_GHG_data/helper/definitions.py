@@ -169,3 +169,5 @@ gas_baskets = {
     'KYOTOGHG (AR6GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR6GWP100)',
                             'PFCS (AR6GWP100)'],
 }
+
+compression = dict(zlib=True, complevel=9)

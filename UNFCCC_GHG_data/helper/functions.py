@@ -222,6 +222,7 @@ def process_data_for_country(
 
         # aggregate categories
         if "aggregate_cats" in processing_info_country:
+            data_country = data_country.pr.dequantify()
             if "agg_tolerance" in processing_info_country:
                 agg_tolerance = processing_info_country["agg_tolerance"]
             else:
@@ -270,6 +271,7 @@ def process_data_for_country(
                     )
                 else:
                     print(f"no data to aggregate category {cat_to_agg}")
+            data_country = data_country.pr.quantify()
 
         # copy HFCs and PFCs with default factors
         if "basket_copy" in processing_info_country:
