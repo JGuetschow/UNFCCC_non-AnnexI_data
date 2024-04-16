@@ -222,6 +222,7 @@ def process_data_for_country(
 
         # aggregate categories
         if "aggregate_cats" in processing_info_country:
+            data_country = data_country.pr.dequantify()
             if "agg_tolerance" in processing_info_country:
                 agg_tolerance = processing_info_country["agg_tolerance"]
             else:
@@ -270,6 +271,7 @@ def process_data_for_country(
                     )
                 else:
                     print(f"no data to aggregate category {cat_to_agg}")
+            data_country = data_country.pr.quantify()
 
         # copy HFCs and PFCs with default factors
         if "basket_copy" in processing_info_country:
@@ -588,7 +590,8 @@ def create_folder_mapping(folder: str, extracted: bool = False) -> None:
                     folder_mapping[ISO3] = item.name
 
     with open(folder / "folder_mapping.json", "w") as mapping_file:
-        json.dump(folder_mapping, mapping_file, indent=4)
+
+        json.dump(dict(sorted(folder_mapping.items())), mapping_file, indent=4)
 
 
 # TODO add crf

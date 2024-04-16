@@ -55,6 +55,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 1.1,
         'UnspMixOfPFCs': 1.1,
         'FGASES': 1.1,
+        'other halogenated gases': 1.1,
     },
     'SARGWP100_to_AR5GWP100': {
         'HFCS': 1.2,
@@ -62,6 +63,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 1.2,
         'UnspMixOfPFCs': 1.2,
         'FGASES': 1.2,
+        'other halogenated gases': 1.2,
     },
     'SARGWP100_to_AR6GWP100': {
         'HFCS': 1.4,
@@ -69,6 +71,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 1.4,
         'UnspMixOfPFCs': 1.3,
         'FGASES': 1.35,
+        'other halogenated gases': 1.35,
     },
     'AR4GWP100_to_SARGWP100': {
         'HFCS': 0.91,
@@ -76,6 +79,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 0.91,
         'UnspMixOfPFCs': 0.91,
         'FGASES': 0.91,
+        'other halogenated gases': 0.91,
     },
     'AR4GWP100_to_AR5GWP100': {
         'HFCS': 1.1,
@@ -83,6 +87,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 1.1,
         'UnspMixOfPFCs': 1.1,
         'FGASES': 1.1,
+        'other halogenated gases': 1.1,
     },
     'AR4GWP100_to_AR6GWP100': {
         'HFCS': 1.27,
@@ -90,6 +95,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 1.27,
         'UnspMixOfPFCs': 1.18,
         'FGASES': 1.23,
+        'other halogenated gases': 1.23,
     },
     'AR5GWP100_to_SARGWP100': {
         'HFCS': 0.83,
@@ -97,6 +103,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 0.83,
         'UnspMixOfPFCs': 0.83,
         'FGASES': 0.83,
+        'other halogenated gases': 0.83,
     },
     'AR5GWP100_to_AR4GWP100': {
         'HFCS': 0.91,
@@ -104,6 +111,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 0.91,
         'UnspMixOfPFCs': 0.91,
         'FGASES': 0.91,
+        'other halogenated gases': 0.91,
     },
     'AR5GWP100_to_AR6GWP100': {
         'HFCS': 1.17,
@@ -111,6 +119,7 @@ GWP_factors = {
         'UnspMixOfHFCs': 1.17,
         'UnspMixOfPFCs': 1.08,
         'FGASES': 1.125,
+        'other halogenated gases': 1.125,
     },
 }
 
@@ -160,3 +169,5 @@ gas_baskets = {
     'KYOTOGHG (AR6GWP100)': ['CO2', 'CH4', 'N2O', 'SF6', 'NF3', 'HFCS (AR6GWP100)',
                             'PFCS (AR6GWP100)'],
 }
+
+compression = dict(zlib=True, complevel=9)
