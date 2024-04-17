@@ -1,14 +1,13 @@
-import os
-
-os.environ["UNFCCC_GHG_ROOT_PATH"] = (
-    "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data/"
-)
-
 import camelot
 import primap2 as pm2
 import pandas as pd
 
-from UNFCCC_GHG_data.helper import downloaded_data_path, extracted_data_path, fix_rows, process_data_for_country
+from UNFCCC_GHG_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    fix_rows,
+    process_data_for_country,
+)
 from config_MNG_BUR2 import (
     inv_conf,
     inv_conf_per_year,
@@ -19,7 +18,7 @@ from config_MNG_BUR2 import (
     filter_remove,
     meta_data,
     country_processing_step1,
-    gas_baskets
+    gas_baskets,
 )
 
 # ###
