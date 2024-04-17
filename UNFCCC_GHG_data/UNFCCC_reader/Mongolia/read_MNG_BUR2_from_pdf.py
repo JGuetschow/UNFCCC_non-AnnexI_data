@@ -82,9 +82,6 @@ for year in inv_conf_per_year.keys():
                 n_rows=n_rows,
             )
 
-    if year == "2020":
-        break
-
     df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
 
     skip_rows = 11

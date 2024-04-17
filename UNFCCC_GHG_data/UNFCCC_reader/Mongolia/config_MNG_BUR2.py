@@ -11,6 +11,10 @@ inv_conf = {
     "header_long": ["orig_cat_name", "entity", "unit", "time", "data"],
     "cat_code_regexp": r"^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*",
     "cat_codes_manual": {
+        # remove whitespace at start of line
+        ' 2.G.2 -SF6 and PFCs from Other Product Uses' : '2.G.2 - SF6 and PFCs from Other Product Uses',
+        ' 2.G.3 -N2O from Product Uses' : '2.G.3 - N2O from Product Uses',
+        ' 1.C.1 -Transport of CO2' : '1.C.1 - Transport of CO2',
         " 3.C.1 -Emissions from biomass burning ": "3.C.1",
         "Memo Items (5)": "MEMO",
         "International Bunkers": "M.BK",
@@ -111,17 +115,20 @@ inv_conf_per_year = {
             },
         },
         "rows_to_fix": {
-            3: [
-                "2.B.8 - Petrochemical and Carbon Black",
-                "2.D - Non-Energy Products from Fuels and",
-                "2.F - Product Uses as Substitutes for Ozone",
-            ],
+            # 3: [
+            #
+            #
+            #
+            # ],
             -2: [
                 "1.C.1 - Transport of CO2",
                 "2.G.2 - SF6 and PFCs from Other Product Uses",
                 "2.G.3 - N2O from Product Uses",
             ],
             2: [
+                "2.B.8 - Petrochemical and Carbon Black",
+                "2.D - Non-Energy Products from Fuels and",
+                "2.F - Product Uses as Substitutes for Ozone",
                 "3.C - Aggregate sources and non-CO2 emissions",
                 "3.C.4 - Direct N2O Emissions from managed",
                 "3.C.5 - Indirect N2O Emissions from managed",
