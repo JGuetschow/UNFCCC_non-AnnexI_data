@@ -592,7 +592,8 @@ def create_folder_mapping(folder: str, extracted: bool = False) -> None:
                     folder_mapping[ISO3] = item.name
 
     with open(folder / "folder_mapping.json", "w") as mapping_file:
-        json.dump(folder_mapping, mapping_file, indent=4)
+
+        json.dump(dict(sorted(folder_mapping.items())), mapping_file, indent=4)
 
 
 # TODO add crf
