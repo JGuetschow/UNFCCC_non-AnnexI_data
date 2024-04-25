@@ -221,6 +221,7 @@ def process_data_for_country(
                     )
 
         # aggregate categories
+        # TODO replace by primap2 function once it is in primap2 stable
         if "aggregate_cats" in processing_info_country:
             data_country = data_country.pr.dequantify()
             if "agg_tolerance" in processing_info_country:
