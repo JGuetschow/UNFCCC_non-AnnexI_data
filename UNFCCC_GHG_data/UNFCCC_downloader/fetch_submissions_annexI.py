@@ -34,11 +34,11 @@ if int(year) == 2019:
         "greenhouse-gas-inventories-annex-i-parties/"
         "national-inventory-submissions-{}".format(year)
     )
-elif int(year) in range(2020,2023):
+elif int(year) in range(2020,2025):
     url = (
         "https://unfccc.int/ghg-inventories-annex-i-parties/{}".format(year)
     )
-elif int(year) >= 2023:
+elif int(year) >= 2025:
     url = (
         "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
         "reporting-and-review-under-the-convention/"
