@@ -64,8 +64,8 @@
     "FJI": "Fiji",
     "FRA": "France",
     "FSM": [
-        "Micronesia_(Federated_State_of)",
-        "Micronesia_(Federated_States_of)"
+        "Micronesia_(Federated_States_of)",
+        "Micronesia_(Federated_State_of)"
     ],
     "GAB": "Gabon",
     "GBR": "United_Kingdom_of_Great_Britain_and_Northern_Ireland",
@@ -120,8 +120,8 @@
     "MEX": "Mexico",
     "MHL": "Marshall_Islands",
     "MKD": [
-        "The_Republic_of_North_Macedonia",
-        "North_Macedonia"
+        "North_Macedonia",
+        "The_Republic_of_North_Macedonia"
     ],
     "MLI": "Mali",
     "MLT": "Malta",
@@ -187,10 +187,7 @@
     "TON": "Tonga",
     "TTO": "Trinidad_and_Tobago",
     "TUN": "Tunisia",
-    "TUR": [
-        "T\u00fcrkiye",
-        "Turkey"
-    ],
+    "TUR": "T\u00fcrkiye",
     "TUV": "Tuvalu",
     "TZA": "United_Republic_of_Tanzania",
     "UGA": "Uganda",
