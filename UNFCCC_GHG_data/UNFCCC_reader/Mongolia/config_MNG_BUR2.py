@@ -142,8 +142,149 @@ inv_conf_per_year = {
     },
 }
 
+inv_conf_per_entity = {
+    "CO" : {
+        'page_defs' : {
+            '39' : {
+                "area" : ['53,646,550,588'],
+                "cols" : ['279,328,364,400,440,478,520'],
+            },
+        },
+        "cat_codes_manual" : {"Total National Emissions" : "0"},
+        "category_column" : "Categories",
+        "columns_to_drop" : ["Categories"],
+        "years" : ['1990', '1995', '2000', '2005', '2010', '2015', '2020'],
+        "unit" : "Gg",
+    },
+    "NOx" : {
+        'page_defs' : {
+            '38' : {
+                "area" : ['53,120,538,93'],
+                "cols" : ['281,329,365,405,441,477,513'],
+            },
+            '39' : {
+                "area" : ['51,772,539,740'],
+                "cols" : ['285,332,368,404,444,476,514'],
+            },
+
+        },
+        "cat_codes_manual" : {"Total National Emissions" : "0"},
+        "category_column" : "Categories",
+        "columns_to_drop" : ["Categories"],
+        "years" : ['1990', '1995', '2000', '2005', '2010', '2015', '2020'],
+        "unit" : "Gg",
+    },
+    "HFCs" : {
+        'page_defs' : {
+            '38' : {
+                "area" : ['55,469,534,364'],
+                "cols" : ['251,302,367,427,486'],
+            },
+        },
+        "cat_codes_manual" : {"Total National Emissions (Gg CO2e)" : "0"},
+        "category_column" : "Categories",
+        "columns_to_drop" : ["Share, %", "Categories"],
+        "years" : ['2007', '2010', '2015', '2020'],
+        "unit" : "Gg CO2e",
+    },
+    "N2O" : {
+        'page_defs' : {
+            '37' : {
+                "area" : ['55,106,556,79'],
+                "cols" : ['170,258,305,347,394,440,476,512'],
+            },
+            '38' : {
+                "area" : ['55,773,555,664'],
+                "cols" : ['215,264,306,353,395,439,476,513'],
+            },
+        },
+        "rows_to_fix" : {
+            3 : ["3 - Agriculture, Forestry, and Other",
+                 "3.C - Aggregate sources and non-",
+                 "4.D - Wastewater Treatment and",
+                 ]
+        },
+        "cat_codes_manual" : {"Total National Emissions (Gg N2O)" : "0"},
+        "category_column" : "Categories",
+        "columns_to_drop" : ["Share, %", "Categories"],
+        "years" : ['1990', '1995', '2000', '2005', '2010', '2015', '2020'],
+        "unit" : "Gg",
+    },
+    "CH4" : {
+        'page_defs' : {
+            '37' : {
+                "area" : ['55,423,552,216'],
+                "cols" : ['186,250,296,326,383,427,467,507'],
+            },
+        },
+        "rows_to_fix" : {
+            3 : ["1.A - Fuel Combustion",
+                 "1.B - Fugitive emissions from",
+                 "3 - Agriculture, Forestry, and",
+                 "3.C - Aggregate sources and",
+                 "4.D - Wastewater Treatment",
+                 "Total National Emissions (Gg",
+                 ]
+        },
+        "cat_codes_manual" : {"Total National Emissions (Gg CH4)" : "0"},
+        "category_column" : "Categories",
+        "columns_to_drop" : ["Share, %", "Categories"],
+        "years" : ['1990', '1995', '2000', '2005', '2010', '2015', '2020'],
+        "unit" : "Gg",
+    },
+    "CO2" : {
+        'page_defs' : {
+            '36' : {
+                "area" : ['53,147,556,79'],
+                "cols" : ['150,204,254,306,352,406,459,513'],
+            },
+            '37' : {
+                "area" : ['51,772,561,515'],
+                "cols" : ['151,202,252,305,357,404,463,517'],
+            }
+        },
+        "rows_to_fix" : {
+            2 : ["Categories",
+                 "Emissions and",
+                 ],
+            3 : ["1.A - Fuel",
+                 "1.B - Fugitive",
+                 "2 - Industrial Processes",
+                 "3 - Agriculture,",
+                 "Total National",
+                 "Total National",
+                 ],
+            5 : ["2.D - Non-Energy"],
+            -2 : [
+                "Categories ",
+                "Emissions and Removals (Gg CO2)",
+            ],
+
+        },
+        "rows_to_drop" : [
+            "Total National Emissions (Gg CO2)",
+            "Total National Removals (Gg CO2)"
+        ],
+        "columns_to_drop" : ["Share, %", " Categories "],
+        "cat_codes_manual" : {"Total National Emissions and Removals (Gg CO2)" : "0"},
+        "category_column" : " Categories ",
+        "years" : ['1990', '1995', '2000', '2005', '2010', '2015', '2020'],
+        "unit" : "Gg",
+    },
+    "entity_row" : 0,
+    "unit_row" : 1,
+
+}
+
 # primap2 format conversion
 coords_cols = {
+    "category": "category",
+    "entity": "entity",
+    "unit": "unit",
+}
+
+# TODO: That's probably the same as above, test again.
+coords_cols_wide = {
     "category": "category",
     "entity": "entity",
     "unit": "unit",
