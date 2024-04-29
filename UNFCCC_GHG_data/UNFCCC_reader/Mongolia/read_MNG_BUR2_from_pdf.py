@@ -20,7 +20,6 @@ from config_MNG_BUR2 import (
     meta_data,
     country_processing_step1,
     gas_baskets,
-    coords_cols_wide
 )
 
 # ###
@@ -42,7 +41,7 @@ compression = dict(zlib=True, complevel=9)
 # 1. Read in main tables
 # ###
 
-df_all = None
+df_main = None
 for year in inv_conf_per_year.keys():
     print("-" * 60)
     print(f"Reading year {year}.")
@@ -119,13 +118,11 @@ for year in inv_conf_per_year.keys():
 
     # replace cat names by codes in col "category"
     # first the manual replacements
-    # TODO not sure this is needed
-    df_year_long["category"] = df_year_long["category"].str.replace("\n", "")
 
     df_year_long["category"] = df_year_long["category"].replace(
         inv_conf["cat_codes_manual"]
     )
-    # TODO not sure this is needed
+
     df_year_long["category"] = df_year_long["category"].str.replace(".", "")
 
     # then the regex replacements
@@ -145,20 +142,19 @@ for year in inv_conf_per_year.keys():
 
     df_year_long = df_year_long.drop(columns=["orig_cat_name"])
 
-    if df_all is None:
-        df_all = df_year_long
+    if df_main is None:
+        df_main = df_year_long
     else:
-        df_all = pd.concat(
-            [df_all, df_year_long],
+        df_main = pd.concat(
+            [df_main, df_year_long],
             axis=0,
             join="outer",
         ).reset_index(drop=True)
 
-# TODO: choose different name for df here
 ### convert to interchange format ###
 print("Converting to interchange format.")
-df_all_IF = pm2.pm2io.convert_long_dataframe_if(
-    df_all,
+df_main_IF = pm2.pm2io.convert_long_dataframe_if(
+    df_main,
     coords_cols=coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
@@ -171,14 +167,14 @@ df_all_IF = pm2.pm2io.convert_long_dataframe_if(
 
 ### convert to primap2 format ###
 print("Converting to primap2 format.")
-data_main_pm2 = pm2.pm2io.from_interchange_format(df_all_IF)
+data_main_pm2 = pm2.pm2io.from_interchange_format(df_main_IF)
 
 # ###
 # 2. Read in trend tables
 # ###
 
-df_all = None
-for entity in ["CO2", "CH4", "N2O", "HFCs", "NOx", "CO"]:
+df_trend = None
+for entity in inv_conf_per_entity.keys():
     print("-" * 60)
     print(f"Reading entity {entity}.")
 
@@ -252,28 +248,27 @@ for entity in ["CO2", "CH4", "N2O", "HFCs", "NOx", "CO"]:
     for year in inv_conf_per_entity[entity]["years"]:
         df_entity.loc[:, year] = df_entity[year].str.replace(",", "")
 
-    if df_all is None:
-        df_all = df_entity
+    if df_trend is None:
+        df_trend = df_entity
     else:
-        df_all = pd.concat(
-            [df_all, df_entity],
+        df_trend = pd.concat(
+            [df_trend, df_entity],
             axis=0,
             join="outer",
         ).reset_index(drop=True)
 
-
 ### convert to interchange format ###
 df_trend_IF = pm2.pm2io.convert_wide_dataframe_if(
-    data_wide=df_all,
-    coords_cols = coords_cols_wide,
+    data_wide=df_trend,
+    coords_cols=coords_cols,
     coords_defaults=coords_defaults,
     coords_terminologies=coords_terminologies,
     coords_value_mapping=coords_value_mapping,
-    #filter_remove=filter_remove,
+    # filter_remove=filter_remove,
     meta_data=meta_data,
     convert_str=True,
     time_format="%Y",
-    )
+)
 
 ### convert to primap2 format ###
 print("Converting to primap2 format.")
@@ -285,8 +280,6 @@ data_trend_pm2 = pm2.pm2io.from_interchange_format(df_trend_IF)
 
 print("Merging main and trend table.")
 data_pm2 = data_main_pm2.pr.merge(data_trend_pm2, tolerance=1)
-
-
 
 # ###
 # Save raw data to IF and native format.
