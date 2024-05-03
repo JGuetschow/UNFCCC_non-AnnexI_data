@@ -82,16 +82,14 @@ def get_unfccc_submission_info(
                         if match:
                             kind = match.group(0).replace(" ", "")
                         else:
-                            if ("CRF" in doctype) or ("CRF" in title):
-                                kind = "CRF"
-                            elif ("SEF" in doctype) or ("SEF" in title):
-                                kind = "SEF"
+                            if ("CRT" in doctype) or ("CRT" in title):
+                                kind = "CRT"
+                            elif ("NID" in doctype) or ("NID" in title):
+                                kind = "NID"
                             elif ("NIR" in doctype) or ("NIR" in title):
                                 kind = "NIR"
-                            elif "NC" in title:
-                                kind = "NC"
-                            elif "Status report" in title:
-                                kind = "CRF"
+                            elif ("BRT" in doctype) or ("BTR" in title):
+                                kind = "BTR"
                             else:
                                 kind = "other"
                 info.append({
@@ -106,3 +104,28 @@ def get_unfccc_submission_info(
             print(f"No files found for {url}")
 
     return info
+
+
+def get_BTR_name_and_URL(submission_round: int) -> (str, str):
+    """
+        Get the name and URL of a BTR for a given number
+
+    Parameters
+    ----------
+    submission_round (int)
+        submission_round of the BTRs e.g. 1
+
+    Returns
+    -------
+    name (str): name of the BTR submission round, e.g. 'first'
+    URL (str): URL of the submission page on the UNFCCC website
+
+    """
+
+    if submission_round == 1:
+        name = "first"
+        URL = "https://unfccc.int/first-biennial-transparency-reports"
+    else:
+        raise ValueError(f"Submission round {submission_round} is not defined")
+
+    return name, URL

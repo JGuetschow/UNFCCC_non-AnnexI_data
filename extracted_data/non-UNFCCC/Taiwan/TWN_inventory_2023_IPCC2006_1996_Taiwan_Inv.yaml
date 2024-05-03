@@ -1,0 +1,23 @@
+attrs:
+  references: 
+    https://www.cca.gov.tw/information-service/publications/national-ghg-inventory-report/1851.html
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 2023 Republic of China - National Greenhouse Gas Report
+  comment: Read fom pdf file and converted to PRIMAP2 format by Johannes Gütschow
+  institution: Republic of China - Environmental Protection Administration
+  cat: category (IPCC2006_1996_Taiwan_Inv)
+  scen: scenario (PRIMAP)
+  area: area (ISO3)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - category (IPCC2006_1996_Taiwan_Inv)
+  - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - source
+  - entity
+  - unit
+data_file: TWN_inventory_2023_IPCC2006_1996_Taiwan_Inv.csv

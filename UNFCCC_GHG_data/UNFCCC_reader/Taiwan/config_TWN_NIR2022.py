@@ -55,38 +55,6 @@ def fix_rows(data: pd.DataFrame, rows_to_fix: list, col_to_use: str, n_rows: int
         data = data.reset_index(drop=True)
     return data
 
-def make_wide_table(data: pd.DataFrame, keyword: str, col: Union[int, str], index_cols: List[Union[int, str]])->pd.DataFrame:
-    index = data.loc[data[col] == keyword].index
-    if not list(index):
-        print("Keyword for table transformation not found")
-        return data
-    elif len(index)==1:
-        print("Keyword for table transformation found only once")
-        return data
-    else:
-        df_all = None
-        for i, item in enumerate(index):
-            loc = data.index.get_loc(item)
-            if i < len(index) - 1:
-                next_loc = data.index.get_loc(index[i + 1])
-            else:
-                next_loc = data.index[-1] + 1
-            df_to_add = data.loc[list(range(loc, next_loc))]
-            # select only cols which don't have NaN, Null, or '' as header
-            filter_nan = ((~df_to_add.iloc[0].isnull()) & (df_to_add.iloc[0] != 'NaN')& (df_to_add.iloc[0] != ''))
-            df_to_add = df_to_add.loc[: , filter_nan]
-            df_to_add.columns = df_to_add.iloc[0]
-            #print(df_to_add.columns)
-            df_to_add = df_to_add.drop(loc)
-            df_to_add = df_to_add.set_index(index_cols)
-            
-            if df_all is None:
-                df_all = df_to_add
-            else:
-                df_all = pd.concat([df_all, df_to_add], axis=1, join='outer')
-        return df_all
-        
-
 # page defs tp hold information on reading the table
 page_defs = {
     '5': { 

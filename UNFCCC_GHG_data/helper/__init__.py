@@ -8,7 +8,7 @@ from .definitions import GWP_factors, gas_baskets
 from .definitions import compression
 from .functions import get_country_code, get_country_name, convert_categories
 from .functions import create_folder_mapping, process_data_for_country, get_code_file
-from .functions import fix_rows
+from .functions import fix_rows, make_wide_table
 
 __all__ = [
     "root_path",
@@ -31,5 +31,6 @@ __all__ = [
     "create_folder_mapping",
     "process_data_for_country",
     "fix_rows",
+    "make_wide_table"
     "compression",
 ]
