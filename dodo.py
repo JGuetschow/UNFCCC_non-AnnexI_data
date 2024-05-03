@@ -156,6 +156,49 @@ def task_download_annexi():
     }
 
 
+# annexI data: one update call for all data types (as they are on one page)
+# but for each year separately.
+# downloading is per year and
+update_btr_config = {
+    "round": get_var('round', None),
+}
+
+def task_update_btr():
+    """ Update list of BTR submissions """
+    return {
+        'targets': [f"downloaded_data/UNFCCC/submissions-BTR{update_btr_config['round']}.csv"],
+        'actions': [f"datalad run -m 'Fetch Biannial Transparency Report submissions for BTR{update_btr_config['round']}' "
+                    "--explicit "
+                    f"-o downloaded_data/UNFCCC/submissions-BTR{update_btr_config['round']}.csv "
+                    f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/fetch_submissions_btr.py "
+                    f"--round={update_btr_config['round']}"],
+        'task_dep': ['set_env'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+
+def task_download_btr():
+    """ Download BTR submissions """
+    return {
+        #'file_dep': ['downloaded_data/UNFCCC/submissions-nc.csv'],
+        # deactivate file_dep fow now as it will always run fetch submissions
+        # before download
+        'actions': [f"datalad run -m 'Download BTR submissions for "
+                    f"BTR{update_btr_config['round']}' "
+                    f"-i downloaded_data/UNFCCC/submissions-BTR{update_btr_config['round']}.csv "
+                    f"./venv/bin/python UNFCCC_GHG_data/UNFCCC_downloader/download_btr.py "
+                    f"--round={update_btr_config['round']}",
+                    f"./venv/bin/python UNFCCC_GHG_data/helper/folder_mapping.py "
+                    f"--folder=downloaded_data/UNFCCC"
+                    ],
+        'task_dep': ['set_env'],
+        'verbosity': 2,
+        'setup': ['setup_venv'],
+    }
+
+
+
 def task_download_ndc():
     """ Download NDC submissions """
     return {
