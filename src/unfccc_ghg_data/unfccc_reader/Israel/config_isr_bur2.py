@@ -437,11 +437,6 @@ cat_conversion = {
             "name": "National total " "excluding LULUCF",
         },
     },
-    "basket_copy": {
-        "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
-        "entities": ["HFCS", "PFCS"],
-        "source_GWP": "SARGWP100",
-    },
 }
 
 sectors_to_save = [

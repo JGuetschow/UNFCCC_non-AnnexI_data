@@ -8,6 +8,7 @@ the unfccc_ghg_data package
 from .definitions import (
     GWP_factors,
     code_path,
+    compression,
     custom_country_mapping,
     custom_folders,
     dataset_path,
@@ -28,6 +29,7 @@ from .functions import (
     get_code_file,
     get_country_code,
     get_country_name,
+    make_wide_table,
     process_data_for_country,
 )
 
@@ -53,4 +55,6 @@ __all__ = [
     "process_data_for_country",
     "fix_rows",
     "get_code_file",
+    "compression",
+    "make_wide_table",
 ]

@@ -9,7 +9,7 @@ import re
 from copy import deepcopy
 from datetime import date
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -28,7 +28,7 @@ from .definitions import (
 )
 
 
-def process_data_for_country(
+def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     data_country: xr.Dataset,
     entities_to_ignore: list[str],
     gas_baskets: dict[str, list[str]],
@@ -40,6 +40,7 @@ def process_data_for_country(
 ) -> xr.Dataset:
     """
     Process data from DI interface (where necessary).
+
     * Downscaling including subtraction of time series
     * country specific sector aggregation
     * Conversion to IPCC2006 categories
@@ -77,7 +78,7 @@ def process_data_for_country(
     # 0: gather information
     countries = list(data_country.coords[data_country.attrs["area"]].values)
     if len(countries) > 1:
-        raise ValueError(
+        raise ValueError(  # noqa: TRY003
             f"Found {len(countries)} countries. Only single country data "
             f"can be processed by this function. countries: {countries}"
         )
@@ -92,7 +93,7 @@ def process_data_for_country(
     # get scenario
     scenarios = list(data_country.coords[data_country.attrs["scen"]].values)
     if len(scenarios) > 1:
-        raise ValueError(
+        raise ValueError(  # noqa: TRY003
             f"Found {len(scenarios)} scenarios. Only single scenario data "
             f"can be processed by this function. Scenarios: {scenarios}"
         )
@@ -101,7 +102,7 @@ def process_data_for_country(
     # get source
     sources = list(data_country.coords["source"].values)
     if len(sources) > 1:
-        raise ValueError(
+        raise ValueError(  # noqa: TRY003
             f"Found {len(sources)} sources. Only single source data "
             f"can be processed by this function. Sources: {sources}"
         )
@@ -124,7 +125,7 @@ def process_data_for_country(
     nan_vars_country = [
         var
         for var in data_country.data_vars
-        if bool(data_country[var].isnull().all().data) is True
+        if bool(data_country[var].isnull().all().data) is True  # noqa: PD003
     ]
     print(f"removing all-nan variables: {nan_vars_country}")
     data_country = data_country.drop_vars(nan_vars_country)
@@ -203,7 +204,7 @@ def process_data_for_country(
                 nan_vars = [
                     var
                     for var in data_agg.data_vars
-                    if data_agg[var].isnull().all().data is True
+                    if data_agg[var].isnull().all().data is True  # noqa: PD003
                 ]
                 data_agg = data_agg.drop(nan_vars)
                 if len(data_agg.data_vars) > 0:
@@ -261,7 +262,9 @@ def process_data_for_country(
                     )
 
         # aggregate categories
+        # TODO replace by primap2 function once it is in primap2 stable
         if "aggregate_cats" in processing_info_country:
+            data_country = data_country.pr.dequantify()
             if "agg_tolerance" in processing_info_country:
                 agg_tolerance = processing_info_country["agg_tolerance"]
             else:
@@ -280,7 +283,7 @@ def process_data_for_country(
                 nan_vars = [
                     var
                     for var in data_agg.data_vars
-                    if data_agg[var].isnull().all().data is True
+                    if data_agg[var].isnull().all().data is True  # noqa: PD003
                 ]
                 data_agg = data_agg.drop(nan_vars)
                 if len(data_agg.data_vars) > 0:
@@ -310,6 +313,7 @@ def process_data_for_country(
                     )
                 else:
                     print(f"no data to aggregate category {cat_to_agg}")
+            data_country = data_country.pr.quantify()
 
         # copy HFCs and PFCs with default factors
         if "basket_copy" in processing_info_country:
@@ -353,7 +357,9 @@ def process_data_for_country(
     if sectors_out is not None:
         cats_to_keep = [
             cat
-            for cat in data_country.coords[f"category ({cat_terminology_out})"].values
+            for cat in data_country.coords[
+                f"category ({cat_terminology_out})"
+            ].to_numpy()
             if cat in sectors_out
         ]
         data_country = data_country.pr.loc[{"category": cats_to_keep}]
@@ -415,6 +421,8 @@ def convert_categories(
 ) -> xr.Dataset:
     """
     convert data from one category terminology to another
+
+    # TODO rewrite to use aggregate_coordinates functions
     """
     print(f"converting categories to {terminology_to}")
 
@@ -441,7 +449,7 @@ def convert_categories(
         ]
         ds_converted = ds_converted.pr.loc[{"category": mapping_cats_present}]
 
-        from_cats = ds_converted.coords[f"category ({terminology_to})"].values
+        from_cats = ds_converted.coords[f"category ({terminology_to})"].to_numpy()
         to_cats = pd.Series(from_cats).replace(conversion["mapping"])
         ds_converted = ds_converted.assign_coords(
             {f"category ({terminology_to})": (f"category ({terminology_to})", to_cats)}
@@ -471,7 +479,7 @@ def convert_categories(
             nan_vars = [
                 var
                 for var in data_agg.data_vars
-                if data_agg[var].isnull().all().data is True
+                if data_agg[var].isnull().all().data is True  # noqa: PD003
             ]
             data_agg = data_agg.drop(nan_vars)
             if len(data_agg.data_vars) > 0:
@@ -511,8 +519,8 @@ def get_country_name(
         try:
             country = pycountry.countries.get(alpha_3=country_code)
             country_name = country.name
-        except:
-            raise ValueError(
+        except:  # noqa: E722
+            raise ValueError(  # noqa: TRY003, TRY200
                 f"Country code {country_code} can not be mapped to " f"any country"
             )
 
@@ -523,13 +531,13 @@ def get_country_code(
     country_name: str,
 ) -> str:
     """
-    obtain country code. If the input is a code it will be returned,
-    if the input
-    is not a three letter code a search will be performed
+    Obtain country code.
+
+    If the input is a code it will be returned,
+    if the input is not a three letter code a search will be performed
 
     Parameters
     ----------
-    __________
     country_name: str
         Country code or name to get the three-letter code for.
 
@@ -546,13 +554,13 @@ def get_country_code(
             # check if it's a 3 letter code
             country = pycountry.countries.get(alpha_3=country_name)
             country_code = country.alpha_3
-        except:
+        except:  # noqa: E722
             try:
                 country = pycountry.countries.search_fuzzy(
                     country_name.replace("_", " ")
                 )
-            except:
-                raise ValueError(
+            except:  # noqa: E722
+                raise ValueError(  # noqa: TRY200, TRY003
                     f"Country name {country_name} can not be mapped to "
                     f"any country code. Try using the ISO3 code directly."
                 )
@@ -562,7 +570,7 @@ def get_country_code(
                     if current_country.name == country_name:
                         country_code = current_country.alpha_3
                 if country_code is None:
-                    raise ValueError(
+                    raise ValueError(  # noqa: TRY200, TRY003
                         f"Country name {country_name} has {len(country)} "
                         f"possible results for country codes."
                     )
@@ -572,8 +580,12 @@ def get_country_code(
     return country_code
 
 
-def create_folder_mapping(folder: str, extracted: bool = False) -> None:
+def create_folder_mapping(  # noqa: PLR0912
+    folder: str, extracted: bool = False
+) -> None:
     """
+    Create a mapping of iso codes to folder names
+
     Create a mapping from 3 letter ISO country codes to folders
     based on the subfolders of the given folder. The mapping is
     stored in 'folder_mapping.json' in the given folder. Folder
@@ -616,27 +628,28 @@ def create_folder_mapping(folder: str, extracted: bool = False) -> None:
                                 ISO3 = current_country.alpha_3
                     else:
                         ISO3 = country[0].alpha_3
-                except:
+                except:  # noqa: E722
                     ISO3 = None
 
             if ISO3 is None:
                 print(f"No match for {item.name}")
+            elif ISO3 in folder_mapping.keys():
+                folder_mapping[ISO3] = [folder_mapping[ISO3], item.name]
             else:
-                if ISO3 in folder_mapping.keys():
-                    folder_mapping[ISO3] = [folder_mapping[ISO3], item.name]
-                else:
-                    folder_mapping[ISO3] = item.name
+                folder_mapping[ISO3] = item.name
 
     with open(folder / "folder_mapping.json", "w") as mapping_file:
-        json.dump(folder_mapping, mapping_file, indent=4)
+        json.dump(dict(sorted(folder_mapping.items())), mapping_file, indent=4)
 
 
 # TODO add crf
-def get_country_submissions(
+def get_country_submissions(  # noqa: PLR0912
     country_name: str,
     print_sub: bool = True,
 ) -> dict[str, list[str]]:
     """
+    Get all submissions for a country
+
     Input is a three letter ISO code for a country, or the countries name.
     The function tries to map the country name to an ISO code and then
     queries the folder mapping files for folders.
@@ -700,11 +713,13 @@ def get_country_submissions(
     return country_submissions
 
 
-def get_country_datasets(
+def get_country_datasets(  # noqa: PLR0915, PLR0912
     country_name: str,
     print_ds: bool = True,
 ) -> dict[str, list[str]]:
     """
+    Get all datasets for a country
+
     Input is a three letter ISO code for a country, or the country's name.
     The function tries to map the country name to an ISO code and then
     checks the code and data folders for content on the country.
@@ -753,7 +768,7 @@ def get_country_datasets(
             else:
                 country_folder = folder_mapping[country_code]
                 if not isinstance(country_folder, str):
-                    raise ValueError(
+                    raise ValueError(  # noqa: TRY003
                         "Wrong data type in folder mapping json file. Should be str."
                     )
 
@@ -832,7 +847,7 @@ def get_country_datasets(
             else:
                 country_folder = folder_mapping[country_code]
                 if not isinstance(country_folder, str):
-                    raise ValueError(
+                    raise ValueError(  # noqa: TRY003
                         "Wrong data type in folder mapping json file. Should be str."
                     )
 
@@ -946,15 +961,14 @@ def get_code_file(
         for file in country_folder.iterdir():
             if file.match(code_file_name_candidate):
                 if code_file_path is not None:
-                    raise ValueError(
+                    raise ValueError(  # noqa: TRY003
                         f"Found multiple code candidates: "
                         f"{code_file_path} and file.name. "
                         f"Please use only one file with name "
                         f"'read_ISO3_submission_XXX.YYY'."
                     )
-                else:
-                    if print_info:
-                        print(f"Found code file {file.relative_to(root_path)}")
+                elif print_info:
+                    print(f"Found code file {file.relative_to(root_path)}")
                 code_file_path = file
 
     if code_file_path is not None:
@@ -967,14 +981,21 @@ def fix_rows(
     data: pd.DataFrame, rows_to_fix: list, col_to_use: str, n_rows: int
 ) -> pd.DataFrame:
     """
-    Function to fix rows that have been split during reading from pdf
+    Fix rows that have been split during reading from pdf
+
     This is the version used for Malaysia BUR3,4. adapt for other BURs if needed
 
-    :param data:
-    :param rows_to_fix:
-    :param col_to_use:
-    :param n_rows:
-    :return:
+    Parameters
+    ----------
+    data
+    rows_to_fix
+    col_to_use
+    n_rows
+
+    Returns
+    -------
+    Dataframe with fixed rows
+
     """
     for row in rows_to_fix:
         # print(row)
@@ -986,11 +1007,12 @@ def fix_rows(
             print(data[col_to_use])
         # print(f"Merging split row {row} for table {page}")
         loc = data.index.get_loc(index[0])
-        if n_rows == -2:
+        # TODO: formula for negative values
+        if n_rows == -2:  # noqa: PLR2004
             locs_to_merge = list(range(loc - 1, loc + 1))
-        elif n_rows == -3:
+        elif n_rows == -3:  # noqa: PLR2004
             locs_to_merge = list(range(loc - 1, loc + 2))
-        elif n_rows == -5:
+        elif n_rows == -5:  # noqa: PLR2004
             locs_to_merge = list(range(loc - 1, loc + 4))
         else:
             locs_to_merge = list(range(loc, loc + n_rows))
@@ -1015,3 +1037,60 @@ def fix_rows(
         data.loc[indices_to_merge[0]] = new_row
         data = data.drop(indices_to_merge[1:])
     return data
+
+
+def make_wide_table(
+    data: pd.DataFrame,
+    keyword: str,
+    col: Union[int, str],
+    index_cols: list[Union[int, str]],
+) -> pd.DataFrame:
+    """
+    Make a wide table from a table which is a stack of tables for different time periods
+
+    Parameters
+    ----------
+    data
+        Input table as pandas.DataFrame
+    keyword
+    col
+    index_cols
+
+    Returns
+    -------
+    pandas.DataFrame in wide format
+
+    """
+    index = data.loc[data[col] == keyword].index
+    if not list(index):
+        print("Keyword for table transformation not found")
+        return data
+    elif len(index) == 1:
+        print("Keyword for table transformation found only once")
+        return data
+    else:
+        df_all = None
+        for i, item in enumerate(index):
+            loc = data.index.get_loc(item)
+            if i < len(index) - 1:
+                next_loc = data.index.get_loc(index[i + 1])
+            else:
+                next_loc = data.index[-1] + 1
+            df_to_add = data.loc[list(range(loc, next_loc))]
+            # select only cols which don't have NaN, Null, or '' as header
+            filter_nan = (
+                (~df_to_add.iloc[0].isna())
+                & (df_to_add.iloc[0] != "NaN")
+                & (df_to_add.iloc[0])
+            )
+            df_to_add = df_to_add.loc[:, filter_nan]
+            df_to_add.columns = df_to_add.iloc[0]
+            # print(df_to_add.columns)
+            df_to_add = df_to_add.drop(loc)
+            df_to_add = df_to_add.set_index(index_cols)
+
+            if df_all is None:
+                df_all = df_to_add
+            else:
+                df_all = pd.concat([df_all, df_to_add], axis=1, join="outer")
+        return df_all

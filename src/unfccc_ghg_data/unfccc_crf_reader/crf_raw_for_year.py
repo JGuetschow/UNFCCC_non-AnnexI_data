@@ -1,12 +1,14 @@
 """
-This script collects all latest CRF submissions for a given year
+A script to collect all latest CRF submissions for a given year
 
-Currently it only checks the extracted_data folder and not if new
-submission are available in the downloaded data folder.
+Reads the latest data fromt he extracted data folder for each country.
+Notifies the user if new data are available in the downloaded_data folder
+which have not yet been read.
+
+Data are saved in the datasets/UNFCCC/CRFYYYY folder.
 """
 
 # TODO: sort importing and move to datasets folder
-# TODO: integrate into doit
 
 import argparse
 from datetime import date
@@ -23,7 +25,7 @@ from unfccc_ghg_data.unfccc_crf_reader.util import all_crf_countries
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--submission_year', help='Submission round to read', type=int)
+    parser.add_argument("--submission_year", help="Submission round to read", type=int)
     args = parser.parse_args()
     submission_year = args.submission_year
 
@@ -35,12 +37,14 @@ if __name__ == "__main__":
         # determine folder
         try:
             country_info = get_input_and_output_files_for_country(
-                country, submission_year=submission_year, verbose=False)
+                country, submission_year=submission_year, verbose=False
+            )
 
             # check if the latest submission has been read already
 
             data_read = submission_has_been_read(
-                country_info["code"], country_info["name"],
+                country_info["code"],
+                country_info["name"],
                 submission_year=submission_year,
                 submission_date=country_info["date"],
                 verbose=False,
@@ -51,8 +55,10 @@ if __name__ == "__main__":
                 outdated_countries.append(country)
 
             # read the native format file
-            #print(country_info["output"])
-            input_files = [file for file in country_info["output"] if Path(file).suffix == ".nc"]
+            # print(country_info["output"])
+            input_files = [
+                file for file in country_info["output"] if Path(file).suffix == ".nc"
+            ]
 
             ds_country = pm2.open_dataset(input_files[0])
 
@@ -66,7 +72,6 @@ if __name__ == "__main__":
 
         except Exception as ex:
             print(f"Exception {ex} occurred for {country}")
-
 
     # Update metadata
     # not necessary
@@ -82,15 +87,19 @@ if __name__ == "__main__":
         output_folder.mkdir()
 
     # write data in interchange format
-    pm2.pm2io.write_interchange_format(output_folder / output_filename,
-                                       ds_all_CRF.pr.to_interchange_format())
+    pm2.pm2io.write_interchange_format(
+        output_folder / output_filename, ds_all_CRF.pr.to_interchange_format()
+    )
 
     # write data in native PRIMAP2 format
     encoding = {var: compression for var in ds_all_CRF.data_vars}
-    ds_all_CRF.pr.to_netcdf(output_folder / (output_filename + ".nc"),
-                          encoding=encoding)
+    ds_all_CRF.pr.to_netcdf(
+        output_folder / (output_filename + ".nc"), encoding=encoding
+    )
 
     # show info
     print(f"The following countries are included in the dataset: {included_countries}")
-    print(f"The following countries have updated submission not yet read "
-          f"and not included in the dataset: {outdated_countries}")
+    print(
+        f"The following countries have updated submission not yet read "
+        f"and not included in the dataset: {outdated_countries}"
+    )

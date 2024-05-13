@@ -1,46 +1,47 @@
+"""
+Get UNFCCC submissons for AnnexI countries (National Inventory Submissions)
+"""
 import argparse
+import sys
 import time
-import pandas as pd
-
 from pathlib import Path
+from random import randrange
+
+import pandas as pd
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
-from random import randrange
-from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
-from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
 
+from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
+from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
 
 if __name__ == "__main__":
     max_tries = 10
 
-    descr = ("Download UNFCCC National Inventory Submissions lists "
-             "and create list of submissions as CSV file. Based on "
-             "process.py from national-inventory-submissions "
-             "(https://github.com/openclimatedata/national-inventory-submisions)")
-    parser = argparse.ArgumentParser(description=descr)
-    parser.add_argument(
-        '--year',
-        help='Year to download'
+    descr = (
+        "Download UNFCCC National Inventory Submissions lists "
+        "and create list of submissions as CSV file. Based on "
+        "process.py from national-inventory-submissions "
+        "(https://github.com/openclimatedata/national-inventory-submisions)"
     )
+    parser = argparse.ArgumentParser(description=descr)
+    parser.add_argument("--year", help="Year to download")
 
     args = parser.parse_args()
     year = args.year
 
-    print("Fetching submissions for {}".format(year))
+    print(f"Fetching submissions for {year}")
     # TODO: move to utils as used in two places
-    if int(year) == 2019:
+    if int(year) == 2019:  # noqa: PLR2004
         url = (
             "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
             "reporting-and-review-under-the-convention/"
             "greenhouse-gas-inventories-annex-i-parties/"
             "national-inventory-submissions-{}".format(year)
         )
-    elif int(year) in range(2020,2023):
-        url = (
-            "https://unfccc.int/ghg-inventories-annex-i-parties/{}".format(year)
-        )
-    elif int(year) >= 2023:
+    elif int(year) in range(2020, 2025):
+        url = f"https://unfccc.int/ghg-inventories-annex-i-parties/{year}"
+    elif int(year) >= 2025:  # noqa: PLR2004
         url = (
             "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
             "reporting-and-review-under-the-convention/"
@@ -60,10 +61,10 @@ if __name__ == "__main__":
     # set options for headless mode
     profile_path = ".firefox"
     options = Options()
-    options.add_argument('-headless')
+    options.add_argument("-headless")
 
     # create profile for headless mode and automatic downloading
-    options.set_preference('profile', profile_path)
+    options.set_preference("profile", profile_path)
 
     # set up selenium driver
     driver = Firefox(options=options)
@@ -77,18 +78,20 @@ if __name__ == "__main__":
     ### TODO replace by error message
     if not table:
         # try to load html file from disk
-        print('Download failed, trying to load manually downloaded file')
-        file = open("manual_page_downloads/National-Inventory-Submissions-{}.html".format(year))
+        print("Download failed, trying to load manually downloaded file")
+        file = open(f"manual_page_downloads/National-Inventory-Submissions-{year}.html")
         content = file.read()
         html = BeautifulSoup(content, "html.parser")
         table = html.find("table")
         if not table:
             print(
-                "Manually downloaded file " + "manual_page_downloads/National-Inventory-Submissions-{}.html".format(year) +
-                " not found")
-            exit()
+                "Manually downloaded file "
+                + f"manual_page_downloads/National-Inventory-Submissions-{year}.html"
+                + " not found"
+            )
+            sys.exit()
 
-    links = table.findAll('a')
+    links = table.findAll("a")
 
     targets = []  # sub-pages
     downloads = []
@@ -116,23 +119,25 @@ if __name__ == "__main__":
             country = Path(href).name.split("-")[0].upper()
             title = f"{country} {link.contents[0]}"
             filename = Path(href).name
-            file_parts = filename.split('-')
-            if len(file_parts) >= 2:
+            file_parts = filename.split("-")
+            if len(file_parts) >= 2:  # noqa: PLR2004
                 kind = file_parts[2].upper()
-            elif filename.startswith('asr'):
-                kind = 'CRF'
+            elif filename.startswith("asr"):
+                kind = "CRF"
             else:
                 kind = None
 
             print("\t".join([kind, country, title, href]))
-            downloads.append({"Kind": kind, "Country": country, "Title": title, "URL": href})
+            downloads.append(
+                {"Kind": kind, "Country": country, "Title": title, "URL": href}
+            )
 
     # Go through sub-pages.
     for target in targets:
-        time.sleep(randrange(5, 15))
+        time.sleep(randrange(5, 15))  # noqa: S311
         url = target["url"]
 
-        submission_info = get_unfccc_submission_info(url, driver, 10)
+        submission_info = get_unfccc_submission_info(url, driver, max_tries=max_tries)
 
         if submission_info:
             downloads = downloads + submission_info
@@ -143,5 +148,7 @@ if __name__ == "__main__":
         print("No downloads for ", no_downloads)
 
     driver.close()
-    df = pd.DataFrame(downloads)
-    df.to_csv(downloaded_data_path_UNFCCC / f"submissions-annexI_{year}.csv", index=False)
+    df_downloads = pd.DataFrame(downloads)
+    df_downloads.to_csv(
+        downloaded_data_path_UNFCCC / f"submissions-annexI_{year}.csv", index=False
+    )

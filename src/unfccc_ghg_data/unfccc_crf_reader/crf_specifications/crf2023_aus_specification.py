@@ -43,6 +43,8 @@ import numpy as np
 
 from .util import unit_info
 
+gwp_to_use = "AR5GWP100"
+
 CRF2023_AUS = {
     # Table1 instead of 1s1 and 1s2
     "Table1": {
@@ -117,7 +119,7 @@ CRF2023_AUS = {
         ],
         "entity_mapping": {
             "NOX": "NOx",
-            "Total GHG emissions (1)": "KYOTOGHG (AR4GWP100)",
+            "Total GHG emissions (1)": f"KYOTOGHG ({gwp_to_use})",
         },
         "coords_defaults": {
             "class": "Total",
@@ -785,10 +787,10 @@ CRF2023_AUS = {
             ["NA", ["\\IGNORE"], 1],
         ],
         "entity_mapping": {
-            "EMISSIONS (1) CH4": "CH4 emissions", # this is necessary because there
+            "EMISSIONS (1) CH4": "CH4 emissions",  # this is necessary because there
             # is an error in the table and the CH4 emissions don't have the removals
             # subtracted which would be correct according to the footnotes
-            "EMISSIONS (1) CO2": "CO2", #  emissions",
+            "EMISSIONS (1) CO2": "CO2",  #  emissions",
             "RECOVERY/FLARING (2) CH4": "CH4 removals",
             "RECOVERY/FLARING (2) CO2": "CO2 removals",
         },
@@ -855,7 +857,7 @@ CRF2023_AUS = {
         ],
         "entity_mapping": {
             "EMISSIONS CH4 (5)": "CH4",
-            "EMISSIONS CO2 (4)": "CO2", #"CO2 emissions",
+            "EMISSIONS CO2 (4)": "CO2",  # "CO2 emissions",
             "EMISSIONS N2O": "N2O",
             "RECOVERY (2) CO2": "CO2 removals",
         },
@@ -993,10 +995,10 @@ CRF2023_AUS = {
             ["2.H.2. Food and Beverages Industry", ["2.H.2"]],
         ],
         "entity_mapping": {
-            "HFCs (1)": "HFCS (AR4GWP100)",
-            "PFCs (1)": "PFCS (AR4GWP100)",
-            "Unspecified mix of HFCs and PFCs (1)": "UnspMixOfHFCsPFCs (AR4GWP100)",
-            "Total GHG emissions (2)": "KYOTOGHG (AR4GWP100)",
+            "HFCs (1)": f"HFCS ({gwp_to_use})",
+            "PFCs (1)": f"PFCS ({gwp_to_use})",
+            "Unspecified mix of HFCs and PFCs (1)": f"UnspMixOfHFCsPFCs ({gwp_to_use})",
+            "Total GHG emissions (2)": f"KYOTOGHG ({gwp_to_use})",
         },
         "coords_defaults": {
             "class": "Total",
@@ -1072,9 +1074,9 @@ CRF2023_AUS = {
             "HFC-365mfc": "HFC365mfc",
             "HFC-41": "HFC41",
             "HFC-43-10mee": "HFC4310mee",
-            "Unspecified mix of HFCs (1)": "UnspMixOfHFCs (AR4GWP100)",
-            "Unspecified mix of HFCs and PFCs(1)": "UnspMixOfHFCsPFCs (AR4GWP100)",
-            "Unspecified mix of PFCs (1)": "UnspMixOfPFCs (AR4GWP100)",
+            "Unspecified mix of HFCs (1)": f"UnspMixOfHFCs ({gwp_to_use})",
+            "Unspecified mix of HFCs and PFCs(1)": f"UnspMixOfHFCsPFCs ({gwp_to_use})",
+            "Unspecified mix of PFCs (1)": f"UnspMixOfPFCs ({gwp_to_use})",
             "c-C3F6": "cC3F6",
             "c-C4F8": "cC4F8",
         },
@@ -1143,7 +1145,7 @@ CRF2023_AUS = {
             ["3.J. Other (please specify)", ["3.J"], 1],
             ["NA", ["\\IGNORE"], 2],
         ],
-        "entity_mapping": {"Total GHG emissions (1)": "KYOTOGHG (AR4GWP100)"},
+        "entity_mapping": {"Total GHG emissions (1)": f"KYOTOGHG ({gwp_to_use})"},
         "coords_defaults": {
             "class": "Total",
         },
@@ -1576,7 +1578,7 @@ CRF2023_AUS = {
             "CH4(2)": "CH4",
             "N2O(2)": "N2O",
             "Net CO2 emissions/removals (1,2)": "CO2",
-            "Total GHG emissions/removals (3)": "KYOTOGHG (AR4GWP100)",
+            "Total GHG emissions/removals (3)": f"KYOTOGHG ({gwp_to_use})",
         },
         "coords_defaults": {
             "class": "Total",
@@ -1623,7 +1625,7 @@ CRF2023_AUS = {
         ],
         "entity_mapping": {
             "CO2(1)": "CO2",
-            "Total GHG emissions (1)": "KYOTOGHG (AR4GWP100)",
+            "Total GHG emissions (1)": f"KYOTOGHG ({gwp_to_use})",
         },
         "coords_defaults": {
             "class": "Total",
@@ -1711,10 +1713,10 @@ CRF2023_AUS = {
         "entity_mapping": {
             "NOX": "NOx",
             "Net CO2 emissions/ removals": "CO2",
-            "HFCs (1)": "HFCS (AR4GWP100)",
-            "PFCs (1)": "PFCS (AR4GWP100)",
-            "Unspecified mix of HFCs and PFCs (1)": "UnspMixOfHFCsPFCs (AR4GWP100)",
-            "Total GHG emissions/removals (2)": "KYOTOGHG (AR4GWP100)",
+            "HFCs (1)": f"HFCS ({gwp_to_use})",
+            "PFCs (1)": f"PFCS ({gwp_to_use})",
+            "Unspecified mix of HFCs and PFCs (1)": f"UnspMixOfHFCsPFCs ({gwp_to_use})",
+            "Total GHG emissions/removals (2)": f"KYOTOGHG ({gwp_to_use})",
         },
         "coords_defaults": {
             "class": "Total",

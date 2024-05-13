@@ -1,0 +1,24 @@
+attrs:
+  references: 
+    http://www.gir.go.kr/home/board/read.do?pagerOffset=0&maxPageItems=10&maxIndexPages=10&searchKey=&searchValue=&menuId=36&boardId=62&boardMasterId=2&boardCategoryId=
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Republic of Korea: National Greenhouse Gas Inventory Report 2023'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory
+    and Research Center
+  cat: category (IPCC1996_KOR_INV)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - area (ISO3)
+  - source
+  - provenance
+  - category (IPCC1996_KOR_INV)
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: KOR_2023-Inventory_2023_IPCC1996_KOR_INV.csv

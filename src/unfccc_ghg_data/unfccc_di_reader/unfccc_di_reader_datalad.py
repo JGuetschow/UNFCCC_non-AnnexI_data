@@ -1,3 +1,6 @@
+"""
+Functions for the datalad interface of the UNFCCC DI reader.
+"""
 from datetime import date
 from typing import Optional, Union
 
@@ -12,16 +15,16 @@ from .util import DI_date_format
 
 ## datalad and pydoit interface functions
 def read_DI_for_country_datalad(
-        country: str,
+    country: str,
 ) -> None:
     """
+    Call datalad which in turn calls a script that reads the DI data for a country
+
     Wrapper around read_UNFCCC_DI_for_country which takes care of selecting input
     and output files and using datalad run to trigger the data reading
 
     Parameters
     ----------
-    __________
-
     country: str
         country name or ISO 3-letter country code
 
@@ -31,11 +34,12 @@ def read_DI_for_country_datalad(
     date_str = today.strftime(DI_date_format)
 
     # get all the info for the country
-    country_info = get_input_and_output_files_for_country_DI(country, date_str,
-                                                             raw=True, verbose=True)
+    country_info = get_input_and_output_files_for_country_DI(
+        country, date_str, raw=True, verbose=True
+    )
 
     print(f"Attempting to read DI data for {country_info['name']}.")
-    print("#"*80)
+    print("#" * 80)
     print("")
     print("Using the unfccc_di_reader")
     print("")
@@ -43,8 +47,10 @@ def read_DI_for_country_datalad(
     script = code_path / "unfccc_di_reader" / "read_unfccc_di_for_country.py"
     script = script.relative_to(root_path)
 
-    cmd = f"./venv/bin/python3 {script.as_posix()} --country={country_info['code']} " \
-          f"--date={date_str}"
+    cmd = (
+        f"./venv/bin/python3 {script.as_posix()} --country={country_info['code']} "
+        f"--date={date_str}"
+    )
     try:
         datalad.api.run(
             cmd=cmd,
@@ -56,24 +62,24 @@ def read_DI_for_country_datalad(
             explicit=False,
         )
     except IncompleteResultsError as IRE:
-        print(f"IncompleteResultsError occured when running {cmd}: {IRE}")
+        print(f"IncompleteResultsError occurred when running {cmd}: {IRE}")
     except Exception as ex:
         print(f"Exception occurred when running {cmd}")
         print(ex.message)
 
 
 def process_DI_for_country_datalad(
-        country: str,
-        date_str: Union[str, None],
+    country: str,
+    date_str: Union[str, None],
 ) -> None:
     """
+    Call datalad which in turn calls a script that processes the DI data for a country
+
     Wrapper around process_UNFCCC_DI_for_country which takes care of selecting input
     and output files and using datalad run to trigger the data processing
 
     Parameters
     ----------
-    __________
-
     country: str
         country name or ISO 3-letter country code
     date_str: str
@@ -81,11 +87,12 @@ def process_DI_for_country_datalad(
         no date is given the last data read will be processed.
     """
     # get all the info for the country
-    country_info = get_input_and_output_files_for_country_DI(country, date_str,
-                                                             raw=True, verbose=True)
+    country_info = get_input_and_output_files_for_country_DI(
+        country, date_str, raw=True, verbose=True
+    )
 
     print(f"Attempting to process DI data for {country_info['name']}.")
-    print("#"*80)
+    print("#" * 80)
     print("")
     print("Using the unfccc_di_reader")
     print("")
@@ -93,8 +100,10 @@ def process_DI_for_country_datalad(
     script = code_path / "unfccc_di_reader" / "process_unfccc_di_for_country.py"
     script = script.relative_to(root_path)
 
-    cmd = f"./venv/bin/python3 {script.as_posix()} --country={country_info['code']} " \
-          f"--date={date_str}"
+    cmd = (
+        f"./venv/bin/python3 {script.as_posix()} --country={country_info['code']} "
+        f"--date={date_str}"
+    )
     try:
         datalad.api.run(
             cmd=cmd,
@@ -113,16 +122,16 @@ def process_DI_for_country_datalad(
 
 
 def read_DI_for_country_group_datalad(
-        annexI: bool=False,
+    annexI: bool = False,
 ) -> None:
     """
+    Call datalad which in turn calls a script that reads the DI data for a country group
+
     Wrapper around read_UNFCCC_DI_for_country_group which takes care of selecting input
     and output files and using datalad run to trigger the data processing
 
     Parameters
     ----------
-    __________
-
     country: str
         country name or ISO 3-letter country code
     date_str: str
@@ -135,7 +144,7 @@ def read_DI_for_country_group_datalad(
         country_group = "non-AnnexI"
 
     print(f"Attempting to read DI data for {country_group}.")
-    print("#"*80)
+    print("#" * 80)
     print("")
     print("Using the unfccc_di_reader")
     print("")
@@ -165,17 +174,17 @@ def read_DI_for_country_group_datalad(
 
 
 def process_DI_for_country_group_datalad(
-        annexI: bool=False,
-        date_str: Optional[str]=None,
+    annexI: bool = False,
+    date_str: Optional[str] = None,
 ) -> None:
     """
-    Wrapper around read_UNFCCC_DI_for_country_group which takes care of selecting input
+    Call datalad which in turn calls a script that processes the DI data for a country group
+
+    Wrapper around process_UNFCCC_DI_for_country_group which takes care of selecting input
     and output files and using datalad run to trigger the data processing
 
     Parameters
     ----------
-    __________
-
     annexI: bool (default False)
         If True process all annexI countries (not implemented yet), else all non-AnnexI
         countries.
@@ -189,7 +198,7 @@ def process_DI_for_country_group_datalad(
         country_group = "non-AnnexI"
 
     print(f"Attempting to process DI data for {country_group}.")
-    print("#"*80)
+    print("#" * 80)
     print("")
     print("Using the unfccc_di_reader")
     print("")
