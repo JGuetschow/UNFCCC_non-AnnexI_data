@@ -59,3 +59,9 @@ fix\_rows
 =========
 
 .. autofunction:: fix_rows
+
+
+make\_wide\_table
+=================
+
+.. autofunction:: make_wide_table

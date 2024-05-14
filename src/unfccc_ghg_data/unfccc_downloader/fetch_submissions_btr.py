@@ -10,9 +10,12 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
-from unfccc_submission_info import get_BTR_name_and_URL, get_unfccc_submission_info
 
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
+from unfccc_ghg_data.unfccc_downloader import (
+    get_BTR_name_and_URL,
+    get_unfccc_submission_info,
+)
 
 max_tries = 10
 

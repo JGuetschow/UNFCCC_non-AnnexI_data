@@ -7,10 +7,10 @@ readme = "README.md"
 packages = [{include = "unfccc_ghg_data", from = "src"}]
 
 [tool.poetry.dependencies]
-python = ">=3.8, <3.11"
+python = ">=3.9, <3.11"
 matplotlib = { version = "^3.7.1", optional = true }
 doit = "^0.36.0"
-primap2 = "^0.9.8"
+primap2 = ">=0.9.8"
 pycountry = "^22.3.5"
 datalad = "^0.19.3"
 treelib = "^1.7.0"

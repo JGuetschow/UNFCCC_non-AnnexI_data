@@ -1,4 +1,6 @@
 """
+Download BURs for non-AnnexI countries
+
 Download UNFCCC Biennial Update Report submissions
 from Non-Annex I Parties and create list of submissions as CSV file
 Based on `process_bur` from national-inventory-submissions
@@ -67,7 +69,7 @@ if __name__ == "__main__":
 
     # Go through sub-pages.
     for target in targets:
-        time.sleep(randrange(5, 15))
+        time.sleep(randrange(5, 15))  # noqa: S311
         url = target["url"]
 
         submission_info = get_unfccc_submission_info(url, driver, 10)
@@ -81,6 +83,8 @@ if __name__ == "__main__":
         print("No downloads for ", no_downloads)
 
     driver.close()
-    df = pd.DataFrame(downloads)
-    df = df[["Kind", "Country", "Title", "URL"]]
-    df.to_csv(downloaded_data_path_UNFCCC / "submissions-bur.csv", index=False)
+    df_downloads = pd.DataFrame(downloads)
+    df_downloads = df_downloads[["Kind", "Country", "Title", "URL"]]
+    df_downloads.to_csv(
+        downloaded_data_path_UNFCCC / "submissions-bur.csv", index=False
+    )

@@ -14,9 +14,9 @@ import pandas as pd
 import requests
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
-from unfccc_submission_info import get_BTR_name_and_URL
 
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, root_path
+from unfccc_ghg_data.unfccc_downloader import get_BTR_name_and_URL
 
 ###############
 #
