@@ -10,9 +10,9 @@ from pathlib import Path
 
 from sphinxcontrib_autodocgen import AutoDocGen
 
-import unfccc_ghg_data
-
 os.environ["UNFCCC_GHG_ROOT_PATH"] = str(Path("..") / "..")
+import unfccc_ghg_data  # noqa: E402, I001
+
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
