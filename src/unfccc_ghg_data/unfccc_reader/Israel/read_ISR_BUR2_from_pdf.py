@@ -16,8 +16,14 @@ import camelot
 import pandas as pd
 import primap2 as pm2
 
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    process_data_for_country,
+)
+
 # configuration import
-from config_isr_bur2 import (
+from .config_isr_bur2 import (
     basket_copy,
     cat_conversion,
     cats_to_agg,
@@ -35,12 +41,6 @@ from config_isr_bur2 import (
     sectors_to_save,
     terminology_proc,
     trend_table_def,
-)
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":

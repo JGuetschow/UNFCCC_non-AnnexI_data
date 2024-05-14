@@ -10,7 +10,11 @@ import copy
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_mar_bur3 import (
+from primap2.pm2io._data_reading import filter_data, matches_time_format
+
+from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+
+from .config_mar_bur3 import (
     aggregate_cats,
     cat_mapping,
     header_defs,
@@ -18,9 +22,6 @@ from config_mar_bur3 import (
     table_defs,
     zero_cats,
 )
-from primap2.pm2io._data_reading import filter_data, matches_time_format
-
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
 
 if __name__ == "__main__":
     # ###
@@ -143,7 +144,8 @@ if __name__ == "__main__":
                 df_this_table.iloc[0, 1:] = ""
                 df_this_table.iloc[1 : last_shift_row + 1, 1:] = df_temp
 
-            # replace line breaks, long hyphens, double, and triple spaces in category names
+            # replace line breaks, long hyphens, double, and triple spaces in category
+            # names
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("\n", " ")
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("   ", " ")
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("  ", " ")
@@ -263,7 +265,7 @@ if __name__ == "__main__":
     # rename the category col
     data_if_2006 = data_if_2006.rename(
         columns={
-            f"category ({coords_terminologies['category']})": "category (IPCC2006_PRIMAP)"
+            f"category ({coords_terminologies['category']})": "category (IPCC2006_PRIMAP)"  # noqa: E501
         }
     )
     data_if_2006.attrs["attrs"]["cat"] = "category (IPCC2006_PRIMAP)"
@@ -307,7 +309,8 @@ if __name__ == "__main__":
             ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
-            # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
+            # df_combine.insert(1, "cat_name_translation",
+            # aggregate_cats[cat_to_agg]["name"])
             # df_combine.insert(2, "orig_cat_name", "computed")
 
             df_combine = df_combine.reset_index()

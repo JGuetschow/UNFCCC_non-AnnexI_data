@@ -10,10 +10,11 @@ import sys
 
 import pandas as pd
 import primap2 as pm2
-from config_chl_bur4 import aggregate_cats, cat_mapping, filter_remove_IPCC2006
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+
+from .config_chl_bur4 import aggregate_cats, cat_mapping, filter_remove_IPCC2006
 
 if __name__ == "__main__":
     # ###
@@ -182,12 +183,14 @@ if __name__ == "__main__":
             nrows=442,
             engine="openpyxl",
         )
-        # drop the columns which are empty and repetition of the metadata for the second block
+        # drop the columns which are empty and repetition of the metadata for the
+        # second block
         df_current = df_current.drop(cols_to_drop, axis=1)
         # drop all rows where the index cols (category code and name) are both NaN
         # as without one of them there is no category information
         df_current = df_current.dropna(axis=0, how="all", subset=index_cols)
-        # set multi-index. necessary for the stack operation in the conversion to long format
+        # set multi-index. necessary for the stack operation in the conversion to long
+        # format
         df_current = df_current.set_index(index_cols)
         # add unit row using information from entity row and add to index
         df_current = pm2.pm2io.nir_add_unit_information(

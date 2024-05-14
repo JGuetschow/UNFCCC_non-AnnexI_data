@@ -29,12 +29,10 @@
 :caption: Contents
 :maxdepth: 2
 usage
-notebooks
 development
 api/unfccc_ghg_data
 changelog
 ```
-
 
 Index
 -----

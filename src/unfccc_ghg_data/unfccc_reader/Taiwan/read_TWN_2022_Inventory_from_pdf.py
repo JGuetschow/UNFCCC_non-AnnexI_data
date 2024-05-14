@@ -12,16 +12,20 @@ import copy
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_twn_nir2022 import (
+from primap2.pm2io._data_reading import matches_time_format
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    make_wide_table,
+)
+
+from .config_twn_nir2022 import (
     fix_rows,
     gwp_to_use,
-    make_wide_table,
     page_defs,
     table_defs,
 )
-from primap2.pm2io._data_reading import matches_time_format
-
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
 
 if __name__ == "__main__":
     # ###
@@ -82,7 +86,8 @@ if __name__ == "__main__":
         "rights": "",
         "contact": "mail@johannes-guetschow.de",
         "title": "2022 Republic of China - National Greenhouse Gas Report",
-        "comment": "Read fom pdf file and converted to PRIMAP2 format by Johannes Gütschow",
+        "comment": "Read fom pdf file and converted to PRIMAP2 format by "
+        "Johannes Gütschow",
         "institution": "Republic of China - Environmental Protection Administration",
     }
 
@@ -186,7 +191,8 @@ if __name__ == "__main__":
         for col in table_def["rows_to_fix"].keys():
             for n_rows in table_def["rows_to_fix"][col].keys():
                 print(f"Fixing {col}, {n_rows}")
-                # replace line breaks, long hyphens, double, and triple spaces in category names
+                # replace line breaks, long hyphens, double, and triple spaces in
+                # category names
                 df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace(
                     "\n", " "
                 )
@@ -358,7 +364,8 @@ if __name__ == "__main__":
             ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
-            # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
+            # df_combine.insert(1, "cat_name_translation",
+            # aggregate_cats[cat_to_agg]["name"])
             # df_combine.insert(2, "orig_cat_name", "computed")
 
             df_combine = df_combine.reset_index()
@@ -404,7 +411,8 @@ if __name__ == "__main__":
             ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
-            # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
+            # df_combine.insert(1, "cat_name_translation",
+            # aggregate_cats[cat_to_agg]["name"])
             # df_combine.insert(2, "orig_cat_name", "computed")
 
             df_combine = df_combine.reset_index()

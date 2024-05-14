@@ -9,9 +9,10 @@ Data are read from pdf using camelot
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_mex_bur3 import fix_rows, page_defs
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+
+from .config_mex_bur3 import fix_rows, page_defs
 
 if __name__ == "__main__":
     # ###
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     # manual category codes
     cat_codes_manual = {
         "Todas las emisiones y las absorciones nacionales": "0",
-        "Todas las emisiones (sin [3B] Tierra ni [3D1] Productos de madera recolectada": "M0EL",
+        "Todas las emisiones (sin [3B] Tierra ni [3D1] Productos de madera recolectada": "M0EL",  # noqa: E501
         "2F6 Otras aplicaciones": "2F6",
     }
 
@@ -120,7 +121,8 @@ if __name__ == "__main__":
 
         # fix rows
         for n_rows in page_def["rows_to_fix"].keys():
-            # replace line breaks, long hyphens, double, and triple spaces in category names
+            # replace line breaks, long hyphens, double, and triple spaces in category
+            # names
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("\n", " ")
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("   ", " ")
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("  ", " ")

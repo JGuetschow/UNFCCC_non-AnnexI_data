@@ -1,8 +1,8 @@
-# Changes here will be overwritten by Copier
-_commit: v0.3.0
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v0.6.2
 _src_path: ../../../helper_tools/copier-core-python-repository/
 email: mail@johannes-guetschow.de
-initial_setup: true
+initial_setup: false
 name: Johannes Gütschow
 notebook_dependencies: false
 pandas_doctests: false
@@ -16,3 +16,4 @@ project_name_human: Country greenhouse gas data submitted to the UNFCCC
 project_name_pip: unfccc-ghg-data
 project_name_python: unfccc_ghg_data
 project_url: https://github.com/JGuetschow/UNFCCC_non-AnnexI_data
+track_lock_file: true

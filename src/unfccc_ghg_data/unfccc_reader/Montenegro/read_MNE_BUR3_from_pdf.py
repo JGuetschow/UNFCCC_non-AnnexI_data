@@ -16,10 +16,11 @@ import re
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_mne_bur3 import aggregate_cats, cat_mapping, drop_data
 from primap2.pm2io._data_reading import matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+
+from .config_mne_bur3 import aggregate_cats, cat_mapping, drop_data
 
 if __name__ == "__main__":
     # ###
@@ -232,7 +233,7 @@ if __name__ == "__main__":
     # rename the category col
     data_if_2006 = data_if_2006.rename(
         columns={
-            f"category ({coords_terminologies['category']})": "category (IPCC2006_PRIMAP)"
+            f"category ({coords_terminologies['category']})": "category (IPCC2006_PRIMAP)"  # noqa: E501
         }
     )
     data_if_2006.attrs["attrs"]["cat"] = "category (IPCC2006_PRIMAP)"
@@ -276,7 +277,8 @@ if __name__ == "__main__":
             ).sum(min_count=1)
 
             df_combine.insert(0, "category (IPCC2006_PRIMAP)", cat_to_agg)
-            # df_combine.insert(1, "cat_name_translation", aggregate_cats[cat_to_agg]["name"])
+            # df_combine.insert(1, "cat_name_translation",
+            # aggregate_cats[cat_to_agg]["name"])
             # df_combine.insert(2, "orig_cat_name", "computed")
 
             df_combine = df_combine.reset_index()

@@ -8,7 +8,7 @@ Reading country greenhouse gas data submitted to the United Nations Framework Co
 
 
 [![CI](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/ci.yaml)
-[![Coverage](https://codecov.io/gh/climate-resource/UNFCCC_non-AnnexI_data/branch/main/graph/badge.svg)](https://codecov.io/gh/climate-resource/UNFCCC_non-AnnexI_data)
+[![Coverage](https://codecov.io/gh/JGuetschow/UNFCCC_non-AnnexI_data/branch/main/graph/badge.svg)](https://codecov.io/gh/JGuetschow/UNFCCC_non-AnnexI_data)
 [![Docs](https://readthedocs.org/projects/unfccc-ghg-data/badge/?version=latest)](https://unfccc-ghg-data.readthedocs.io)
 
 **PyPI :**
@@ -17,7 +17,7 @@ Reading country greenhouse gas data submitted to the United Nations Framework Co
 [![PyPI install](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/install.yaml/badge.svg?branch=main)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/install.yaml)
 
 **Other info :**
-[![License](https://img.shields.io/github/license/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/blob/main/LICENSE)
+[![Licence](https://img.shields.io/github/license/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/blob/main/LICENCE)
 [![Last Commit](https://img.shields.io/github/last-commit/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/commits/main)
 [![Contributors](https://img.shields.io/github/contributors/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/graphs/contributors)
 
@@ -33,10 +33,11 @@ don't render correctly on GitHub's viewer.
 
 <!--- sec-begin-installation -->
 
-Country greenhouse gas data submitted to the UNFCCC can be installed with conda or pip:
+Country greenhouse gas data submitted to the UNFCCC can be installed with pip, mamba or conda:
 
 ```bash
 pip install unfccc-ghg-data
+mamba install -c conda-forge unfccc-ghg-data
 conda install -c conda-forge unfccc-ghg-data
 ```
 
@@ -69,11 +70,10 @@ but we generally discourage this because it can be error prone.
 In order to create your environment, run `make virtual-environment`.
 
 If there are any issues, the messages from the `Makefile` should guide you
-through. If not, please raise an issue in the [issue tracker][issue_tracker].
+through. If not, please raise an issue in the
+[issue tracker](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/issues).
 
 For the rest of our developer docs, please see [](development-reference).
-
-[issue_tracker]: https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/issues
 
 <!--- sec-end-installation-dev -->
 
@@ -309,4 +309,3 @@ files, you can find out what has been done to the dataset or to individual
 files by whom, and when.
 
 <!--- sec-end-datalad -->
-

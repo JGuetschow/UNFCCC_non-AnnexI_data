@@ -34,10 +34,10 @@ def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
     -------
     A list with information for each downloadable files linked on the submission page.
     For each file the information ins stored in a dict with the fields
-        "Kind": kind,
-        "Country": country,
-        "Title": title,
-        "URL": file,
+    "Kind": kind,
+    "Country": country,
+    "Title": title,
+    "URL": file,
 
     """
     info = []
@@ -143,7 +143,7 @@ def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
 
 def get_BTR_name_and_URL(submission_round: int) -> (str, str):
     """
-        Get the name and URL of a BTR for a given number
+    Get the name and URL of a BTR for a given number
 
     Parameters
     ----------

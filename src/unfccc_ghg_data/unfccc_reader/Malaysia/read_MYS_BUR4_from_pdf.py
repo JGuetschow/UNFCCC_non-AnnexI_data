@@ -10,7 +10,16 @@ Code ist mostly identical to BUR3
 
 import camelot
 import primap2 as pm2
-from config_mys_bur4 import (
+from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    fix_rows,
+    process_data_for_country,
+)
+
+from .config_mys_bur4 import (
     cat_code_regexp,
     cat_codes_manual,
     cat_names_fix,
@@ -27,14 +36,6 @@ from config_mys_bur4 import (
     table_defs,
     terminology_proc,
     values_replacement,
-)
-from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    fix_rows,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":

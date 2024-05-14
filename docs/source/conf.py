@@ -10,9 +10,9 @@ from pathlib import Path
 
 from sphinxcontrib_autodocgen import AutoDocGen
 
-os.environ["UNFCCC_GHG_ROOT_PATH"] = str(Path("..") / "..")
-
 import unfccc_ghg_data
+
+os.environ["UNFCCC_GHG_ROOT_PATH"] = str(Path("..") / "..")
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -152,8 +152,16 @@ exec_code_example_dir = "."
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 # Pick your theme for html output, we typically use the read the docs theme
-html_theme = "sphinx_rtd_theme"
+html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
+html_theme_options = {
+    "repository_url": "https://github.com/JGuetschow/UNFCCC_non-AnnexI_data",
+    "repository_branch": "main",
+    "path_to_docs": "docs/source",
+    "use_repository_button": True,
+    "use_issues_button": True,
+    "use_edit_page_button": True,
+}
 
 
 # Ignore ipynb files when building (see https://github.com/executablebooks/MyST-NB/issues/363).

@@ -8,7 +8,14 @@ Data are read from pdf using camelot
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_tha_bur3 import (
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    process_data_for_country,
+)
+
+from .config_tha_bur3 import (
     cat_conversion,
     coords_cols,
     coords_cols_indirect,
@@ -28,12 +35,6 @@ from config_tha_bur3 import (
     sectors_to_save,
     terminology_proc,
     trend_conf,
-)
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":
@@ -152,8 +153,6 @@ if __name__ == "__main__":
     )
 
     df_main_sector_ts = tables_main_sector_ts[0].df.iloc[2:]
-    # df_header = pd.DataFrame([header_main_sector_ts, unit_main_sector_ts])
-    # df_main_sector_ts = pd.concat([df_header, df_main_sector_ts], axis=0, join='outer')
     df_main_sector_ts.columns = [trend_conf["header"], trend_conf["unit"]]
 
     df_main_sector_ts = df_main_sector_ts.transpose()
@@ -207,8 +206,6 @@ if __name__ == "__main__":
     )
 
     df_indirect = tables_indirect[0].df.iloc[2:]
-    # df_header = pd.DataFrame([header_main_sector_ts, unit_main_sector_ts])
-    # df_main_sector_ts = pd.concat([df_header, df_main_sector_ts], axis=0, join='outer')
     df_indirect.columns = [ind_conf["header"], ind_conf["unit"]]
 
     df_indirect = df_indirect.transpose()

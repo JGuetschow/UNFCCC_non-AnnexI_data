@@ -11,10 +11,11 @@ import sys
 
 import pandas as pd
 import primap2 as pm2
-from config_kor_bur4 import cat_codes, cat_name_translations
 from primap2.pm2io._data_reading import filter_data
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+
+from .config_kor_bur4 import cat_codes, cat_name_translations
 
 if __name__ == "__main__":
     # ###
