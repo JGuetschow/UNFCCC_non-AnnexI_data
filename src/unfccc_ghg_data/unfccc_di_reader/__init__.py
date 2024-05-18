@@ -1,6 +1,8 @@
-# submodule to read data from UNFCCC DI API using the unfccc_di_api package
+"""
+submodule to read data from UNFCCC DI API using the unfccc_di_api package
+"""
 
-#import unfccc_di_api
+# import unfccc_di_api
 from .unfccc_di_reader_core import (
     convert_DI_data_to_pm2_if,
     convert_DI_IF_data_to_pm2,

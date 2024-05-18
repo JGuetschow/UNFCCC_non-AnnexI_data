@@ -37,7 +37,7 @@ if __name__ == "__main__":
             "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
             "reporting-and-review-under-the-convention/"
             "greenhouse-gas-inventories-annex-i-parties/"
-            "national-inventory-submissions-{}".format(year)
+            f"national-inventory-submissions-{year}"
         )
     elif int(year) in range(2020, 2025):
         url = f"https://unfccc.int/ghg-inventories-annex-i-parties/{year}"
@@ -46,14 +46,14 @@ if __name__ == "__main__":
             "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
             "reporting-and-review-under-the-convention/"
             "greenhouse-gas-inventories-annex-i-parties/"
-            "national-inventory-submissions-{}".format(year)
+            f"national-inventory-submissions-{year}"
         )
     else:
         url = (
             "https://unfccc.int/process/transparency-and-reporting/"
             "reporting-and-review-under-the-convention/"
             "greenhouse-gas-inventories-annex-i-parties/"
-            "submissions/national-inventory-submissions-{}".format(year)
+            f"submissions/national-inventory-submissions-{year}"
         )
 
     print(f"Using {url} to get submissions list")
@@ -74,7 +74,8 @@ if __name__ == "__main__":
 
     table = html.find("table")
 
-    # check if table found. if not the get command didn't work, likely because of a captcha on the site
+    # check if table found. if not the get command didn't work, likely because of
+    # a captcha on the site
     ### TODO replace by error message
     if not table:
         # try to load html file from disk

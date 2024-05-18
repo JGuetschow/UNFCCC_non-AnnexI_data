@@ -1,5 +1,7 @@
 """
-This script is a wrapper around the read__for_country
+Call read_UNFCCC_DI_for_country
+
+This script is a wrapper around the read_UNFCCC_DI_for_country
 function such that it can be called from datalad
 """
 

@@ -36,9 +36,9 @@ checks:  ## run all the linting checks of the codebase
 ruff-fixes:  ## fix the code using ruff
     # format before and after checking so that the formatted stuff is checked and
     # the fixed stuff is formatted
-	poetry run ruff format src tests scripts docs/source/conf.py docs/source/notebooks/*.py
-	poetry run ruff src tests scripts docs/source/conf.py docs/source/notebooks/*.py --fix
-	poetry run ruff format src tests scripts docs/source/conf.py docs/source/notebooks/*.py
+	poetry run ruff format src tests scripts docs/source/conf.py
+	poetry run ruff src tests scripts docs/source/conf.py  --fix
+	poetry run ruff format src tests scripts docs/source/conf.py
 
 .PHONY: ruff-fixes-current
 ruff-fixes-current:  ## fix the code using ruff

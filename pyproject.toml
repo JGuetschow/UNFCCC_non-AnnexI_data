@@ -9,7 +9,7 @@ license = "TBD"
 include = ["LICENCE"]  # poetry uses US English so assumes it will be spelt LICENSE
 
 [tool.poetry.dependencies]
-python = ">=3.9, <3.11"
+python = ">=3.10, <3.11"
 matplotlib = { version = "^3.7.1", optional = true }
 doit = "^0.36.0"
 primap2 = ">=0.9.8"
@@ -25,6 +25,7 @@ unfccc-di-api = "^4.0.0"
 dask = "^2023.12.0"
 sphinx-exec-code = "^0.10"
 ghostscript = "^0.7"
+sphinx-markdown-tables = "^0.0.17"
 
 [tool.poetry.extras]
 plots = ["matplotlib"]
@@ -123,6 +124,15 @@ docstring-code-format = true
     "D",  # Documentation not needed in tests
     "S101",  # S101 Use of `assert` detected
     "PLR2004" # Magic value used in comparison
+]
+"src/unfccc_ghg_data/unfccc_reader/*/config_*.py" = [
+    "E501",  # don't enforce line length
+]
+"src/unfccc_ghg_data/unfccc_crf_reader/crf_specifications/*_specification.py" = [
+    "E501",  # don't enforce line length
+]
+"src/unfccc_ghg_data/unfccc_di_reader/unfccc_di_reader_config.py" = [
+    "E501",  # don't enforce line length
 ]
 "docs/source/notebooks/*" = [
     "D100",  # Missing docstring at the top of file

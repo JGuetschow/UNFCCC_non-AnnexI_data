@@ -1,3 +1,8 @@
+"""
+Download NDC submissions
+
+TODO: needs updating
+"""
 import os
 import re
 import shutil
@@ -47,14 +52,14 @@ if __name__ == "__main__":
 
     for idx, submission in submissions.iterrows():
         print("=" * 60)
-        #ndc = submission.Number
+        # ndc = submission.Number
         title = submission.Title
         temp = re.findall(ndc_regex, title)
         ndc = temp[0]
         url = submission.EncodedAbsUrl
         submission_date = submission.SubmissionDate
         country = submission.Party
-        country = country.replace(' ', '_')
+        country = country.replace(" ", "_")
         print(title)
 
         ndc_folder = "NDC_" + ndc + "_" + submission_date
@@ -62,10 +67,13 @@ if __name__ == "__main__":
         country_folder = downloaded_data_path_UNFCCC / country
         if not country_folder.exists():
             country_folder.mkdir()
-        local_filename = country_folder / ndc_folder / url.split('/')[-1]
-        local_filename_underscore = \
-            downloaded_data_path_UNFCCC / country / ndc_folder / \
-            url.split('/')[-1].replace("%20", "_").replace(" ", "_")
+        local_filename = country_folder / ndc_folder / url.split("/")[-1]
+        local_filename_underscore = (
+            downloaded_data_path_UNFCCC
+            / country
+            / ndc_folder
+            / url.split("/")[-1].replace("%20", "_").replace(" ", "_")
+        )
         if not local_filename.parent.exists():
             local_filename.parent.mkdir()
 
@@ -78,13 +86,13 @@ if __name__ == "__main__":
                 os.remove(local_filename_underscore)
 
         # now we have to remove error pages, so a present file should not be overwritten
-        if (not local_filename_underscore.exists()) \
-                and (not local_filename_underscore.is_symlink()):
+        if (not local_filename_underscore.exists()) and (
+            not local_filename_underscore.is_symlink()
+        ):
             i = 0  # reset counter
-            while not local_filename_underscore.exists() and i < 10:
-
-                r = requests.get(url, stream=True)
-                with open(str(local_filename_underscore), 'wb') as f:
+            while not local_filename_underscore.exists() and i < 10:  # noqa: PLR2004
+                r = requests.get(url, stream=True, timeout=120)
+                with open(str(local_filename_underscore), "wb") as f:
                     shutil.copyfileobj(r.raw, f)
 
                 # check file size. if 210 or 212 bytes it's the error page
@@ -93,19 +101,33 @@ if __name__ == "__main__":
                     os.remove(local_filename_underscore)
 
                 # sleep a bit to avoid running into captchas
-                time.sleep(randrange(5, 15))
+                time.sleep(randrange(5, 15))  # noqa :S311
 
             if local_filename_underscore.exists():
                 new_downloaded.append(submission)
-                print("Download => downloaded_data/UNFCCC/" + country + "/" +
-                      ndc_folder + "/" + local_filename_underscore.name)
+                print(
+                    "Download => downloaded_data/UNFCCC/"
+                    + country
+                    + "/"
+                    + ndc_folder
+                    + "/"
+                    + local_filename_underscore.name
+                )
             else:
-                print("Failed downloading downloaded_data/UNFCCC/" + country + "/"
-                      + ndc_folder + "/" + local_filename_underscore.name)
+                print(
+                    "Failed downloading downloaded_data/UNFCCC/"
+                    + country
+                    + "/"
+                    + ndc_folder
+                    + "/"
+                    + local_filename_underscore.name
+                )
 
         else:
             print("=> Already downloaded " + local_filename_underscore.name)
 
-
-    df = pd.DataFrame(new_downloaded)
-    df.to_csv(downloaded_data_path_UNFCCC / f"00_new_downloads_ndc-{date.today()}.csv", index=False)
+    df_new_downloaded = pd.DataFrame(new_downloaded)
+    df_new_downloaded.to_csv(
+        downloaded_data_path_UNFCCC / f"00_new_downloads_ndc-{date.today()}.csv",
+        index=False,
+    )

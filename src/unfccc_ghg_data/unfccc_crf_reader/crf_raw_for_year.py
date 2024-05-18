@@ -1,7 +1,7 @@
 """
 A script to collect all latest CRF submissions for a given year
 
-Reads the latest data fromt he extracted data folder for each country.
+Reads the latest data from the extracted data folder for each country.
 Notifies the user if new data are available in the downloaded_data folder
 which have not yet been read.
 
@@ -51,7 +51,8 @@ if __name__ == "__main__":
             )
             if not data_read:
                 print(f"Latest submission for {country} has not been read yet.")
-                # TODO: make sure an older submission is read if present. currently none is included at all
+                # TODO: make sure an older submission is read if present.
+                #  currently none is included at all
                 outdated_countries.append(country)
 
             # read the native format file

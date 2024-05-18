@@ -114,7 +114,7 @@ if __name__ == "__main__":
         "rights": "",
         "contact": "mail@johannes-guestchow.de",
         "title": "Colombia. Biennial update report (BUR). BUR3",
-        "comment": "Read fom xlsx file (exported from google docs) by Johannes Gütschow",
+        "comment": "Read fom xlsx file (exported from google docs) by Johannes Gütschow",  # noqa: E501
         "institution": "UNFCCC",
     }
 

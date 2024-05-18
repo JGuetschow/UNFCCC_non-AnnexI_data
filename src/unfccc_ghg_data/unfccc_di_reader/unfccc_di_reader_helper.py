@@ -1,3 +1,9 @@
+"""
+Helper functions for the DI reader
+
+The helper functions find the latest read data, determine the filename from country
+code and other parameters of a dataset, find present data based on hashes etc.
+"""
 import json
 import re
 from datetime import date
@@ -19,10 +25,10 @@ from .util import DI_date_format, regex_date
 
 ## helper functions
 def determine_filename(
-        country_code: str,
-        date_or_hash: str,
-        raw: bool=False,
-        hash: bool=False,
+    country_code: str,
+    date_or_hash: str,
+    raw: bool = False,
+    hash: bool = False,
 ) -> Path:
     """
     Determine the filename for a dataset from given country code and date string.
@@ -55,17 +61,21 @@ def determine_filename(
             # only one folder
             country_folder = extracted_data_path_UNFCCC / country_folders
         else:
-            raise ValueError("More than one output folder for country "
-                             f"{country_code}. This should not happen.")
+            raise ValueError(  # noqa: TRY003
+                "More than one output folder for country "
+                f"{country_code}. This should not happen."
+            )
     else:
         # folder not in mapping. It will be created if not present yet
         country_name = get_country_name(country_code)
         country_folder = extracted_data_path_UNFCCC / country_name.replace(" ", "_")
 
         if country_folder.exists():
-           print(f"Output folder {country_name.replace(' ', '_')} for country "
-                 f"{country_code} exists but is not in folder mapping. Update "
-                 "folder mapping")
+            print(
+                f"Output folder {country_name.replace(' ', '_')} for country "
+                f"{country_code} exists but is not in folder mapping. Update "
+                "folder mapping"
+            )
         else:
             country_folder.mkdir()
 
@@ -84,10 +94,10 @@ def determine_filename(
 
 
 def determine_dataset_filename(
-        date_or_hash: str,
-        raw: bool=False,
-        annexI: bool=False,
-        hash: bool = False,
+    date_or_hash: str,
+    raw: bool = False,
+    annexI: bool = False,
+    hash: bool = False,
 ) -> Path:
     """
     Determine the filename for a dataset from given country group and date string.
@@ -128,10 +138,10 @@ def determine_dataset_filename(
 
 
 def get_input_and_output_files_for_country_DI(
-        country: str,
-        date_str: str,
-        raw: bool,
-        verbose: Optional[bool]=True,
+    country: str,
+    date_str: str,
+    raw: bool,
+    verbose: Optional[bool] = True,
 ) -> dict[str, Union[list, str]]:
     """
     Get input and output files for a given country
@@ -163,20 +173,25 @@ def get_input_and_output_files_for_country_DI(
             # get the latest date
             input_file = [find_latest_DI_data(country_code, raw=True)]
         else:
-            input_file = [determine_filename(country_code, date_str, raw=False,
-                                               hash=False)]
+            input_file = [
+                determine_filename(country_code, date_str, raw=False, hash=False)
+            ]
             if input_file[0].is_symlink():
                 # also get the file with the actual data
                 input_file.append(input_file[0].readlink())
             else:
                 # DI processing input files wit date labels should always be symlinks
                 # to the files with hashes holding the actual data.
-                raise(ValueError, f"Input file {input_file[0].name} is not a symlink "
-                                  f" or not existent. Check if the data you want to "
-                                  f"process exists and if your repository is ")
+                raise (
+                    ValueError,
+                    f"Input file {input_file[0].name} is not a symlink "
+                    f" or not existent. Check if the data you want to "
+                    f"process exists and if your repository is ",
+                )
 
-        input_files = [f"{input_file.as_posix()}.{suffix}" for
-                        suffix in ['yaml', 'csv', 'nc']]
+        input_files = [
+            f"{input_file.as_posix()}.{suffix}" for suffix in ["yaml", "csv", "nc"]
+        ]
 
         if verbose:
             print("The following files are considered as input_files:")
@@ -186,8 +201,9 @@ def get_input_and_output_files_for_country_DI(
 
     # get output files
     output_file = determine_filename(country_code, date_str, raw=raw)
-    output_files = [f"{output_file.as_posix()}.{suffix}" for
-                    suffix in ['yaml', 'csv', 'nc']]
+    output_files = [
+        f"{output_file.as_posix()}.{suffix}" for suffix in ["yaml", "csv", "nc"]
+    ]
 
     if verbose:
         print("The following files are considered as output_files:")
@@ -197,19 +213,19 @@ def get_input_and_output_files_for_country_DI(
 
     # add to country info
     country_info["input"] = input_files
-    country_info["output"] = [] #output_files # not used because we don't know the
+    country_info["output"] = []  # output_files # not used because we don't know the
     # hash in advance
 
     return country_info
 
 
 def get_present_hashes_for_country_DI(
-        country_code: str,
-        raw: bool,
+    country_code: str,
+    raw: bool,
 ) -> list:
-    '''
+    """
     Get the hashes of outputs
-    '''
+    """
     regex_hash = r"_([a-f0-9]*)_"
     if raw:
         regex_hash = regex_hash + "raw_hash\\.nc"
@@ -228,17 +244,23 @@ def get_present_hashes_for_country_DI(
             # only one folder
             country_folder = extracted_data_path_UNFCCC / country_folders
         else:
-            raise ValueError("More than one output folder for country "
-                             f"{country_code}. This should not happen.")
+            raise ValueError(  # noqa: TRY003
+                "More than one output folder for country "
+                f"{country_code}. This should not happen."
+            )
 
         files_list = list(country_folder.glob("*_hash.nc"))
         # filter according to raw flag
         if raw:
-            files_list = [file.name for file in files_list if
-                          re.search(r'_raw_hash', file.name)]
+            files_list = [
+                file.name for file in files_list if re.search(r"_raw_hash", file.name)
+            ]
         else:
-            files_list = [file.name for file in files_list if
-                          not re.search(r'_raw_hash', file.name)]
+            files_list = [
+                file.name
+                for file in files_list
+                if not re.search(r"_raw_hash", file.name)
+            ]
 
         hash_list = [re.findall(regex_hash, file)[0] for file in files_list]
         return hash_list
@@ -249,17 +271,17 @@ def get_present_hashes_for_country_DI(
 
 
 def find_latest_DI_data(
-        country_code: str,
-        raw: bool=True,
-)->Union[Path, None]:
-    '''
+    country_code: str,
+    raw: bool = True,
+) -> Union[Path, None]:
+    """
     Find the path to the nc file with the latest DI data for a given country
-    '''
+    """
     if raw:
         regex = f"{country_code}_DI_{regex_date}" + r"_raw\.nc"
     else:
         regex = f"{country_code}_DI_{regex_date[1:-1]}_{regex_date}" + r"\.nc"
-        #regex = f"{country_code}_DI_{regex_date}" + r"\.nc"
+        # regex = f"{country_code}_DI_{regex_date}" + r"\.nc"
 
     # get the country folder
     with open(extracted_data_path_UNFCCC / "folder_mapping.json") as mapping_file:
@@ -273,29 +295,36 @@ def find_latest_DI_data(
             # only one folder
             country_folder = extracted_data_path_UNFCCC / country_folders
         else:
-            raise ValueError("More than one output folder for country "
-                             f"{country_code}. This should not happen.")
+            raise ValueError(  # noqa: TRY003
+                "More than one output folder for country "
+                f"{country_code}. This should not happen."
+            )
 
         files_path_list = list(country_folder.glob("*.nc"))
         # remove files with hash
-        files_list = [file.name for file in files_path_list
-                      if not re.search(r'_hash\.nc', file.name)]
+        files_list = [
+            file.name
+            for file in files_path_list
+            if not re.search(r"_hash\.nc", file.name)
+        ]
         # remove files that don't begin with country_code_DI
-        files_list = [file for file in files_list
-                      if re.search(f'^{country_code}_DI_', file)]
+        files_list = [
+            file for file in files_list if re.search(f"^{country_code}_DI_", file)
+        ]
         # filter according to raw flag
         if raw:
-            files_list = [file for file in files_list if
-                          re.search(r'_raw\.nc', file)]
+            files_list = [file for file in files_list if re.search(r"_raw\.nc", file)]
         else:
-            files_list = [file for file in files_list if
-                          not re.search(r'_raw\.nc', file)]
+            files_list = [
+                file for file in files_list if not re.search(r"_raw\.nc", file)
+            ]
 
         if len(files_list) > 0:
             date_list = [re.findall(regex, file)[0] for file in files_list]
-            latest_date = find_latest_date(date_list, '%Y-%m-%d')
-            latest_file = [file for file in files_list if re.search(latest_date,
-                                                                         file)][0]
+            latest_date = find_latest_date(date_list, "%Y-%m-%d")
+            latest_file = [  # noqa: RUF015
+                file for file in files_list if re.search(latest_date, file)
+            ][0]
             return country_folder / latest_file
         else:
             return None

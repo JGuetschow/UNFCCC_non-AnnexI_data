@@ -118,7 +118,7 @@ def get_possible_outputs(
             if country_code in folder_mapping:
                 country_folder = folder_mapping[country_code]
                 if not isinstance(country_folder, str):
-                    raise ValueError( # noqa: TRY003
+                    raise ValueError(  # noqa: TRY003
                         "Wrong data type in folder mapping json file. Should be str."
                     )
 

@@ -58,6 +58,8 @@ extensions = [
     "sphinx.ext.mathjax",
     # execute code
     "sphinx_exec_code",
+    # tables in markdown documents
+    "sphinx_markdown_tables",
 ]
 
 # general sphinx settings

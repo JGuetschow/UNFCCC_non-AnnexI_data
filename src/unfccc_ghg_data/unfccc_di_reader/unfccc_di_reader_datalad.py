@@ -178,10 +178,10 @@ def process_DI_for_country_group_datalad(
     date_str: Optional[str] = None,
 ) -> None:
     """
-    Call datalad which in turn calls a script that processes the DI data for a country group
+    Call datalad which calls a script that processes the DI data for a country group
 
-    Wrapper around process_UNFCCC_DI_for_country_group which takes care of selecting input
-    and output files and using datalad run to trigger the data processing
+    Wrapper around process_UNFCCC_DI_for_country_group which takes care of selecting
+    input and output files and using datalad run to trigger the data processing
 
     Parameters
     ----------

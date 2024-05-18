@@ -5,21 +5,22 @@ function such that it can be called from datalad
 
 import argparse
 
-from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_devel import read_year_to_test_specs
+from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_devel import (
+    read_year_to_test_specs,
+)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--submission_year', help='Submission round to read', type=int)
-    parser.add_argument('--data_year', help='Data year to read', type=int, default=2010)
-    parser.add_argument('--country', help='Country to read', type=str, default=None)
-    parser.add_argument('--totest', help='read tables to test', action='store_true')
+    parser.add_argument("--submission_year", help="Submission round to read", type=int)
+    parser.add_argument("--data_year", help="Data year to read", type=int, default=2010)
+    parser.add_argument("--country", help="Country to read", type=str, default=None)
+    parser.add_argument("--totest", help="read tables to test", action="store_true")
     args = parser.parse_args()
-
 
     submission_year = args.submission_year
     data_year = args.data_year
     country = args.country
-    #print(f"totest: {args.totest}")
+    # print(f"totest: {args.totest}")
     if args.totest:
         totest = True
     else:
@@ -31,5 +32,3 @@ if __name__ == "__main__":
         totest=totest,
         country_code=country,
     )
-
-

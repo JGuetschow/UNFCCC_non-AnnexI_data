@@ -1,3 +1,8 @@
+"""
+Input and output functions for the DI reader
+
+Saving single country datasets and country groups datasets
+"""
 import primap2 as pm2
 import xarray as xr
 from dask.base import tokenize
@@ -8,30 +13,46 @@ from .unfccc_di_reader_helper import determine_dataset_filename, determine_filen
 
 
 def save_DI_country_data(
-        data_pm2: xr.Dataset,
-        raw: bool=True,
+    data_pm2: xr.Dataset,
+    raw: bool = True,
 ):
-    '''
-    save primap2 and IF data to country folder
-    can be used for raw and processed data but for a single country only
-    '''
+    """
+    Save primap2 and IF data to country folder
+
+    Can be used for raw and processed data but for a single country only
+
+    Parameters
+    ----------
+    data_pm2 (xr.Dataset)
+        Data to be saved
+    raw (bool: default = True)
+        True if the data in raw, false if it is processed data
+
+    Returns
+    -------
+    nothing
+    """
     # preparations
     data_if = data_pm2.pr.to_interchange_format()
 
     ## get country
-    countries = data_if[data_pm2.attrs['area']].unique()
+    countries = data_if[data_pm2.attrs["area"]].unique()
     if len(countries) > 1:
-        raise ValueError(f"More than one country in input data. This function can only"
-                         f"handle single country data. Countries: {countries}")
+        raise ValueError(  # noqa: TRY003
+            f"More than one country in input data. This function can only"
+            f"handle single country data. Countries: {countries}"
+        )
     else:
         country_code = countries[0]
 
     ## get timestamp
-    scenario_col = data_pm2.attrs['scen']
+    scenario_col = data_pm2.attrs["scen"]
     scenarios = data_if[scenario_col].unique()
     if len(scenarios) > 1:
-        raise ValueError(f"More than one scenario in input data. This function can only"
-                         f"handle single scenario data. Scenarios: {scenarios}")
+        raise ValueError(  # noqa: TRY003
+            f"More than one scenario in input data. This function can only"
+            f"handle single scenario data. Scenarios: {scenarios}"
+        )
     else:
         scenario = scenarios[0]
 
@@ -46,7 +67,7 @@ def save_DI_country_data(
     filename_hash = root_path / determine_filename(country_code, token, raw, hash=True)
 
     # primap2 native format
-    filename_hash_nc = filename_hash.parent / (filename_hash.name + '.nc')
+    filename_hash_nc = filename_hash.parent / (filename_hash.name + ".nc")
     if not filename_hash_nc.exists():
         # if parent dir does not exist create it
         if not filename_hash.parent.exists():
@@ -58,7 +79,7 @@ def save_DI_country_data(
         data_pm2.pr.to_netcdf(filename_hash_nc, encoding=encoding)
 
     # primap2 IF
-    filename_hash_csv = filename_hash.parent / (filename_hash.name + '.csv')
+    filename_hash_csv = filename_hash.parent / (filename_hash.name + ".csv")
     if not filename_hash_csv.exists():
         # save the data
         print(f"Data has changed. Save to {filename_hash.name + '.csv/.yaml'}")
@@ -70,7 +91,7 @@ def save_DI_country_data(
     filename_date = root_path / determine_filename(country_code, date_str, raw)
 
     # create the symlinks to the actual data (with the hash)
-    suffixes = ['.nc', '.csv', '.yaml']
+    suffixes = [".nc", ".csv", ".yaml"]
     for suffix in suffixes:
         file_date = filename_date.parent / (filename_date.name + suffix)
         file_hash = filename_hash.name + suffix
@@ -80,14 +101,33 @@ def save_DI_country_data(
 
 
 def save_DI_dataset(
-        data_pm2: xr.Dataset,
-        raw: bool=True,
-        annexI: bool=False,
+    data_pm2: xr.Dataset,
+    raw: bool = True,
+    annexI: bool = False,
 ):
-    '''
+    """
+    Save primap2 and IF data to dataset folder
+
+    Can be used for raw and processed data but not to save to country folders
+
+    Parameters
+    ----------
+    data_pm2 (xr.Dataset)
+        Data to be saved
+    raw (bool: default = True)
+        True if the data in raw, false if it is processed data
+    annexI (bool: default = False)
+        True if the data to save is from annexI countries, false if it's from
+        non-annexi countries
+
+    Returns
+    -------
+    nothing
+    """
+    """
     save primap2 and IF data to dataset folder
     can be used for raw and processed data but not to save to country folders
-    '''
+    """
     # preparations
     data_if = data_pm2.pr.to_interchange_format()
     if annexI:
@@ -95,13 +135,14 @@ def save_DI_dataset(
     else:
         country_group = "non-AnnexI"
 
-
     ## get timestamp
-    scenario_col = data_pm2.attrs['scen']
+    scenario_col = data_pm2.attrs["scen"]
     scenarios = data_if[scenario_col].unique()
     if len(scenarios) > 1:
-        raise ValueError(f"More than one scenario in input data. This function can only"
-                         f"handle single scenario data. Scenarios: {scenarios}")
+        raise ValueError(  # noqa: TRY003
+            f"More than one scenario in input data. This function can only"
+            f"handle single scenario data. Scenarios: {scenarios}"
+        )
     else:
         scenario = scenarios[0]
 
@@ -113,10 +154,11 @@ def save_DI_dataset(
 
     # get the filename with the hash and check if it exists (separate for pm2 format
     # and IF to fix broken datasets if necessary)
-    filename_hash = root_path / determine_dataset_filename(token, raw, annexI=annexI,
-                                               hash=True)
+    filename_hash = root_path / determine_dataset_filename(
+        token, raw, annexI=annexI, hash=True
+    )
     # primap2 native format
-    filename_hash_nc = filename_hash.parent / (filename_hash.name + '.nc')
+    filename_hash_nc = filename_hash.parent / (filename_hash.name + ".nc")
     if not filename_hash_nc.exists():
         # if parent dir does not exist create it
         # TODO double, also in determine_dataset_filename. same for country data
@@ -129,7 +171,7 @@ def save_DI_dataset(
         data_pm2.pr.to_netcdf(filename_hash_nc, encoding=encoding)
 
     # primap2 IF
-    filename_hash_csv = filename_hash.parent / (filename_hash.name + '.csv')
+    filename_hash_csv = filename_hash.parent / (filename_hash.name + ".csv")
     if not filename_hash_csv.exists():
         # save the data
         print(f"Data has changed. Save to {filename_hash.name + '.csv/.yaml'}")
@@ -138,11 +180,12 @@ def save_DI_dataset(
         print(f"Data unchanged for {country_group}. Create symlinks.")
 
     # get the filename with the date
-    filename_date = root_path / determine_dataset_filename(date_str, raw=raw,
-                                               annexI=annexI, hash=False)
+    filename_date = root_path / determine_dataset_filename(
+        date_str, raw=raw, annexI=annexI, hash=False
+    )
 
     # create the symlinks to the actual data (with the hash)
-    suffixes = ['.nc', '.csv', '.yaml']
+    suffixes = [".nc", ".csv", ".yaml"]
     for suffix in suffixes:
         file_date = filename_date.parent / (filename_date.name + suffix)
         file_hash = filename_hash.name + suffix

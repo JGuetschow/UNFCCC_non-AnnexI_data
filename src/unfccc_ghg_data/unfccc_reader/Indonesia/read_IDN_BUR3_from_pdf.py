@@ -93,7 +93,7 @@ if __name__ == "__main__":
             "CO": "CO",  # no mapping, just added for completeness here
             "NMVOCs": "NMVOC",
             "SO2": "SO2",  # no mapping, just added for completeness here
-            "Other halogenated gases with CO2 equivalent conversion factors (3)": f"OTHERHFCS ({gwp_to_use})",
+            "Other halogenated gases with CO2 equivalent conversion factors (3)": f"OTHERHFCS ({gwp_to_use})",  # noqa: E501
         },
     }
 

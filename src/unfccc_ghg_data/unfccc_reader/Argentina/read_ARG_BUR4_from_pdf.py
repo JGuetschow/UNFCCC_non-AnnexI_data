@@ -142,7 +142,7 @@ if __name__ == "__main__":
         },
         "unit": "PRIMAP1",
         "orig_cat_name": {
-            "1A3di Navegación marítima y fluvial internacional": "Navegación marítima y fluvial internacional", # noqa: E501
+            "1A3di Navegación marítima y fluvial internacional": "Navegación marítima y fluvial internacional",  # noqa: E501
         },
     }
 
@@ -152,7 +152,7 @@ if __name__ == "__main__":
                 "Total de emisiones y absorciones nacionales": "0",
                 "Navegación marítima y fluvial internacional": "M.BK.M",
                 "Operaciones Multilaterales": "M.MULTIOP",
-                "Emisiones de CO2 provenientes del uso de biomasa como combustible": "M.BIO",
+                "Emisiones de CO2 provenientes del uso de biomasa como combustible": "M.BIO",  # noqa: E501
             },
         },
         "orig_cat_name": {

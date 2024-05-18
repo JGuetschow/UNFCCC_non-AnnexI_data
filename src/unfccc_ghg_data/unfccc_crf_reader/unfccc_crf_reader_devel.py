@@ -1,14 +1,15 @@
 """
+Functions for CRF reading development
+
 This file holds functions that are used in CRF reading development like
 adding new tables or new submission years (and according country specific
-categories). Thue functions are tailored towards debug output and reading
+categories). The functions are tailored towards debug output and reading
 of single years in contrast to the production functions which are tailored
 towards the creation of full datasets including storage in the
 """
 
 from datetime import date
 from pathlib import Path
-from typing import Optional
 
 import pandas as pd
 import primap2 as pm2
@@ -17,28 +18,46 @@ import xarray as xr
 from unfccc_ghg_data.helper import get_country_name, log_path
 
 from . import crf_specifications as crf
-from .unfccc_crf_reader_core import convert_crf_table_to_pm2if, get_latest_date_for_country, read_crf_table
+from .unfccc_crf_reader_core import (
+    convert_crf_table_to_pm2if,
+    get_latest_date_for_country,
+    read_crf_table,
+)
 from .util import all_crf_countries
 
 
-def read_year_to_test_specs(
-        submission_year: int,
-        data_year: Optional[int]=None,
-        totest: Optional[bool]=False,
-        country_code: Optional=None,
+def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
+    submission_year: int,
+    data_year: int | None = None,
+    totest: bool | None = False,
+    country_code: str | None = None,
 ) -> xr.Dataset:
     """
+    Read on file per country
+
     Read one xlsx file (so one data year) for each country for a submission year to
     create log files and extend the specifications
 
-    totest: if true only read tables with "totest" status
+    Parameters
+    ----------
+    submission_year
+        submission year to read
+    data_year
+        year to read
+    totest
+        if true only read tables with "totest" status
+    country_code
+        country to read. If not given all countries will be read
 
+    Returns
+    -------
+    xr.Dataset with data for given parameters
     """
     if data_year is None:
-        data_year=2000
+        data_year = 2000
 
-    if country_code=="None":
-        country_code=None
+    if country_code == "None":
+        country_code = None
 
     unknown_categories = []
     last_row_info = []
@@ -46,7 +65,7 @@ def read_year_to_test_specs(
     print(f"CRF test reading for CRF{submission_year}. Using data year {data_year}")
     if totest:
         print("Reading only tables to test.")
-    print("#"*80)
+    print("#" * 80)
 
     if country_code is not None:
         countries_to_read = [country_code]
@@ -57,7 +76,7 @@ def read_year_to_test_specs(
         country_name = get_country_name(country_code)
         print(f"reading for country: {country_code}")
         # get specification and available tables
-           # if we only have a single country check if we might have a country specific
+        # if we only have a single country check if we might have a country specific
         # specification (currently only Australia, 2023)
         if country_code is not None:
             try:
@@ -66,35 +85,44 @@ def read_year_to_test_specs(
                     f"Using country specific specification: "
                     f"CRF{submission_year}_{country_code}"
                 )
-            except:
+            except Exception:
                 # no country specific specification, check for general specification
                 try:
                     crf_spec = getattr(crf, f"CRF{submission_year}")
-                except:
-                    raise ValueError(
-                        f"No terminology exists for submission year " f"{submission_year}"
-                    )
+                except Exception as ex:
+                    raise ValueError(  # noqa: TRY003
+                        f"No terminology exists for submission year "
+                        f"{submission_year}"
+                    ) from ex
         else:
             try:
                 crf_spec = getattr(crf, f"CRF{submission_year}")
-            except:
-                raise ValueError(
+            except Exception as ex:
+                raise ValueError(  # noqa: TRY003
                     f"No terminology exists for submission year " f"{submission_year}"
-                )
+                ) from ex
 
         if totest:
-            tables = [table for table in crf_spec.keys()
-                      if crf_spec[table]["status"] == "totest"]
+            tables = [
+                table
+                for table in crf_spec.keys()
+                if crf_spec[table]["status"] == "totest"
+            ]
         else:
-            tables = [table for table in crf_spec.keys()
-                      if crf_spec[table]["status"] == "tested"]
-        print(f"The following tables are available in the " \
-              f"CRF{submission_year} specification: {tables}")
+            tables = [
+                table
+                for table in crf_spec.keys()
+                if crf_spec[table]["status"] == "tested"
+            ]
+        print(
+            f"The following tables are available in the "
+            f"CRF{submission_year} specification: {tables}"
+        )
         print("#" * 80)
 
         try:
             submission_date = get_latest_date_for_country(country_code, submission_year)
-        except:
+        except Exception:
             print(f"No submissions for country {country_name}, CRF{submission_year}")
             submission_date = None
 
@@ -102,8 +130,13 @@ def read_year_to_test_specs(
             for table in tables:
                 # read table for given years
                 ds_table, new_unknown_categories, new_last_row_info = read_crf_table(
-                    country_code, table, submission_year, date=submission_date,
-                    data_year=[data_year], debug=True)
+                    country_code,
+                    table,
+                    submission_year,
+                    date=submission_date,
+                    data_year=[data_year],
+                    debug=True,
+                )
 
                 # collect messages on unknown rows etc
                 unknown_categories = unknown_categories + new_unknown_categories
@@ -124,37 +157,44 @@ def read_year_to_test_specs(
                     ds_table_if = convert_crf_table_to_pm2if(
                         ds_table,
                         submission_year,
-                        meta_data_input={"title": f"Data submitted in {submission_year} to the UNFCCC "
-                                                  f"in the common reporting format (CRF) by {country_name}. "
-                                                  f"Submission date: {submission_date}"},
+                        meta_data_input={
+                            "title": f"Data submitted in {submission_year} to the "
+                            f"UNFCCC in the common reporting format (CRF) "
+                            f"by {country_name}. "
+                            f"Submission date: {submission_date}"
+                        },
                         entity_mapping=entity_mapping,
                     )
 
                     # now convert to native PRIMAP2 format
                     ds_table_pm2 = pm2.pm2io.from_interchange_format(ds_table_if)
 
-                    # if individual data for emissions and removals / recovery exist combine
-                    # them
-                    if (('CO2 removals' in ds_table_pm2.data_vars) and
-                            ('CO2 emissions' in ds_table_pm2.data_vars) and "CO2" not in ds_table_pm2.data_vars):
+                    # if individual data for emissions and removals / recovery exist
+                    # combine them
+                    if (
+                        ("CO2 removals" in ds_table_pm2.data_vars)
+                        and ("CO2 emissions" in ds_table_pm2.data_vars)
+                        and "CO2" not in ds_table_pm2.data_vars
+                    ):
                         # we can just sum to CO2 as we made sure that it doesn't exist.
                         # If we have CO2 and removals but not emissions, CO2 already has
                         # removals subtracted and we do nothing here
-                        ds_table_pm2["CO2"] = ds_table_pm2[["CO2 emissions",
-                                                            "CO2 removals"]].pr.sum(
-                            dim="entity", skipna=True, min_count=1
-                        )
+                        ds_table_pm2["CO2"] = ds_table_pm2[
+                            ["CO2 emissions", "CO2 removals"]
+                        ].pr.sum(dim="entity", skipna=True, min_count=1)
                         ds_table_pm2["CO2"].attrs["entity"] = "CO2"
 
-                    if (('CH4 removals' in ds_table_pm2.data_vars) and
-                            ('CH4 emissions' in ds_table_pm2.data_vars) and "CH4" not in ds_table_pm2.data_vars):
+                    if (
+                        ("CH4 removals" in ds_table_pm2.data_vars)
+                        and ("CH4 emissions" in ds_table_pm2.data_vars)
+                        and "CH4" not in ds_table_pm2.data_vars
+                    ):
                         # we can just sum to CH4 as we made sure that it doesn't exist.
                         # If we have CH4 and removals but not emissions, CH4 already has
                         # removals subtracted and we do nothing here
-                        ds_table_pm2["CH4"] = ds_table_pm2[["CH4 emissions",
-                                                            "CH4 removals"]].pr.sum(
-                            dim="entity", skipna=True, min_count=1
-                        )
+                        ds_table_pm2["CH4"] = ds_table_pm2[
+                            ["CH4 emissions", "CH4 removals"]
+                        ].pr.sum(dim="entity", skipna=True, min_count=1)
                         ds_table_pm2["CH4"].attrs["entity"] = "CH4"
 
                     # combine per table DS
@@ -163,8 +203,10 @@ def read_year_to_test_specs(
                     else:
                         ds_all = ds_all.combine_first(ds_table_pm2)
                 except Exception as e:
-                    print(f"Error occured when converting table {table} for"
-                          f" {country_name} to PRIMAP2 IF. Exception: {e}")
+                    print(
+                        f"Error occured when converting table {table} for"
+                        f" {country_name} to PRIMAP2 IF. Exception: {e}"
+                    )
                     # TODO: error handling and logging
 
     # process log messages.
@@ -175,37 +217,39 @@ def read_year_to_test_specs(
                 log_path
                 / f"CRF{submission_year}"
                 / f"{data_year}_unknown_categories_{country_code}"
-                  f"_{today.strftime('%Y-%m-%d')}.csv"
+                f"_{today.strftime('%Y-%m-%d')}.csv"
             )
         else:
-            log_location = (log_path / f"CRF{submission_year}"
-                            / f"{data_year}_unknown_categories_"
-                              f"{today.strftime('%Y-%m-%d')}.csv")
+            log_location = (
+                log_path / f"CRF{submission_year}" / f"{data_year}_unknown_categories_"
+                f"{today.strftime('%Y-%m-%d')}.csv"
+            )
         print(f"Unknown rows found. Savin log to {log_location}")
         save_unknown_categories_info(unknown_categories, log_location)
 
     if len(last_row_info) > 0:
         if country_code is not None:
             log_location = (
-               log_path
-               / f"CRF{submission_year}"
-               / f"{data_year}_last_row_info_{country_code}_"
-                 f"{today.strftime('%Y-%m-%d')}.csv"
-           )
+                log_path
+                / f"CRF{submission_year}"
+                / f"{data_year}_last_row_info_{country_code}_"
+                f"{today.strftime('%Y-%m-%d')}.csv"
+            )
         else:
-            log_location = (log_path / f"CRF{submission_year}"
-                            / f"{data_year}_last_row_info_"
-                              f"{today.strftime('%Y-%m-%d')}.csv")
-        print(f"Data found in the last row. Saving log to "
-              f"{log_location}")
+            log_location = (
+                log_path / f"CRF{submission_year}" / f"{data_year}_last_row_info_"
+                f"{today.strftime('%Y-%m-%d')}.csv"
+            )
+        print(f"Data found in the last row. Saving log to " f"{log_location}")
         save_last_row_info(last_row_info, log_location)
 
     # save the data:
     compression = dict(zlib=True, complevel=9)
     output_folder = log_path / f"test_read_CRF{submission_year}"
     if country_code is not None:
-        output_filename = (f"CRF{submission_year}_{country_code}_"
-                           f"{today.strftime('%Y-%m-%d')}")
+        output_filename = (
+            f"CRF{submission_year}_{country_code}_" f"{today.strftime('%Y-%m-%d')}"
+        )
     else:
         output_filename = f"CRF{submission_year}_{today.strftime('%Y-%m-%d')}"
     if totest:
@@ -215,28 +259,26 @@ def read_year_to_test_specs(
         output_folder.mkdir()
 
     # write data in interchange format
-    pm2.pm2io.write_interchange_format(output_folder / output_filename,
-                                       ds_all.pr.to_interchange_format())
+    pm2.pm2io.write_interchange_format(
+        output_folder / output_filename, ds_all.pr.to_interchange_format()
+    )
 
     # write data in native PRIMAP2 format
     encoding = {var: compression for var in ds_all.data_vars}
-    ds_all.pr.to_netcdf(output_folder / (output_filename + ".nc"),
-                        encoding=encoding)
+    ds_all.pr.to_netcdf(output_folder / (output_filename + ".nc"), encoding=encoding)
 
     return ds_all
 
 
 def save_unknown_categories_info(
-        unknown_categories: list[list],
-        file: Path,
+    unknown_categories: list[list],
+    file: Path,
 ) -> None:
     """
     Save information on unknown categories to a csv file.
 
     Parameters
     ----------
-    __________
-
     unknown_categories: List[List]
         List of lists with information on the unknown categories.
         (which table, country and year, and which categories)
@@ -246,51 +288,57 @@ def save_unknown_categories_info(
 
     """
     # process unknown categories
-    df_unknown_cats = pd.DataFrame(unknown_categories, columns=["Table", "Country", "Category", "Year"])
+    df_unknown_cats = pd.DataFrame(
+        unknown_categories, columns=["Table", "Country", "Category", "Year"]
+    )
 
     processed_cats = []
     all_tables = df_unknown_cats["Table"].unique()
     all_years = set(df_unknown_cats["Year"].unique())
     all_years = set([year for year in all_years if isinstance(year, int)])
-    all_years = set([year for year in all_years if int(year) > 1989])
+    all_years = set([year for year in all_years if int(year) > 1989])  # noqa: PLR2004
     for table in all_tables:
         df_cats_current_table = df_unknown_cats[df_unknown_cats["Table"] == table]
         cats_current_table = list(df_cats_current_table["Category"].unique())
         for cat in cats_current_table:
-            df_current_cat_table = df_cats_current_table[df_cats_current_table["Category"] == cat]
+            df_current_cat_table = df_cats_current_table[
+                df_cats_current_table["Category"] == cat
+            ]
             all_countries = df_current_cat_table["Country"].unique()
             countries_cat = ""
             for country in all_countries:
-                years_country = df_current_cat_table[df_current_cat_table["Country"] == country]["Year"].unique()
+                years_country = df_current_cat_table[
+                    df_current_cat_table["Country"] == country
+                ]["Year"].unique()
                 if set(years_country) == all_years:
                     countries_cat = f"{countries_cat}; {country}"
                 else:
                     countries_cat = f"{countries_cat}; {country} ({years_country})"
             processed_cats.append([table, cat, countries_cat])
 
-
     if not file.parents[1].exists():
         file.parents[1].mkdir()
     if not file.parents[0].exists():
         file.parents[0].mkdir()
-    df_processed_cats = pd.DataFrame(processed_cats, columns=["Table", "Category", "Countries"])
+    df_processed_cats = pd.DataFrame(
+        processed_cats, columns=["Table", "Category", "Countries"]
+    )
     df_processed_cats.to_csv(file, index=False)
 
 
 def save_last_row_info(
-        last_row_info: list[list],
-        file: Path,
-    ) -> None:
+    last_row_info: list[list],
+    file: Path,
+) -> None:
     """
     Save information on data found in the last row read for a table.
+
     The last row read should not contain data. If it does contain data
     it is a hint that table size is larger for some countries than
     given in the specification and thus we might not read the full table.
 
     Parameters
     ----------
-    __________
-
     last_row_info: List[List]
         List of lists with information on the unknown categories.
         (which table, country and year, and which categories)
@@ -300,22 +348,28 @@ def save_last_row_info(
 
     """
     # process last row with information messages
-    df_last_row_info = pd.DataFrame(last_row_info, columns=["Table", "Country", "Category", "Year"])
+    df_last_row_info = pd.DataFrame(
+        last_row_info, columns=["Table", "Country", "Category", "Year"]
+    )
 
     processed_last_row_info = []
     all_tables = df_last_row_info["Table"].unique()
     all_years = set(df_last_row_info["Year"].unique())
     all_years = set([year for year in all_years if isinstance(year, int)])
-    all_years = set([year for year in all_years if year > 1989])
+    all_years = set([year for year in all_years if year > 1989])  # noqa: PLR2004
     for table in all_tables:
         df_last_row_current_table = df_last_row_info[df_last_row_info["Table"] == table]
         all_countries = df_last_row_current_table["Country"].unique()
         for country in all_countries:
-            df_current_country_table = df_last_row_current_table[df_last_row_current_table["Country"] == country]
+            df_current_country_table = df_last_row_current_table[
+                df_last_row_current_table["Country"] == country
+            ]
             all_categories = df_current_country_table["Category"].unique()
             cats_country = ""
             for cat in all_categories:
-                years_category = df_current_country_table[df_current_country_table["Category"] == cat]["Year"].unique()
+                years_category = df_current_country_table[
+                    df_current_country_table["Category"] == cat
+                ]["Year"].unique()
                 if set(years_category) == all_years:
                     cats_country = f"{cats_country}; {cat}"
                 else:
@@ -326,5 +380,7 @@ def save_last_row_info(
         file.parents[1].mkdir()
     if not file.parents[0].exists():
         file.parents[0].mkdir()
-    df_processed_lost_row_info = pd.DataFrame(processed_last_row_info, columns=["Table", "Country", "Categories"])
+    df_processed_lost_row_info = pd.DataFrame(
+        processed_last_row_info, columns=["Table", "Country", "Categories"]
+    )
     df_processed_lost_row_info.to_csv("test_last_row_info.csv", index=False)

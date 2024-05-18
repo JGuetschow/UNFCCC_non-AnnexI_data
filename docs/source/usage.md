@@ -3,6 +3,15 @@
 ## Overview
 Introduce readers and downloaders
 
+```{toctree}
+:caption: Contents
+:maxdepth: 2
+repository_structure
+data_format
+
+```
+
+old below to be reorganized
 
 ## Datalad etc
 ```{include} ../../README.md
@@ -19,10 +28,3 @@ Introduce readers and downloaders
 ## CRF reader
 
 ## DI reader
-
-```{toctree}
-:caption: Contents
-:maxdepth: 2
-repository_structure
-
-```
