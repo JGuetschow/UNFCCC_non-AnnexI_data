@@ -115,6 +115,7 @@ ignore = [
     "D400",  # First line should end with a period
 ]
 line-length = 88
+exclude = ["*.json"]
 
 [tool.ruff.format]
 docstring-code-format = true
