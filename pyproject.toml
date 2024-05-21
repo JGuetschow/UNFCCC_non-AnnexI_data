@@ -115,7 +115,6 @@ ignore = [
     "D400",  # First line should end with a period
 ]
 line-length = 88
-extend-exclude = ["*.json"]
 
 [tool.ruff.format]
 docstring-code-format = true
@@ -146,6 +145,7 @@ docstring-code-format = true
 "dodo.py" = [
     "E501"  # don't enforce line length
 ]
+
 
 [tool.ruff.isort]
 known-first-party = ["src"]

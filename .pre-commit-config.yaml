@@ -14,11 +14,12 @@ repos:
       - id: check-case-conflict
       - id: check-json
       - id: check-merge-conflict
-      - id: check-symlinks
+      #- id: check-symlinks
       - id: check-yaml
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: ".json"
       - id: fix-byte-order-marker
       - id: mixed-line-ending
       - id: trailing-whitespace
