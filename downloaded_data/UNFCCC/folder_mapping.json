@@ -187,7 +187,10 @@
     "TON": "Tonga",
     "TTO": "Trinidad_and_Tobago",
     "TUN": "Tunisia",
-    "TUR": "T\u00fcrkiye",
+    "TUR": [
+        "T\u00fcrkiye",
+        "Turkey"
+    ],
     "TUV": "Tuvalu",
     "TZA": "United_Republic_of_Tanzania",
     "UGA": "Uganda",
