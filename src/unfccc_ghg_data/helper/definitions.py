@@ -48,6 +48,7 @@ custom_folders = {
     "Türkiye": "TUR",
     "Iran_(Islamic_Republic_of)": "IRN",
     "Côte_d`Ivoire": "CIV",
+    "Côte_d’Ivoire": "CIV",  # noqa: RUF001
     "Democratic_Republic_of_the_Congo": "COD",
     "European_Union": "EUA",
     "Taiwan": "TWN",
