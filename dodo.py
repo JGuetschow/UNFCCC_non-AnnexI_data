@@ -4,7 +4,10 @@ Define the tasks for UNFCCC data repository
 import os
 import sys
 
+import datalad.api
 from doit import get_var
+
+root_path = "."
 
 # TODO: task for folder mapping
 
@@ -85,10 +88,21 @@ def task_update_bur():
     """Update list of BUR submissions"""
     return {
         "targets": ["downloaded_data/UNFCCC/submissions-bur.csv"],
+        # "actions": [
+        #     'datalad run -m "Fetch BUR submissions" '
+        #     "-o downloaded_data/UNFCCC/submissions-bur.csv "
+        #     "python src/unfccc_ghg_data/unfccc_downloader/fetch_submissions_bur.py"
+        # ],
         "actions": [
-            'datalad run -m "Fetch BUR submissions" '
-            "-o downloaded_data/UNFCCC/submissions-bur.csv "
-            "python src/unfccc_ghg_data/unfccc_downloader/fetch_submissions_bur.py"
+            datalad.api.run(
+                cmd="python3 src/unfccc_ghg_data/unfccc_downloader/"
+                "fetch_submissions_bur.py",
+                dataset=root_path,
+                message="Fetch BUR submissions",
+                outputs="downloaded_data/UNFCCC/submissions-bur.csv",
+                dry_run=None,
+                explicit=True,
+            )
         ],
         "task_dep": ["set_env"],
         "verbosity": 2,
@@ -222,7 +236,7 @@ def task_update_btr():
         ],
         "task_dep": ["set_env"],
         "verbosity": 2,
-        "setup": ["setup_venv"],
+        "setup": ["in_venv"],
     }
 
 
@@ -243,7 +257,7 @@ def task_download_btr():
         ],
         "task_dep": ["set_env"],
         "verbosity": 2,
-        "setup": ["setup_venv"],
+        "setup": ["in_venv"],
     }
 
 

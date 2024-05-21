@@ -142,6 +142,9 @@ docstring-code-format = true
 "scripts/*" = [
     "S101" # S101 Use of `assert` detected
 ]
+"dodo.py" = [
+    "E501"  # don't enforce line length
+]
 
 [tool.ruff.isort]
 known-first-party = ["src"]
