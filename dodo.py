@@ -38,22 +38,15 @@ def map_folders(parent_folder):
 
     Internal function
     """
-    return {
-        "actions": [
-            set_root_path(),
-            datalad.api.run(
-                cmd="python3 src/unfccc_ghg_data/helper/folder_mapping.py "
-                f"--folder={parent_folder}",
-                dataset=root_path,
-                message=f"Update folder mapping for {parent_folder}",
-                outputs=f"{parent_folder}/folder_mapping.json",
-                dry_run=None,
-                explicit=True,
-            ),
-        ],
-        "verbosity": 2,
-        "setup": ["in_venv"],
-    }
+    datalad.api.run(
+        cmd="python3 src/unfccc_ghg_data/helper/folder_mapping.py "
+        f"--folder={parent_folder}",
+        dataset=root_path,
+        message=f"Update folder mapping for {parent_folder}",
+        outputs=f"{parent_folder}/folder_mapping.json",
+        dry_run=None,
+        explicit=True,
+    )
 
 
 def task_in_venv():
