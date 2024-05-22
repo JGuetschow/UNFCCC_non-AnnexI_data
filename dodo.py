@@ -10,23 +10,9 @@ from doit import get_var
 root_path = "."
 os.environ["UNFCCC_GHG_ROOT_PATH"] = root_path
 
-
-# TODO: task for folder mapping
-
-# create virtual environment
-# def task_setup_venv():
-#     """Create virtual environment"""
-#     return {
-#         'file_dep': ['requirements_dev.txt', 'setup.cfg', 'pyproject.toml'],
-#         'actions': ['python3 -m venv venv',
-#                     './venv/bin/pip install --upgrade pip wheel',
-#                     #'./venv/bin/pip install -Ur unfccc_ghg_data/requirements.txt',
-#                     './venv/bin/pip install --upgrade --upgrade-strategy '
-#                     'eager -e .[dev]',
-#                     'touch venv',],
-#         'targets': ['venv'],
-#         'verbosity': 2,
-#     }
+from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_prod import (  # noqa: E402
+    read_crf_for_country_datalad,
+)
 
 
 def set_root_path():
@@ -404,40 +390,45 @@ def task_read_unfccc_submission():
     }
 
 
-#
-# # read UNFCCC submissions.
-# # datalad run is called from within the read_UNFCCC_submission.py script
-# read_config_crf = {
-#     "country": get_var("country", None),
-#     "submission_year": get_var("submission_year", None),
-#     "submission_date": get_var("submission_date", None),
-#     "re_read": get_var("re_read", False),
-#     "countries": get_var("countries", None),
-#     "data_year": get_var("data_year", None),
-#     "totest": get_var("totest", None),
-# }
-#
-#
-# def task_read_unfccc_crf_submission():
-#     """Read CRF submission for a country"""
-#     actions = [
-#         f"python src/unfccc_ghg_data/unfccc_crf_reader"
-#         f"/read_unfccc_crf_submission_datalad.py "
-#         f"--country={read_config_crf['country']} "
-#         f"--submission_year={read_config_crf['submission_year']} "
-#         f"--submission_date={read_config_crf['submission_date']} ",
-#         "python src/unfccc_ghg_data/helper/folder_mapping.py "
-#         "--folder=extracted_data/UNFCCC",
-#     ]
-#     if read_config_crf["re_read"] == "True":
-#         actions[0] = actions[0] + " --re_read"
-#     return {
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
+# read UNFCCC CRF submissions.
+# datalad run is called from within the read_UNFCCC_submission.py script
+read_config_crf = {
+    "country": get_var("country", None),
+    "submission_year": get_var("submission_year", None),
+    "submission_date": get_var("submission_date", None),
+    "re_read": get_var("re_read", False),
+    "countries": get_var("countries", None),
+    "data_year": get_var("data_year", None),
+    "totest": get_var("totest", None),
+}
+
+
+def task_read_unfccc_crf_submission():
+    """Read CRF submission for a country"""
+
+    def read_CRF():
+        if read_config_crf["re_read"] == "True":
+            re_read = True
+        else:
+            re_read = False
+        read_crf_for_country_datalad(
+            read_config_crf["country"],
+            submission_year=int(read_config_crf["submission_year"]),
+            submission_date=read_config_crf["submission_date"],
+            re_read=re_read,
+        )
+
+    return {
+        "actions": [
+            (read_CRF,),
+            (map_folders, ["extracted_data/UNFCCC"]),
+        ],
+        "task_dep": ["set_env"],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
 #
 # def task_read_new_unfccc_crf_for_year():
 #     """
