@@ -334,12 +334,12 @@ CRT1 = {
             ["Biomass (3)", ["1.A.2.f", "Biomass"], 2],
             # g. other
             ["1.A.2.g. Other (11)", ["1.A.2.g", "Total"], 1],
-            ["Liquid fuels", ["1.A.2.f", "Liquid"], 2],
-            ["Solid fuels", ["1.A.2.f", "Solid"], 2],
-            ["Gaseous fuels (6)", ["1.A.2.f", "Gaseous"], 2],
-            ["Other fossil fuels (7)", ["1.A.2.f", "OtherFF"], 2],
-            ["Peat (8)", ["1.A.2.f", "Peat"], 2],
-            ["Biomass (3)", ["1.A.2.f", "Biomass"], 2],
+            ["Liquid fuels", ["1.A.2.g", "Liquid"], 2],
+            ["Solid fuels", ["1.A.2.g", "Solid"], 2],
+            ["Gaseous fuels (6)", ["1.A.2.g", "Gaseous"], 2],
+            ["Other fossil fuels (7)", ["1.A.2.g", "OtherFF"], 2],
+            ["Peat (8)", ["1.A.2.g", "Peat"], 2],
+            ["Biomass (3)", ["1.A.2.g", "Biomass"], 2],
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 2],
             # 1.A.2.g.i Manufacturing of machinery
             ["1.A.2.g.i. Manufacturing of machinery", ["1.A.2.g.i", "Total"], 2],

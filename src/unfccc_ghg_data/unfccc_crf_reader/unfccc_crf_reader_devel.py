@@ -262,6 +262,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         save_last_row_info(last_row_info, log_location)
 
     # save the data:
+    print(f"Save dataset to log folder: {log_path}")
     compression = dict(zlib=True, complevel=9)
     output_folder = log_path / f"test_read_{type}{submission_year}"
     if country_code is not None:

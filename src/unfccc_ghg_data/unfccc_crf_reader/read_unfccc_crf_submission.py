@@ -21,6 +21,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--re_read", help="Read data also if already read before", action="store_true"
     )
+    parser.add_argument("--type", help="CRF or CRT tables", default="CRF")
 
     args = parser.parse_args()
 
@@ -28,6 +29,7 @@ if __name__ == "__main__":
     submission_year = args.submission_year
     submission_date = args.submission_date
     re_read = args.re_read
+    type = args.type
     if submission_date == "None":
         submission_date = None
 
@@ -36,4 +38,5 @@ if __name__ == "__main__":
         submission_year=submission_year,
         submission_date=submission_date,
         re_read=re_read,
+        type=type,
     )

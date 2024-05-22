@@ -299,7 +299,10 @@ def read_crf_for_country_datalad(
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
     # get all the info for the country
     country_info = get_input_and_output_files_for_country(
-        country, submission_year=submission_year, verbose=True
+        country,
+        submission_year=submission_year,
+        verbose=True,
+        type=type,
     )
 
     print(f"Attempting to read data for {type}{submission_year} from {country}.")
