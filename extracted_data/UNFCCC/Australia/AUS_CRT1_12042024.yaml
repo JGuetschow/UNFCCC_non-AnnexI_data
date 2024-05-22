@@ -1,0 +1,26 @@
+attrs:
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/1
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Data submitted in 1 to the UNFCCC in the common reporting tables (CRT) by
+    Australia. Submission date: 12042024'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRF2013_1)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - class
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - category (CRF2013_1)
+  - provenance
+  - area (ISO3)
+  - scenario (PRIMAP)
+  - class
+  - source
+  - entity
+  - unit
+data_file: AUS_CRT1_12042024.csv
