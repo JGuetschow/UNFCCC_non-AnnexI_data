@@ -310,7 +310,7 @@ def task_download_btr():
     def download_btr():
         (
             datalad.api.run(
-                cmd="src/unfccc_ghg_data/unfccc_downloader/download_btr.py "
+                cmd="python src/unfccc_ghg_data/unfccc_downloader/download_btr.py "
                 f"--round={update_btr_config['round']}",
                 dataset=root_path,
                 message="Download BTR submissions for "
