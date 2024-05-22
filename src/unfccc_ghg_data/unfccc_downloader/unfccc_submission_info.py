@@ -121,7 +121,11 @@ def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
                             kind = "NID"
                         elif ("NIR" in doctype) or ("NIR" in title):
                             kind = "NIR"
-                        elif ("BRT" in doctype) or ("BTR" in title):
+                        elif ("SEF" in doctype) or ("SEF" in title):
+                            kind = "SEF"
+                        elif ("CRF" in doctype) or ("CRF" in title):
+                            kind = "CRF"
+                        elif ("BTR" in doctype) or ("BTR" in title):
                             kind = "BTR"
                         else:
                             kind = "other"
