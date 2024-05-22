@@ -428,7 +428,7 @@ def read_new_crf_for_year(
     return read_countries
 
 
-def read_new_crf_for_year_datalad(
+def read_new_crf_for_year_datalad(  # noqa: PLR0912
     submission_year: int,
     countries: Optional[list[str]] = None,
     re_read: Optional[bool] = False,
@@ -463,7 +463,15 @@ def read_new_crf_for_year_datalad(
             f"Reading {type}{submission_year} for all countries "
             f"using unfccc_crf_reader."
         )
-        countries = all_crf_countries
+        if type == "CRF":
+            if countries is None:
+                countries = all_crf_countries
+        elif type == "CRT":
+            if countries is None:
+                countries = all_countries
+        else:
+            raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+
     print("#" * 80)
     print("")
     if re_read:

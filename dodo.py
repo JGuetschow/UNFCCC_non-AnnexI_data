@@ -450,7 +450,7 @@ def task_read_new_unfccc_crf_for_year():
             re_read = False
         read_new_crf_for_year_datalad(
             submission_year=int(read_config_crf["submission_year"]),
-            countries=read_config_crf["countries"],
+            # countries=read_config_crf["countries"],
             re_read=re_read,
             type=read_config_crf["type"],
         )
