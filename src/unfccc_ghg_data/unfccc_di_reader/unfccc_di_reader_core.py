@@ -13,6 +13,8 @@ import pycountry
 import unfccc_di_api
 import xarray as xr
 
+from unfccc_ghg_data.helper import AI_countries, nAI_countries
+
 from .unfccc_di_reader_config import (
     cat_code_regexp,
     di_query_filters,
@@ -20,7 +22,7 @@ from .unfccc_di_reader_config import (
     di_to_pm2if_template_nai,
 )
 from .unfccc_di_reader_io import save_DI_country_data, save_DI_dataset
-from .util import AI_countries, DI_date_format, nAI_countries
+from .util import DI_date_format
 
 
 def read_UNFCCC_DI_for_country(  # noqa: PLR0913

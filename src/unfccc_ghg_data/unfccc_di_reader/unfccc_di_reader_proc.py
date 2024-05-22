@@ -8,12 +8,12 @@ from typing import Optional, Union
 import primap2 as pm2
 import xarray as xr
 
-from unfccc_ghg_data.helper import gas_baskets, process_data_for_country
+from unfccc_ghg_data.helper import gas_baskets, nAI_countries, process_data_for_country
 
 from .unfccc_di_reader_config import cat_conversion, di_processing_info
 from .unfccc_di_reader_helper import determine_filename, find_latest_DI_data
 from .unfccc_di_reader_io import save_DI_country_data, save_DI_dataset
-from .util import DI_date_format, nAI_countries
+from .util import DI_date_format
 
 
 def process_and_save_UNFCCC_DI_for_country(

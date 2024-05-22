@@ -10,6 +10,7 @@ import primap2 as pm2
 import xarray as xr
 
 from unfccc_ghg_data.helper import (
+    all_countries,
     code_path,
     custom_country_mapping,
     extracted_data_path_UNFCCC,
@@ -375,8 +376,14 @@ def read_new_crf_for_year(
         list[str]: list with country codes for which the data has been read
 
     """
-    if countries is None:
-        countries = all_crf_countries
+    if type == "CRF":
+        if countries is None:
+            countries = all_crf_countries
+    elif type == "CRT":
+        if countries is None:
+            countries = all_countries
+    else:
+        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
 
     read_countries = {}
     for country in countries:
@@ -482,6 +489,7 @@ def read_new_crf_for_year_datalad(
                     country_info["name"],
                     submission_year=submission_year,
                     submission_date=country_info["date"],
+                    type=type,
                     verbose=False,
                 )
                 if not data_read:
@@ -657,6 +665,8 @@ def submission_has_been_read(  # noqa: PLR0913
     """
     output_folder = extracted_data_path_UNFCCC / country_name.replace(" ", "_")
     output_filename = f"{country_code}_{type}{submission_year}_{submission_date}"
+
+    #    check if the submission_year is correctly used for CRT
     if output_folder.exists():
         existing_files = output_folder.glob(f"{output_filename}.*")
         existing_suffixes = [file.suffix for file in existing_files]
@@ -667,21 +677,25 @@ def submission_has_been_read(  # noqa: PLR0913
                     f"Data already available for {country_code}, "
                     f"{type}{submission_year}, version {submission_date}."
                 )
-        else:
+        elif existing_suffixes:
             has_been_read = False
             if verbose:
                 print(
                     f"Partial data available for {country_code}, "
                     f"{type}{submission_year}, version {submission_date}. "
                     "Please check if all files have been written after "
-                    "reading."
+                    f"reading. Existing suffixes: {existing_suffixes}"
+                )
+        else:
+            has_been_read = False
+            if verbose:
+                print(
+                    f"No read data available for {country_code}, "
+                    f"{type}{submission_year}, version {submission_date}. "
                 )
     else:
         has_been_read = False
         if verbose:
-            print(
-                f"No read data available for {country_code}, "
-                f"{type}{submission_year}, version {submission_date}. "
-            )
+            print(f"No read data available for {country_code}. ")
 
     return has_been_read
