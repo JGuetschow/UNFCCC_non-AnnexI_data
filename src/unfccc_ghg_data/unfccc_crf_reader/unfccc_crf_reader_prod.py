@@ -140,6 +140,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
         country_name,
         submission_year=submission_year,
         submission_date=submission_date,
+        type=type,
         verbose=True,
     )
 

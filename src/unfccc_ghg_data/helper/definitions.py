@@ -29,13 +29,9 @@ legacy_data_path = root_path / "legacy_data"
 dataset_path = root_path / "datasets"
 dataset_path_UNFCCC = dataset_path / "UNFCCC"
 
-nAI_countries = list(
-    pd.read_csv(code_path / "unfccc_di_reader" / "DI_NAI_parties.conf")["code"]
-)
+nAI_countries = list(pd.read_csv(code_path / "helper" / "DI_NAI_parties.conf")["code"])
 # AI_countries = list(reader.annex_one_reader.parties["code"])
-AI_countries = list(
-    pd.read_csv(code_path / "unfccc_di_reader" / "DI_AI_parties.conf")["code"]
-)
+AI_countries = list(pd.read_csv(code_path / "helper" / "DI_AI_parties.conf")["code"])
 
 all_countries = nAI_countries + AI_countries
 
