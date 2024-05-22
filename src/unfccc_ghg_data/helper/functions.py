@@ -944,6 +944,9 @@ def get_code_file(
     if submission[0:2] == "DI":
         return root_path / "unfccc_di_reader"
 
+    # replace "-" by "_" in submission
+    submission = submission.replace("-", "_")
+
     # obtain country code
     country_code = get_country_code(country_name)
 

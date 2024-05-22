@@ -7,11 +7,7 @@ import sys
 
 import pandas as pd
 import primap2 as pm2
-from primap2.pm2io._data_reading import filter_data, matches_time_format
-
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_KOR_INV2023 import (
+from config_KOR_INV2023 import (
     aggregate_after_mapping,
     aggregate_before_mapping,
     cat_codes,
@@ -22,6 +18,9 @@ from .config_KOR_INV2023 import (
     filter_remove_after_agg,
     fix_rows,
 )
+from primap2.pm2io._data_reading import filter_data, matches_time_format
+
+from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
 
 if __name__ == "__main__":
     # ###
