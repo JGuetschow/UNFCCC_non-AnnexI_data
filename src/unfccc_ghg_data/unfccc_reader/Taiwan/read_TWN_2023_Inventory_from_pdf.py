@@ -9,19 +9,8 @@ import copy
 import camelot
 import pandas as pd
 import primap2 as pm2
-from primap2.pm2io._data_reading import matches_time_format
-
-from unfccc_ghg_data.helper import (
-    compression,
-    downloaded_data_path,
-    extracted_data_path,
-    gas_baskets,
-    make_wide_table,
-    process_data_for_country,
-)
-
-from .config_twn_nir2022 import fix_rows
-from .config_twn_nir2023 import (
+from config_twn_nir2022 import fix_rows
+from config_twn_nir2023 import (
     add_coords_cols,
     basket_copy,
     cat_code_regexp,
@@ -34,6 +23,16 @@ from .config_twn_nir2023 import (
     page_defs,
     table_defs,
     terminology_proc,
+)
+from primap2.pm2io._data_reading import matches_time_format
+
+from unfccc_ghg_data.helper import (
+    compression,
+    downloaded_data_path,
+    extracted_data_path,
+    gas_baskets,
+    make_wide_table,
+    process_data_for_country,
 )
 
 if __name__ == "__main__":

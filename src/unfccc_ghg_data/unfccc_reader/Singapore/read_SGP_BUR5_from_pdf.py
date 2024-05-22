@@ -11,17 +11,7 @@ import locale
 import camelot
 import pandas as pd
 import primap2 as pm2
-from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    fix_rows,
-    gas_baskets,
-    process_data_for_country,
-)
-
-from .config_sgp_bur5 import (
+from config_sgp_bur5 import (
     cat_code_regexp,
     cat_codes_manual,
     cat_names_fix,
@@ -39,6 +29,15 @@ from .config_sgp_bur5 import (
     table_def_templates,
     table_defs,
     values_replacement,
+)
+from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    fix_rows,
+    gas_baskets,
+    process_data_for_country,
 )
 
 if __name__ == "__main__":

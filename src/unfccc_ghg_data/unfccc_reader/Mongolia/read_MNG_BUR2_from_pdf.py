@@ -4,15 +4,7 @@ Read Mongolia's BUR2 from pdf
 import camelot
 import pandas as pd
 import primap2 as pm2
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    fix_rows,
-    process_data_for_country,
-)
-
-from .config_mng_bur2 import (
+from config_mng_bur2 import (
     coords_cols,
     coords_defaults,
     coords_terminologies,
@@ -24,6 +16,13 @@ from .config_mng_bur2 import (
     inv_conf_per_entity,
     inv_conf_per_year,
     meta_data,
+)
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    fix_rows,
+    process_data_for_country,
 )
 
 if __name__ == "__main__":

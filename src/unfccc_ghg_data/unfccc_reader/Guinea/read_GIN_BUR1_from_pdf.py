@@ -4,12 +4,7 @@ Read Guinea's BUR1 from pdf
 import camelot
 import pandas as pd
 import primap2 as pm2
-
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-from unfccc_ghg_data.helper.functions import process_data_for_country
-from unfccc_ghg_data.helper.functions_temp import find_and_replace_values
-
-from .config_gin_bur1 import (
+from config_gin_bur1 import (
     coords_cols,
     coords_defaults,
     coords_terminologies,
@@ -25,6 +20,12 @@ from .config_gin_bur1 import (
     replace_categories,
     replace_info,
     set_value,
+)
+
+from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+from unfccc_ghg_data.helper.functions import (
+    find_and_replace_values,
+    process_data_for_country,
 )
 
 if __name__ == "__main__":

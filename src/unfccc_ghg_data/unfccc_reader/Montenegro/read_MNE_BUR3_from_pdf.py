@@ -16,11 +16,10 @@ import re
 import camelot
 import pandas as pd
 import primap2 as pm2
+from config_mne_bur3 import aggregate_cats, cat_mapping, drop_data
 from primap2.pm2io._data_reading import matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_mne_bur3 import aggregate_cats, cat_mapping, drop_data
 
 if __name__ == "__main__":
     # ###

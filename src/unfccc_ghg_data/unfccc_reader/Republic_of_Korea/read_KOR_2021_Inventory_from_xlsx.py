@@ -12,11 +12,7 @@ import sys
 
 import pandas as pd
 import primap2 as pm2
-from primap2.pm2io._data_reading import filter_data, matches_time_format
-
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_kor_bur4 import (
+from config_kor_bur4 import (
     aggregate_after_mapping,
     aggregate_before_mapping,
     cat_codes,
@@ -26,6 +22,9 @@ from .config_kor_bur4 import (
     filter_remove_2006,
     filter_remove_after_agg,
 )
+from primap2.pm2io._data_reading import filter_data, matches_time_format
+
+from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
 
 if __name__ == "__main__":
     # ###

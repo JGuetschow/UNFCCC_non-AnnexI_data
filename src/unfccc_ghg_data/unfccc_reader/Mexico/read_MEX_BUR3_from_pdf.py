@@ -9,10 +9,9 @@ Data are read from pdf using camelot
 import camelot
 import pandas as pd
 import primap2 as pm2
+from config_mex_bur3 import fix_rows, page_defs
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_mex_bur3 import fix_rows, page_defs
 
 if __name__ == "__main__":
     # ###
