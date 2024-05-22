@@ -29,6 +29,7 @@ from .util import all_crf_countries
 def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     submission_year: int,
     data_year: int | None = None,
+    type: str = "CRF",
     totest: bool | None = False,
     country_code: str | None = None,
 ) -> xr.Dataset:
@@ -44,6 +45,8 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         submission year to read
     data_year
         year to read
+    type: str = CRF
+        read CRF or CRT data
     totest
         if true only read tables with "totest" status
     country_code
@@ -53,6 +56,14 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     -------
     xr.Dataset with data for given parameters
     """
+    # long name for type
+    if type == "CRF":
+        type_name = "common reporting format"
+    elif type == "CRT":
+        type_name = "common reporting tables"
+    else:
+        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+
     if data_year is None:
         data_year = 2000
 
@@ -62,7 +73,9 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     unknown_categories = []
     last_row_info = []
     ds_all = None
-    print(f"CRF test reading for CRF{submission_year}. Using data year {data_year}")
+    print(
+        f"{type} test reading for {type}{submission_year}. Using data year {data_year}"
+    )
     if totest:
         print("Reading only tables to test.")
     print("#" * 80)
@@ -80,15 +93,15 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         # specification (currently only Australia, 2023)
         if country_code is not None:
             try:
-                crf_spec = getattr(crf, f"CRF{submission_year}_{country_code}")
+                crf_spec = getattr(crf, f"{type}{submission_year}_{country_code}")
                 print(
                     f"Using country specific specification: "
-                    f"CRF{submission_year}_{country_code}"
+                    f"{type}{submission_year}_{country_code}"
                 )
             except Exception:
                 # no country specific specification, check for general specification
                 try:
-                    crf_spec = getattr(crf, f"CRF{submission_year}")
+                    crf_spec = getattr(crf, f"{type}{submission_year}")
                 except Exception as ex:
                     raise ValueError(  # noqa: TRY003
                         f"No terminology exists for submission year "
@@ -96,10 +109,10 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     ) from ex
         else:
             try:
-                crf_spec = getattr(crf, f"CRF{submission_year}")
+                crf_spec = getattr(crf, f"{type}{submission_year}")
             except Exception as ex:
                 raise ValueError(  # noqa: TRY003
-                    f"No terminology exists for submission year " f"{submission_year}"
+                    f"No terminology exists for {type}{submission_year}"
                 ) from ex
 
         if totest:
@@ -116,14 +129,16 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
             ]
         print(
             f"The following tables are available in the "
-            f"CRF{submission_year} specification: {tables}"
+            f"{type}{submission_year} specification: {tables}"
         )
         print("#" * 80)
 
         try:
-            submission_date = get_latest_date_for_country(country_code, submission_year)
+            submission_date = get_latest_date_for_country(
+                country_code, submission_year, type=type
+            )
         except Exception:
-            print(f"No submissions for country {country_name}, CRF{submission_year}")
+            print(f"No submissions for country {country_name}, {type}{submission_year}")
             submission_date = None
 
         if submission_date is not None:
@@ -136,6 +151,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     date=submission_date,
                     data_year=[data_year],
                     debug=True,
+                    type=type,
                 )
 
                 # collect messages on unknown rows etc
@@ -159,7 +175,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                         submission_year,
                         meta_data_input={
                             "title": f"Data submitted in {submission_year} to the "
-                            f"UNFCCC in the common reporting format (CRF) "
+                            f"UNFCCC in the {type_name} ({type}) "
                             f"by {country_name}. "
                             f"Submission date: {submission_date}"
                         },
@@ -215,13 +231,15 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         if country_code is not None:
             log_location = (
                 log_path
-                / f"CRF{submission_year}"
+                / f"{type}{submission_year}"
                 / f"{data_year}_unknown_categories_{country_code}"
                 f"_{today.strftime('%Y-%m-%d')}.csv"
             )
         else:
             log_location = (
-                log_path / f"CRF{submission_year}" / f"{data_year}_unknown_categories_"
+                log_path
+                / f"{type}{submission_year}"
+                / f"{data_year}_unknown_categories_"
                 f"{today.strftime('%Y-%m-%d')}.csv"
             )
         print(f"Unknown rows found. Savin log to {log_location}")
@@ -231,13 +249,13 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         if country_code is not None:
             log_location = (
                 log_path
-                / f"CRF{submission_year}"
+                / f"{type}{submission_year}"
                 / f"{data_year}_last_row_info_{country_code}_"
                 f"{today.strftime('%Y-%m-%d')}.csv"
             )
         else:
             log_location = (
-                log_path / f"CRF{submission_year}" / f"{data_year}_last_row_info_"
+                log_path / f"{type}{submission_year}" / f"{data_year}_last_row_info_"
                 f"{today.strftime('%Y-%m-%d')}.csv"
             )
         print(f"Data found in the last row. Saving log to " f"{log_location}")
@@ -245,13 +263,13 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
 
     # save the data:
     compression = dict(zlib=True, complevel=9)
-    output_folder = log_path / f"test_read_CRF{submission_year}"
+    output_folder = log_path / f"test_read_{type}{submission_year}"
     if country_code is not None:
         output_filename = (
-            f"CRF{submission_year}_{country_code}_" f"{today.strftime('%Y-%m-%d')}"
+            f"{type}{submission_year}_{country_code}_" f"{today.strftime('%Y-%m-%d')}"
         )
     else:
-        output_filename = f"CRF{submission_year}_{today.strftime('%Y-%m-%d')}"
+        output_filename = f"{type}{submission_year}_{today.strftime('%Y-%m-%d')}"
     if totest:
         output_filename = output_filename + "_totest"
 

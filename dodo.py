@@ -10,8 +10,12 @@ from doit import get_var
 root_path = "."
 os.environ["UNFCCC_GHG_ROOT_PATH"] = root_path
 
+from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_devel import (  # noqa: E402
+    read_year_to_test_specs,
+)
 from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_prod import (  # noqa: E402
     read_crf_for_country_datalad,
+    read_new_crf_for_year_datalad,
 )
 
 
@@ -400,6 +404,7 @@ read_config_crf = {
     "countries": get_var("countries", None),
     "data_year": get_var("data_year", None),
     "totest": get_var("totest", None),
+    "type": get_var("type", "CRF"),
 }
 
 
@@ -416,6 +421,7 @@ def task_read_unfccc_crf_submission():
             submission_year=int(read_config_crf["submission_year"]),
             submission_date=read_config_crf["submission_date"],
             re_read=re_read,
+            type=read_config_crf["type"],
         )
 
     return {
@@ -429,86 +435,93 @@ def task_read_unfccc_crf_submission():
     }
 
 
-#
-# def task_read_new_unfccc_crf_for_year():
-#     """
-#     Read CRF submission for all countries for given submission year.
-#
-#     By default only reads data not present yet. Only reads the latest updated
-#     submission for each country.
-#     """
-#     actions = [
-#         f"python src/unfccc_ghg_data/unfccc_crf_reader"
-#         f"/read_new_unfccc_crf_for_year_datalad.py "
-#         f"--submission_year={read_config_crf['submission_year']} ",
-#         "python src/unfccc_ghg_data/helper/folder_mapping.py "
-#         "--folder=extracted_data/UNFCCC",
-#     ]
-#     # specifying countries is currently disabled duo to problems with command line
-#     # list arguments
-#     # if read_config_crf["countries"] is not None:
-#     #        actions[0] = actions[0] + f"--countries={read_config_crf['countries']} "
-#     if read_config_crf["re_read"] == "True":
-#         actions[0] = actions[0] + " --re_read"
-#     return {
-#         #'basename': "Read_CRF_year",
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# def task_test_read_unfccc_crf_for_year():
-#     """
-#     Test CRF reading.
-#
-#     Test CRF with a single year only for speed and logging to extend specifications
-#     if necessary.
-#     """
-#     actions = [
-#         f"python "
-#         f"src/unfccc_ghg_data/unfccc_crf_reader"
-#         f"/test_read_unfccc_crf_for_year.py "
-#         f"--submission_year={read_config_crf['submission_year']} "
-#         f"--country={read_config_crf['country']} "
-#     ]
-#     if read_config_crf["totest"] == "True":
-#         actions[0] = actions[0] + " --totest"
-#
-#     if read_config_crf["data_year"] is not None:
-#         actions[0] = actions[0] + f"--data_year={read_config_crf['data_year']} "
-#     return {
-#         #'basename': "Read_CRF_year",
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# def task_compile_raw_unfccc_crf_for_year():
-#     """
-#     Collect all latest CRF submissions for a given year
-#
-#     Reads the latest data fromt he extracted data folder for each country.
-#     Notifies the user if new data are available in the downloaded_data folder
-#     which have not yet been read.
-#
-#     Data are saved in the datasets/UNFCCC/CRFYYYY folder.
-#     """
-#     actions = [
-#         f"python "
-#         f"src/unfccc_ghg_data/unfccc_crf_reader/crf_raw_for_year.py "
-#         f"--submission_year={read_config_crf['submission_year']} "
-#     ]
-#     return {
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
+def task_read_new_unfccc_crf_for_year():
+    """
+    Read CRF/CRT submission for all countries for given submission year.
+
+    By default only reads data not present yet. Only reads the latest updated
+    submission for each country.
+    """
+
+    def read_new_CRF():
+        if read_config_crf["re_read"] == "True":
+            re_read = True
+        else:
+            re_read = False
+        read_new_crf_for_year_datalad(
+            submission_year=int(read_config_crf["submission_year"]),
+            countries=read_config_crf["countries"],
+            re_read=re_read,
+            type=read_config_crf["type"],
+        )
+
+    return {
+        "actions": [
+            (read_new_CRF,),
+            (map_folders, ["extracted_data/UNFCCC"]),
+        ],
+        "task_dep": ["set_env"],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+def task_test_read_unfccc_crf_for_year():
+    """
+    Test CRF/CRT reading.
+
+    Test CRF/CRT with a single year only for speed and logging to extend specifications
+    if necessary.
+    """
+
+    def read_CRF():
+        if read_config_crf["totest"] == "True":
+            totest = True
+        else:
+            totest = False
+        if read_config_crf["data_year"] is not None:
+            data_year = int(read_config_crf["data_year"])
+        else:
+            data_year = None
+        read_year_to_test_specs(
+            submission_year=int(read_config_crf["submission_year"]),
+            data_year=data_year,
+            totest=totest,
+            country_code=read_config_crf["country"],
+            type=read_config_crf["type"],
+        )
+
+    return {
+        "actions": [(read_CRF,)],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+def task_compile_raw_unfccc_crf_for_year():
+    """
+    Collect all latest CRF/CRT submissions for a given year / submission round
+
+    Reads the latest data from the extracted data folder for each country.
+    Notifies the user if new data are available in the downloaded_data folder
+    which have not yet been read.
+
+    Data are saved in the datasets/UNFCCC/[CRFYYYY|CRTX] folder.
+    """
+    actions = [
+        f"python "
+        f"src/unfccc_ghg_data/unfccc_crf_reader/crf_raw_for_year.py "
+        f"--submission_year={read_config_crf['submission_year']} "
+        f"--type={read_config_crf['type']} "
+    ]
+    return {
+        "actions": actions,
+        "task_dep": ["set_env"],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
 #
 # # tasks for DI reader
 # # datalad run is called from within the read_unfccc_di_for_country.py script
