@@ -137,7 +137,7 @@ def determine_dataset_filename(
     return filename.relative_to(root_path)
 
 
-def get_input_and_output_files_for_country_DI(
+def get_input_and_output_files_for_country_DI(  # noqa: PLR0912
     country: str,
     date_str: str,
     raw: bool,
@@ -162,7 +162,10 @@ def get_input_and_output_files_for_country_DI(
     country_info["name"] = country_name
 
     # determine latest data
-    print(f"Determining output files for {country_name}")
+    if raw:
+        print(f"Determining output files for {country_name}")
+    else:
+        print(f"Determining input and output files for {country_name}")
 
     # get input files (only for processing)
     if raw:
@@ -172,6 +175,7 @@ def get_input_and_output_files_for_country_DI(
         if date_str is None:
             # get the latest date
             input_file = [find_latest_DI_data(country_code, raw=True)]
+
         else:
             input_file = [
                 determine_filename(country_code, date_str, raw=False, hash=False)
@@ -186,11 +190,13 @@ def get_input_and_output_files_for_country_DI(
                     ValueError,
                     f"Input file {input_file[0].name} is not a symlink "
                     f" or not existent. Check if the data you want to "
-                    f"process exists and if your repository is ",
+                    f"process exists and if your repository is clean.",
                 )
 
         input_files = [
-            f"{input_file.as_posix()}.{suffix}" for suffix in ["yaml", "csv", "nc"]
+            f"{file.parent / file.stem}.{suffix}"
+            for suffix in ["yaml", "csv", "nc"]
+            for file in input_file
         ]
 
         if verbose:

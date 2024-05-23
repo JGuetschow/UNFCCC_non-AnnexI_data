@@ -88,7 +88,7 @@ def process_DI_for_country_datalad(
     """
     # get all the info for the country
     country_info = get_input_and_output_files_for_country_DI(
-        country, date_str, raw=True, verbose=True
+        country, date_str, raw=False, verbose=True
     )
 
     print(f"Attempting to process DI data for {country_info['name']}.")

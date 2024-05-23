@@ -938,7 +938,7 @@ def get_code_file(
 
     # CRF is an exception as it's read using the unfccc_crf_reader module
     # so we return the path to that.
-    if submission[0:3] == "CRF":
+    if submission[0:3] in ("CRF", "CRT"):
         return root_path / "unfccc_crf_reader"
 
     if submission[0:2] == "DI":
