@@ -47,12 +47,14 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
 
     Parameters
     ----------
-    country_code: str
+    country_code
         ISO3 code of the country (country names don't work, use the wrapper function)
-    category_groups: dict (optional)
+    category_groups
         define which categories to read including filters on classification, measure,
-        gases
+        gases. If `None` the default configuration will be used
+
         .. code-block:: python
+
             cat_groups = {
                 "4.A  Enteric Fermentation": {  # 4.A  Enteric Fermentation[14577]
                     "measure": [
@@ -62,7 +64,6 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
                     "gases": ["CH4"],
                 },
             }
-        If `None` the default configuration will be used
     read_subsectors
         Whether to also read data for subsectors of the sectors defined in the
         category_groups.
@@ -77,14 +78,14 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
     use_gwp
         If given use this GWP specification for conversion of data in CO2 equivalents
         instead of the default GWP specifications
-    debug (default: False)
+    debug
         output debug information
-    use_zenodo (default: True)
+    use_zenodo
         Read from zenodo datasets instead of UNFCCC DI api.
 
     Returns
     -------
-    read data in primap2 format (xr.Dataset)
+    read data in primap2 format
 
     """
     # read the data
@@ -143,9 +144,9 @@ def read_UNFCCC_DI_for_country_df(  # noqa: PLR0912, PLR0915
 
     Parameters
     ----------
-    country_code: str
+    country_code
         ISO3 code of the country (country names don't work, use the wrapper function)
-    category_groups: dict (optional)
+    category_groups
         define which categories to read including filters on classification, measure,
         gases
 

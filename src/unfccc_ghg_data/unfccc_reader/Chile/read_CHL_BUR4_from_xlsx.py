@@ -10,10 +10,14 @@ import sys
 
 import pandas as pd
 import primap2 as pm2
-from config_chl_bur4 import aggregate_cats, cat_mapping, filter_remove_IPCC2006
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+from unfccc_ghg_data.unfccc_reader.Chile.config_chl_bur4 import (
+    aggregate_cats,
+    cat_mapping,
+    filter_remove_IPCC2006,
+)
 
 if __name__ == "__main__":
     # ###

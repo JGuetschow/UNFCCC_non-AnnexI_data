@@ -186,7 +186,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     date: str (optional, default is "latest")
         readonly submission from the given date
     folder: str (optional)
-        Folder that contains the xls files. If not given fodlers are determined by the
+        Folder that contains the xls files. If not given folders are determined by the
         submissions_year and country_code variables
     type: str default = "CRF"
         read CRF or CRF data
@@ -195,13 +195,12 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
 
     Returns
     -------
-    Tuple[pd.DataFrame, List[List], List[List]]:
-
-    * First return parameter is the data as a pandas DataFrame in long format
-    * Second return parameter is a list of unknown categories / row headers
-    * Third return parameter holds information on data found in the last read row.
-      This is used as a hint to check if table specifications might have to be adapted
-      as country submitted tables are longer than expected.
+    Tuple of parameters
+        * First return parameter is the data as a pandas DataFrame in long format.
+        * Second return parameter is a list of unknown categories / row headers.
+        * Third return parameter holds information on data found in the last read row.
+          This is used as a hint to check if table specifications might have to
+          be adapted as country submitted tables are longer than expected.
 
     """
     # check type
@@ -342,15 +341,13 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
 
     Returns
     -------
-    Tuple[pd.DataFrame, List[List], List[List]]:
+    Tuple of parameters
+        * First return parameter is the data as a pandas DataFrame in long format
+        * Second return parameter is a list of unknown categories / row headers
+        * Third return parameter holds information on data found in the last read row.
+          This is used as a hint to check if table specifications might have to
+          be adapted as country submitted tables are longer than expected.
 
-    * First return parameter is the data as a pandas DataFrame in long format
-    * Second return parameter is a list of unknown categories / row headers
-    * Third return parameter holds information on data found in the last read row.
-      This is used as a hint to check if table specifications might have to be adapted
-      as country submitted tables are longer than expected.
-
-    TODO: add verbosity option for debugging?
     """
     # check if file exists and if not download
     if file.is_symlink():

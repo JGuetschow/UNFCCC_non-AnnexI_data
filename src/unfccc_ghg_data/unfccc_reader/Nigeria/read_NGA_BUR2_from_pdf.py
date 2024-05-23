@@ -14,7 +14,14 @@ import numpy as np
 import pandas as pd
 import primap2 as pm2
 import xarray as xr
-from config_nga_bur2 import (
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    gas_baskets,
+    process_data_for_country,
+)
+from unfccc_ghg_data.unfccc_reader.Nigeria.config_nga_bur2 import (
     cat_code_regexp,
     cat_codes_manual,
     coords_cols,
@@ -33,13 +40,6 @@ from config_nga_bur2 import (
     unit_row,
     units_inv,
     year_inventory,
-)
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    gas_baskets,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":

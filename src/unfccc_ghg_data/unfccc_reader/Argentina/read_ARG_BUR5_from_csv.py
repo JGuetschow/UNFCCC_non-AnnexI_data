@@ -24,7 +24,15 @@ the highest detail categories are present
 
 import pandas as pd
 import primap2 as pm2
-from config_arg_bur5 import (
+
+from unfccc_ghg_data.helper import (
+    compression,
+    downloaded_data_path,
+    extracted_data_path,
+    gas_baskets,
+    process_data_for_country,
+)
+from unfccc_ghg_data.unfccc_reader.Argentina.config_arg_bur5 import (
     cats_to_agg,
     coords_cols,
     coords_defaults,
@@ -36,14 +44,6 @@ from config_arg_bur5 import (
     meta_data,
     time_format,
     unit,
-)
-
-from unfccc_ghg_data.helper import (
-    compression,
-    downloaded_data_path,
-    extracted_data_path,
-    gas_baskets,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":

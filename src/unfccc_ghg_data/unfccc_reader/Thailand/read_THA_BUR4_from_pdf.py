@@ -21,7 +21,13 @@ tables
 
 import pandas as pd
 import primap2 as pm2
-from config_tha_bur4 import (
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    process_data_for_country,
+)
+from unfccc_ghg_data.unfccc_reader.Thailand.config_tha_bur4 import (
     cat_codes_manual_main_sector_ts,
     cat_conversion,
     coords_cols,
@@ -40,12 +46,6 @@ from config_tha_bur4 import (
     meta_data,
     sectors_to_save,
     terminology_proc,
-)
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":

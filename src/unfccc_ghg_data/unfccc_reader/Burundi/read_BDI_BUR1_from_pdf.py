@@ -4,7 +4,10 @@ Read Burundi's BUR1 from pdf
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_bdi_bur1 import (
+
+from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+from unfccc_ghg_data.helper.functions import process_data_for_country
+from unfccc_ghg_data.unfccc_reader.Burundi.config_bdi_bur1 import (
     coords_cols,
     coords_defaults,
     coords_terminologies,
@@ -16,9 +19,6 @@ from config_bdi_bur1 import (
     inv_conf_per_year,
     meta_data,
 )
-
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-from unfccc_ghg_data.helper.functions import process_data_for_country
 
 if __name__ == "__main__":
     # ###

@@ -8,7 +8,13 @@ Data are read from pdf using camelot
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_tha_bur3 import (
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    process_data_for_country,
+)
+from unfccc_ghg_data.unfccc_reader.Thailand.config_tha_bur3 import (
     cat_conversion,
     coords_cols,
     coords_cols_indirect,
@@ -28,12 +34,6 @@ from config_tha_bur3 import (
     sectors_to_save,
     terminology_proc,
     trend_conf,
-)
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":
