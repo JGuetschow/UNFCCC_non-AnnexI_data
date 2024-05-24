@@ -124,9 +124,9 @@ The code has not been tested under Windows and Mac OS.
 ### Update BUR, NC, and NDC submissions
 The maintainers of this repository will update the list of submissions and the downloaded pdf files frequently. However, in some cases you might want to have the data early and do the download yourself. To avoid merge conflicts, please do this on a clean branch in your fork and make sure your branch is in sync with `main`.
 
-* **BUR**: To update the list of submissions run `make update-bur` in the main project folder. This will create a new list of submissions. To actually download the files run `make download-bur`.
-* **NC**: To update the list of submissions run `make update-nc` in the main project folder. This will create a new list of submissions. To actually download the files run `make download-nc`.
-* **NDC**: For the NDC submissions we use the list published in [openclimatedata/ndcs](https://github.com/openclimatedata/ndcs) which receives daily updates. To  download the files run `make download-ndc`.
+* **BUR**: To update the list of submissions run `poetry run doit update_bur` in the main project folder. This will create a new list of submissions. To actually download the files run `poetry run doit  download_bur`.
+* **NC**: To update the list of submissions run `poetry run doit update_nc` in the main project folder. This will create a new list of submissions. To actually download the files run `poetry run doit download_nc`.
+* **NDC**: For the NDC submissions we use the list published in [openclimatedata/ndcs](https://github.com/openclimatedata/ndcs) which receives daily updates. To  download the files run `poetry run doit download_ndc` (currently not working due to a data format change).
 
 All download scripts create files listing the new downloads in the folder *downloaded_data/UNFCCC*. the filenames use the format *00\_new\_downloads\_\<type\>-YYYY-MM-DD.csv* where *\<type\>* is *bur*, *nc*, or *ndc*. Currently, only one file per type and day is stored, so if you run the download script more than once on a day you will overwrite your first file (likely with an empty file as you have already downloaded everything) (see also [issue #2](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/issues/2)).
 

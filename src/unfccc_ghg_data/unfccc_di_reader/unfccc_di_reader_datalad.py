@@ -48,7 +48,7 @@ def read_DI_for_country_datalad(
     script = script.relative_to(root_path)
 
     cmd = (
-        f"./venv/bin/python3 {script.as_posix()} --country={country_info['code']} "
+        f"python3 {script.as_posix()} --country={country_info['code']} "
         f"--date={date_str}"
     )
     try:
@@ -101,7 +101,7 @@ def process_DI_for_country_datalad(
     script = script.relative_to(root_path)
 
     cmd = (
-        f"./venv/bin/python3 {script.as_posix()} --country={country_info['code']} "
+        f"python3 {script.as_posix()} --country={country_info['code']} "
         f"--date={date_str}"
     )
     try:
@@ -152,7 +152,7 @@ def read_DI_for_country_group_datalad(
     script = code_path / "unfccc_di_reader" / "read_unfccc_di_for_country_group.py"
     script = script.relative_to(root_path)
 
-    cmd = f"./venv/bin/python3 {script.as_posix()} "
+    cmd = f"python3 {script.as_posix()} "
     if annexI:
         cmd = cmd + " --annexI"
 
@@ -206,7 +206,7 @@ def process_DI_for_country_group_datalad(
     script = code_path / "unfccc_di_reader" / "process_unfccc_di_for_country_group.py"
     script = script.relative_to(root_path)
 
-    cmd = f"./venv/bin/python3 {script.as_posix()} "
+    cmd = f"python3 {script.as_posix()} "
     if annexI:
         cmd = cmd + " --annexI"
     if date_str is not None:

@@ -26,6 +26,6 @@ if __name__ == "__main__":
         read_subsectors=False,  # not applicable as we read all categories
         date_str=date_str,
         pm2if_specifications=None,  # automatically use the right specs for AI and NAI
-        default_gwp=None,  # automatically uses right default GWP for AI and NAI
+        use_gwp=None,  # automatically uses right default GWP for AI and NAI
         debug=False,
     )

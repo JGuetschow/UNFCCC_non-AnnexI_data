@@ -113,7 +113,7 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
     data_if = convert_DI_data_to_pm2_if(
         data=data_df,
         pm2if_specifications=deepcopy(pm2if_specifications),
-        default_gwp=use_gwp,
+        use_gwp=use_gwp,
         date_str=date_str,
         debug=debug,
     )
@@ -406,7 +406,7 @@ def read_UNFCCC_DI_for_country_df_zenodo(
 def convert_DI_data_to_pm2_if(  # noqa: PLR0912, PLR0915
     data: pd.DataFrame,
     pm2if_specifications: Optional[dict] = None,
-    default_gwp: Optional[str] = None,
+    use_gwp: Optional[str] = None,
     date_str: Optional[str] = None,
     debug: bool = False,
 ) -> pd.DataFrame:
@@ -516,10 +516,10 @@ def convert_DI_data_to_pm2_if(  # noqa: PLR0912, PLR0915
         to_replace=r"(.*) CO2 equivalent", value=r"\1CO2eq", regex=True
     )
     row_idx_co2eq = data_temp["unit"].str.endswith("CO2eq")
-    if default_gwp is not None:
+    if use_gwp is not None:
         # convert all with GWPs given in input
         data_temp.loc[row_idx_co2eq, "gas"] = (
-            data_temp.loc[row_idx_co2eq, "gas"] + f" ({default_gwp})"
+            data_temp.loc[row_idx_co2eq, "gas"] + f" ({use_gwp})"
         )
     elif ai_dataset:
         # convert with AR4

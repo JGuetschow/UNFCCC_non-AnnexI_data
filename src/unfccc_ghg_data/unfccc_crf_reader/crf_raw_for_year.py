@@ -5,18 +5,21 @@ Reads the latest data from the extracted data folder for each country.
 Notifies the user if new data are available in the downloaded_data folder
 which have not yet been read.
 
-Data are saved in the datasets/UNFCCC/CRFYYYY folder.
+Data are saved in the datasets/UNFCCC/CRFYYYY/CRTX folder.
+
+TODO: sort importing and move to datasets folder
+TODO: add datalad get to obtain the input files
 """
 
-# TODO: sort importing and move to datasets folder
 
 import argparse
 from datetime import date
 from pathlib import Path
 
+import datalad.api
 import primap2 as pm2
 
-from unfccc_ghg_data.helper import dataset_path_UNFCCC
+from unfccc_ghg_data.helper import all_countries, dataset_path_UNFCCC
 from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_prod import (
     get_input_and_output_files_for_country,
     submission_has_been_read,
@@ -26,18 +29,27 @@ from unfccc_ghg_data.unfccc_crf_reader.util import all_crf_countries
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--submission_year", help="Submission round to read", type=int)
+    parser.add_argument("--type", help="CRF or CRT tables", default="CRF")
     args = parser.parse_args()
     submission_year = args.submission_year
+    type = args.type
+
+    if type == "CRF":
+        countries = all_crf_countries
+    elif type == "CRT":
+        countries = all_countries
+    else:
+        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
 
     ds_all_CRF = None
     outdated_countries = []
     included_countries = []
 
-    for country in all_crf_countries:
+    for country in countries:
         # determine folder
         try:
             country_info = get_input_and_output_files_for_country(
-                country, submission_year=submission_year, verbose=False
+                country, submission_year=submission_year, type=type, verbose=False
             )
 
             # check if the latest submission has been read already
@@ -47,6 +59,7 @@ if __name__ == "__main__":
                 country_info["name"],
                 submission_year=submission_year,
                 submission_date=country_info["date"],
+                type=type,
                 verbose=False,
             )
             if not data_read:
@@ -60,6 +73,8 @@ if __name__ == "__main__":
             input_files = [
                 file for file in country_info["output"] if Path(file).suffix == ".nc"
             ]
+
+            datalad.api.get(input_files)
 
             ds_country = pm2.open_dataset(input_files[0])
 
@@ -81,8 +96,8 @@ if __name__ == "__main__":
     today = date.today()
 
     compression = dict(zlib=True, complevel=9)
-    output_folder = dataset_path_UNFCCC / f"CRF{submission_year}"
-    output_filename = f"CRF{submission_year}_raw_{today.strftime('%Y-%m-%d')}"
+    output_folder = dataset_path_UNFCCC / f"{type}{submission_year}"
+    output_filename = f"{type}{submission_year}_raw_{today.strftime('%Y-%m-%d')}"
 
     if not output_folder.exists():
         output_folder.mkdir()
