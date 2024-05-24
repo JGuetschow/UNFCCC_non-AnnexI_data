@@ -435,7 +435,6 @@ def task_read_unfccc_crf_submission():
             (read_CRF,),
             (map_folders, ["extracted_data/UNFCCC"]),
         ],
-        "task_dep": ["set_env"],
         "verbosity": 2,
         "setup": ["in_venv"],
     }
@@ -525,7 +524,6 @@ def task_compile_raw_unfccc_crf_for_year():
     ]
     return {
         "actions": actions,
-        "task_dep": ["set_env"],
         "verbosity": 2,
         "setup": ["in_venv"],
     }
