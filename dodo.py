@@ -1,5 +1,11 @@
 """
 Define the tasks for UNFCCC data repository
+
+The setup with the function that calls datalad.api.run is necessary because doit doesn't
+like the return values of datalad.api.run
+
+TODO: could add try-except blocks and return proper values so doit knows if the task
+ was run successfully
 """
 import os
 import sys
@@ -92,22 +98,22 @@ def task_map_folders():
 # Tasks for getting submissions and downloading them
 def task_update_bur():
     """Update list of BUR submissions"""
+
+    def fetch_bur():
+        datalad.api.run(
+            cmd="python3 src/unfccc_ghg_data/unfccc_downloader/"
+            "fetch_submissions_bur.py",
+            dataset=root_path,
+            message="Fetch BUR submissions",
+            outputs="downloaded_data/UNFCCC/submissions-bur.csv",
+            dry_run=None,
+            explicit=True,
+        )
+
     return {
         "targets": ["downloaded_data/UNFCCC/submissions-bur.csv"],
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python3 src/unfccc_ghg_data/unfccc_downloader/"
-                    "fetch_submissions_bur.py",
-                    "dataset": root_path,
-                    "message": "Fetch BUR submissions",
-                    "outputs": "downloaded_data/UNFCCC/submissions-bur.csv",
-                    "dry_run": None,
-                    "explicit": True,
-                },
-            ),
+            (fetch_bur,),
         ],
         "verbosity": 2,
         "setup": ["in_venv"],
@@ -116,24 +122,26 @@ def task_update_bur():
 
 def task_download_bur():
     """Download BUR submissions"""
+
+    def download_bur():
+        (
+            datalad.api.run(
+                cmd="python3 src/unfccc_ghg_data/unfccc_downloader/"
+                "download_nonannexI.py --category=BUR",
+                dataset=root_path,
+                message="Download BUR submissions",
+                inputs="downloaded_data/UNFCCC/submissions-bur.csv",
+                dry_run=None,
+                explicit=False,
+            ),
+        )
+
     return {
         #'file_dep': ['downloaded_data/UNFCCC/submissions-bur.csv'],
         # deactivate file_dep fow now as it will always run fetch submissions
         # before download
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python3 src/unfccc_ghg_data/unfccc_downloader/"
-                    "download_nonannexI.py --category=BUR",
-                    "dataset": root_path,
-                    "message": "Download BUR submissions",
-                    "inputs": "downloaded_data/UNFCCC/submissions-bur.csv",
-                    "dry_run": None,
-                    "explicit": False,
-                },
-            ),
+            (download_bur,),
             (map_folders, ["downloaded_data/UNFCCC"]),
         ],
         "verbosity": 2,
@@ -158,19 +166,7 @@ def task_update_nc():
     return {
         "targets": ["downloaded_data/UNFCCC/submissions-nc.csv"],
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python3 src/unfccc_ghg_data/unfccc_downloader/"
-                    "fetch_submissions_nc.py",
-                    "dataset": root_path,
-                    "message": "Fetch NC submissions",
-                    "outputs": "downloaded_data/UNFCCC/submissions-nc.csv",
-                    "dry_run": None,
-                    "explicit": True,
-                },
-            ),
+            (fetch_nc,),
         ],
         "verbosity": 2,
         "setup": ["in_venv"],
@@ -179,24 +175,26 @@ def task_update_nc():
 
 def task_download_nc():
     """Download BUR submissions"""
+
+    def download_nc():
+        (
+            datalad.api.run(
+                cmd="python3 src/unfccc_ghg_data/unfccc_downloader/"
+                "download_nonannexI.py --category=NC",
+                dataset=root_path,
+                message="Download NC submissions",
+                inputs="downloaded_data/UNFCCC/submissions-nc.csv",
+                dry_run=None,
+                explicit=False,
+            ),
+        )
+
     return {
         #'file_dep': ['downloaded_data/UNFCCC/submissions-bur.csv'],
         # deactivate file_dep fow now as it will always run fetch submissions
         # before download
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python3 src/unfccc_ghg_data/unfccc_downloader/"
-                    "download_nonannexI.py --category=NC",
-                    "dataset": root_path,
-                    "message": "Download NC submissions",
-                    "inputs": "downloaded_data/UNFCCC/submissions-nc.csv",
-                    "dry_run": None,
-                    "explicit": False,
-                },
-            ),
+            (download_nc,),
             (map_folders, ["downloaded_data/UNFCCC"]),
         ],
         "verbosity": 2,
@@ -215,26 +213,28 @@ update_aI_config = {
 
 def task_update_annexi():
     """Update list of AnnexI submissions"""
+
+    def fetch_annexi():
+        (
+            datalad.api.run(
+                cmd="python src/unfccc_ghg_data/unfccc_downloader/"
+                "fetch_submissions_annexI.py "
+                f"--year={update_aI_config['year']}",
+                dataset=root_path,
+                message=f"Fetch AnnexI submissions for {update_aI_config['year']}",
+                outputs=f"downloaded_data/UNFCCC/submissions-annexI_"
+                f"{update_aI_config['year']}.csv",
+                dry_run=None,
+                explicit=True,
+            ),
+        )
+
     return {
         "targets": [
             f"downloaded_data/UNFCCC/submissions-annexI_{update_aI_config['year']}.csv"
         ],
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python src/unfccc_ghg_data/unfccc_downloader/"
-                    "fetch_submissions_annexI.py "
-                    f"--year={update_aI_config['year']}",
-                    "dataset": root_path,
-                    "message": f"Fetch AnnexI submissions for {update_aI_config['year']}",
-                    "outputs": f"downloaded_data/UNFCCC/submissions-annexI_"
-                    f"{update_aI_config['year']}.csv",
-                    "dry_run": None,
-                    "explicit": True,
-                },
-            ),
+            (fetch_annexi,),
         ],
         "verbosity": 2,
         "setup": ["in_venv"],
@@ -243,29 +243,31 @@ def task_update_annexi():
 
 def task_download_annexi():
     """Download AnnexI submissions"""
+
+    def download_annexi():
+        (
+            datalad.api.run(
+                cmd="python src/unfccc_ghg_data/unfccc_downloader/download_annexI.py "
+                f"--category={update_aI_config['category']} "
+                f"--year={update_aI_config['year']}",
+                dataset=root_path,
+                message=f"Download AnnexI submissions for "
+                f"{update_aI_config['category']}"
+                f"{update_aI_config['year']}",
+                inputs=f"downloaded_data/UNFCCC/submissions-annexI_"
+                f"{update_aI_config['year']}.csv",
+                dry_run=None,
+                explicit=False,
+            ),
+        )
+
     return {
         # 'file_dep': [f"downloaded_data/UNFCCC/submissions-annex1_"
         #              f"{update_aI_config['year']}.csv"],
         # deactivate file_dep fow now as it will always run fetch submissions
         # before download
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python src/unfccc_ghg_data/unfccc_downloader/download_annexI.py "
-                    f"--category={update_aI_config['category']} "
-                    f"--year={update_aI_config['year']}",
-                    "dataset": root_path,
-                    "message": f"Download AnnexI submissions for "
-                    f"{update_aI_config['category']}"
-                    f"{update_aI_config['year']}",
-                    "inputs": f"downloaded_data/UNFCCC/submissions-annexI_"
-                    f"{update_aI_config['year']}.csv",
-                    "dry_run": None,
-                    "explicit": False,
-                },
-            ),
+            (download_annexi,),
             (map_folders, ["downloaded_data/UNFCCC"]),
         ],
         "verbosity": 2,
@@ -283,27 +285,29 @@ update_btr_config = {
 
 def task_update_btr():
     """Update list of BTR submissions"""
+
+    def fetch_btr():
+        (
+            datalad.api.run(
+                cmd="python src/unfccc_ghg_data/unfccc_downloader/"
+                "fetch_submissions_btr.py "
+                f"--round={update_btr_config['round']}",
+                dataset=root_path,
+                message=f"Fetch Biannial Transparency Report submissions for "
+                f"BTR{update_btr_config['round']}",
+                outputs=f"downloaded_data/UNFCCC/submissions-BTR"
+                f"{update_btr_config['round']}.csv",
+                dry_run=None,
+                explicit=True,
+            ),
+        )
+
     return {
         "targets": [
             f"downloaded_data/UNFCCC/submissions-BTR{update_btr_config['round']}.csv"
         ],
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python src/unfccc_ghg_data/unfccc_downloader/"
-                    "fetch_submissions_btr.py "
-                    f"--round={update_btr_config['round']}",
-                    "dataset": root_path,
-                    "message": f"Fetch Biannial Transparency Report submissions for "
-                    f"BTR{update_btr_config['round']}",
-                    "outputs": f"downloaded_data/UNFCCC/submissions-BTR"
-                    f"{update_btr_config['round']}.csv",
-                    "dry_run": None,
-                    "explicit": True,
-                },
-            ),
+            (fetch_btr,),
         ],
         "verbosity": 2,
         "setup": ["in_venv"],
@@ -312,27 +316,29 @@ def task_update_btr():
 
 def task_download_btr():
     """Download BTR submissions"""
+
+    def download_btr():
+        (
+            datalad.api.run(
+                cmd="python src/unfccc_ghg_data/unfccc_downloader/download_btr.py "
+                f"--round={update_btr_config['round']}",
+                dataset=root_path,
+                message="Download BTR submissions for "
+                f"BTR{update_btr_config['round']}",
+                inputs=f"downloaded_data/UNFCCC/submissions-BTR"
+                f"{update_btr_config['round']}.csv",
+                dry_run=None,
+                explicit=False,
+            ),
+        )
+
     return {
         # 'file_dep': [f"downloaded_data/UNFCCC/submissions-btr.csv "
         #              f"{update_btr_config['round']}.csv"],
         # deactivate file_dep fow now as it will always run fetch submissions
         # before download
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "python src/unfccc_ghg_data/unfccc_downloader/download_btr.py "
-                    f"--round={update_btr_config['round']}",
-                    "dataset": root_path,
-                    "message": "Download BTR submissions for "
-                    f"BTR{update_btr_config['round']}",
-                    "inputs": f"downloaded_data/UNFCCC/submissions-BTR"
-                    f"{update_btr_config['round']}.csv",
-                    "dry_run": None,
-                    "explicit": False,
-                },
-            ),
+            (download_btr,),
             (map_folders, ["downloaded_data/UNFCCC"]),
         ],
         "verbosity": 2,
@@ -342,20 +348,22 @@ def task_download_btr():
 
 def task_download_ndc():
     """Download NDC submissions"""
+
+    def download_ndc():
+        (
+            datalad.api.run(
+                cmd="src/unfccc_ghg_data/unfccc_downloader/download_ndc.py",
+                dataset=root_path,
+                message="Download NDC submissions",
+                inputs=None,
+                dry_run=None,
+                explicit=False,
+            ),
+        )
+
     return {
         "actions": [
-            (
-                datalad.api.run,
-                [],
-                {
-                    "cmd": "src/unfccc_ghg_data/unfccc_downloader/download_ndc.py",
-                    "dataset": root_path,
-                    "message": "Download NDC submissions",
-                    "inputs": None,
-                    "dry_run": None,
-                    "explicit": False,
-                },
-            ),
+            (download_ndc,),
             (map_folders, ["downloaded_data/UNFCCC"]),
         ],
         "verbosity": 2,
