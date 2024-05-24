@@ -33,11 +33,11 @@ Detailed data for 2015, less data for other years but main sectors present.
 The terminology is important as data in IPCC2006 categories has priority as it will currently not be made available through the UNFCCC interface.
 
 ### National communications (NC)
-* 
+*
 
 ### Biannial Update Reports (BUR)
 *
- 
+
 ### Nationally Determined Contributions (NDC)
 *
 

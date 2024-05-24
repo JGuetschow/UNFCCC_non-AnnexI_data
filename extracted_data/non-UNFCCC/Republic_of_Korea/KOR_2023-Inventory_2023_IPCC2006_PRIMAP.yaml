@@ -14,11 +14,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - area (ISO3)
-  - source
-  - provenance
-  - category (IPCC2006_PRIMAP)
   - scenario (PRIMAP)
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - provenance
+  - source
   - entity
   - unit
 data_file: KOR_2023-Inventory_2023_IPCC2006_PRIMAP.csv
