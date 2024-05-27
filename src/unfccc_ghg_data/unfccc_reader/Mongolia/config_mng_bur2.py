@@ -1,6 +1,7 @@
 """
-Configuration for Mongolia BUR2
+Configuration file to read Mongolia's BUR 2.
 """
+
 coords_terminologies = {
     "area": "ISO3",
     "category": "IPCC2006_PRIMAP",
@@ -355,6 +356,8 @@ country_processing_step1 = {
             "name": "National total emissions excluding LULUCF",
         },
         "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},  # consistency check
+        # TODO why is this line repeated? Check if can be removed
+        # "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},  # consistency check
         "0": {"sources": ["1", "2", "3", "4"]},  # consistency check
     },
     "basket_copy": {
