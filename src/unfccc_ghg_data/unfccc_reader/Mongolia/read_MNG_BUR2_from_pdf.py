@@ -279,6 +279,87 @@ if __name__ == "__main__":
     data_trend_pm2 = pm2.pm2io.from_interchange_format(df_trend_IF)
 
     # ###
+    # 3. Read in aggregated tables from 1990 - 2020
+    # ###
+
+    # Work in progress
+    inv_conf_per_sector = {
+        "all": {
+            "page_defs": {
+                "32": {
+                    "area": ["64,649,547,106"],
+                    "cols": ["106,182,237,294,345,403,480"],
+                },
+            },
+            "entity": "KYOTOGHG (SARGWP100)",
+            "category_column": "Categories",
+            "columns_to_drop": ["Categories"],
+            "years": ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
+            "unit": "Gg CO2e",
+            "last_year": "2020",
+            "rows_to_fix": {
+                -3: [
+                    "Year",
+                ],
+            },
+            "cat_codes_manual": {
+                "Energy": "1",
+                "IPPU": "2",
+                "Agriculture": "3",
+                "Waste": "4",
+                "LULUCF": "M.LULUCF",
+                "Total (excl. LULUCF)": "M.0.EL",
+                "Total (incl. LULUCF)": "M.0",
+            },
+        },
+    }
+
+    page = [*inv_conf_per_sector["all"]["page_defs"]][0]  # noqa: RUF015
+    sector = "all"
+
+    tables_inventory_original = camelot.read_pdf(
+        str(input_folder / pdf_file),
+        pages=page,
+        table_areas=inv_conf_per_sector[sector]["page_defs"][page]["area"],
+        columns=inv_conf_per_sector[sector]["page_defs"][page]["cols"],
+        flavor="stream",
+        split_text=True,
+    )
+
+    df_sector = tables_inventory_original[0].df
+
+    last_row = df_sector.loc[df_sector[0] == "2020"].index[0]
+
+    df_sector = df_sector[0 : last_row + 1]
+
+    if "rows_to_fix" in inv_conf_per_sector[sector]:
+        for n_rows in inv_conf_per_sector[sector]["rows_to_fix"].keys():
+            print(f"Merge content for {n_rows=}")
+            df_sector = fix_rows(
+                df_sector,
+                rows_to_fix=inv_conf_per_sector[sector]["rows_to_fix"][n_rows],
+                col_to_use=0,
+                n_rows=n_rows,
+            )
+
+    df_sector = df_sector.set_index(0)
+
+    # transpose so categegories are in first columns
+    df_sector = df_sector.T
+
+    df_sector = df_sector.rename(columns={" Year ": "category"})
+
+    # unit is always Gg
+    df_sector.loc[:, "unit"] = inv_conf_per_sector[sector]["unit"]
+
+    # only one entity per table
+    df_sector.loc[:, "entity"] = inv_conf_per_sector[sector]["entity"]
+
+    df_sector.loc[:, "category"] = df_sector.loc[:, "category"].replace(
+        inv_conf_per_sector[sector]["cat_codes_manual"]
+    )
+
+    # ###
     # Merge main and trend tables.
     # ###
 
