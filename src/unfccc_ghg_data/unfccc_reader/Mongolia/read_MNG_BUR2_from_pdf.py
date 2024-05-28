@@ -10,8 +10,13 @@ os.environ[
 
 import camelot  # noqa: E402
 import pandas as pd  # noqa: E402
+import primap2 as pm2  # noqa: E402
 from config_mng_bur2 import (  # noqa: E402
+    coords_cols,
+    coords_defaults,
     coords_terminologies,
+    coords_value_mapping,
+    meta_data,
 )
 
 from unfccc_ghg_data.helper import (  # noqa: E402
@@ -275,7 +280,7 @@ if __name__ == "__main__":
     # ###
     # 3. Read in aggregated tables from 1990 - 2020
     # ###
-
+    # tables: 32, 43 - 44, 74, 103, // 114 - 115, 119, 125 - 126, 151, 157, 161 - 162
     # Work in progress
     # noinspection PyInterpreter
     inv_conf_per_sector = {
@@ -300,11 +305,11 @@ if __name__ == "__main__":
             "year_column": " Year ",
             # TODO some categories are not recognized!
             "cat_codes_manual": {
-                "Energy": "1",
-                "IPPU": "2",
-                "Agriculture": "3",
-                "Waste": "4",
-                "LULUCF": "M.LULUCF",
+                " Energy ": "1",
+                " IPPU ": "2",
+                " Agriculture ": "3",
+                " Waste ": "4",
+                " LULUCF ": "M.LULUCF",
                 "Total (excl. LULUCF)": "M.0.EL",
                 "Total (incl. LULUCF)": "M.0",
             },
@@ -344,10 +349,111 @@ if __name__ == "__main__":
                 r" 1.A.3.e.ii  Off-road   ": "1.A.3.e.ii",
             },
         },
+        "energy cont": {
+            "page_defs": {
+                "44": {
+                    "area": ["59,552,553,84"],
+                    "cols": ["103,173,219,274,330,382,443,494"],
+                },
+            },
+            "entity": "KYOTOGHG (SARGWP100)",
+            # "category_column" : "Categories",
+            # "columns_to_drop" : ["Categories"],
+            # "years" : ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
+            "unit": "Gg CO2e",
+            "last_year": "2020",
+            "rows_to_fix": {
+                8: [
+                    "Years",
+                ],
+            },
+            "rows_to_drop": [0, 2],
+            "year_column": "Years    ",
+            "cat_codes_manual": {
+                "Other sectors 1.A.4.a Commercial/ Institutional  ": "1.A.4.a",
+                " 1.A.4.b Residen-tial  ": "1.A.4.b",
+                " 1.A.4.c.i Agriculture -Stationary  ": "1.A.4.c.i",
+                " 1.A.4.c.ii Agriculture -Off-road vehicles and other machinery": "1.A.4.c.ii",  # noqa: E501
+                "Non-specified 1.A.5.a Stationary  ": "1.A.5.a",
+                "Fugitive emis 1.B.1.a Coal mining & handling (surface mining) ": "1.B.1.a",  # noqa: E501
+                "sions from fu 1.B.2.a.ii Oil -Flaring  ": "1.B.2.a.ii",
+                "els 1.B.2.a.iii.2 Oil production and upgrading ": "1.B.2.a.iii",
+            },
+        },
+        "ippu": {
+            "page_defs": {
+                "74": {
+                    "area": ["68,701,544,313"],
+                    "cols": ["97,188,261,358,462"],
+                },
+            },
+            "entity": "KYOTOGHG (SARGWP100)",
+            # "category_column" : "Categories",
+            # "columns_to_drop" : ["Categories"],
+            # "years" : ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
+            "unit": "Gg CO2e",
+            "last_year": "2020",
+            "rows_to_fix": {
+                3: [
+                    "Year",
+                ],
+            },
+            "year_column": "Year ",
+            "cat_codes_manual": {
+                "2.A-Mineral industry ": "2.A",
+                "2.C-Metal industry ": "2.C",
+                "2.D-Non-energy products from fuels and solvent use": "2.D",
+                "2.F-Product uses as substitutes for ozone depleting substances": "2.F",
+                "2. IPPU Total ": "2",
+            },
+            "remove_duplicates": ["2"],
+        },
+        "livestock": {
+            "page_defs": {
+                "103": {
+                    "area": ["62,480,544,82"],
+                    "cols": ["97,182,259,326,403,474"],
+                },
+            },
+            "entity": "KYOTOGHG (SARGWP100)",
+            # "category_column" : "Categories",
+            # "columns_to_drop" : ["Categories"],
+            # "years" : ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
+            "unit": "Gg CO2e",
+            "last_year": "2020",
+            "rows_to_fix": {
+                3: [
+                    "Year",
+                ],
+            },
+            "rows_to_drop": [0, 1],
+            "year_column": "Year ",
+            # TODO: This is far from than the actual categories but works for now
+            "cat_codes_manual": {
+                "Fermentation Gg": "3.A.1",
+                "Management CH4": "3.A.2",
+                " (Total CH4) ": "3.A",
+                "Fermentation Gg C": "3.A.1",
+                "Management O2e": "3.A.2",
+                " (Gg CO2e) ": "3.A",
+            },
+            "multi_entity": {
+                "unit": ["Gg CH4", "Gg CH4", "Gg CH4", "Gg CO2e", "Gg CO2e", "Gg CO2e"],
+                "entity": [
+                    "CH4",
+                    "CH4",
+                    "CH4",
+                    "KYOTOGHG (SARGWP100)",
+                    "KYOTOGHG (SARGWP100)",
+                    "KYOTOGHG (SARGWP100)",
+                ],
+            },
+        },
     }
 
     df_agg = None
-    for sector in inv_conf_per_sector.keys():
+    # TODO remove reversed order again (only for development)
+    for sector in list(reversed(list(inv_conf_per_sector.keys()))):
         print("-" * 60)
         print(f"Reading sector {sector}.")
 
@@ -405,17 +511,31 @@ if __name__ == "__main__":
             columns={inv_conf_per_sector[sector]["year_column"]: "category"}
         )
 
-        # unit is always Gg
-        df_sector.loc[:, "unit"] = inv_conf_per_sector[sector]["unit"]
-
-        # only one entity per table
-        df_sector.loc[:, "entity"] = inv_conf_per_sector[sector]["entity"]
-
         df_sector["category"] = df_sector["category"].str.replace("\n", "")
 
         df_sector.loc[:, "category"] = df_sector.loc[:, "category"].replace(
             inv_conf_per_sector[sector]["cat_codes_manual"]
         )
+
+        if "multi_entity" in inv_conf_per_sector[sector]:
+            pass
+            df_sector["entity"] = inv_conf_per_sector[sector]["multi_entity"]["entity"]
+            df_sector["unit"] = inv_conf_per_sector[sector]["multi_entity"]["unit"]
+            df_sector = df_sector.set_index(["entity", "unit", "category"])
+
+        else:
+            # unit is always Gg
+            df_sector.loc[:, "unit"] = inv_conf_per_sector[sector]["unit"]
+
+            # only one entity per table
+            df_sector.loc[:, "entity"] = inv_conf_per_sector[sector]["entity"]
+
+        # Some categories are in two tables (summary and sector)
+        # Duplicates need to be removed
+        if "remove_duplicates" in inv_conf_per_sector[sector]:
+            for row in inv_conf_per_sector[sector]["remove_duplicates"]:
+                row_to_delete = df_sector.index[df_sector["category"] == row][0]
+                df_sector = df_sector.drop(index=row_to_delete)
 
         if df_sector is None:
             df_agg = df_sector
@@ -429,8 +549,26 @@ if __name__ == "__main__":
         for year in [str(y) for y in range(1990, 2021)]:
             df_agg.loc[:, year] = df_agg[year].str.replace(",", "")
 
-        print(df_agg)
+        # print(df_agg)
 
+    ### convert to interchange format ###
+    df_agg_IF = pm2.pm2io.convert_wide_dataframe_if(
+        data_wide=df_agg,
+        coords_cols=coords_cols,
+        coords_defaults=coords_defaults,
+        coords_terminologies=coords_terminologies,
+        coords_value_mapping=coords_value_mapping,
+        # filter_remove=filter_remove,
+        meta_data=meta_data,
+        convert_str=True,
+        time_format="%Y",
+    )
+
+    ### convert to primap2 format ###
+    print("Converting to primap2 format.")
+    data_agg_pm2 = pm2.pm2io.from_interchange_format(df_agg_IF)
+
+    pass
     # # ###
     # # Merge main and trend tables.
     # # ###
