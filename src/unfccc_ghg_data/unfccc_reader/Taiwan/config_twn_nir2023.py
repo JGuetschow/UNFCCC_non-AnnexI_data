@@ -329,7 +329,7 @@ table_defs_skip = {
 
 
 ##### primap2 metadata
-cat_code_regexp = r"(?P<UNFCCC_GHG_data>^[a-zA-Z0-9\.]{1,7})\s.*"
+cat_code_regexp = r"(?P<code>^[a-zA-Z0-9\.]{1,7})\s.*"
 
 time_format = "%Y"
 
@@ -422,30 +422,48 @@ cat_conversion = {
     "aggregate": {
         "1.A": {
             "sources": ["1.A.1", "1.A.2", "1.A.3", "1.A.4"],
-            "name": "Fuel Combustion Activities",
+            # "name": "Fuel Combustion Activities",
         },
-        "1.B": {"sources": ["1.B.1", "1.B.2"], "name": "Fugitive Emissions from Fuels"},
+        "1.B": {
+            "sources": ["1.B.1", "1.B.2"],
+            # "name": "Fugitive Emissions from Fuels"
+        },
         "2": {
             "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
-            "name": "Industrial Process and Product Use Sector",
+            # "name": "Industrial Process and Product Use Sector",
         },
-        "3.A": {"sources": ["3.A.1", "3.A.2"], "name": "Livestock"},
-        "3.B": {"sources": ["M.LULUCF"], "name": "Land"},
-        "3.C.1": {"sources": ["3.C.1.b"], "name": "Emissions from Biomass Burning"},
+        "3.A": {
+            "sources": ["3.A.1", "3.A.2"],
+            # "name": "Livestock"
+        },
+        "3.B": {
+            "sources": ["M.LULUCF"],
+            # "name": "Land"
+        },
+        "3.C.1": {
+            "sources": ["3.C.1.b"],
+            # "name": "Emissions from Biomass Burning"
+        },
         "3.C.5": {
             "sources": ["3.C.5.a", "3.C.5.b"],
-            "name": "Indirect N2O Emissions from Managed Soils",
+            # "name": "Indirect N2O Emissions from Managed Soils",
         },
         "3.C": {
             "sources": ["3.C.1", "3.C.3", "M.3.AS", "3.C.7"],
-            "name": "Aggregate sources and non-CO2 emissions sources on land",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land",
         },
         "M.AG.ELV": {
             "sources": ["3.C"],
-            "name": "Agriculture excluding livestock emissions",
+            # "name": "Agriculture excluding livestock emissions",
         },
-        "M.AG": {"sources": ["3.A", "3.C"], "name": "Agriculture"},
-        "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},  # consistency check
+        "M.AG": {
+            "sources": ["3.A", "3.C"],
+            # "name": "Agriculture"
+        },
+        "3": {
+            "sources": ["M.AG", "M.LULUCF"],
+            # "name": "AFOLU"
+        },  # consistency check
         "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},  # consistency check
         "0": {"sources": ["1", "2", "3", "4"]},  # consistency check
     },

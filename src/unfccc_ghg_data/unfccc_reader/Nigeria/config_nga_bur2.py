@@ -385,18 +385,24 @@ processing_info_step2 = {
     "aggregate_cats": {
         "M.AG.ELV": {
             "sources": ["3.C"],
-            "name": "Agriculture excluding livestock emissions",
+            # "name": "Agriculture excluding livestock emissions",
         },
-        "M.AG": {"sources": ["M.AG.ELV", "3.A"], "name": "Agriculture"},
+        "M.AG": {
+            "sources": ["M.AG.ELV", "3.A"],
+            # "name": "Agriculture"
+        },
         "M.LULUCF": {
             "sources": ["3.B", "3.D"],
-            "name": "Land Use, Land Use Change, and Forestry",
+            # "name": "Land Use, Land Use Change, and Forestry",
         },
         "M.0.EL": {
             "sources": ["1", "2", "M.AG", "4", "5"],
-            "name": "National Total Excluding LULUCF",
+            # "name": "National Total Excluding LULUCF",
         },
-        "0": {"sources": ["1", "2", "3", "4", "5"], "name": "National Total"},
+        "0": {
+            "sources": ["1", "2", "3", "4", "5"],
+            # "name": "National Total"
+        },
     },
     "downscale": {
         "sectors": {

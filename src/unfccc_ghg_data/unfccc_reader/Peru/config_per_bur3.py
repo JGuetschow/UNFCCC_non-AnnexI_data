@@ -527,18 +527,24 @@ cat_conversion = {
     "aggregate": {
         "2": {
             "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
-            "name": "IPPU",
+            # "name": "IPPU",
         },
         "M.3.C.AG": {
             "sources": ["3.C"],
-            "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
         },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG"],
-            "name": "Agriculture excluding livestock emissions",
+            # "name": "Agriculture excluding livestock emissions",
         },
-        "3.D": {"sources": ["3.D.1"], "name": "Other"},
-        "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},
+        "3.D": {
+            "sources": ["3.D.1"],
+            # "name": "Other"
+        },
+        "3": {
+            "sources": ["M.AG", "M.LULUCF"],
+            # "name": "AFOLU"
+        },
     },
 }
 

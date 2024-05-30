@@ -303,7 +303,9 @@ if __name__ == "__main__":
             ).sum()
 
             df_combine.insert(0, cat_label, cat_to_agg)
-            df_combine.insert(1, "orig_cat_name", aggregate_cats[cat_to_agg]["name"])
+            df_combine.insert(
+                1, "orig_cat_name", aggregate_cats[cat_to_agg]["orig_cat_name"]
+            )
 
             df_combine = df_combine.reset_index()
 

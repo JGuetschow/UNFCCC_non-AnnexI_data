@@ -253,20 +253,38 @@ meta_data = {
 #### for processing
 # aggregate categories
 cats_to_agg = {
-    "1": {"sources": ["1.A"], "name": "Energy"},  # for trends
+    "1": {
+        "sources": ["1.A"],
+        # "name": "Energy"
+    },  # for trends
     "1.A.4": {
         "sources": ["1.A.4.a", "1.A.4.b", "1.A.4.c", "1.A.4.ab"],
-        "name": "Other sectors",
+        # "name": "Other sectors",
     },
-    "2.A.4": {"sources": ["2.A.4.b"], "name": "Soda Ash"},
-    "2.A.7": {"sources": ["2.A.7.a"], "name": "Other"},
+    "2.A.4": {
+        "sources": ["2.A.4.b"],
+        # "name": "Soda Ash"
+    },
+    "2.A.7": {
+        "sources": ["2.A.7.a"],
+        # "name": "Other"
+    },
     "2.A": {
         "sources": ["2.A.1", "2.A.2", "2.A.4", "2.A.6", "2.A.7"],
-        "name": "Mineral Products",
+        # "name": "Mineral Products",
     },
-    "2.B.5": {"sources": ["2.B.5.f", "2.B.5.g"], "name": "Other"},
-    "2.B": {"sources": ["2.B.2", "2.B.5"], "name": "Chemical Industry"},
-    "6.D": {"sources": ["6.D", "6X.B"], "name": "Wastewater Treatment and Discharge"},
+    "2.B.5": {
+        "sources": ["2.B.5.f", "2.B.5.g"],
+        # "name": "Other"
+    },
+    "2.B": {
+        "sources": ["2.B.2", "2.B.5"],
+        # "name": "Chemical Industry"
+    },
+    "6.D": {
+        "sources": ["6.D", "6X.B"],
+        # "name": "Wastewater Treatment and Discharge"
+    },
     #'6.E': {'sources': ['6.E', '6X.D'], 'Other'}, # currently empty
 }
 
@@ -396,45 +414,60 @@ cat_conversion = {
         "7": "5",
     },  # 5.A-D ignored as not fitting 2006 cats
     "aggregate": {
-        "2.A.4": {"sources": ["2.A.4.b"], "name": "Other uses of soda ashes"},
+        "2.A.4": {
+            "sources": ["2.A.4.b"],
+            # "name": "Other uses of soda ashes"
+        },
         "2.B.8": {
             "sources": ["2.B.8.b"],
-            "name": "Petrochemical and Carbon Black production",
+            # "name": "Petrochemical and Carbon Black production",
         },
-        "2.B.10": {"sources": ["M.2.B.10.a", "M.2.B.10.b"], "name": "Other"},
+        "2.B.10": {
+            "sources": ["M.2.B.10.a", "M.2.B.10.b"],
+            # "name": "Other"
+        },
         "2.B": {
             "sources": ["2.B.2", "2.B.8", "2.B.9", "2.B.10"],
-            "name": "Chemical Industry",
+            # "name": "Chemical Industry",
         },
-        "2.H": {"sources": ["M.2.H.1_2", "2.H.3"], "name": "Other"},
+        "2.H": {
+            "sources": ["M.2.H.1_2", "2.H.3"],
+            # "name": "Other"
+        },
         # '2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
         #       'name': 'Industrial Processes and Product Use'},
-        "3.A": {"sources": ["3.A.1", "3.A.2"], "name": "Livestock"},
+        "3.A": {
+            "sources": ["3.A.1", "3.A.2"],
+            # "name": "Livestock"
+        },
         "3.C.1": {
             "sources": ["3.C.1.b", "3.C.1.c"],
-            "name": "Emissions from biomass burning",
+            # "name": "Emissions from biomass burning",
         },
         "M.3.C.1.AG": {
             "sources": ["3.C.1.b", "3.C.1.c"],
-            "name": "Emissions from biomass burning (Agriculture)",
+            # "name": "Emissions from biomass burning (Agriculture)",
         },
         "3.C": {
             "sources": ["3.C.1", "M.3.C.45.AG", "3.C.7", "3.C.8"],
-            "name": "Aggregate sources and non-CO2 emissions sources on land",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land",
         },
         "M.3.C.AG": {
             "sources": ["M.3.C.1.AG", "M.3.C.45.AG", "3.C.7", "3.C.8"],
-            "name": "Aggregate sources and non-CO2 emissions sources on land ("
-            "Agriculture)",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land ("
+            # "Agriculture)",
         },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG"],
-            "name": "Agriculture excluding livestock",
+            # "name": "Agriculture excluding livestock",
         },
-        "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},
+        "3": {
+            "sources": ["M.AG", "M.LULUCF"],
+            # "name": "AFOLU"
+        },
         "M.0.EL": {
             "sources": ["1", "2", "M.AG", "4", "5"],
-            "name": "National total " "excluding LULUCF",
+            # "name": "National total " "excluding LULUCF",
         },
     },
 }

@@ -98,7 +98,6 @@ if __name__ == "__main__":
         data_if,
     )
 
-    data_pm2 = pm2.pm2io.from_interchange_format(data_if)
     encoding = {var: compression for var in data_pm2.data_vars}
     data_pm2.pr.to_netcdf(
         output_folder

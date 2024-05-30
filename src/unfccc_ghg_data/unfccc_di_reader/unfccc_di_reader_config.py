@@ -333,33 +333,36 @@ cat_conversion = {
             "7": "5",
         },  # 5.A-D ignored as not fitting 2006 cats
         "aggregate": {
-            "2.B": {"sources": ["M.2.B_2.B", "M.2.B_2.E"], "name": "Chemical Industry"},
-            "2.H": {"sources": ["M.2.H.1_2", "2.H.3"], "name": "Other"},
+            "2.B": {
+                "sources": ["M.2.B_2.B", "M.2.B_2.E"],
+                "orig_cat_name": "Chemical Industry",
+            },
+            "2.H": {"sources": ["M.2.H.1_2", "2.H.3"], "orig_cat_name": "Other"},
             #'2': {'sources': ['2.A', '2.B', '2.C', '2.F', '2.H'],
             #      'name': 'Industrial Processes and Product Use'},
-            "3.A": {"sources": ["3.A.1", "3.A.2"], "name": "Livestock"},
+            "3.A": {"sources": ["3.A.1", "3.A.2"], "orig_cat_name": "Livestock"},
             "3.C.1": {
                 "sources": ["3.C.1.b", "3.C.1.c"],
-                "name": "Emissions from biomass burning",
+                "orig_cat_name": "Emissions from biomass burning",
             },
             "M.3.C.1.AG": {
                 "sources": ["3.C.1.b", "3.C.1.c"],
-                "name": "Emissions from biomass burning (Agriculture)",
+                "orig_cat_name": "Emissions from biomass burning (Agriculture)",
             },
             "3.C": {
                 "sources": ["3.C.1", "M.3.C.45.AG", "3.C.7", "3.C.8"],
-                "name": "Aggregate sources and non-CO2 emissions sources on land",
+                "orig_cat_name": "Aggregate sources and non-CO2 emissions sources on land",
             },
             "M.3.C.AG": {
                 "sources": ["M.3.C.1.AG", "M.3.C.45.AG", "3.C.7", "3.C.8"],
-                "name": "Aggregate sources and non-CO2 emissions sources on land ("
+                "orig_cat_name": "Aggregate sources and non-CO2 emissions sources on land ("
                 "Agriculture)",
             },
             "M.AG.ELV": {
                 "sources": ["M.3.C.AG"],
-                "name": "Agriculture excluding livestock",
+                "orig_cat_name": "Agriculture excluding livestock",
             },
-            "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},
+            "3": {"sources": ["M.AG", "M.LULUCF"], "orig_cat_name": "AFOLU"},
         },
     },
 }
@@ -541,15 +544,15 @@ di_processing_templates = {
             "aggregate_cats": {
                 "2": {
                     "sources": ["2.A", "2.B", "2.C"],
-                    "name": "2.  Industrial Processes",
+                    "orig_cat_name": "2.  Industrial Processes",
                 },
                 "15163": {
                     "sources": ["1", "2", "4", "6"],
-                    "name": "Total GHG emissions excluding LULUCF/LUCF",
+                    "orig_cat_name": "Total GHG emissions excluding LULUCF/LUCF",
                 },
                 "24540": {
                     "sources": ["1", "2", "5", "4", "6"],
-                    "name": "Total GHG emissions including LULUCF/LUCF",
+                    "orig_cat_name": "Total GHG emissions including LULUCF/LUCF",
                 },
             },
         },
@@ -949,7 +952,7 @@ di_processing_templates = {
             "aggregate_cats": {
                 "14637": {
                     "sources": ["14423", "14424"],
-                    "name": "International Bunkers",
+                    "orig_cat_name": "International Bunkers",
                 },
             },
             # downscaling in two steps
@@ -1137,7 +1140,7 @@ di_processing_templates = {
                 "5": {
                     "parent": "24540",
                     "subtract": ["15163"],
-                    "name": "5.  Land-Use Change and Forestry",
+                    "orig_cat_name": "5.  Land-Use Change and Forestry",
                 },
             },
             "downscale": {  # not tested yet
@@ -1454,7 +1457,9 @@ di_processing_templates = {
         },
     },
     "ERI": {
-        "DI2023-05-24": {  # 1994 1995-1999 (partial coverage, KYOTOGHG and total are incomplete), 2000
+        "DI2023-05-24": {
+            # 1994 1995-1999 (partial coverage, KYOTOGHG
+            # and total are incomplete), 2000
             "remove_ts": {
                 "energy_N2O": {  # very high in 1994
                     "category": ["1", "1.A", "15163", "24540"],
@@ -1785,7 +1790,7 @@ di_processing_templates = {
             "aggregate_cats": {
                 "1.B": {
                     "sources": ["1.B.2"],
-                    "name": "1.B  Fugitive Emissions from Fuels",
+                    "orig_cat_name": "1.B  Fugitive Emissions from Fuels",
                 },
             },
         },

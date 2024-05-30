@@ -70,6 +70,8 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
         Categories to return
     processing_info_country
         more detailed processing info TODO: explain format
+        The "aggregate_cats" flag is deprecated and will be removed in a future
+        version. Please use "aggregate_coord" with key "category" instead
 
     Returns
     -------
@@ -263,58 +265,43 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                     )
 
         # aggregate categories
-        # TODO replace by primap2 function once it is in primap2 stable
         if "aggregate_cats" in processing_info_country:
-            data_country = data_country.pr.dequantify()
-            if "agg_tolerance" in processing_info_country:
-                agg_tolerance = processing_info_country["agg_tolerance"]
-            else:
-                agg_tolerance = tolerance
-            aggregate_cats_current = processing_info_country["aggregate_cats"]
+            warnings.warn(
+                'The "aggregate_cats" flag is deprecated and will '
+                "be removed in a future version. Please use "
+                '"aggregate_coord" with key "category" instead',
+                category=DeprecationWarning,
+            )
             print(
                 f"Aggregating categories for country {country_code}, source {source}, "
                 f"scenario {scenario}"
             )
-            for cat_to_agg in aggregate_cats_current:
-                print(f"Category: {cat_to_agg}")
-                source_cats = aggregate_cats_current[cat_to_agg]["sources"]
-                data_agg = data_country.pr.loc[{"category": source_cats}].pr.sum(
-                    dim="category", skipna=True, min_count=1
-                )
-                nan_vars = [
-                    var
-                    for var in data_agg.data_vars
-                    if data_agg[var].isnull().all().data is True  # noqa: PD003
-                ]
-                data_agg = data_agg.drop(nan_vars)
-                if len(data_agg.data_vars) > 0:
-                    data_agg = data_agg.expand_dims(
-                        [f"category (" f"{cat_terminology_in})"]
-                    )
-                    data_agg = data_agg.assign_coords(
-                        coords={
-                            f"category ({cat_terminology_in})": (
-                                f"category ({cat_terminology_in})",
-                                [cat_to_agg],
-                            )
-                        }
-                    )
-                    if cat_name_present:
-                        cat_name = aggregate_cats_current[cat_to_agg]["name"]
-                        data_agg = data_agg.assign_coords(
-                            coords={
-                                "orig_cat_name": (
-                                    f"category ({cat_terminology_in})",
-                                    [cat_name],
-                                )
-                            }
-                        )
-                    data_country = data_country.pr.merge(
-                        data_agg, tolerance=agg_tolerance
-                    )
-                else:
-                    print(f"no data to aggregate category {cat_to_agg}")
-            data_country = data_country.pr.quantify()
+
+            # prep input to add_aggregates_coordinates
+            agg_info = {"category": processing_info_country["aggregate_cats"]}
+
+            if "agg_tolerance" in processing_info_country:
+                agg_tolerance = processing_info_country["agg_tolerance"]
+            else:
+                agg_tolerance = tolerance
+
+            data_country = data_country.pr.add_aggregates_coordinates(
+                agg_info=agg_info,
+                tolerance=agg_tolerance,
+                skipna=True,
+                min_count=1,
+            )
+
+        if "aggregate_coord" in processing_info_country:
+            print(
+                f"Aggregating data for country {country_code}, source {source}, "
+                f"scenario {scenario}"
+            )
+            data_country = data_country.pr.add_aggregates_coordinates(
+                agg_info=processing_info_country["aggregate_coords"],
+                skipna=True,
+                min_count=1,
+            )
 
         # copy HFCs and PFCs with default factors
         if "basket_copy" in processing_info_country:
@@ -333,13 +320,9 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
 
         # aggregate gases if desired
         if "aggregate_gases" in processing_info_country:
-            # TODO: why use different code here than below. Can this fill non-existen
-            #  gas baskets?
-            for case in processing_info_country["aggregate_gases"].keys():
-                case_info = processing_info_country["aggregate_gases"][case]
-                data_country[
-                    case_info["basket"]
-                ] = data_country.pr.fill_na_gas_basket_from_contents(**case_info)
+            data_country = data_country.pr.add_aggregates_variables(
+                gases=processing_info_country["aggregate_gases"],
+            )
 
     # 3: map categories
     if category_conversion is not None:
@@ -366,40 +349,10 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
         data_country = data_country.pr.loc[{"category": cats_to_keep}]
 
     # create gas baskets
-    entities_present = set(data_country.data_vars)
-    for basket in gas_baskets.keys():
-        basket_contents_present = [
-            gas for gas in gas_baskets[basket] if gas in entities_present
-        ]
-        if len(basket_contents_present) > 0:
-            if basket in list(data_country.data_vars):
-                data_country[basket] = data_country.pr.fill_na_gas_basket_from_contents(
-                    basket=basket,
-                    basket_contents=basket_contents_present,
-                    skipna=True,
-                    min_count=1,
-                )
-            else:
-                try:
-                    # print(data_country.data_vars)
-                    data_country[basket] = xr.full_like(
-                        data_country["CO2"], np.nan
-                    ).pr.quantify(units="Gg CO2 / year")
-                    data_country[basket].attrs = {
-                        "entity": basket.split(" ")[0],
-                        "gwp_context": basket.split(" ")[1][1:-1],
-                    }
-                    data_country[basket] = data_country.pr.gas_basket_contents_sum(
-                        basket=basket,
-                        basket_contents=basket_contents_present,
-                        min_count=1,
-                    )
-                    entities_present.add(basket)
-                except Exception as ex:
-                    print(
-                        f"No gas basket created for {country_code}, {source}, "
-                        f"{scenario}: {ex}"
-                    )
+    if gas_baskets:
+        data_country = data_country.pr.add_aggregates_variables(
+            gas_baskets=gas_baskets, skipna=True, min_count=1
+        )
 
     # amend title and comment
     data_country.attrs["comment"] = (
@@ -423,14 +376,9 @@ def convert_categories(
     """
     convert data from one category terminology to another
 
-    # TODO rewrite to use aggregate_coordinates functions
     """
     print(f"converting categories to {terminology_to}")
 
-    if "orig_cat_name" in ds_input.coords:
-        cat_name_present = True
-    else:
-        cat_name_present = False
     ds_converted = ds_input.copy(deep=True)
     ds_converted.attrs = deepcopy(ds_input.attrs)
     # TODO: change attrs for additional coordinates
@@ -456,57 +404,17 @@ def convert_categories(
             {f"category ({terminology_to})": (f"category ({terminology_to})", to_cats)}
         )
 
-    # redo the list of present cats after mapping, as we have new categories in the
-    # target terminology now
-    cats_present_mapped = list(
-        ds_converted.coords[f"category (" f"{terminology_to})"].values
-    )
     # aggregate categories
     if "aggregate" in conversion:
-        aggregate_cats = conversion["aggregate"]
-        for cat_to_agg in aggregate_cats:
-            if debug:
-                print(f"Category: {cat_to_agg}")
-            source_cats = [
-                cat
-                for cat in aggregate_cats[cat_to_agg]["sources"]
-                if cat in cats_present_mapped
-            ]
-            if debug:
-                print(source_cats)
-            data_agg = ds_converted.pr.loc[{"category": source_cats}].pr.sum(
-                dim="category", skipna=True, min_count=1
-            )
-            nan_vars = [
-                var
-                for var in data_agg.data_vars
-                if data_agg[var].isnull().all().data is True  # noqa: PD003
-            ]
-            data_agg = data_agg.drop(nan_vars)
-            if len(data_agg.data_vars) > 0:
-                data_agg = data_agg.expand_dims([f"category ({terminology_to})"])
-                data_agg = data_agg.assign_coords(
-                    coords={
-                        f"category ({terminology_to})": (
-                            f"category ({terminology_to})",
-                            [cat_to_agg],
-                        )
-                    }
-                )
-                if cat_name_present:
-                    data_agg = data_agg.assign_coords(
-                        coords={
-                            "orig_cat_name": (
-                                f"category ({terminology_to})",
-                                [aggregate_cats[cat_to_agg]["name"]],
-                            )
-                        }
-                    )
-                ds_converted = ds_converted.pr.merge(data_agg, tolerance=tolerance)
-                cats_present_mapped.append(cat_to_agg)
-            else:
-                print(f"no data to aggregate category {cat_to_agg}")
-
+        agg_info = {
+            "category": conversion["aggregate"],
+        }
+        ds_converted = ds_converted.pr.add_aggregates_coordinates(
+            agg_info=agg_info,
+            tolerance=tolerance,
+            skipna=True,
+            min_count=1,
+        )
     return ds_converted
 
 
