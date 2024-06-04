@@ -1,0 +1,22 @@
+attrs:
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: ''
+  comment: Read fom pdf file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  references: https://unfccc.int/documents/636696
+  cat: category (IPCC1996_2006_CHN_Inv)
+  scen: scenario (PRIMAP)
+  area: area (ISO3)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - area (ISO3)
+  - scenario (PRIMAP)
+  - category (IPCC1996_2006_CHN_Inv)
+  - provenance
+  - entity
+  - unit
+data_file: CHN_BUR3_IPCC1996_2006_CHN_Inv.csv
