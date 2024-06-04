@@ -73,7 +73,7 @@ meta_data = {
 
 # many custom categories which are not in climate categories, so automatic
 # aggregation would be a lot of coding work
-cats_to_agg = {  # name is just for readability, not used
+cats_to_agg = {
     "1.A.1.c": {
         "sources": ["1.A.1.c.ii"],
         # "orig_cat_name": "Manufacture of Solid Fuels and Other Energy Industries",
