@@ -40,7 +40,7 @@ if __name__ == "__main__":
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = "ARE_BUR1_"
+    output_filename = "ARE_BUR1_2023_"
     inventory_file = "all_data_manual.csv"
 
     year = 2021

@@ -39,7 +39,7 @@ if __name__ == "__main__":
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = "CHN_NC4_"
+    output_filename = "CHN_NC4_2023_"
     inventory_file = "China_NC4_English.pdf"
 
     def repl(m):  # noqa: D103
