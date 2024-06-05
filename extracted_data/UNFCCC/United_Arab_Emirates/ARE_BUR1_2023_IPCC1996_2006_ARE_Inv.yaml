@@ -3,23 +3,21 @@ attrs:
   rights: ''
   contact: mail@johannes-guestchow.de
   title: United Arab Emirates. National Communication (NC). NC 5. Biennial Update
-    Report (BUR). BUR 1. Processed on 2024-06-05
-  comment: Read fom pdf by Johannes Gütschow Processed on 2024-06-05
+    Report (BUR). BUR 1.
+  comment: Read fom pdf by Johannes Gütschow
   institution: UNFCCC
-  cat: category (IPCC2006_PRIMAP)
+  cat: category (IPCC1996_2006_ARE_Inv)
   area: area (ISO3)
   scen: scenario (PRIMAP)
-  entity: HFCS
-  gwp_context: AR6GWP100
 time_format: '%Y'
 dimensions:
   '*':
   - time
-  - source
-  - scenario (PRIMAP)
-  - area (ISO3)
   - provenance
-  - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - category (IPCC1996_2006_ARE_Inv)
+  - scenario (PRIMAP)
+  - source
   - entity
   - unit
-data_file: ARE_BUR1_IPCC2006_PRIMAP.csv
+data_file: ARE_BUR1_2023_IPCC1996_2006_ARE_Inv.csv
