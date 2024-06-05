@@ -8,6 +8,7 @@ import copy
 import json
 import re
 import warnings
+from collections.abc import Hashable
 from copy import deepcopy
 from datetime import date
 from pathlib import Path
@@ -1060,6 +1061,35 @@ def find_and_replace_values(
         print(f"Set value for {category}, {entity}, {year} to {new_value}.")
 
     return df
+
+
+def set_to_nan_in_ds(
+    ds_in: xr.Dataset,
+    entities: list[Hashable],
+    filter: dict[str, any],
+) -> xr.Dataset:
+    """
+    Set values to NaN in a data set.
+
+    Parameters
+    ----------
+    ds_in:
+        input dataset
+    entities
+        list of entities to work on
+    filter
+        .pr.loc type selector which selects the elements that should be replaced
+        with nan
+
+    Returns
+    -------
+        xr.Dataset with the desired values set to nan
+    """
+    ds_mask = xr.zeros_like(ds_in[entities].pr.loc[filter]).combine_first(
+        xr.ones_like(ds_in)
+    )
+
+    return ds_in.where(ds_mask)
 
 
 def assert_values(

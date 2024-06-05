@@ -13,7 +13,6 @@ from copy import deepcopy
 
 import camelot
 import primap2 as pm2
-import xarray as xr
 
 from unfccc_ghg_data.helper import (
     compression,
@@ -22,6 +21,7 @@ from unfccc_ghg_data.helper import (
     fix_rows,
     gas_baskets,
     process_data_for_country,
+    set_to_nan_in_ds,
 )
 from unfccc_ghg_data.unfccc_reader.China.config_chn_bur3_nc4 import (
     category_conversion,
@@ -182,11 +182,16 @@ if __name__ == "__main__":
                         entity for entity in entities if entity in entities_current
                     ]
 
-                ds_mask = xr.zeros_like(
-                    data_country[entities].pr.loc[filter]
-                ).combine_first(xr.ones_like(data_country))
-
-                data_country = data_country.where(ds_mask)
+                data_country = set_to_nan_in_ds(
+                    data_country,
+                    entities=entities,
+                    filter=filter,
+                )
+                # ds_mask = xr.zeros_like(
+                #     data_country[entities].pr.loc[filter]
+                # ).combine_first(xr.ones_like(data_country))
+                #
+                # data_country = data_country.where(ds_mask)
 
         data_proc_pm2_new = process_data_for_country(
             data_country,

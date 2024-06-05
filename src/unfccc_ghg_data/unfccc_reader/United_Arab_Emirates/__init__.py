@@ -1,6 +1,6 @@
-"""Read China's BURs, NIRs, NCs
+"""Read United Arab Emirates' BURs, NIRs, NCs
 
-Scripts and configurations to read China's submissions to the UNFCCC.
+Scripts and configurations to read United Arab Emirates' submissions to the UNFCCC.
 Currently, the following submissions and datasets are available (all datasets
 including DI (red using the DI-reader) and legacy BUR/NIR (no code)):
 
@@ -9,7 +9,7 @@ including DI (red using the DI-reader) and legacy BUR/NIR (no code)):
 
     from unfccc_ghg_data.helper.functions import (get_country_datasets,
                                                   get_country_submissions)
-    country = 'CHN'
+    country = 'ARE'
     # print available submissions
     print("="*15 + " Available submissions " + "="*15)
     get_country_submissions(country, True)
@@ -23,7 +23,7 @@ You can also obtain this information running
 
 .. code-block:: bash
 
-    poetry run doit country_info country=CHN
+    poetry run doit country_info country=ARE
 
 See below for a listing of scripts for BUR/NIR reading including links.
 

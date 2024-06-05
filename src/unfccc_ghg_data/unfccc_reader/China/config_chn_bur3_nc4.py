@@ -184,7 +184,7 @@ category_conversion = {
             "3.A": "3.A.1",
             "3.B": "3.A.2",
             "3.C": "3.C.7",
-            "3.D": "M.3.AS",
+            "3.D": "M.3.C.45.AG",
             "3.E": "3.C.1.c",
             "3.F": "3.C.1.b",
             "4": "M.LULUCF",
@@ -234,7 +234,7 @@ category_conversion = {
                 },
             },
             "M.3.C.AG": {
-                "sources": ["M.3.C.1.AG", "M.3.AS", "3.C.7"],
+                "sources": ["M.3.C.1.AG", "M.3.C.45.AG", "3.C.7"],
                 "filter": {
                     "entity": ["CH4", "N2O"],
                 },
@@ -315,7 +315,7 @@ category_conversion = {
             "3.A": "3.A.1",
             "3.B": "3.A.2",
             "3.C": "3.C.7",
-            "3.D": "M.3.AS",
+            "3.D": "M.3.C.45.AG",
             "3.E": "3.C.1.c",
             "4": "M.LULUCF",
             "4.A.1": "3.B.1.a",
@@ -363,7 +363,7 @@ category_conversion = {
                 },
             },
             "M.3.C.AG": {
-                "sources": ["M.3.C.1.AG", "M.3.AS", "3.C.7"],
+                "sources": ["M.3.C.1.AG", "M.3.C.45.AG", "3.C.7"],
                 "filter": {
                     "entity": ["CH4"],
                 },
