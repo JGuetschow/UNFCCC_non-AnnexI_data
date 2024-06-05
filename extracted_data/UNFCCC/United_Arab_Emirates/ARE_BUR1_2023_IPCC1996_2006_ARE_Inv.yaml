@@ -1,0 +1,23 @@
+attrs:
+  references: https://unfccc.int/documents/635318
+  rights: ''
+  contact: mail@johannes-guestchow.de
+  title: United Arab Emirates. National Communication (NC). NC 5. Biennial Update
+    Report (BUR). BUR 1.
+  comment: Read fom pdf by Johannes Gütschow
+  institution: UNFCCC
+  cat: category (IPCC1996_2006_ARE_Inv)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - area (ISO3)
+  - category (IPCC1996_2006_ARE_Inv)
+  - scenario (PRIMAP)
+  - source
+  - entity
+  - unit
+data_file: ARE_BUR1_2023_IPCC1996_2006_ARE_Inv.csv

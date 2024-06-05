@@ -150,7 +150,7 @@ cat_mapping = {
 aggregate_cats = {
     "1.B.2.a.iii": {
         "sources": ["1.B.2.a.iii.4", "1.B.2.a.iii.5", "1.B.2.a.iii.6"],
-        "name": "All Other",
+        # "name": "All Other",
     },
     "1.B.2.b.iii": {
         "sources": [
@@ -159,26 +159,32 @@ aggregate_cats = {
             "1.B.2.b.iii.5",
             "1.B.2.b.iii.6",
         ],
-        "name": "All Other",
+        # "name": "All Other",
     },
-    "1.B.2.a": {"sources": ["1.B.2.a.iii"], "name": "Oil"},
+    "1.B.2.a": {
+        "sources": ["1.B.2.a.iii"],
+        # "name": "Oil"
+    },
     "1.B.2.b": {
         "sources": ["1.B.2.b.i", "1.B.2.b.ii", "1.B.2.b.iii"],
-        "name": "Natural Gas",
+        # "name": "Natural Gas",
     },
     "2.D": {
         "sources": ["2.D.4"],
-        "name": "Non-Energy Products from Fuels and Solvent Use",
+        # "name": "Non-Energy Products from Fuels and Solvent Use",
     },
     "2.F.1": {
         "sources": ["2.F.1.a", "2.F.1.b"],
-        "name": "Refrigeration and Air Conditioning",
+        # "name": "Refrigeration and Air Conditioning",
     },
     "2.F": {
         "sources": ["2.F.1", "2.F.2", "2.F.3", "2.F.4", "2.F.5", "2.F.6"],
-        "name": "Product uses as Substitutes for Ozone Depleting Substances",
+        # "name": "Product uses as Substitutes for Ozone Depleting Substances",
     },
-    "2.H": {"sources": ["2.H.1", "2.H.2", "2.H.3"], "name": "Other"},
+    "2.H": {
+        "sources": ["2.H.1", "2.H.2", "2.H.3"],
+        # "name": "Other"
+    },
     "3.A.2": {
         "sources": [
             "3.A.2.a",
@@ -190,28 +196,40 @@ aggregate_cats = {
             "3.A.2.h",
             "3.A.2.i",
         ],
-        "name": "Manure Management",
+        # "name": "Manure Management",
     },
-    "3.A": {"sources": ["3.A.1", "3.A.2"], "name": "Livestock"},
+    "3.A": {
+        "sources": ["3.A.1", "3.A.2"],
+        # "name": "Livestock"
+    },
     "3.B": {
         "sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"],
-        "name": "Land",
+        # "name": "Land",
     },
     "3.C": {
         "sources": ["3.C.3", "3.C.4", "3.C.5", "3.C.6", "3.C.7"],
-        "name": "Aggregate sources and non-CO2 emissions sources on land",
+        # "name": "Aggregate sources and non-CO2 emissions sources on land",
     },
     "M.3.C.AG": {
         "sources": ["3.C.3", "3.C.4", "3.C.5", "3.C.6", "3.C.7"],
-        "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
+        # "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
     },
-    "M.AG": {"sources": ["3.A", "M.3.C.AG"], "name": "Agriculture"},
-    "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},
+    "M.AG": {
+        "sources": ["3.A", "M.3.C.AG"],
+        # "name": "Agriculture"
+    },
+    "3": {
+        "sources": ["M.AG", "M.LULUCF"],
+        # "name": "AFOLU"
+    },
     "M.AG.ELV": {
         "sources": ["M.3.C.AG"],
-        "name": "Agriculture excluding livestock emissions",
+        # "name": "Agriculture excluding livestock emissions",
     },
-    "4": {"sources": ["4.A", "4.D"], "name": "Waste"},
+    "4": {
+        "sources": ["4.A", "4.D"],
+        # "name": "Waste"
+    },
     "0": {"sources": ["1", "2", "3", "4"]},
     "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},
 }

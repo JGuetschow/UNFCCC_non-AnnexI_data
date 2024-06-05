@@ -187,20 +187,32 @@ country_processing_step1 = {
                 "3.C.7",
                 "3.C.8",
             ],
-            "name": "Aggregate sources and non-CO2 emissions sources on land "
-            "(Agriculture)",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land "
+            # "(Agriculture)",
         },
-        "M.3.D.AG": {"sources": ["3.D.2"], "name": "Other (Agriculture)"},
+        "M.3.D.AG": {
+            "sources": ["3.D.2"],
+            # "name": "Other (Agriculture)"
+        },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG", "M.3.D.AG"],
-            "name": "Agriculture excluding livestock",
+            # "name": "Agriculture excluding livestock",
         },
-        "M.AG": {"sources": ["3.A", "M.AG.ELV"], "name": "Agriculture"},
-        "M.3.D.LU": {"sources": ["3.D.1"], "name": "Other (LULUCF)"},
-        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"], "name": "LULUCF"},
+        "M.AG": {
+            "sources": ["3.A", "M.AG.ELV"],
+            # "name": "Agriculture"
+        },
+        "M.3.D.LU": {
+            "sources": ["3.D.1"],
+            # "name": "Other (LULUCF)"
+        },
+        "M.LULUCF": {
+            "sources": ["3.B", "M.3.D.LU"],
+            # "name": "LULUCF"
+        },
         "M.0.EL": {
             "sources": ["1", "2", "M.AG", "4", "5"],
-            "name": "National total emissions excluding LULUCF",
+            # "name": "National total emissions excluding LULUCF",
         },
     },
     "basket_copy": {

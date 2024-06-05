@@ -478,15 +478,15 @@ meta_data = {
 aggregate_sectors = {
     "2": {
         "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
-        "name": "IPPU",
+        # "name": "IPPU",
     },
     "M.3.C.1.AG": {
         "sources": ["3.C.1.b", "3.C.1.c"],
-        "name": "Emissions from Biomass Burning (Agriculture)",
+        # "name": "Emissions from Biomass Burning (Agriculture)",
     },
     "M.3.C.1.LU": {
         "sources": ["3.C.1.a", "3.C.1.d"],
-        "name": "Emissions from Biomass Burning (LULUCF)",
+        # "name": "Emissions from Biomass Burning (LULUCF)",
     },
     "M.3.C.AG": {
         "sources": [
@@ -499,22 +499,28 @@ aggregate_sectors = {
             "3.C.7",
             "3.C.8",
         ],
-        "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
+        # "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
     },
     "M.AG.ELV": {
         "sources": ["M.3.C.AG"],
-        "name": "Agriculture excluding livestock emissions",
+        # "name": "Agriculture excluding livestock emissions",
     },
-    "M.AG": {"sources": ["M.AG.ELV", "3.A"], "name": "Agriculture"},
+    "M.AG": {
+        "sources": ["M.AG.ELV", "3.A"],
+        # "name": "Agriculture"
+    },
     "M.LULUCF": {
         "sources": ["M.3.C.1.LU", "3.B", "3.D"],
-        "name": "Land Use, Land Use Change, and Forestry",
+        # "name": "Land Use, Land Use Change, and Forestry",
     },
     "M.0.EL": {
         "sources": ["1", "2", "M.AG", "4", "5"],
-        "name": "National Total Excluding LULUCF",
+        # "name": "National Total Excluding LULUCF",
     },
-    "0": {"sources": ["1", "2", "3", "4", "5"], "name": "National Total"},
+    "0": {
+        "sources": ["1", "2", "3", "4", "5"],
+        # "name": "National Total"
+    },
 }
 
 
@@ -524,7 +530,7 @@ processing_info_step1 = {
     "aggregate_cats": {
         "2": {
             "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
-            "name": "IPPU",
+            # "name": "IPPU",
         },
     },
     "tolerance": 1,  # because ch4 is inconsistent

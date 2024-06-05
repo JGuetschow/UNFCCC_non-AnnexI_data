@@ -34,6 +34,7 @@ from .functions import (
     get_country_name,
     make_wide_table,
     process_data_for_country,
+    set_to_nan_in_ds,
 )
 
 __all__ = [
@@ -63,4 +64,5 @@ __all__ = [
     "nAI_countries",
     "AI_countries",
     "all_countries",
+    "set_to_nan_in_ds",
 ]
