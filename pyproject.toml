@@ -130,6 +130,7 @@ docstring-code-format = true
 ]
 "src/unfccc_ghg_data/unfccc_reader/*/config_*.py" = [
     "E501",  # don't enforce line length
+    "RUF001",  #
 ]
 "src/unfccc_ghg_data/unfccc_crf_reader/crf_specifications/*_specification.py" = [
     "E501",  # don't enforce line length

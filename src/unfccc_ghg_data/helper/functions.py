@@ -173,9 +173,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                 remove_info = copy.deepcopy(processing_info_country["remove_ts"][case])
                 entities = remove_info.pop("entities")
                 for entity in entities:
-                    data_country[entity].pr.loc[remove_info] = (
-                        data_country[entity].pr.loc[remove_info] * np.nan
-                    )
+                    data_country[entity].pr.loc[remove_info] *= np.nan
 
         # remove all data for given years if necessary
         if "remove_years" in processing_info_country:
@@ -270,7 +268,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
             warnings.warn(
                 'The "aggregate_cats" flag is deprecated and will '
                 "be removed in a future version. Please use "
-                '"aggregate_coord" with key "category" instead',
+                '"aggregate_coords" with key "category" instead',
                 category=DeprecationWarning,
             )
             print(
@@ -293,7 +291,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                 min_count=1,
             )
 
-        if "aggregate_coord" in processing_info_country:
+        if "aggregate_coords" in processing_info_country:
             print(
                 f"Aggregating data for country {country_code}, source {source}, "
                 f"scenario {scenario}"
@@ -942,6 +940,7 @@ def fix_rows(
         new_row = new_row.str.replace("N O", "NO")
         new_row = new_row.str.replace(", N", ",N")
         new_row = new_row.str.replace("- ", "-")
+        new_row = new_row.str.strip()
         # replace spaces in numbers
         pat = r"^(?P<first>[0-9\.,]*)\s(?P<last>[0-9\.,]*)$"
 

@@ -1989,18 +1989,18 @@ di_processing_templates = {
     # MKD:
     "MKD": {
         "DI2023-05-24": {  # 1990-2009
-            "downscale": {
-                "entities": {
-                    "FGASES": {
-                        "basket": f"FGASES ({gwp_to_use})",
-                        "basket_contents": [f"HFCS ({gwp_to_use})"],
-                    },
-                    "HFC": {
-                        "basket": f"HFCS ({gwp_to_use})",
-                        "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
-                    },
-                },
-            },
+            # "downscale": {
+            #     "entities": {
+            #         "FGASES": {
+            #             "basket": f"FGASES ({gwp_to_use})",
+            #             "basket_contents": [f"HFCS ({gwp_to_use})"],
+            #         },
+            #         "HFC": {
+            #             "basket": f"HFCS ({gwp_to_use})",
+            #             "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
+            #         },
+            #     },
+            # },
             "basket_copy": {
                 "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
                 "entities": ["UnspMixOfHFCs"],
@@ -2020,16 +2020,16 @@ di_processing_templates = {
                         "sel": {"time": ["1995", "2000"]},
                     },
                 },
-                "entities": {
-                    "FGASES": {
-                        "basket": f"FGASES ({gwp_to_use})",
-                        "basket_contents": [f"HFCS ({gwp_to_use})"],
-                    },
-                    "HFC": {
-                        "basket": f"HFCS ({gwp_to_use})",
-                        "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
-                    },
-                },
+                # "entities": {
+                #     "FGASES": {
+                #         "basket": f"FGASES ({gwp_to_use})",
+                #         "basket_contents": [f"HFCS ({gwp_to_use})"],
+                #     },
+                #     "HFC": {
+                #         "basket": f"HFCS ({gwp_to_use})",
+                #         "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
+                #     },
+                # },
             },
             "basket_copy": {
                 "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
@@ -2268,13 +2268,23 @@ di_processing_templates = {
             },
             "remove_ts": {
                 "M.AG.ELV": {
-                    "category": ["4", "4.D", "4.E", "4.F", "15163", "24540"],
-                    "entities": ["N2O", f"KYOTOGHG ({gwp_to_use})"],
+                    "category": [
+                        "4",
+                        "4.A",
+                        "4.B",
+                        "4.C",
+                        "4.D",
+                        "4.E",
+                        "4.F",
+                        "15163",
+                        "24540",
+                    ],
+                    "entities": ["N2O", f"KYOTOGHG ({gwp_to_use})", "CH4", "NOx", "CO"],
                     "time": ["1993"],
                 },
             },
         },
-    },
+    },  # TODO: inconsistency through removed data for KYOTOGHG (SARGWP100)
     # TGO: more data in BUR / NIR, 1992-1998, 2000, 2005, 2010, 2013-2018 (
     # downscaling needed for some years, inconsistent detail)
     # THA: 1994 (2000-2013, extensive downscaling needed for 2000-2012).
