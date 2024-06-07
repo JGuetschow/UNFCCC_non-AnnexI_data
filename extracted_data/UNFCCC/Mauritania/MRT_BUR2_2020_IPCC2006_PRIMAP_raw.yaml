@@ -1,0 +1,24 @@
+attrs:
+  references: https://unfccc.int/documents/279303
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: République Islamique de Mauritanie - RAPPORT NATIONAL DES INVENTAIRES DES
+    GAZ A EFFET DE SERRE - RNI
+  comment: 'Read fom pdf file (Mauritania BUR 2 - NIR Annexes - May 2020.pdf) by Johannes
+    Gütschow. '
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - scenario (PRIMAP)
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - source
+  - entity
+  - unit
+data_file: MRT_BUR2_2020_IPCC2006_PRIMAP_raw.csv
