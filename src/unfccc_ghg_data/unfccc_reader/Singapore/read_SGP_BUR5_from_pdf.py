@@ -35,6 +35,7 @@ from unfccc_ghg_data.unfccc_reader.Singapore.config_sgp_bur5 import (
     meta_data,
     processing_info_step1,
     processing_info_step2,
+    sectors_to_drop,
     table_def_templates,
     table_defs,
     values_replacement,
@@ -277,11 +278,15 @@ if __name__ == "__main__":
     terminology_proc = coords_terminologies["category"]
 
     # actual processing
+    sectors = data_proc_pm2.coords[f"category ({terminology_proc})"].to_numpy()
+    sectors_to_keep = [sector for sector in sectors if sector not in sectors_to_drop]
+
     data_proc_pm2 = process_data_for_country(
         data_proc_pm2,
         entities_to_ignore=[],
-        gas_baskets={},
+        gas_baskets={},  # gas_baskets_step1,  # build KyotoGHG AR5
         processing_info_country=processing_info_step1,
+        sectors_out=sectors_to_keep,
     )
 
     data_proc_pm2 = process_data_for_country(
@@ -299,6 +304,7 @@ if __name__ == "__main__":
     current_source = data_proc_pm2.coords["source"].to_numpy()[0]
     data_temp = data_proc_pm2.pr.loc[{"source": current_source}]
     data_proc_pm2 = data_proc_pm2.pr.set("source", "BUR_NIR", data_temp)
+    data_proc_pm2 = data_proc_pm2.pr.loc[{"source": ["BUR_NIR"]}]
 
     # ###
     # save data to IF and native format
