@@ -9,7 +9,12 @@ import pandas as pd
 import primap2 as pm2
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    gas_baskets,
+    process_data_for_country,
+)
 from unfccc_ghg_data.unfccc_reader.Republic_of_Korea.config_KOR_INV2023 import (
     aggregate_after_mapping,
     aggregate_before_mapping,
@@ -374,8 +379,20 @@ if __name__ == "__main__":
         else:
             print(f"no data to aggregate category {cat_to_agg}")
 
+    filter_data(data_if_2006, filter_remove=filter_remove_after_agg)
+
     # conversion to PRIMAP2 native format
     data_pm2_2006 = pm2.pm2io.from_interchange_format(data_if_2006)
+
+    # aggregate gas baskets (some KYOTOGHG time seres were removed because of errors)
+    # this also checks for inconsistencies
+    data_pm2_2006 = process_data_for_country(
+        data_pm2_2006,
+        entities_to_ignore=[],
+        gas_baskets=gas_baskets,
+        processing_info_country=None,
+    )
+
     # convert back to IF to have units in the fixed format
     data_pm2_2006 = data_pm2_2006.reset_coords(
         ["orig_cat_name", "cat_name_translation"], drop=True
@@ -383,12 +400,10 @@ if __name__ == "__main__":
     data_if_2006 = data_pm2_2006.pr.to_interchange_format()
     # save IPCC2006 data
 
-    filter_data(data_if_2006, filter_remove=filter_remove_after_agg)
     pm2.pm2io.write_interchange_format(
         output_folder / (output_filename + coords_terminologies_2006["category"]),
         data_if_2006,
     )
-
     encoding = {var: compression for var in data_pm2_2006.data_vars}
     data_pm2_2006.pr.to_netcdf(
         output_folder
