@@ -524,6 +524,9 @@ cat_conversion = {
         "M.BK.M": "M.BM.M",
         "M.BIO": "M.BIO",
     },
+    # TODO: 4.D is missing in 4 (sectors after mapping). remove 4 and regenerate
+    #  2.B rounding
+    #  0: check if relevant after 4 fixed
     "aggregate": {
         "2": {
             "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
