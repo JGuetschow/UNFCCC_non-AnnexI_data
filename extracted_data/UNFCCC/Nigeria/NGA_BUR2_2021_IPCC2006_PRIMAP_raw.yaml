@@ -13,11 +13,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
+  - area (ISO3)
+  - provenance
+  - category (IPCC2006_PRIMAP)
   - source
   - scenario (PRIMAP)
-  - category (IPCC2006_PRIMAP)
-  - provenance
-  - area (ISO3)
   - entity
   - unit
 data_file: NGA_BUR2_2021_IPCC2006_PRIMAP_raw.csv
