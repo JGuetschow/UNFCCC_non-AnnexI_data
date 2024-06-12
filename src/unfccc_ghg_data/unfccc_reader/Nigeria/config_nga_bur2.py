@@ -374,12 +374,16 @@ processing_info_step1 = {
             "2.F": {
                 "sources": ["2.F.2", "2.F.6"],  # all 0, but for completeness
                 # "name": "Product uses as Substitutes for Ozone Depleting Substances",
-                "filter": {"entity": ["HFCS", "PFCS", "SO2", "SF6", "N2O"]},
+                "filter": {
+                    "entity": ["HFCS", "PFCS", "SO2", "SF6", "N2O", "UnspMixOfHFCs"]
+                },
             },
             "2": {
                 "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G"],
                 # "name": "IPPU",
-                "filter": {"entity": ["HFCS", "PFCS", "SO2", "SF6", "N2O"]},
+                "filter": {
+                    "entity": ["HFCS", "PFCS", "SO2", "SF6", "N2O", "UnspMixOfHFCs"]
+                },
             },  # for HFCs, PFCs, SO2, SF6, N2O (all 0)
         },
     },
