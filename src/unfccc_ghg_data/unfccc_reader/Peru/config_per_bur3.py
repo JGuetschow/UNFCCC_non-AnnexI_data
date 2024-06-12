@@ -473,7 +473,7 @@ meta_data = {
 ## processing
 cat_conversion = {
     "mapping": {
-        "0": "0",
+        # "0": "0",  # 5.D is missing in the sum
         "1": "1",
         "1.A": "1.A",
         "1.A.1": "1.A.1",
@@ -514,7 +514,7 @@ cat_conversion = {
         "4.E": "3.B.5",
         "4.F": "3.B.6",
         "4.G": "3.D.1",
-        "5": "4",
+        # "5": "4",  # 5 is missing 5.D
         "5.A": "4.A",
         "5.B": "4.B",
         "5.C": "4.C",
@@ -548,6 +548,15 @@ cat_conversion = {
             "sources": ["M.AG", "M.LULUCF"],
             # "name": "AFOLU"
         },
+        "4": {
+            "sources": ["4.A", "4.B", "4.C", "4.D"],
+        },
+        "0": {  # missing for fgases
+            "sources": ["1", "2", "3", "4"],
+        },
+        "M.0.EL": {  # missing for fgases
+            "sources": ["1", "2", "M.AG", "4"],
+        },
     },
 }
 
@@ -556,5 +565,24 @@ processing_info = {
         "GWPs_to_add": ["SARGWP100", "AR4GWP100", "AR6GWP100"],
         "entities": ["HFCS", "PFCS"],
         "source_GWP": gwp_to_use,
+    },
+    "remove_ts": {  # remove inconsistent KYOTOGHG data (rounding errors)
+        # would be better to recompute the individual gases (mostly N2O)
+        # uses categories before mapping!
+        "2B": {  # rounding error in inventory
+            "category": ["2.B"],
+            "entities": ["KYOTOGHG (AR5GWP100)"],
+            "time": ["2005", "2012", "2014", "2016", "2019"],
+        },
+        "5B": {  # rounding error in inventory
+            "category": ["5.B"],
+            "entities": ["KYOTOGHG (AR5GWP100)"],
+            "time": ["2019"],
+        },
+        "5C": {  # rounding error in inventory
+            "category": ["5.C"],
+            "entities": ["KYOTOGHG (AR5GWP100)"],
+            "time": ["2016", "2019"],
+        },
     },
 }
