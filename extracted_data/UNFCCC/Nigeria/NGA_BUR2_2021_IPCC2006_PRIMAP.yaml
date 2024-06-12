@@ -3,22 +3,23 @@ attrs:
   rights: ''
   contact: mail@johannes-guestchow.de
   title: Nigeria. Second Biennial Update Report (BUR2) to the United Nations Framework
-    Convention on Climate Change Processed on 2023-09-22 Processed on 2023-09-22
-  comment: Read fom pdf by Johannes Gütschow Processed on 2023-09-22 Processed on
-    2023-09-22
+    Convention on Climate Change Processed on 2024-06-12 Processed on 2024-06-12
+  comment: Read fom pdf by Johannes Gütschow Processed on 2024-06-12 Processed on
+    2024-06-12
   institution: UNFCCC
   cat: category (IPCC2006_PRIMAP)
   area: area (ISO3)
   scen: scenario (PRIMAP)
+  gwp_context: AR5GWP100
 time_format: '%Y'
 dimensions:
   '*':
   - time
-  - category (IPCC2006_PRIMAP)
-  - area (ISO3)
   - source
   - scenario (PRIMAP)
+  - category (IPCC2006_PRIMAP)
   - provenance
+  - area (ISO3)
   - entity
   - unit
 data_file: NGA_BUR2_2021_IPCC2006_PRIMAP.csv
