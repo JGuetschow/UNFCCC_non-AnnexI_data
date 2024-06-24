@@ -1,0 +1,32 @@
+attrs:
+  references: https://di.unfccc.int
+  title: Data submitted to the UNFCCC by country Jordan as available in the DI interface
+    on 2023-05-24. Processed on 2024-06-24
+  comment: Data read from the UNFCCC DI flexible query interface using the API. Data
+    read on 2023-05-24. Processed on 2024-06-24
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (Access_Date)
+  sec_cats:
+  - class
+  - measure
+  entity: UnspMixOfHFCs
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - area (ISO3)
+  - measure
+  - scenario (Access_Date)
+  - source
+  - provenance
+  - category (IPCC2006_PRIMAP)
+  - class
+  - entity
+  - unit
+additional_coordinates:
+  orig_cat_name: category (IPCC2006_PRIMAP)
+data_file: JOR_DI_ea14bbdba268a71988137d4e5e658fd5_hash.csv
