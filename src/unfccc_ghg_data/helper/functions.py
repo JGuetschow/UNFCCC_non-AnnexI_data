@@ -89,6 +89,9 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     else:
         country_code = countries[0]
 
+    # set default tolerance
+    tolerance = 0.01
+
     # get category terminology
     cat_col = data_country.attrs["cat"]
     temp = re.findall(r"\((.*)\)", cat_col)
@@ -148,8 +151,6 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     if processing_info_country is not None:
         if "tolerance" in processing_info_country:
             tolerance = processing_info_country["tolerance"]
-        else:
-            tolerance = 0.01
 
         # remove entities if needed
         if "ignore_entities" in processing_info_country:
@@ -330,7 +331,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
             category_conversion,
             cat_terminology_out,
             debug=False,
-            tolerance=0.01,
+            tolerance=tolerance,
         )
     else:
         cat_terminology_out = cat_terminology_in
@@ -350,7 +351,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     # create gas baskets
     if gas_baskets:
         data_country = data_country.pr.add_aggregates_variables(
-            gas_baskets=gas_baskets, skipna=True, min_count=1
+            gas_baskets=gas_baskets, skipna=True, min_count=1, tolerance=tolerance
         )
 
     # amend title and comment
