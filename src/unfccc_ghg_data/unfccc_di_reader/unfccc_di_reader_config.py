@@ -908,7 +908,7 @@ di_processing_templates = {
                                 "2.C",
                                 "2.D",
                                 "2.E",
-                                "4",
+                                # "4",
                                 "4.A",
                                 "4.B",
                                 "4.C",
@@ -945,10 +945,20 @@ di_processing_templates = {
                     },
                 },
             },
+            "aggregate_coords": {
+                "category": {
+                    "4": {
+                        "sources": ["4.A", "4.B", "4.C", "4.D", "4.E"],
+                        "orig_cat_name": "4.  Agriculture",
+                        "filter": {"entity": ["CH4", "N2O"]},
+                    }
+                }
+            },
         },
     },
     "BLZ": {
         "DI2023-05-24": {  # 1994, 2000, 2003, 2006, 2009 (energy sector missing in 200X)
+            "tolerance": 0.4,  # because energy sector missing for CO2 but not for KyotoGHG
             "remove_ts": {
                 "AG": {  # inconsistent with other data
                     "category": [
@@ -2476,6 +2486,7 @@ di_processing_templates = {
     # SSD: 2012-2015
     "STP": {
         "DI2023-05-24": {  # 1998 (dwn), 2005 (dwn), 2012:
+            "tolerance": 0.15,  # Agricultural data inconsistent in DI interface
             "downscale": {
                 "entities": {
                     "kyotoghg": {
