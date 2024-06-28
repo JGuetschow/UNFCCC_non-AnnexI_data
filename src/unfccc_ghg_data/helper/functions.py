@@ -321,7 +321,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
         # aggregate gases if desired
         if "aggregate_gases" in processing_info_country:
             data_country = data_country.pr.add_aggregates_variables(
-                gases=processing_info_country["aggregate_gases"],
+                gas_baskets=processing_info_country["aggregate_gases"],
             )
 
     # 3: map categories
@@ -355,9 +355,13 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
         )
 
     # amend title and comment
-    data_country.attrs["comment"] = (
-        data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
-    )
+    if "comment" in data_country.attrs.keys():
+        data_country.attrs["comment"] = (
+            data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
+        )
+    else:
+        data_country.attrs["comment"] = f"Processed on " f"{date.today()}"
+
     data_country.attrs["title"] = (
         data_country.attrs["title"] + f" Processed on " f"{date.today()}"
     )
