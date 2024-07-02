@@ -280,7 +280,7 @@ if __name__ == "__main__":
     # ###
     # 3. Read in aggregated tables from 1990 - 2020
     # ###
-    # tables: 32, 43 - 44, 74, 103, // 114 - 115, 119, 125 - 126, 151, 157, 161 - 162
+    # tables: 32, 43 - 44, 74, 103, 114 - 115,  119,  125 - 126, // 151, 157, 161 - 162
     # Work in progress
     # noinspection PyInterpreter
     inv_conf_per_sector = {
@@ -415,7 +415,7 @@ if __name__ == "__main__":
                     "cols": ["97,182,259,326,403,474"],
                 },
             },
-            "entity": "KYOTOGHG (SARGWP100)",
+            # "entity": "KYOTOGHG (SARGWP100)",
             # "category_column" : "Categories",
             # "columns_to_drop" : ["Categories"],
             # "years" : ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
@@ -438,7 +438,7 @@ if __name__ == "__main__":
                 " (Gg CO2e) ": "3.A",
             },
             "multi_entity": {
-                "unit": ["Gg CH4", "Gg CH4", "Gg CH4", "Gg CO2e", "Gg CO2e", "Gg CO2e"],
+                "unit": ["Gg", "Gg", "Gg", "Gg CO2e", "Gg CO2e", "Gg CO2e"],
                 "entity": [
                     "CH4",
                     "CH4",
@@ -449,13 +449,126 @@ if __name__ == "__main__":
                 ],
             },
         },
+        "biomass_burning": {
+            "page_defs": {
+                "114": {
+                    "area": ["70,214,544,78"],
+                    "cols": ["116,185,239,304,365,426,491"],
+                },
+                "115": {
+                    "area": ["72,777,545,505"],
+                    "cols": ["123,190,250,313,374,438,495"],
+                },
+            },
+            "last_year": "2020",
+            "col_to_use" : 5,
+            "rows_to_fix": {
+                7: [
+                    "3.C.1 - Emiss",
+                ],
+            },
+            "year_column": "  Year  ",
+            # TODO: These categories are technically duplicate, just with a different unit
+            "categories_to_drop" : ['3.C.1 -Emiss  CH4 (Gg CO2e)',
+                 'ions from bioma (CO2e) N2O (Gg CO2e)',
+                 'ss burning  Total (Gg CO2e)'],
+            # TODO: This is far from than the actual categories but works for now
+            "cat_codes_manual": {
+                ' 3.C.1  CH4 (Gg) ' : '3.C.1',
+                 ' -Emissions fr  N2O (Gg) ' : '3.C.1',
+                 ' om biomass bur  NOx (Gg) ' : '3.C.1',
+                 ' ning  CO(Gg) ' : '3.C.1',
+            },
+            "multi_entity": {
+                "unit": ["Gg", "Gg", "Gg", "Gg"],
+                "entity": [
+                    "CH4",
+                    "N2O",
+                    "NOx",
+                    "CO",
+                ],
+            },
+        },
+        "managed_soils_direct" : {
+            "page_defs" : {
+                "119" : {
+                    "area" : ["70,600,541,173"],
+                    "cols" : ["114,191,245,328,400,476"],
+                },
+            },
+            "last_year" : "2020",
+            "col_to_use" : 3,
+            "rows_to_fix" : {
+                10 : [
+                    "Urine and dung",
+                ],
+            },
+            "year_column" : '  Year   ',
+            # # TODO: technically duplicate, just with a different unit
+            "categories_to_drop" : [' 3.C.4 -Direct N2O Emissions from managed soils (CO2e) Gg CO2e', ],
+            # TODO: This is far from than the actual categories but works for now
+            "cat_codes_manual" : {
+                # TODO the next 4 categories are made up placeholders
+                ' Inorganic N fertilizer application  N2O (Gg)' : '3.C.4.i',
+                ' Organic N applied as fertilizer (manure) N2O (Gg)' : '3.C.4.ii',
+                'Urine and dung N deposited on pasture, range and paddock by grazing animals N2O (Gg)' : '3.C.4.iii',
+                '  N in crop residues  N2O (Gg)' : '3.C.4.iiii',
+                ' 3.C.4 -Direct N2O Emissions from managed soils N2O (Gg)' : '3.C.4',
+            },
+            "multi_entity" : {
+                "unit" : ["Gg", "Gg", "Gg", "Gg", "Gg"],
+                "entity" : [
+                    "N2O",
+                    "N2O",
+                    "N2O",
+                    "N2O",
+                    "N2O",
+                ],
+            },
+        },
+        "managed_soils_indirect" : {
+            "page_defs" : {
+            "125" : {
+                "area" : ["74,214,539,83"],
+                "cols" : ["125,222,309,423"],
+            },
+            "126" : {
+                "area" : ["72,775,539,369"],
+                "cols" : ["148,248,351,459"],
+            },
+            },
+            "last_year" : "2020",
+            "col_to_use" : 3,
+            "rows_to_fix" : {
+                7 : [
+                    "3.C.5 - Indirect N2O",
+                ],
+            },
+            "year_column" : '  Year  ',
+            # # TODO: technically duplicate, just with a different unit
+            "categories_to_drop" : ['3.C.5 -Indirect N2O emissions from managed  soils Gg CO2e'],
+            # TODO: This is far from than the actual categories but works for now
+            "cat_codes_manual" : {
+                # TODO the next 2 categories are made up placeholders
+                ' Volatilization  pathway Gg N2O' : '3.C.5.i',
+                ' Leaching/runoff  pathway Gg N2O' : '3.C.5.ii',
+                '3.C.5 -Indirect N2O emissions from managed  soils Gg N2O' : '3.C.5',
+            },
+            "entity" : "N2O",
+            # "category_column" : "Categories",
+            # "columns_to_drop" : ["Categories"],
+            # "years" : ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
+            "unit" : "Gg",
+        },
     }
 
     df_agg = None
-    # TODO remove reversed order again (only for development)
+    # TODO remove `reversed` (only for development)
     for sector in list(reversed(list(inv_conf_per_sector.keys()))):
         print("-" * 60)
-        print(f"Reading sector {sector}.")
+        print(
+            f"Reading sector {sector} on page(s) {[*inv_conf_per_sector[sector]['page_defs']]}."
+        )
 
         df_sector = None
 
@@ -489,10 +602,15 @@ if __name__ == "__main__":
         if "rows_to_fix" in inv_conf_per_sector[sector]:
             for n_rows in inv_conf_per_sector[sector]["rows_to_fix"].keys():
                 print(f"Merge content for {n_rows=}")
+                # set the row
+                if "col_to_use" in inv_conf_per_sector[sector].keys():
+                    col_to_use = inv_conf_per_sector[sector]["col_to_use"]
+                else:
+                    col_to_use = 0
                 df_sector = fix_rows(
                     df_sector,
                     rows_to_fix=inv_conf_per_sector[sector]["rows_to_fix"][n_rows],
-                    col_to_use=0,
+                    col_to_use=col_to_use,
                     n_rows=n_rows,
                 )
 
@@ -502,6 +620,7 @@ if __name__ == "__main__":
             for row in inv_conf_per_sector[sector]["rows_to_drop"]:
                 df_sector = df_sector.drop(index=row)
 
+        # TODO: Is it necessary to set the index here?
         df_sector = df_sector.set_index(0)
 
         # transpose so categegories are in first columns
@@ -513,21 +632,26 @@ if __name__ == "__main__":
 
         df_sector["category"] = df_sector["category"].str.replace("\n", "")
 
+        # TODO Is it not the same as remove categories further down?
+        if "categories_to_drop" in inv_conf_per_sector[sector]:
+            for row in inv_conf_per_sector[sector]["categories_to_drop"]:
+                        row_to_delete = df_sector.index[df_sector["category"] == row][0]
+                        df_sector = df_sector.drop(index=row_to_delete)
+
         df_sector.loc[:, "category"] = df_sector.loc[:, "category"].replace(
             inv_conf_per_sector[sector]["cat_codes_manual"]
         )
 
         if "multi_entity" in inv_conf_per_sector[sector]:
-            pass
             df_sector["entity"] = inv_conf_per_sector[sector]["multi_entity"]["entity"]
             df_sector["unit"] = inv_conf_per_sector[sector]["multi_entity"]["unit"]
-            df_sector = df_sector.set_index(["entity", "unit", "category"])
+            # df_sector = df_sector.set_index(["entity", "unit", "category"])
 
         else:
-            # unit is always Gg
+            # unit is always the same
             df_sector.loc[:, "unit"] = inv_conf_per_sector[sector]["unit"]
 
-            # only one entity per table
+            # and only one entity per table
             df_sector.loc[:, "entity"] = inv_conf_per_sector[sector]["entity"]
 
         # Some categories are in two tables (summary and sector)
@@ -537,7 +661,7 @@ if __name__ == "__main__":
                 row_to_delete = df_sector.index[df_sector["category"] == row][0]
                 df_sector = df_sector.drop(index=row_to_delete)
 
-        if df_sector is None:
+        if df_agg is None:
             df_agg = df_sector
         else:
             df_agg = pd.concat(
@@ -550,6 +674,7 @@ if __name__ == "__main__":
             df_agg.loc[:, year] = df_agg[year].str.replace(",", "")
 
         # print(df_agg)
+    pass
 
     ### convert to interchange format ###
     df_agg_IF = pm2.pm2io.convert_wide_dataframe_if(
