@@ -278,11 +278,53 @@ if __name__ == "__main__":
     # data_trend_pm2 = pm2.pm2io.from_interchange_format(df_trend_IF)
 
     # ###
+    # 2.5 Read harvested wood products table
+    # ###
+
+    inv_conf_harvested_wood_products = {
+        "page_defs": {
+            "part_1" :
+                {
+                    "area" : ["52,690,555,647"],
+                    "cols" : ["101,149,196,231,268,310,351,398,433,476,514"],
+                },
+        }
+    }
+
+    print("-" * 60)
+    print(
+        f"Reading sector harvested wood products table."
+    )
+
+    df_hwp = None
+    for part in [*inv_conf_harvested_wood_products["page_defs"]] :
+        tables_inventory_original = camelot.read_pdf(
+            str(input_folder / pdf_file),
+            pages="151",
+            table_areas=inv_conf_harvested_wood_products["page_defs"][part]["area"],
+            columns=inv_conf_harvested_wood_products["page_defs"][part]["cols"],
+            flavor="stream",
+            split_text=True,
+        )
+
+        df_hwp_part = tables_inventory_original[0].df
+
+        if df_hwp is None :
+            df_hwp = df_hwp_part
+        else :
+            df_sector = pd.concat(
+                [df_hwp, df_hwp_part],
+                axis=1,
+                join="outer",
+            ).reset_index(drop=True)
+
+    pass
+    # ###
     # 3. Read in aggregated tables from 1990 - 2020
     # ###
-    # tables: 32, 43 - 44, 74, 103, 114 - 115,  119,  125 - 126, // 151, 157, 161 - 162
+    # tables: 32, 43 - 44, 74, 103, 114 - 115,  119,  125 - 126,   157  161 - 162, // 151
     # Work in progress
-    # noinspection PyInterpreter
+    # noinspection PyInterpreter ??
     inv_conf_per_sector = {
         "total": {
             "page_defs": {
@@ -461,7 +503,7 @@ if __name__ == "__main__":
                 },
             },
             "last_year": "2020",
-            "col_to_use" : 5,
+            "col_to_use": 5,
             "rows_to_fix": {
                 7: [
                     "3.C.1 - Emiss",
@@ -469,15 +511,17 @@ if __name__ == "__main__":
             },
             "year_column": "  Year  ",
             # TODO: These categories are technically duplicate, just with a different unit
-            "categories_to_drop" : ['3.C.1 -Emiss  CH4 (Gg CO2e)',
-                 'ions from bioma (CO2e) N2O (Gg CO2e)',
-                 'ss burning  Total (Gg CO2e)'],
+            "categories_to_drop": [
+                "3.C.1 -Emiss  CH4 (Gg CO2e)",
+                "ions from bioma (CO2e) N2O (Gg CO2e)",
+                "ss burning  Total (Gg CO2e)",
+            ],
             # TODO: This is far from than the actual categories but works for now
             "cat_codes_manual": {
-                ' 3.C.1  CH4 (Gg) ' : '3.C.1',
-                 ' -Emissions fr  N2O (Gg) ' : '3.C.1',
-                 ' om biomass bur  NOx (Gg) ' : '3.C.1',
-                 ' ning  CO(Gg) ' : '3.C.1',
+                " 3.C.1  CH4 (Gg) ": "3.C.1",
+                " -Emissions fr  N2O (Gg) ": "3.C.1",
+                " om biomass bur  NOx (Gg) ": "3.C.1",
+                " ning  CO(Gg) ": "3.C.1",
             },
             "multi_entity": {
                 "unit": ["Gg", "Gg", "Gg", "Gg"],
@@ -489,35 +533,37 @@ if __name__ == "__main__":
                 ],
             },
         },
-        "managed_soils_direct" : {
-            "page_defs" : {
-                "119" : {
-                    "area" : ["70,600,541,173"],
-                    "cols" : ["114,191,245,328,400,476"],
+        "managed_soils_direct": {
+            "page_defs": {
+                "119": {
+                    "area": ["70,600,541,173"],
+                    "cols": ["114,191,245,328,400,476"],
                 },
             },
-            "last_year" : "2020",
-            "col_to_use" : 3,
-            "rows_to_fix" : {
-                10 : [
+            "last_year": "2020",
+            "col_to_use": 3,
+            "rows_to_fix": {
+                10: [
                     "Urine and dung",
                 ],
             },
-            "year_column" : '  Year   ',
+            "year_column": "  Year   ",
             # # TODO: technically duplicate, just with a different unit
-            "categories_to_drop" : [' 3.C.4 -Direct N2O Emissions from managed soils (CO2e) Gg CO2e', ],
+            "categories_to_drop": [
+                " 3.C.4 -Direct N2O Emissions from managed soils (CO2e) Gg CO2e",
+            ],
             # TODO: This is far from than the actual categories but works for now
-            "cat_codes_manual" : {
+            "cat_codes_manual": {
                 # TODO the next 4 categories are made up placeholders
-                ' Inorganic N fertilizer application  N2O (Gg)' : '3.C.4.i',
-                ' Organic N applied as fertilizer (manure) N2O (Gg)' : '3.C.4.ii',
-                'Urine and dung N deposited on pasture, range and paddock by grazing animals N2O (Gg)' : '3.C.4.iii',
-                '  N in crop residues  N2O (Gg)' : '3.C.4.iiii',
-                ' 3.C.4 -Direct N2O Emissions from managed soils N2O (Gg)' : '3.C.4',
+                " Inorganic N fertilizer application  N2O (Gg)": "3.C.4.i",
+                " Organic N applied as fertilizer (manure) N2O (Gg)": "3.C.4.ii",
+                "Urine and dung N deposited on pasture, range and paddock by grazing animals N2O (Gg)": "3.C.4.iii",
+                "  N in crop residues  N2O (Gg)": "3.C.4.iiii",
+                " 3.C.4 -Direct N2O Emissions from managed soils N2O (Gg)": "3.C.4",
             },
-            "multi_entity" : {
-                "unit" : ["Gg", "Gg", "Gg", "Gg", "Gg"],
-                "entity" : [
+            "multi_entity": {
+                "unit": ["Gg", "Gg", "Gg", "Gg", "Gg"],
+                "entity": [
                     "N2O",
                     "N2O",
                     "N2O",
@@ -526,40 +572,112 @@ if __name__ == "__main__":
                 ],
             },
         },
-        "managed_soils_indirect" : {
-            "page_defs" : {
-            "125" : {
-                "area" : ["74,214,539,83"],
-                "cols" : ["125,222,309,423"],
+        "managed_soils_indirect": {
+            "page_defs": {
+                "125": {
+                    "area": ["74,214,539,83"],
+                    "cols": ["125,222,309,423"],
+                },
+                "126": {
+                    "area": ["72,775,539,369"],
+                    "cols": ["148,248,351,459"],
+                },
             },
-            "126" : {
-                "area" : ["72,775,539,369"],
-                "cols" : ["148,248,351,459"],
-            },
-            },
-            "last_year" : "2020",
-            "col_to_use" : 3,
-            "rows_to_fix" : {
-                7 : [
+            "last_year": "2020",
+            "col_to_use": 3,
+            "rows_to_fix": {
+                7: [
                     "3.C.5 - Indirect N2O",
                 ],
             },
-            "year_column" : '  Year  ',
+            "year_column": "  Year  ",
             # # TODO: technically duplicate, just with a different unit
-            "categories_to_drop" : ['3.C.5 -Indirect N2O emissions from managed  soils Gg CO2e'],
+            "categories_to_drop": [
+                "3.C.5 -Indirect N2O emissions from managed  soils Gg CO2e"
+            ],
+            # TODO: This is far from than the actual categories but works for now
+            "cat_codes_manual": {
+                # TODO the next 2 categories are made up placeholders
+                " Volatilization  pathway Gg N2O": "3.C.5.i",
+                " Leaching/runoff  pathway Gg N2O": "3.C.5.ii",
+                "3.C.5 -Indirect N2O emissions from managed  soils Gg N2O": "3.C.5",
+            },
+            "entity": "N2O",
+            "unit": "Gg",
+        },
+        "bio_waste" : {
+            "page_defs" : {
+                "157" : {
+                    "area" : ["68,748,541,228"],
+                    "cols" : ["108,176,222,283,332,387,429"],
+                },
+            },
+            "last_year" : "2020",
+            "rows_to_fix" : {
+                2 : [
+                    "Year",
+                ],
+            },
+            "year_column" : 'Year ',
+            # # TODO: technically duplicate, just with a different unit
+            "categories_to_drop" : [
+                'Total emissions from SWDS Gg CO2e'
+            ],
             # TODO: This is far from than the actual categories but works for now
             "cat_codes_manual" : {
-                # TODO the next 2 categories are made up placeholders
-                ' Volatilization  pathway Gg N2O' : '3.C.5.i',
-                ' Leaching/runoff  pathway Gg N2O' : '3.C.5.ii',
-                '3.C.5 -Indirect N2O emissions from managed  soils Gg N2O' : '3.C.5',
+                # TODO the categories are made up placeholders
+                'Food ' : "4.A.1.food",
+                 'Garden ' : "4.A.1.garden",
+                 'Paper Gg CH4' : "4.A.1.paper",
+                 'Wood ' : "4.A.1.wood",
+                 'Textile ' : "4.A.1.textile",
+                 'Total ' : "4.A.1.",
             },
-            "entity" : "N2O",
-            # "category_column" : "Categories",
-            # "columns_to_drop" : ["Categories"],
-            # "years" : ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
+            "entity" : "CH4 ",
             "unit" : "Gg",
         },
+        "wastewater" : {
+            "page_defs" : {
+                "161" : {
+                    "area" : ["60,480,541,85"],
+                    "cols" : ["98,165,226,281,340,408,465"],
+                },
+                "162" : {
+                    "area" : ["62,775,541,613"],
+                    "cols" : ["110,176,229,288,349,414,486"],
+                },
+            },
+            "last_year" : "2020",
+            "col_to_use" : 7,
+            "rows_to_fix" : {
+                10 : [
+                    "Wastewater",
+                ],
+            },
+            "year_column" : '   Year  ',
+            # # TODO: technically duplicate, just with a different unit
+            "categories_to_drop" : [
+                ' Domestic wastewater  CH4 emissions ',
+                ' Domestic wastewater  N2O emissions (Gg C',
+                ' Industrial wastewater  CH4 emissions O2 e)',
+                'Wastewater treatment and discharge  Total emissions ',
+                ],
+            # TODO: This is far from than the actual categories but works for now
+            "cat_codes_manual" : {
+                # TODO the categories are made up placeholders
+                ' Domestic wastewater  CH4 emissions (Gg CH4)' : '4.D.1',
+                ' Domestic wastewater  N2O emissions (Gg N2O)' : '4.D.1',
+                ' Industrial wastewater  CH4 emissions (Gg CH4)' : '4.D.2',
+            },
+            "multi_entity" : {
+                "unit" : ["Gg", "Gg", "Gg"],
+                "entity" : [
+                    "CH4",
+                    "N2O",
+                    "CH4",
+                ],
+            },
+        }
     }
 
     df_agg = None
@@ -635,8 +753,8 @@ if __name__ == "__main__":
         # TODO Is it not the same as remove categories further down?
         if "categories_to_drop" in inv_conf_per_sector[sector]:
             for row in inv_conf_per_sector[sector]["categories_to_drop"]:
-                        row_to_delete = df_sector.index[df_sector["category"] == row][0]
-                        df_sector = df_sector.drop(index=row_to_delete)
+                row_to_delete = df_sector.index[df_sector["category"] == row][0]
+                df_sector = df_sector.drop(index=row_to_delete)
 
         df_sector.loc[:, "category"] = df_sector.loc[:, "category"].replace(
             inv_conf_per_sector[sector]["cat_codes_manual"]
