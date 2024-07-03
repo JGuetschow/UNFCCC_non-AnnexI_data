@@ -281,14 +281,54 @@ if __name__ == "__main__":
     # 2.5 Read harvested wood products table
     # ###
 
+    # The table for harvested wood products is in a different format
+    # and needs to be read in separately.
+
     inv_conf_harvested_wood_products = {
-        "page_defs": {
-            "part_1" :
-                {
-                    "area" : ["52,690,555,647"],
-                    "cols" : ["101,149,196,231,268,310,351,398,433,476,514"],
+        'page' : '151',
+        "category_column" : 'Categories',
+        "cat_codes_manual" : {
+            'GHG emission' : '3.D.1',
+        },
+        'unit' : 'Gg',
+        'entity' : 'CO2',
+        'parts' : {
+            "part_1" : {
+                "page_defs" :
+                    {
+                        "area" : ["52,690,555,647"],
+                        "cols" : ["101,149,196,231,268,310,351,398,433,476,514"],
+                    },
+                "rows_to_fix" : {
+                    3 : [
+                        "GHG",
+                    ],
                 },
-        }
+            },
+            "part_2" : {
+                "page_defs" :
+                    {
+                        "area" : ["52,637,555,596"],
+                        "cols" : ["99,150,197,239,281,326,372,425,469,516"],
+                    },
+                "rows_to_fix" : {
+                    3 : [
+                        "GHG",
+                    ],
+                },
+            },
+            "part_3" : {
+                "page_defs" :
+                    {
+                        "area" : ["52,591,550,547"],
+                        "cols" : ["106,156,197,239,281,326,372,420,465,509"],
+                    },
+                "rows_to_fix" : {
+                    3 : [
+                        "GHG",
+                    ],
+                },
+            }},
     }
 
     print("-" * 60)
@@ -297,34 +337,59 @@ if __name__ == "__main__":
     )
 
     df_hwp = None
-    for part in [*inv_conf_harvested_wood_products["page_defs"]] :
+    for part in [*inv_conf_harvested_wood_products['parts']] :
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file),
-            pages="151",
-            table_areas=inv_conf_harvested_wood_products["page_defs"][part]["area"],
-            columns=inv_conf_harvested_wood_products["page_defs"][part]["cols"],
+            pages=inv_conf_harvested_wood_products['page'],
+            table_areas=inv_conf_harvested_wood_products['parts'][part]["page_defs"]["area"],
+            columns=inv_conf_harvested_wood_products['parts'][part]["page_defs"]["cols"],
             flavor="stream",
             split_text=True,
         )
 
         df_hwp_part = tables_inventory_original[0].df
 
+        if "rows_to_fix" in inv_conf_harvested_wood_products['parts'][part]:
+            for n_rows in inv_conf_harvested_wood_products['parts'][part]["rows_to_fix"].keys():
+                df_hwp_part = fix_rows(
+                    df_hwp_part,
+                    rows_to_fix=inv_conf_harvested_wood_products['parts'][part]["rows_to_fix"][n_rows],
+                    col_to_use=0,
+                    n_rows=n_rows,
+                )
+
+        df_hwp_part = df_hwp_part.drop(1, axis=0).reset_index(drop=True)
+
         if df_hwp is None :
             df_hwp = df_hwp_part
         else :
-            df_sector = pd.concat(
-                [df_hwp, df_hwp_part],
+            df_hwp = pd.concat(
+                [df_hwp, df_hwp_part.drop(0, axis=1)],
                 axis=1,
                 join="outer",
             ).reset_index(drop=True)
 
-    pass
+    df_hwp = pd.DataFrame(df_hwp.values[1 :], columns=df_hwp.iloc[0])
+
+    df_hwp = df_hwp.rename(
+        columns={inv_conf_harvested_wood_products["category_column"] : "category"}
+    )
+
+    df_hwp.loc[:, "category"] = df_hwp.loc[:, "category"].replace(
+        inv_conf_harvested_wood_products["cat_codes_manual"]
+    )
+
+
+    # unit is always the same
+    df_hwp.loc[:, "unit"] = inv_conf_harvested_wood_products["unit"]
+
+    # and only one entity per table
+    df_hwp.loc[:, "entity"] = inv_conf_harvested_wood_products["entity"]
+
     # ###
     # 3. Read in aggregated tables from 1990 - 2020
     # ###
-    # tables: 32, 43 - 44, 74, 103, 114 - 115,  119,  125 - 126,   157  161 - 162, // 151
-    # Work in progress
-    # noinspection PyInterpreter ??
+
     inv_conf_per_sector = {
         "total": {
             "page_defs": {
