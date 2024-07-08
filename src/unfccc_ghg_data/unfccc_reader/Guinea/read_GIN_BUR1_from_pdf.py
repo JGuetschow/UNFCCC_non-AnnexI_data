@@ -6,10 +6,11 @@ import pandas as pd
 import primap2 as pm2
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-from unfccc_ghg_data.helper.functions import process_data_for_country
-from unfccc_ghg_data.helper.functions_temp import find_and_replace_values
-
-from .config_gin_bur1 import (
+from unfccc_ghg_data.helper.functions import (
+    find_and_replace_values,
+    process_data_for_country,
+)
+from unfccc_ghg_data.unfccc_reader.Guinea.config_gin_bur1 import (
     coords_cols,
     coords_defaults,
     coords_terminologies,

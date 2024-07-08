@@ -6,7 +6,9 @@ the unfccc_ghg_data package
 """
 
 from .definitions import (
+    AI_countries,
     GWP_factors,
+    all_countries,
     code_path,
     compression,
     custom_country_mapping,
@@ -20,6 +22,7 @@ from .definitions import (
     gas_baskets,
     legacy_data_path,
     log_path,
+    nAI_countries,
     root_path,
 )
 from .functions import (
@@ -31,6 +34,7 @@ from .functions import (
     get_country_name,
     make_wide_table,
     process_data_for_country,
+    set_to_nan_in_ds,
 )
 
 __all__ = [
@@ -57,4 +61,8 @@ __all__ = [
     "get_code_file",
     "compression",
     "make_wide_table",
+    "nAI_countries",
+    "AI_countries",
+    "all_countries",
+    "set_to_nan_in_ds",
 ]

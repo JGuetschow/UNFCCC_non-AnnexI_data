@@ -305,16 +305,16 @@ cat_mapping = {  # categories not listed here have the same UNFCCC_GHG_data as i
 # '3.A.4.g.ii.',
 
 aggregate_cats = {
-    "3.A": {"sources": ["3.A.1", "3.A.2"], "name": "Livestock"},
+    "3.A": {"sources": ["3.A.1", "3.A.2"], "orig_cat_name": "Livestock"},
     "3.B": {
         "sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"],
-        "name": "Land",
+        "orig_cat_name": "Land",
     },
     "3.C.1": {
         "sources": ["3.C.1.b", "3.C.1.c"],
-        "name": "Emissions from Biomass Burning",
+        "orig_cat_name": "Emissions from Biomass Burning",
     },
-    "3.C.8": {"sources": ["3.C.8.a", "3.C.8.b"], "name": "Other"},
+    "3.C.8": {"sources": ["3.C.8.a", "3.C.8.b"], "orig_cat_name": "Other"},
     "3.C": {
         "sources": [
             "3.C.1",
@@ -326,8 +326,8 @@ aggregate_cats = {
             "3.C.7",
             "3.C.8",
         ],
-        "name": "Aggregate sources and non-CO2 emissions sources on land",
+        "orig_cat_name": "Aggregate sources and non-CO2 emissions sources on land",
     },
-    "3.D": {"sources": ["3.D.1", "3.D.2"], "name": "Other"},
-    "3": {"sources": ["3.A", "3.B", "3.C", "3.D"], "name": "AFOLU"},
+    "3.D": {"sources": ["3.D.1", "3.D.2"], "orig_cat_name": "Other"},
+    "3": {"sources": ["3.A", "3.B", "3.C", "3.D"], "orig_cat_name": "AFOLU"},
 }

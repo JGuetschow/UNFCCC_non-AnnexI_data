@@ -17,8 +17,7 @@ from unfccc_ghg_data.helper import (
     fix_rows,
     process_data_for_country,
 )
-
-from .config_mys_bur3 import (
+from unfccc_ghg_data.unfccc_reader.Malaysia.config_mys_bur3 import (
     cat_code_regexp,
     cat_codes_manual,
     cat_names_fix,

@@ -1,5 +1,11 @@
 """
 Define the tasks for UNFCCC data repository
+
+The setup with the function that calls datalad.api.run is necessary because doit doesn't
+like the return values of datalad.api.run
+
+TODO: could add try-except blocks and return proper values so doit knows if the task
+ was run successfully
 """
 import os
 import sys
@@ -10,8 +16,22 @@ from doit import get_var
 root_path = "."
 os.environ["UNFCCC_GHG_ROOT_PATH"] = root_path
 
+from unfccc_ghg_data.helper.functions import (  # noqa: E402
+    get_country_datasets,
+    get_country_submissions,
+)
+from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_devel import (  # noqa: E402
+    read_year_to_test_specs,
+)
 from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_prod import (  # noqa: E402
     read_crf_for_country_datalad,
+    read_new_crf_for_year_datalad,
+)
+from unfccc_ghg_data.unfccc_di_reader import (  # noqa: E402
+    process_DI_for_country_datalad,
+    process_DI_for_country_group_datalad,
+    read_DI_for_country_datalad,
+    read_DI_for_country_group_datalad,
 )
 
 
@@ -55,16 +75,6 @@ def task_in_venv():
 
     return {
         "actions": [in_venv],
-    }
-
-
-# set UNFCCC_GHG_ROOT_PATH environment variable
-def task_set_env():
-    """
-    Set the environment variable for the module so data is stored in the correct folders
-    """
-    return {
-        "actions": [set_root_path],
     }
 
 
@@ -400,6 +410,7 @@ read_config_crf = {
     "countries": get_var("countries", None),
     "data_year": get_var("data_year", None),
     "totest": get_var("totest", None),
+    "type": get_var("type", "CRF"),
 }
 
 
@@ -416,6 +427,7 @@ def task_read_unfccc_crf_submission():
             submission_year=int(read_config_crf["submission_year"]),
             submission_date=read_config_crf["submission_date"],
             re_read=re_read,
+            type=read_config_crf["type"],
         )
 
     return {
@@ -423,190 +435,197 @@ def task_read_unfccc_crf_submission():
             (read_CRF,),
             (map_folders, ["extracted_data/UNFCCC"]),
         ],
-        "task_dep": ["set_env"],
         "verbosity": 2,
         "setup": ["in_venv"],
     }
 
 
-#
-# def task_read_new_unfccc_crf_for_year():
-#     """
-#     Read CRF submission for all countries for given submission year.
-#
-#     By default only reads data not present yet. Only reads the latest updated
-#     submission for each country.
-#     """
-#     actions = [
-#         f"python src/unfccc_ghg_data/unfccc_crf_reader"
-#         f"/read_new_unfccc_crf_for_year_datalad.py "
-#         f"--submission_year={read_config_crf['submission_year']} ",
-#         "python src/unfccc_ghg_data/helper/folder_mapping.py "
-#         "--folder=extracted_data/UNFCCC",
-#     ]
-#     # specifying countries is currently disabled duo to problems with command line
-#     # list arguments
-#     # if read_config_crf["countries"] is not None:
-#     #        actions[0] = actions[0] + f"--countries={read_config_crf['countries']} "
-#     if read_config_crf["re_read"] == "True":
-#         actions[0] = actions[0] + " --re_read"
-#     return {
-#         #'basename': "Read_CRF_year",
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# def task_test_read_unfccc_crf_for_year():
-#     """
-#     Test CRF reading.
-#
-#     Test CRF with a single year only for speed and logging to extend specifications
-#     if necessary.
-#     """
-#     actions = [
-#         f"python "
-#         f"src/unfccc_ghg_data/unfccc_crf_reader"
-#         f"/test_read_unfccc_crf_for_year.py "
-#         f"--submission_year={read_config_crf['submission_year']} "
-#         f"--country={read_config_crf['country']} "
-#     ]
-#     if read_config_crf["totest"] == "True":
-#         actions[0] = actions[0] + " --totest"
-#
-#     if read_config_crf["data_year"] is not None:
-#         actions[0] = actions[0] + f"--data_year={read_config_crf['data_year']} "
-#     return {
-#         #'basename': "Read_CRF_year",
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# def task_compile_raw_unfccc_crf_for_year():
-#     """
-#     Collect all latest CRF submissions for a given year
-#
-#     Reads the latest data fromt he extracted data folder for each country.
-#     Notifies the user if new data are available in the downloaded_data folder
-#     which have not yet been read.
-#
-#     Data are saved in the datasets/UNFCCC/CRFYYYY folder.
-#     """
-#     actions = [
-#         f"python "
-#         f"src/unfccc_ghg_data/unfccc_crf_reader/crf_raw_for_year.py "
-#         f"--submission_year={read_config_crf['submission_year']} "
-#     ]
-#     return {
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# # tasks for DI reader
-# # datalad run is called from within the read_unfccc_di_for_country.py script
-# read_config_di = {
-#     "country": get_var("country", None),
-#     "date": get_var("date", None),
-#     "annexI": get_var("annexI", False),
-#     # "countries": get_var('countries', None),
-# }
-#
-#
-# def task_read_unfccc_di_for_country():
-#     """Read DI data for a country"""
-#     actions = [
-#         f"python "
-#         f"src/unfccc_ghg_data/unfccc_di_reader/read_unfccc_di_for_country_datalad.py "
-#         f"--country={read_config_di['country']}",
-#         "python src/unfccc_ghg_data/helper/folder_mapping.py "
-#         "--folder=extracted_data/UNFCCC",
-#     ]
-#     return {
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# def task_process_unfccc_di_for_country():
-#     """Process DI data for a country"""
-#     actions = [
-#         f"python "
-#         f"src/unfccc_ghg_data/unfccc_di_reader/process_unfccc_di_for_country_datalad"
-#         f".py "
-#         f"--country={read_config_di['country']} --date={read_config_di['date']}",
-#         "python src/unfccc_ghg_data/helper/folder_mapping.py "
-#         "--folder=extracted_data/UNFCCC",
-#     ]
-#     return {
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# def task_read_unfccc_di_for_country_group():
-#     """Read DI data for a country group"""
-#     actions = [
-#         "python "
-#         "src/unfccc_ghg_data/unfccc_di_reader/read_unfccc_di_for_country_group_datalad"
-#         ".py",
-#         "python src/unfccc_ghg_data/helper/folder_mapping.py "
-#         "--folder=extracted_data/UNFCCC",
-#     ]
-#     if read_config_di["annexI"] == "True":
-#         actions[0] = actions[0] + " --annexI"
-#
-#     return {
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# def task_process_unfccc_di_for_country_group():
-#     """Process DI data for a country group"""
-#     actions = [
-#         "python "
-#         "src/unfccc_ghg_data/unfccc_di_reader"
-#         "/process_unfccc_di_for_country_group_datalad"
-#         ".py",
-#     ]
-#     if read_config_di["annexI"] == "True":
-#         actions[0] = actions[0] + " --annexI"
-#     if read_config_di["date"] is not None:
-#         actions[0] = actions[0] + f" --date={read_config_di['date']}"
-#
-#     return {
-#         "actions": actions,
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
-#
-#
-# # general tasks
-# def task_country_info():
-#     """
-#     Print information on submissions and datasets available for given country
-#     """
-#     return {
-#         "actions": [
-#             f"python src/unfccc_ghg_data/helper/country_info.py "
-#             f"--country={read_config['country']}"
-#         ],
-#         "task_dep": ["set_env"],
-#         "verbosity": 2,
-#         "setup": ["in_venv"],
-#     }
+def task_read_new_unfccc_crf_for_year():
+    """
+    Read CRF/CRT submission for all countries for given submission year.
+
+    By default only reads data not present yet. Only reads the latest updated
+    submission for each country.
+    """
+
+    def read_new_CRF():
+        if read_config_crf["re_read"] == "True":
+            re_read = True
+        else:
+            re_read = False
+        read_new_crf_for_year_datalad(
+            submission_year=int(read_config_crf["submission_year"]),
+            # countries=read_config_crf["countries"],
+            re_read=re_read,
+            type=read_config_crf["type"],
+        )
+
+    return {
+        "actions": [
+            (read_new_CRF,),
+            (map_folders, ["extracted_data/UNFCCC"]),
+        ],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+def task_test_read_unfccc_crf_for_year():
+    """
+    Test CRF/CRT reading.
+
+    Test CRF/CRT with a single year only for speed and logging to extend specifications
+    if necessary.
+    """
+
+    def read_CRF():
+        if read_config_crf["totest"] == "True":
+            totest = True
+        else:
+            totest = False
+        if read_config_crf["data_year"] is not None:
+            data_year = int(read_config_crf["data_year"])
+        else:
+            data_year = None
+        read_year_to_test_specs(
+            submission_year=int(read_config_crf["submission_year"]),
+            data_year=data_year,
+            totest=totest,
+            country_code=read_config_crf["country"],
+            type=read_config_crf["type"],
+        )
+
+    return {
+        "actions": [
+            (read_CRF,),
+            (map_folders, ["extracted_data/UNFCCC"]),
+        ],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+def task_compile_raw_unfccc_crf_for_year():
+    """
+    Collect all latest CRF/CRT submissions for a given year / submission round
+
+    Reads the latest data from the extracted data folder for each country.
+    Notifies the user if new data are available in the downloaded_data folder
+    which have not yet been read.
+
+    Data are saved in the datasets/UNFCCC/[CRFYYYY|CRTX] folder.
+    TODO: could make a function from the script
+    """
+    actions = [
+        f"python "
+        f"src/unfccc_ghg_data/unfccc_crf_reader/crf_raw_for_year.py "
+        f"--submission_year={read_config_crf['submission_year']} "
+        f"--type={read_config_crf['type']} "
+    ]
+    return {
+        "actions": actions,
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+# tasks for DI reader
+# TODO DI tasks need testing
+# datalad run is called from within the read_unfccc_di_for_country.py script
+read_config_di = {
+    "country": get_var("country", None),
+    "date": get_var("date", None),
+    "annexI": get_var("annexI", False),
+    # "countries": get_var('countries', None),
+}
+
+
+def task_read_unfccc_di_for_country():
+    """Read DI data for a country"""
+    return {
+        "actions": [
+            (read_DI_for_country_datalad, [read_config_di["country"]]),
+            (map_folders, ["extracted_data/UNFCCC"]),
+        ],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+def task_process_unfccc_di_for_country():
+    """Process DI data for a country"""
+    return {
+        "actions": [
+            (
+                process_DI_for_country_datalad,
+                [],
+                {
+                    "country": read_config_di["country"],
+                    "date_str": read_config_di["date"],
+                },
+            ),
+            (map_folders, ["extracted_data/UNFCCC"]),
+        ],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+def task_read_unfccc_di_for_country_group():
+    """Read DI data for a country group"""
+
+    def read_DI():
+        if read_config_di["annexI"] == "True":
+            annexI = True
+        else:
+            annexI = False
+        read_DI_for_country_group_datalad(annexI=annexI)
+
+    return {
+        "actions": [(read_DI,), (map_folders, ["extracted_data/UNFCCC"])],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+def task_process_unfccc_di_for_country_group():
+    """Process DI data for a country group"""
+
+    def proc_DI():
+        if read_config_di["annexI"] == "True":
+            annexI = True
+        else:
+            annexI = False
+        process_DI_for_country_group_datalad(
+            annexI=annexI,
+            date_str=read_config_di["date"],
+        )
+
+    return {
+        "actions": [(proc_DI,), (map_folders, ["extracted_data/UNFCCC"])],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }
+
+
+# general tasks
+def task_country_info():
+    """
+    Print information on submissions and datasets available for given country
+    """
+
+    def country_info(country):
+        # print available submissions
+        print("=" * 15 + " Available submissions " + "=" * 15)
+        get_country_submissions(country, True)
+        print("")
+
+        # print available datasets
+        print("=" * 15 + " Available datasets " + "=" * 15)
+        get_country_datasets(country, True)
+
+    return {
+        "actions": [(country_info, [read_config["country"]])],
+        "verbosity": 2,
+        "setup": ["in_venv"],
+    }

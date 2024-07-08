@@ -3,6 +3,8 @@
 import os
 from pathlib import Path
 
+import pandas as pd
+
 
 def get_root_path() -> Path:
     """Get the root_path from an environment variable"""
@@ -27,6 +29,11 @@ legacy_data_path = root_path / "legacy_data"
 dataset_path = root_path / "datasets"
 dataset_path_UNFCCC = dataset_path / "UNFCCC"
 
+nAI_countries = list(pd.read_csv(code_path / "helper" / "DI_NAI_parties.conf")["code"])
+# AI_countries = list(reader.annex_one_reader.parties["code"])
+AI_countries = list(pd.read_csv(code_path / "helper" / "DI_AI_parties.conf")["code"])
+
+all_countries = nAI_countries + AI_countries
 
 custom_country_mapping = {
     "EUA": "European Union",
@@ -126,6 +133,71 @@ GWP_factors = {
         "UnspMixOfPFCs": 1.08,
         "FGASES": 1.125,
         "other halogenated gases": 1.125,
+    },
+    ### All TAR factors just averages between SAR and AR4
+    "TARGWP100_to_SARGWP100": {
+        "HFCS": 0.953,
+        "PFCS": 0.953,
+        "UnspMixOfHFCs": 0.953,
+        "UnspMixOfPFCs": 0.953,
+        "FGASES": 0.953,
+        "other halogenated gases": 0.953,
+    },
+    "SARGWP100_to_TARGWP100": {
+        "HFCS": 1.0488,
+        "PFCS": 1.0488,
+        "UnspMixOfHFCs": 1.0488,
+        "UnspMixOfPFCs": 1.0488,
+        "FGASES": 1.0488,
+        "other halogenated gases": 1.0488,
+    },
+    "TARGWP100_to_AR4GWP100": {
+        "HFCS": 1.0488,
+        "PFCS": 1.0488,
+        "UnspMixOfHFCs": 1.0488,
+        "UnspMixOfPFCs": 1.0488,
+        "FGASES": 1.0488,
+        "other halogenated gases": 1.0488,
+    },
+    "AR4GWP100_to_TARGWP100": {
+        "HFCS": 0.953,
+        "PFCS": 0.953,
+        "UnspMixOfHFCs": 0.953,
+        "UnspMixOfPFCs": 0.953,
+        "FGASES": 0.953,
+        "other halogenated gases": 0.953,
+    },
+    "TARGWP100_to_AR5GWP100": {
+        "HFCS": 1.15,
+        "PFCS": 1.15,
+        "UnspMixOfHFCs": 1.15,
+        "UnspMixOfPFCs": 1.15,
+        "FGASES": 1.15,
+        "other halogenated gases": 1.15,
+    },
+    "AR5GWP100_to_TARGWP100": {
+        "HFCS": 0.87,
+        "PFCS": 0.87,
+        "UnspMixOfHFCs": 0.87,
+        "UnspMixOfPFCs": 0.87,
+        "FGASES": 0.87,
+        "other halogenated gases": 0.87,
+    },
+    "TARGWP100_to_AR6GWP100": {
+        "HFCS": 1.335,
+        "PFCS": 1.24,
+        "UnspMixOfHFCs": 1.335,
+        "UnspMixOfPFCs": 1.24,
+        "FGASES": 1.29,
+        "other halogenated gases": 1.35,
+    },
+    "AR6GWP100_to_TARGWP100": {
+        "HFCS": 0.75,
+        "PFCS": 0.806,
+        "UnspMixOfHFCs": 0.75,
+        "UnspMixOfPFCs": 0.806,
+        "FGASES": 0.776,
+        "other halogenated gases": 0.741,
     },
 }
 

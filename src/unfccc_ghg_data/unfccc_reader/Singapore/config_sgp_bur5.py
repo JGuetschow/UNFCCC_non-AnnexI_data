@@ -199,6 +199,36 @@ table_def_templates = {
             "unit": ["", "GgCO2eq", "GgCO2eq", "GgCO2eq", "GgCO2eq"],
         },
     },
+    "100_2": {  # 95
+        "area": ["666,731,1103,149"],
+        "cols": ["829,903,971,1048"],
+        "drop_rows": [0, 1, 2, 3, 4, 5],
+        "rows_to_fix": {
+            2: [
+                "3C - Aggregate Sources and Non-CO2",
+            ],
+            3: [
+                "Total (Net)",
+                "1A2 Manufacturing Industries",
+                "2 — INDUSTRIAL PROCESSES",
+                "3 — AGRICULTURE, FORESTRY",
+                "4C - Incineration and Open",
+                "Clinical Waste",
+                "4D - Wastewater Treatment",
+                "CO2 from Biomass Combustion for",
+            ],
+        },
+        "header": {
+            "entity": [
+                "Greenhouse Gas Source and Sink Categories",
+                "PFCs",
+                "SF6",
+                "NF3",
+                "Total (Net) National Emissions",
+            ],
+            "unit": ["", "GgCO2eq", "GgCO2eq", "GgCO2eq", "GgCO2eq"],
+        },
+    },
 }
 
 table_defs = {
@@ -341,7 +371,7 @@ table_defs = {
         "coords_value_mapping": "other",
     },
     "100": {
-        "templates": ["95_1", "95_2"],
+        "templates": ["95_1", "100_2"],
         "category_col": "Greenhouse Gas Source and Sink Categories",
         "year": 1994,
         # "unit_info": unit_info_2018,
@@ -478,15 +508,21 @@ meta_data = {
 aggregate_sectors = {
     "2": {
         "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
-        "name": "IPPU",
+        # "name": "IPPU",
     },
     "M.3.C.1.AG": {
         "sources": ["3.C.1.b", "3.C.1.c"],
-        "name": "Emissions from Biomass Burning (Agriculture)",
+        "filter": {
+            "entity": ["CO2", "CH4", "N2O"],
+        },
+        # "name": "Emissions from Biomass Burning (Agriculture)",
     },
     "M.3.C.1.LU": {
         "sources": ["3.C.1.a", "3.C.1.d"],
-        "name": "Emissions from Biomass Burning (LULUCF)",
+        "filter": {
+            "entity": ["CO2", "CH4", "N2O"],
+        },
+        # "name": "Emissions from Biomass Burning (LULUCF)",
     },
     "M.3.C.AG": {
         "sources": [
@@ -499,24 +535,43 @@ aggregate_sectors = {
             "3.C.7",
             "3.C.8",
         ],
-        "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
+        "filter": {
+            "entity": ["CO2", "CH4", "N2O"],
+        },
+        # "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
     },
     "M.AG.ELV": {
         "sources": ["M.3.C.AG"],
-        "name": "Agriculture excluding livestock emissions",
+        "filter": {
+            "entity": ["CO2", "CH4", "N2O"],
+        },
+        # "name": "Agriculture excluding livestock emissions",
     },
-    "M.AG": {"sources": ["M.AG.ELV", "3.A"], "name": "Agriculture"},
+    "M.AG": {
+        "sources": ["M.AG.ELV", "3.A"],
+        "filter": {
+            "entity": ["CO2", "CH4", "N2O"],
+        },
+        # "name": "Agriculture"
+    },
     "M.LULUCF": {
         "sources": ["M.3.C.1.LU", "3.B", "3.D"],
-        "name": "Land Use, Land Use Change, and Forestry",
+        "filter": {
+            "entity": ["CO2", "CH4", "N2O"],
+        },
+        # "name": "Land Use, Land Use Change, and Forestry",
     },
     "M.0.EL": {
         "sources": ["1", "2", "M.AG", "4", "5"],
-        "name": "National Total Excluding LULUCF",
+        # "name": "National Total Excluding LULUCF",
     },
-    "0": {"sources": ["1", "2", "3", "4", "5"], "name": "National Total"},
+    "0": {
+        "sources": ["1", "2", "3", "4", "5"],
+        # "name": "National Total"
+    },
 }
 
+sectors_to_drop = ["M.4.C.1", "M.4.C.2"]
 
 processing_info_step1 = {
     # aggregate IPPU which is missing for individual fgases so it can be used in the
@@ -524,14 +579,26 @@ processing_info_step1 = {
     "aggregate_cats": {
         "2": {
             "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
-            "name": "IPPU",
+            # "name": "IPPU",
         },
     },
     "tolerance": 1,  # because ch4 is inconsistent
 }
 
+gas_baskets_step1 = {
+    "KYOTOGHG (AR5GWP100)": [
+        "CO2",
+        "CH4",
+        "N2O",
+        "SF6",
+        "NF3",
+        "HFCS (AR5GWP100)",
+        "PFCS (AR5GWP100)",
+    ],
+}
+
 processing_info_step2 = {
-    "aggregate_cats": aggregate_sectors,
+    "aggregate_coords": {"category": aggregate_sectors},
     "downscale": {
         "sectors": {
             "IPPU": {

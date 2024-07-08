@@ -13,8 +13,11 @@ import primap2 as pm2
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_chl_bur4 import aggregate_cats, cat_mapping, filter_remove_IPCC2006
+from unfccc_ghg_data.unfccc_reader.Chile.config_chl_bur4 import (
+    aggregate_cats,
+    cat_mapping,
+    filter_remove_IPCC2006,
+)
 
 if __name__ == "__main__":
     # ###
@@ -308,7 +311,9 @@ if __name__ == "__main__":
             )
 
             df_combine.insert(0, cat_label, cat_to_agg)
-            df_combine.insert(1, "orig_cat_name", aggregate_cats[cat_to_agg]["name"])
+            df_combine.insert(
+                1, "orig_cat_name", aggregate_cats[cat_to_agg]["orig_cat_name"]
+            )
 
             df_combine = df_combine.reset_index()
 

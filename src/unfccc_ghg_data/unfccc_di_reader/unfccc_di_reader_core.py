@@ -13,6 +13,8 @@ import pycountry
 import unfccc_di_api
 import xarray as xr
 
+from unfccc_ghg_data.helper import AI_countries, nAI_countries
+
 from .unfccc_di_reader_config import (
     cat_code_regexp,
     di_query_filters,
@@ -20,7 +22,7 @@ from .unfccc_di_reader_config import (
     di_to_pm2if_template_nai,
 )
 from .unfccc_di_reader_io import save_DI_country_data, save_DI_dataset
-from .util import AI_countries, DI_date_format, nAI_countries
+from .util import DI_date_format
 
 
 def read_UNFCCC_DI_for_country(  # noqa: PLR0913
@@ -45,12 +47,14 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
 
     Parameters
     ----------
-    country_code: str
+    country_code
         ISO3 code of the country (country names don't work, use the wrapper function)
-    category_groups: dict (optional)
+    category_groups
         define which categories to read including filters on classification, measure,
-        gases
+        gases. If `None` the default configuration will be used
+
         .. code-block:: python
+
             cat_groups = {
                 "4.A  Enteric Fermentation": {  # 4.A  Enteric Fermentation[14577]
                     "measure": [
@@ -60,7 +64,6 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
                     "gases": ["CH4"],
                 },
             }
-        If `None` the default configuration will be used
     read_subsectors
         Whether to also read data for subsectors of the sectors defined in the
         category_groups.
@@ -75,14 +78,14 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
     use_gwp
         If given use this GWP specification for conversion of data in CO2 equivalents
         instead of the default GWP specifications
-    debug (default: False)
+    debug
         output debug information
-    use_zenodo (default: True)
+    use_zenodo
         Read from zenodo datasets instead of UNFCCC DI api.
 
     Returns
     -------
-    read data in primap2 format (xr.Dataset)
+    read data in primap2 format
 
     """
     # read the data
@@ -110,7 +113,7 @@ def read_UNFCCC_DI_for_country(  # noqa: PLR0913
     data_if = convert_DI_data_to_pm2_if(
         data=data_df,
         pm2if_specifications=deepcopy(pm2if_specifications),
-        default_gwp=use_gwp,
+        use_gwp=use_gwp,
         date_str=date_str,
         debug=debug,
     )
@@ -141,9 +144,9 @@ def read_UNFCCC_DI_for_country_df(  # noqa: PLR0912, PLR0915
 
     Parameters
     ----------
-    country_code: str
+    country_code
         ISO3 code of the country (country names don't work, use the wrapper function)
-    category_groups: dict (optional)
+    category_groups
         define which categories to read including filters on classification, measure,
         gases
 
@@ -403,7 +406,7 @@ def read_UNFCCC_DI_for_country_df_zenodo(
 def convert_DI_data_to_pm2_if(  # noqa: PLR0912, PLR0915
     data: pd.DataFrame,
     pm2if_specifications: Optional[dict] = None,
-    default_gwp: Optional[str] = None,
+    use_gwp: Optional[str] = None,
     date_str: Optional[str] = None,
     debug: bool = False,
 ) -> pd.DataFrame:
@@ -513,10 +516,10 @@ def convert_DI_data_to_pm2_if(  # noqa: PLR0912, PLR0915
         to_replace=r"(.*) CO2 equivalent", value=r"\1CO2eq", regex=True
     )
     row_idx_co2eq = data_temp["unit"].str.endswith("CO2eq")
-    if default_gwp is not None:
+    if use_gwp is not None:
         # convert all with GWPs given in input
         data_temp.loc[row_idx_co2eq, "gas"] = (
-            data_temp.loc[row_idx_co2eq, "gas"] + f" ({default_gwp})"
+            data_temp.loc[row_idx_co2eq, "gas"] + f" ({use_gwp})"
         )
     elif ai_dataset:
         # convert with AR4

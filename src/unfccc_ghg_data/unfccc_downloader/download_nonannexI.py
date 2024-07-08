@@ -12,8 +12,8 @@ files in the *downloaded_data/UNFCCC* directory. Only files which are not presen
 will be downloaded (if a symlink exists the file will be treated as existing as it
 is assumed that it is included in the datalad repository).
 
-A file *00_new_downloads_[bur|nc]-/<date/>.csv with a list of all newly downloaded files
-is written.
+A file *00_new_downloads_[bur|nc]-/<date/>.csv* with a list of all newly downloaded
+files is written.
 """
 
 import argparse

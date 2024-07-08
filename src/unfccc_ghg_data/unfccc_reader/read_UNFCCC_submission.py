@@ -12,8 +12,10 @@ import argparse
 import datalad.api
 
 from unfccc_ghg_data.helper import get_code_file, root_path
-
-from .get_submissions_info import get_possible_inputs, get_possible_outputs
+from unfccc_ghg_data.unfccc_reader.get_submissions_info import (
+    get_possible_inputs,
+    get_possible_outputs,
+)
 
 if __name__ == "__main__":
     # Find the right function and possible input and output files and
@@ -73,7 +75,7 @@ if __name__ == "__main__":
 
         print("Run the script using datalad run via the python api")
         datalad.api.run(
-            cmd=f"./venv/bin/python3 {script_name.as_posix()}",
+            cmd=f"python3 {script_name.as_posix()}",
             dataset=root_path,
             message=f"Read data for {country}, {submission}.",
             inputs=input_files,

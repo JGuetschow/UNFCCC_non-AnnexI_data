@@ -369,34 +369,87 @@ entities_to_fix_unit = ["NOx", "CO", "NMVOCs", "SO2"]
 ### processing
 
 processing_info_step1 = {
-    "aggregate_cats": {
-        "2.F": {
-            "sources": ["2.F.2", "2.F.6"],  # all 0, but for completeness
-            "name": "Product uses as Substitutes for Ozone Depleting Substances",
+    "aggregate_coords": {
+        "category": {
+            "2.F": {
+                "sources": ["2.F.2", "2.F.6"],  # all 0, but for completeness
+                # "name": "Product uses as Substitutes for Ozone Depleting Substances",
+                "filter": {
+                    "entity": ["HFCS", "PFCS", "SO2", "SF6", "N2O", "UnspMixOfHFCs"]
+                },
+            },
+            "2": {
+                "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G"],
+                # "name": "IPPU",
+                "filter": {
+                    "entity": ["HFCS", "PFCS", "SO2", "SF6", "N2O", "UnspMixOfHFCs"]
+                },
+            },  # for HFCs, PFCs, SO2, SF6, N2O (all 0)
         },
-        "2": {
-            "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G"],
-            "name": "IPPU",
-        },  # for HFCs, PFCs, SO2, SF6, N2O (all 0)
     },
 }
 
 processing_info_step2 = {
-    "aggregate_cats": {
-        "M.AG.ELV": {
-            "sources": ["3.C"],
-            "name": "Agriculture excluding livestock emissions",
+    "aggregate_coords": {
+        "category": {
+            "M.AG.ELV": {
+                "sources": ["3.C"],
+                # "name": "Agriculture excluding livestock emissions",
+                "filter": {"entity": ["CH4", "N2O", "NOX", "CO"]},
+            },
+            "M.AG": {
+                "sources": ["M.AG.ELV", "3.A"],
+                # "name": "Agriculture"
+                "filter": {"entity": ["CH4", "N2O", "NOX", "CO"]},
+            },
+            "M.LULUCF": {
+                "sources": ["3.B", "3.D"],
+                # "name": "Land Use, Land Use Change, and Forestry",
+                "filter": {
+                    "entity": ["CO2", "N2O", "CH4", "NMVOC", "NOX", "CO", "SO2"]
+                },
+            },
+            "M.0.EL": {
+                "sources": ["1", "2", "M.AG", "4", "5"],
+                # "name": "National Total Excluding LULUCF",
+                "filter": {
+                    "entity": [
+                        "CO2",
+                        "CH4",
+                        "N2O",
+                        "SF6",
+                        "FGASES",
+                        "HFCS",
+                        "PFCS",
+                        "UnspMixOfHFCs",
+                        "NMVOC",
+                        "NOX",
+                        "CO",
+                        "SO2",
+                    ]
+                },
+            },
+            "0": {
+                "sources": ["1", "2", "3", "4", "5"],
+                # "name": "National Total"
+                "filter": {
+                    "entity": [
+                        "CO2",
+                        "CH4",
+                        "N2O",
+                        "SF6",
+                        "FGASES",
+                        "HFCS",
+                        "PFCS",
+                        "UnspMixOfHFCs",
+                        "NMVOC",
+                        "NOX",
+                        "CO",
+                        "SO2",
+                    ]
+                },
+            },
         },
-        "M.AG": {"sources": ["M.AG.ELV", "3.A"], "name": "Agriculture"},
-        "M.LULUCF": {
-            "sources": ["3.B", "3.D"],
-            "name": "Land Use, Land Use Change, and Forestry",
-        },
-        "M.0.EL": {
-            "sources": ["1", "2", "M.AG", "4", "5"],
-            "name": "National Total Excluding LULUCF",
-        },
-        "0": {"sources": ["1", "2", "3", "4", "5"], "name": "National Total"},
     },
     "downscale": {
         "sectors": {

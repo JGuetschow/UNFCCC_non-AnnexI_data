@@ -19,8 +19,11 @@ import primap2 as pm2
 from primap2.pm2io._data_reading import matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_mne_bur3 import aggregate_cats, cat_mapping, drop_data
+from unfccc_ghg_data.unfccc_reader.Montenegro.config_mne_bur3 import (
+    aggregate_cats,
+    cat_mapping,
+    drop_data,
+)
 
 if __name__ == "__main__":
     # ###

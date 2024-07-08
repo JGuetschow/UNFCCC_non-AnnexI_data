@@ -19,9 +19,8 @@ from unfccc_ghg_data.helper import (
     make_wide_table,
     process_data_for_country,
 )
-
-from .config_twn_nir2022 import fix_rows
-from .config_twn_nir2023 import (
+from unfccc_ghg_data.unfccc_reader.Taiwan.config_twn_nir2022 import fix_rows
+from unfccc_ghg_data.unfccc_reader.Taiwan.config_twn_nir2023 import (
     add_coords_cols,
     basket_copy,
     cat_code_regexp,
@@ -49,7 +48,7 @@ if __name__ == "__main__":
     inventory_file = "2023_NIR_executive_summary_english.pdf"
 
     def repl(m):  # noqa: D103
-        return m.group("UNFCCC_GHG_data")
+        return m.group("code")
 
     # ###
     # read the tables from pdf

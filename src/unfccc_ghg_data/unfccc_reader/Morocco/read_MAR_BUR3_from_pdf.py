@@ -13,8 +13,7 @@ import primap2 as pm2
 from primap2.pm2io._data_reading import filter_data, matches_time_format
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_mar_bur3 import (
+from unfccc_ghg_data.unfccc_reader.Morocco.config_mar_bur3 import (
     aggregate_cats,
     cat_mapping,
     header_defs,

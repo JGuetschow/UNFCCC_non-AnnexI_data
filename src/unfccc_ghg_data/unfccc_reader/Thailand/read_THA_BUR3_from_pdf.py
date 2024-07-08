@@ -14,8 +14,7 @@ from unfccc_ghg_data.helper import (
     extracted_data_path,
     process_data_for_country,
 )
-
-from .config_tha_bur3 import (
+from unfccc_ghg_data.unfccc_reader.Thailand.config_tha_bur3 import (
     cat_conversion,
     coords_cols,
     coords_cols_indirect,

@@ -23,7 +23,7 @@ from unfccc_ghg_data.helper import (
 )
 
 # configuration import
-from .config_isr_bur2 import (
+from unfccc_ghg_data.unfccc_reader.Israel.config_isr_bur2 import (
     basket_copy,
     cat_conversion,
     cats_to_agg,

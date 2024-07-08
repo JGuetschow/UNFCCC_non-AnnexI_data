@@ -12,18 +12,18 @@ import copy
 import camelot
 import pandas as pd
 import primap2 as pm2
-from config_twn_nir2022 import (
-    fix_rows,
-    gwp_to_use,
-    page_defs,
-    table_defs,
-)
 from primap2.pm2io._data_reading import matches_time_format
 
 from unfccc_ghg_data.helper import (
     downloaded_data_path,
     extracted_data_path,
     make_wide_table,
+)
+from unfccc_ghg_data.unfccc_reader.Taiwan.config_twn_nir2022 import (
+    fix_rows,
+    gwp_to_use,
+    page_defs,
+    table_defs,
 )
 
 if __name__ == "__main__":

@@ -32,8 +32,7 @@ from unfccc_ghg_data.helper import (
     gas_baskets,
     process_data_for_country,
 )
-
-from .config_arg_bur5 import (
+from unfccc_ghg_data.unfccc_reader.Argentina.config_arg_bur5 import (
     cats_to_agg,
     coords_cols,
     coords_defaults,
@@ -99,7 +98,6 @@ if __name__ == "__main__":
         data_if,
     )
 
-    data_pm2 = pm2.pm2io.from_interchange_format(data_if)
     encoding = {var: compression for var in data_pm2.data_vars}
     data_pm2.pr.to_netcdf(
         output_folder

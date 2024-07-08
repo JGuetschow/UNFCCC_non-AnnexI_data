@@ -10,9 +10,8 @@ import camelot
 import pandas as pd
 import primap2 as pm2
 
+import unfccc_ghg_data.unfccc_reader.Mexico.config_mex_bur3
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-
-from .config_mex_bur3 import fix_rows, page_defs
 
 if __name__ == "__main__":
     # ###
@@ -111,9 +110,9 @@ if __name__ == "__main__":
     # read the data from pdf into one long format dataframe
     # ###
     df_all = None
-    for page in page_defs.keys():
+    for page in unfccc_ghg_data.unfccc_reader.Mexico.config_mex_bur3.page_defs.keys():
         print(f"Working on page {page}")
-        page_def = page_defs[page]
+        page_def = unfccc_ghg_data.unfccc_reader.Mexico.config_mex_bur3.page_defs[page]
         tables = camelot.read_pdf(
             str(input_folder / inventory_file), pages=page, **page_def["camelot"]
         )
@@ -129,8 +128,10 @@ if __name__ == "__main__":
             df_this_table.iloc[:, 0] = df_this_table.iloc[:, 0].str.replace("-", "-")
             # replace double space in entity
             df_this_table.iloc[0, :] = df_this_table.iloc[0, :].str.replace("  ", " ")
-            df_this_table = fix_rows(
-                df_this_table, page_def["rows_to_fix"][n_rows], 0, n_rows
+            df_this_table = (
+                unfccc_ghg_data.unfccc_reader.Mexico.config_mex_bur3.fix_rows(
+                    df_this_table, page_def["rows_to_fix"][n_rows], 0, n_rows
+                )
             )
 
         # add units

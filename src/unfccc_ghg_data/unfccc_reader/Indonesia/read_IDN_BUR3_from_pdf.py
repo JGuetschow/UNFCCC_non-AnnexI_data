@@ -156,29 +156,32 @@ if __name__ == "__main__":
     aggregate_cats = {
         "1.A.4": {
             "sources": ["1.A.4.a", "1.A.4.b"],
-            "name": "Other Sectors (calculated)",
+            "orig_cat_name": "Other Sectors (calculated)",
         },
         "2.A.4": {
             "sources": ["2.A.4.a", "2.A.4.b", "2.A.4.d"],
-            "name": "Other Process uses of Carbonates (calculated)",
+            "orig_cat_name": "Other Process uses of Carbonates (calculated)",
         },
         "2.B.8": {
             "sources": ["2.B.8.a", "2.B.8.b", "2.B.8.c", "2.B.8.f"],
-            "name": "Petrochemical and Carbon Black production (calculated)",
+            "orig_cat_name": "Petrochemical and Carbon Black production (calculated)",
         },
         "4.A": {
             "sources": ["4.A.2", "M.4.A.Ind"],
-            "name": "Solid Waste Disposal (calculated)",
+            "orig_cat_name": "Solid Waste Disposal (calculated)",
         },
     }
 
     aggregate_cats_N2O = {
-        "3.A.2": {"sources": ["3.A.2.b"], "name": "3A2 Manure Management"},
-        "3.A": {"sources": ["3.A.2"], "name": "3A Livestock"},
+        "3.A.2": {"sources": ["3.A.2.b"], "orig_cat_name": "3A2 Manure Management"},
+        "3.A": {"sources": ["3.A.2"], "orig_cat_name": "3A Livestock"},
     }
 
     aggregate_cats_CO2CH4N2O = {
-        "3.A.2": {"sources": ["3.A.2", "3.A.2.b"], "name": "3A2 Manure Management"},
+        "3.A.2": {
+            "sources": ["3.A.2", "3.A.2.b"],
+            "orig_cat_name": "3A2 Manure Management",
+        },
     }
 
     df_all = None
@@ -306,7 +309,9 @@ if __name__ == "__main__":
             ).sum(min_count=1)
 
             df_combine.insert(0, cat_label, cat_to_agg)
-            df_combine.insert(1, "orig_cat_name", aggregate_cats[cat_to_agg]["name"])
+            df_combine.insert(
+                1, "orig_cat_name", aggregate_cats[cat_to_agg]["orig_cat_name"]
+            )
 
             df_combine = df_combine.reset_index()
 
@@ -353,7 +358,7 @@ if __name__ == "__main__":
 
             df_combine.insert(0, cat_label, cat_to_agg)
             df_combine.insert(
-                1, "orig_cat_name", aggregate_cats_N2O[cat_to_agg]["name"]
+                1, "orig_cat_name", aggregate_cats_N2O[cat_to_agg]["orig_cat_name"]
             )
 
             df_combine = df_combine.reset_index()
@@ -401,7 +406,9 @@ if __name__ == "__main__":
 
             df_combine.insert(0, cat_label, cat_to_agg)
             df_combine.insert(
-                1, "orig_cat_name", aggregate_cats_CO2CH4N2O[cat_to_agg]["name"]
+                1,
+                "orig_cat_name",
+                aggregate_cats_CO2CH4N2O[cat_to_agg]["orig_cat_name"],
             )
 
             df_combine = df_combine.reset_index()

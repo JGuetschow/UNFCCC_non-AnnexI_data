@@ -12,7 +12,7 @@ include = ["LICENCE"]  # poetry uses US English so assumes it will be spelt LICE
 python = ">=3.10, <3.11"
 matplotlib = { version = "^3.7.1", optional = true }
 doit = "^0.36.0"
-primap2 = ">=0.9.8"
+primap2 = ">=0.11.0"
 pycountry = "^22.3.5"
 datalad = "^0.19.3"
 treelib = "^1.7.0"
@@ -26,9 +26,7 @@ dask = "^2023.12.0"
 sphinx-exec-code = "^0.10"
 ghostscript = "^0.7"
 sphinx-markdown-tables = "^0.0.17"
-notebook = "^7.2.0"
-ipywidgets = "^8.1.2"
-ipympl = "^0.9.4"
+xarray = ">=2024.6.0"
 
 [tool.poetry.extras]
 plots = ["matplotlib"]
@@ -52,6 +50,9 @@ ruff = "^0.1.8"
 pre-commit = "^3.3.1"
 towncrier = "^23.6.0"
 liccheck = "^0.9.1"
+notebook = "^7.2.0"
+ipywidgets = "^8.1.2"
+ipympl = "^0.9.4"
 
 [build-system]
 requires = ["poetry-core"]
@@ -130,6 +131,7 @@ docstring-code-format = true
 ]
 "src/unfccc_ghg_data/unfccc_reader/*/config_*.py" = [
     "E501",  # don't enforce line length
+    "RUF001",  #
 ]
 "src/unfccc_ghg_data/unfccc_crf_reader/crf_specifications/*_specification.py" = [
     "E501",  # don't enforce line length

@@ -3,6 +3,7 @@ Input and output functions for the DI reader
 
 Saving single country datasets and country groups datasets
 """
+import datalad.api
 import primap2 as pm2
 import xarray as xr
 from dask.base import tokenize
@@ -68,7 +69,7 @@ def save_DI_country_data(
 
     # primap2 native format
     filename_hash_nc = filename_hash.parent / (filename_hash.name + ".nc")
-    if not filename_hash_nc.exists():
+    if not (filename_hash_nc.exists() or filename_hash_nc.is_symlink()):
         # if parent dir does not exist create it
         if not filename_hash.parent.exists():
             filename_hash.parent.mkdir()
@@ -77,15 +78,21 @@ def save_DI_country_data(
         compression = dict(zlib=True, complevel=9)
         encoding = {var: compression for var in data_pm2.data_vars}
         data_pm2.pr.to_netcdf(filename_hash_nc, encoding=encoding)
+    elif not filename_hash_nc.exists() and filename_hash_nc.is_symlink():
+        # This means that we have a broken symlink and need to download the data
+        datalad.api.get(filename_hash_nc)
 
     # primap2 IF
     filename_hash_csv = filename_hash.parent / (filename_hash.name + ".csv")
-    if not filename_hash_csv.exists():
+    if not (filename_hash_csv.exists() or filename_hash_csv.is_symlink()):
         # save the data
         print(f"Data has changed. Save to {filename_hash.name + '.csv/.yaml'}")
         pm2.pm2io.write_interchange_format(filename_hash, data_if)
     else:
         print(f"Data unchanged for {country_code}. Create symlinks.")
+        if not filename_hash_csv.exists() and filename_hash_csv.is_symlink():
+            # This means that we have a broken symlink and need to download the data
+            datalad.api.get(filename_hash_csv)
 
     # get the filename with the date
     filename_date = root_path / determine_filename(country_code, date_str, raw)
@@ -159,7 +166,7 @@ def save_DI_dataset(
     )
     # primap2 native format
     filename_hash_nc = filename_hash.parent / (filename_hash.name + ".nc")
-    if not filename_hash_nc.exists():
+    if not (filename_hash_nc.exists() or filename_hash_nc.is_symlink()):
         # if parent dir does not exist create it
         # TODO double, also in determine_dataset_filename. same for country data
         if not filename_hash.parent.exists():
@@ -169,15 +176,21 @@ def save_DI_dataset(
         compression = dict(zlib=True, complevel=9)
         encoding = {var: compression for var in data_pm2.data_vars}
         data_pm2.pr.to_netcdf(filename_hash_nc, encoding=encoding)
+    elif not filename_hash_nc.exists() and filename_hash_nc.is_symlink():
+        # This means that we have a broken symlink and need to download the data
+        datalad.api.get(filename_hash_nc)
 
     # primap2 IF
     filename_hash_csv = filename_hash.parent / (filename_hash.name + ".csv")
-    if not filename_hash_csv.exists():
+    if not (filename_hash_csv.exists() or filename_hash_csv.is_symlink()):
         # save the data
         print(f"Data has changed. Save to {filename_hash.name + '.csv/.yaml'}")
         pm2.pm2io.write_interchange_format(filename_hash, data_if)
     else:
         print(f"Data unchanged for {country_group}. Create symlinks.")
+        if not filename_hash_csv.exists() and filename_hash_csv.is_symlink():
+            # This means that we have a broken symlink and need to download the data
+            datalad.api.get(filename_hash_csv)
 
     # get the filename with the date
     filename_date = root_path / determine_dataset_filename(

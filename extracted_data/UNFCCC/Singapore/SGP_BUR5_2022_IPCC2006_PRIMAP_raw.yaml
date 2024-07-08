@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - source
-  - provenance
   - area (ISO3)
-  - category (IPCC2006_PRIMAP)
   - scenario (PRIMAP)
+  - source
+  - category (IPCC2006_PRIMAP)
+  - provenance
   - entity
   - unit
 data_file: SGP_BUR5_2022_IPCC2006_PRIMAP_raw.csv

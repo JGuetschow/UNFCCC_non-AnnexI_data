@@ -597,6 +597,18 @@ filter_remove_2006 = {
             "1.A.2.f.6",  # 2006.1.A.2.m
         ]
     },
+    "f_error": {
+        # 2.F.9 doesn't correspond to gas sum and 2.F sum
+        # 2.F.8 needs to be removed as well, else 2.G is wrong after mapping
+        # 2.G and subsectors will be filled from individual gases after mapping
+        "category (IPCC2006_PRIMAP)": ["2.F.9", "2.F.8"],
+        "entity": ["KYOTOGHG (SARGWP100)"],
+    },
+    "f_rounding": {
+        # 4.B.3 has rounding errors. recompute KYOTOGHG
+        "category (IPCC2006_PRIMAP)": ["4.B.3"],
+        "entity": ["KYOTOGHG (SARGWP100)"],
+    },
 }
 
 filter_remove_after_agg = {

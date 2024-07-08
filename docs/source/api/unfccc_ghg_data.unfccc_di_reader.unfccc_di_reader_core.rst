@@ -31,6 +31,12 @@ convert\_DI\_data\_to\_pm2\_if
 .. autofunction:: convert_DI_data_to_pm2_if
 
 
+convert\_DI\_IF\_data\_to\_pm2
+==============================
+
+.. autofunction:: convert_DI_IF_data_to_pm2
+
+
 read\_UNFCCC\_DI\_for\_country\_group
 =====================================
 

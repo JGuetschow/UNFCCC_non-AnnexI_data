@@ -1403,7 +1403,7 @@ CRF2023_AUS = {
             ["3.C.2.a. Flood-prone", ["3.C.2.a"]],
             ["3.C.2.b. Drought-prone", ["3.C.2.b"]],
             ["3.C.3. Deep water", ["3.C.3"]],
-            ["3.C.3.a. Water depth 50-100 cm", ["3.C.3.a"]],
+            ["3.C.3.a. Water depth 50–100 cm", ["3.C.3.a"]],  # noqa: RUF001
             ["3.C.3.b. Water depth > 100 cm", ["3.C.3.b"]],
             ["3.C.4. Other (please specify)", ["3.C.4"]],
             ["NA", ["\\IGNORE"]],
