@@ -48,7 +48,7 @@ if __name__ == "__main__":
     inventory_file = "2023_NIR_executive_summary_english.pdf"
 
     def repl(m):  # noqa: D103
-        return m.group("UNFCCC_GHG_data")
+        return m.group("code")
 
     # ###
     # read the tables from pdf

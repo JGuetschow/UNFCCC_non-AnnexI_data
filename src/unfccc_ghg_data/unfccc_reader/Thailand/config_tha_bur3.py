@@ -169,7 +169,7 @@ country_processing_step1 = {
     "aggregate_cats": {
         "2.A.4": {
             "sources": ["2.A.4.b", "2.A.4.d"],
-            "name": "Other Process uses of Carbonates",
+            # "name": "Other Process uses of Carbonates",
         },
     },
     "aggregate_gases": {
@@ -427,14 +427,17 @@ cat_conversion = {
         "M.BIO": "M.BIO",
     },
     "aggregate": {
-        "3.A": {"sources": ["3.A.1", "3.A.2"], "name": "Livestock"},
+        "3.A": {
+            "sources": ["3.A.1", "3.A.2"],
+            # "name": "Livestock"
+        },
         "3.C.1": {
             "sources": ["M.3.C.1.AG", "M.3.C.1.LU"],
-            "name": "Emissions from Biomass Burning",
+            # "name": "Emissions from Biomass Burning",
         },
         "3.C": {
             "sources": ["3.C.1", "3.C.2", "3.C.3", "3.C.4", "3.C.5", "3.C.6", "3.C.7"],
-            "name": "Aggregate sources and non-CO2 emissions sources on land",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land",
         },
         "M.3.C.AG": {
             "sources": [
@@ -446,22 +449,40 @@ cat_conversion = {
                 "3.C.6",
                 "3.C.7",
             ],
-            "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
         },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG"],
-            "name": "Agriculture excluding livestock emissions",
+            # "name": "Agriculture excluding livestock emissions",
         },
         "M.3.C.LU": {
             "sources": ["M.3.C.1.LU"],
-            "name": "Aggregate sources and non-CO2 emissions sources on land (Land use)",
+            # "name": "Aggregate sources and non-CO2 emissions sources on land (Land use)",
         },
-        "3.B.1": {"sources": ["3.B.1.a"], "name": "Forest Land"},
-        "3.B.2": {"sources": ["3.B.2.a", "3.B.2.b"], "name": "Cropland"},
-        "3.B.6": {"sources": ["3.B.6.b"], "name": "Other Land"},
-        "3.B": {"sources": ["3.B.1", "3.B.2", "3.B.6"], "name": "Land"},
-        "M.LULUCF": {"sources": ["3.B", "N.3.C.LU"], "name": "LULUCF"},
-        "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},
+        "3.B.1": {
+            "sources": ["3.B.1.a"],
+            # "name": "Forest Land"
+        },
+        "3.B.2": {
+            "sources": ["3.B.2.a", "3.B.2.b"],
+            # "name": "Cropland"
+        },
+        "3.B.6": {
+            "sources": ["3.B.6.b"],
+            # "name": "Other Land"
+        },
+        "3.B": {
+            "sources": ["3.B.1", "3.B.2", "3.B.6"],
+            # "name": "Land"
+        },
+        "M.LULUCF": {
+            "sources": ["3.B", "N.3.C.LU"],
+            # "name": "LULUCF"
+        },
+        "3": {
+            "sources": ["M.AG", "M.LULUCF"],
+            # "name": "AFOLU"
+        },
     },
 }
 

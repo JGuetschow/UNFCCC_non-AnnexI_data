@@ -2,6 +2,7 @@
 Functions for the processing of DI data
 """
 import re
+from copy import deepcopy
 from datetime import date
 from typing import Optional, Union
 
@@ -19,6 +20,7 @@ from .util import DI_date_format
 def process_and_save_UNFCCC_DI_for_country(
     country_code: str,
     date_str: Union[str, None] = None,
+    no_save: bool = False,
 ) -> xr.Dataset:
     """
     process data and save them to disk using default parameters
@@ -73,10 +75,11 @@ def process_and_save_UNFCCC_DI_for_country(
     )
 
     # save
-    if data_processed.coords["time"].to_numpy().size > 0:
-        save_DI_country_data(data_processed, raw=False)
-    else:
-        print(f"No data left after processing for {country_code}")
+    if not no_save:
+        if data_processed.coords["time"].to_numpy().size > 0:
+            save_DI_country_data(data_processed, raw=False)
+        else:
+            print(f"No data left after processing for {country_code}")
 
     return data_processed
 
@@ -150,9 +153,9 @@ def process_UNFCCC_DI_for_country(  # noqa: PLR0913
     # get processing specification
     if processing_info_country is not None:
         if scenario in processing_info_country.keys():
-            processing_info_country_scen = processing_info_country[scenario]
+            processing_info_country_scen = deepcopy(processing_info_country[scenario])
         else:
-            processing_info_country_scen = processing_info_country["default"]
+            processing_info_country_scen = deepcopy(processing_info_country["default"])
     else:
         processing_info_country_scen = None
 
