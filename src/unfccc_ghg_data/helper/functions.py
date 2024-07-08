@@ -89,6 +89,9 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     else:
         country_code = countries[0]
 
+    # set default tolerance
+    tolerance = 0.01
+
     # get category terminology
     cat_col = data_country.attrs["cat"]
     temp = re.findall(r"\((.*)\)", cat_col)
@@ -148,8 +151,6 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     if processing_info_country is not None:
         if "tolerance" in processing_info_country:
             tolerance = processing_info_country["tolerance"]
-        else:
-            tolerance = 0.01
 
         # remove entities if needed
         if "ignore_entities" in processing_info_country:
@@ -173,9 +174,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                 remove_info = copy.deepcopy(processing_info_country["remove_ts"][case])
                 entities = remove_info.pop("entities")
                 for entity in entities:
-                    data_country[entity].pr.loc[remove_info] = (
-                        data_country[entity].pr.loc[remove_info] * np.nan
-                    )
+                    data_country[entity].pr.loc[remove_info] *= np.nan
 
         # remove all data for given years if necessary
         if "remove_years" in processing_info_country:
@@ -270,7 +269,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
             warnings.warn(
                 'The "aggregate_cats" flag is deprecated and will '
                 "be removed in a future version. Please use "
-                '"aggregate_coord" with key "category" instead',
+                '"aggregate_coords" with key "category" instead',
                 category=DeprecationWarning,
             )
             print(
@@ -293,7 +292,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                 min_count=1,
             )
 
-        if "aggregate_coord" in processing_info_country:
+        if "aggregate_coords" in processing_info_country:
             print(
                 f"Aggregating data for country {country_code}, source {source}, "
                 f"scenario {scenario}"
@@ -322,7 +321,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
         # aggregate gases if desired
         if "aggregate_gases" in processing_info_country:
             data_country = data_country.pr.add_aggregates_variables(
-                gases=processing_info_country["aggregate_gases"],
+                gas_baskets=processing_info_country["aggregate_gases"],
             )
 
     # 3: map categories
@@ -332,7 +331,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
             category_conversion,
             cat_terminology_out,
             debug=False,
-            tolerance=0.01,
+            tolerance=tolerance,
         )
     else:
         cat_terminology_out = cat_terminology_in
@@ -352,13 +351,17 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     # create gas baskets
     if gas_baskets:
         data_country = data_country.pr.add_aggregates_variables(
-            gas_baskets=gas_baskets, skipna=True, min_count=1
+            gas_baskets=gas_baskets, skipna=True, min_count=1, tolerance=tolerance
         )
 
     # amend title and comment
-    data_country.attrs["comment"] = (
-        data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
-    )
+    if "comment" in data_country.attrs.keys():
+        data_country.attrs["comment"] = (
+            data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
+        )
+    else:
+        data_country.attrs["comment"] = f"Processed on " f"{date.today()}"
+
     data_country.attrs["title"] = (
         data_country.attrs["title"] + f" Processed on " f"{date.today()}"
     )
@@ -942,6 +945,7 @@ def fix_rows(
         new_row = new_row.str.replace("N O", "NO")
         new_row = new_row.str.replace(", N", ",N")
         new_row = new_row.str.replace("- ", "-")
+        new_row = new_row.str.strip()
         # replace spaces in numbers
         pat = r"^(?P<first>[0-9\.,]*)\s(?P<last>[0-9\.,]*)$"
 

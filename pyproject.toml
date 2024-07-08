@@ -26,6 +26,7 @@ dask = "^2023.12.0"
 sphinx-exec-code = "^0.10"
 ghostscript = "^0.7"
 sphinx-markdown-tables = "^0.0.17"
+xarray = ">=2024.6.0"
 
 [tool.poetry.extras]
 plots = ["matplotlib"]
@@ -130,6 +131,7 @@ docstring-code-format = true
 ]
 "src/unfccc_ghg_data/unfccc_reader/*/config_*.py" = [
     "E501",  # don't enforce line length
+    "RUF001",  #
 ]
 "src/unfccc_ghg_data/unfccc_crf_reader/crf_specifications/*_specification.py" = [
     "E501",  # don't enforce line length

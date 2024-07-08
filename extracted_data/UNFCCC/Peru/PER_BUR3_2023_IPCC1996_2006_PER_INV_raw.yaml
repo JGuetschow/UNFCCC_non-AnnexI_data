@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
+  - area (ISO3)
   - scenario (PRIMAP)
   - source
-  - category (IPCC1996_2006_PER_INV)
   - provenance
-  - area (ISO3)
+  - category (IPCC1996_2006_PER_INV)
   - entity
   - unit
 data_file: PER_BUR3_2023_IPCC1996_2006_PER_INV_raw.csv

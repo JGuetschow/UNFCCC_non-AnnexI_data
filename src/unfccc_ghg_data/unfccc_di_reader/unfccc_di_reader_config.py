@@ -362,6 +362,10 @@ cat_conversion = {
                 "sources": ["M.3.C.AG"],
                 "orig_cat_name": "Agriculture excluding livestock",
             },
+            "M.AG": {  # needed for e.g. Chile N2O
+                "sources": ["3.A", "M.AG.ELV"],
+                "orig_cat_name": "Agriculture",
+            },
             "3": {"sources": ["M.AG", "M.LULUCF"], "orig_cat_name": "AFOLU"},
         },
     },
@@ -416,7 +420,7 @@ di_processing_templates = {
         "DI2023-05-24": {
             "remove_ts": {
                 "2.A_H": {  # looks wrong in 2005
-                    "category": ["2.A", "2.B", "2.C", "2.D", "2.G"],
+                    "category": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G"],
                     "entities": ["CO2", f"KYOTOGHG ({gwp_to_use})"],
                     "time": ["2005"],
                 },
@@ -430,6 +434,20 @@ di_processing_templates = {
                     "category": ["14423", "14424", "14637"],
                     "entities": ["CH4", f"KYOTOGHG ({gwp_to_use})", "N2O"],
                     "time": ["2005"],
+                },
+                "2B_GHG": {  # is 0 for 2002-2009 while CO2 is non-zero
+                    "category": ["2.B"],
+                    "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                    "time": [
+                        "2002",
+                        "2003",
+                        "2004",
+                        "2005",
+                        "2006",
+                        "2007",
+                        "2008",
+                        "2009",
+                    ],
                 },
             },
             "downscale": {  # needed for 1990, 2000, 2005-2012
@@ -539,7 +557,7 @@ di_processing_templates = {
                     "time": ["1994"],
                 },
             },
-            "agg_tolerance": 0.015,
+            "tolerance": 0.015,
             "ignore_entities": ["NMVOC"],  # errors when aggregating cats
             "aggregate_cats": {
                 "2": {
@@ -549,10 +567,14 @@ di_processing_templates = {
                 "15163": {
                     "sources": ["1", "2", "4", "6"],
                     "orig_cat_name": "Total GHG emissions excluding LULUCF/LUCF",
+                    # Total GHG emissions excluding LULUCF/LUCF
+                    # Total GHG emissions including LULUCF/LUCF
+                    "filter": {"entity": ["C2F6", "CF4"]},
                 },
                 "24540": {
                     "sources": ["1", "2", "5", "4", "6"],
                     "orig_cat_name": "Total GHG emissions including LULUCF/LUCF",
+                    "filter": {"entity": ["C2F6", "CF4"]},
                 },
             },
         },
@@ -654,7 +676,17 @@ di_processing_templates = {
             "remove_ts": {
                 "M.AG.ELV": {  # prescribed burning of savannas and agricultural soils
                     # are missing for all but 1 year
-                    "category": ["4", "4.B", "4.D", "4.E", "4.F", "15163", "24540"],
+                    "category": [
+                        "4",
+                        "4.A",
+                        "4.B",
+                        "4.C",
+                        "4.D",
+                        "4.E",
+                        "4.F",
+                        "15163",
+                        "24540",
+                    ],
                     "entities": ["N2O", f"KYOTOGHG ({gwp_to_use})"],
                 },
             },
@@ -686,10 +718,7 @@ di_processing_templates = {
                         "basket_contents": ["4.A", "4.B", "4.D", "4.G"],
                         "entities": [
                             "CH4",
-                            "CO2",
-                            f"KYOTOGHG ({gwp_to_use})",
-                        ],  # no N2O but
-                        # CO2 is unusual
+                        ],
                         "dim": "category (BURDI)",
                         "skipna_evaluation_dims": None,
                         "skipna": True,
@@ -879,7 +908,7 @@ di_processing_templates = {
                                 "2.C",
                                 "2.D",
                                 "2.E",
-                                "4",
+                                # "4",
                                 "4.A",
                                 "4.B",
                                 "4.C",
@@ -916,10 +945,20 @@ di_processing_templates = {
                     },
                 },
             },
+            "aggregate_coords": {
+                "category": {
+                    "4": {
+                        "sources": ["4.A", "4.B", "4.C", "4.D", "4.E"],
+                        "orig_cat_name": "4.  Agriculture",
+                        "filter": {"entity": ["CH4", "N2O"]},
+                    }
+                }
+            },
         },
     },
     "BLZ": {
         "DI2023-05-24": {  # 1994, 2000, 2003, 2006, 2009 (energy sector missing in 200X)
+            "tolerance": 0.4,  # because energy sector missing for CO2 but not for KyotoGHG
             "remove_ts": {
                 "AG": {  # inconsistent with other data
                     "category": [
@@ -996,16 +1035,87 @@ di_processing_templates = {
     # BTN 1994, 2000, 2015. patchy coverage but no downscaling needed / possible
     # BWA 1994, 2000, 2015. inconsistent coverage
     # TODO CAF 1994, 2003-2010. 1994 has different coverage and might be inconsistent
-    # CHL: more data in BUR4/5
+    "CAF": {
+        "DI2023-05-24": {  # KyotoGHG in energy sector inconsistent with gases for
+            # 2003 and later. Probably because CO2 only given
+            "remove_ts": {
+                "energy": {  # contains data for all subsectors
+                    "category": [
+                        "1",
+                        "1.A",
+                        "1.A.1",
+                        "1.A.2",
+                        "1.A.3",
+                        "1.A.4",
+                        "1.A.5",
+                    ],
+                    "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                    "time": [
+                        "2003",
+                        "2004",
+                        "2005",
+                        "2006",
+                        "2007",
+                        "2008",
+                        "2009",
+                        "2010",
+                    ],
+                },
+            },
+        },
+    },
+    "CHL": {  # CHL: more data in BUR4/5
+        "DI2023-05-24": {
+            "remove_ts": {
+                "agri_n2o": {  # remove agri sector sum as dowscaled 4.G not included
+                    "category": ["4"],
+                    "time": [
+                        "1990",
+                        "1994",
+                        "2000",
+                        "2006",
+                        "2010",
+                        "2013",
+                        "2016",
+                        "2018",
+                    ],
+                    "entities": ["N2O"],
+                },
+                "agri_nox": {  # inconsistent
+                    "category": ["4.F"],
+                    "entities": ["NOx"],
+                },
+            },
+            "downscale": {
+                "entities": {
+                    "GHG": {
+                        "basket": f"KYOTOGHG ({gwp_to_use})",
+                        "basket_contents": ["N2O"],
+                        "sel": {"category (BURDI)": ["4.G"]},
+                    }
+                },
+            },
+            "basket_copy": {
+                "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                "entities": ["UnspMixOfHFCs"],
+                "source_GWP": gwp_to_use,
+            },
+        },
+    },
     "CHN": {
         "DI2023-05-24": {  # 1994 (gaps), 2005 (needs downscaling), 2010, 2012, 2014
             # (relatively complete and consistent)
             "remove_ts": {
-                "1.A.1": {  # contains data for all subsectors
-                    "category": ["1.A.1"],
-                    "entities": ["N2O"],
+                "1.A.sub": {  # contains data for all subsectors for CH4, N2O
+                    "category": ["1.A.1", "1.A.2", "1.A.3", "1.A.4", "1.A.5"],
+                    "entities": ["N2O", "CH4", f"KYOTOGHG ({gwp_to_use})"],
                     "time": ["1994"],
                 },
+                # "4.G": {  # no gas detail available
+                #     "category": ["4.G"],
+                #     "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                #     "time": ["1994", "2000", "2006", "2010", "2013", "2016", "2018"],
+                # },
             },
             "downscale": {  # needed for 2005
                 "sectors": {
@@ -1025,7 +1135,7 @@ di_processing_templates = {
                         "skipna_evaluation_dims": None,
                         "skipna": True,
                     },
-                    "1.A": {  # 2005
+                    "1.A": {  # 2005, 1994
                         "basket": "1.A",
                         "basket_contents": [
                             "1.A.1",
@@ -1034,13 +1144,14 @@ di_processing_templates = {
                             "1.A.4",
                             "1.A.5",
                         ],
-                        "entities": ["CO2"],
+                        "entities": ["CO2", "CH4", "N2O"],
                         "dim": "category (BURDI)",
                         "skipna_evaluation_dims": None,
                         "skipna": True,
                     },
                     # with current functionality we can't downscale 1.A further for
                     # non-CO2 as it needs several steps and CO2 is present
+                    # yes we can
                     "2": {  # 2005
                         "basket": "2",
                         "basket_contents": ["2.A", "2.B", "2.C"],
@@ -1049,11 +1160,25 @@ di_processing_templates = {
                         "skipna_evaluation_dims": None,
                         "skipna": True,
                     },
+                    "2_fgases": {  # 2005
+                        "basket": "2",
+                        "basket_contents": ["2.C", "2.E", "2.F"],
+                        "entities": [
+                            f"HFCS ({gwp_to_use})",
+                            f"PFCS ({gwp_to_use})",
+                            "SF6",
+                        ],
+                        "dim": "category (BURDI)",
+                        "sel": {"time": ["2005", "2010", "2012", "2014"]},
+                        "skipna_evaluation_dims": None,
+                        "skipna": True,
+                    },
                     "4": {  # 2005
                         "basket": "4",
                         "basket_contents": ["4.A", "4.B", "4.C", "4.D", "4.E", "4.F"],
                         "entities": ["CH4", "N2O"],
                         "dim": "category (BURDI)",
+                        "sel": {"time": ["2005", "2010", "2012", "2014"]},
                         "skipna_evaluation_dims": None,
                         "skipna": True,
                     },
@@ -1065,14 +1190,14 @@ di_processing_templates = {
                         "skipna_evaluation_dims": None,
                         "skipna": True,
                     },
-                    "6": {  # 2005
-                        "basket": "6",
-                        "basket_contents": ["6.A", "6.B", "6.C", "6.D"],
-                        "entities": ["CO2", "CH4", "N2O"],
-                        "dim": "category (BURDI)",
-                        "skipna_evaluation_dims": None,
-                        "skipna": True,
-                    },
+                    # "6": {  # 2005 other years are to inconsistent regarding sectors
+                    #     "basket": "6",
+                    #     "basket_contents": ["6.A", "6.B", "6.C", "6.D"],
+                    #     "entities": ["CO2", "CH4", "N2O"],
+                    #     "dim": "category (BURDI)",
+                    #     "skipna_evaluation_dims": None,
+                    #     "skipna": True,
+                    # },
                 },
                 "entities": {
                     "HFC": {
@@ -1111,18 +1236,19 @@ di_processing_templates = {
                     "1.A": {  # 2005
                         "basket": "1.A",
                         "basket_contents": ["1.A.1", "1.A.2", "1.A.3", "1.A.4"],
-                        "entities": ["CO2", "CH4", "N2O", f"KYOTOGHG ({gwp_to_use})"],
+                        "entities": ["CO2", "CH4", "N2O"],
                         "dim": "category (BURDI)",
                         "skipna_evaluation_dims": None,
                         "skipna": True,
                     },
                 },
             },
-            "basket_copy": {
-                "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
-                "entities": ["FGASES"],
-                "source_GWP": gwp_to_use,
-            },
+            # "basket_copy": {
+            #     "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+            #     "entities": ["FGASES"],
+            #     "source_GWP": gwp_to_use,
+            # },
+            # "tolerance": 0.133  # for FGASES / SF6 which has only 1 significant digit
         },
     },
     # CMR: 1994, 2000, not fully consistent
@@ -1244,6 +1370,11 @@ di_processing_templates = {
                     "entities": [f"KYOTOGHG ({gwp_to_use})", "CH4"],
                     "time": ["1994"],
                 },
+                "energy_GHG": {  # GHGs only have CO2
+                    "category": ["1.A", "1.A.1", "1.A.2", "1.A.3", "1.A.4", "1.A.5"],
+                    "entities": [f"KYOTOGHG ({gwp_to_use})", "CH4"],
+                    "time": ["2001", "2002", "2003", "2004", "2005"],
+                },
             },
             # LULUCF has gaps, cat 0 assumes 0 for LULUCF in these years
             # we omit aerosols and ghg precusors as only so2 can be downscaled
@@ -1265,12 +1396,6 @@ di_processing_templates = {
                                 "2005",
                             ]
                         },
-                    },
-                    "1_CO2": {
-                        "basket": "1",
-                        "basket_contents": ["1.A", "1.B"],
-                        "entities": ["CO2"],
-                        "dim": "category (BURDI)",
                     },
                     "1.A": {
                         "basket": "1.A",
@@ -1471,6 +1596,22 @@ di_processing_templates = {
     },
     "ETH": {
         "DI2023-05-24": {  # 1990-1993 (downscaling needed), 1994-2013
+            "remove_ts": {
+                "agri_N2O": {  # N2O from Agricultural Soils is missing for 2005 and
+                    # 2007 we have to remove all N2O and kyotoGHG agricultural
+                    # data for these years
+                    "time": ["2005", "2007"],
+                    "category (BURDI)": ["4", "4.A", "4.B", "4.C", "4.D", "4.E"],
+                    "entities": [f"KYOTOGHG ({gwp_to_use})", "N2O"],
+                },
+                "LULUCF_GHG": {  # N2O from Agricultural Soils is missing for 2005 and
+                    # 2007 we have to remove all N2O and kyotoGHG agricultural
+                    # data for these years
+                    "time": ["2005", "2007"],
+                    "category (BURDI)": ["5"],
+                    "entities": [f"KYOTOGHG ({gwp_to_use})", "N2O"],
+                },
+            },
             "downscale": {
                 # omit aerosols / ghg precursors as missing for most years
                 "sectors": {  # for 1990-1994
@@ -1524,43 +1665,43 @@ di_processing_templates = {
         "DI2023-05-24": {  # 1990-1997, 2000, 2000-2013 (more data in NC4)
             "downscale": {
                 "sectors": {  # for 1991-1997
-                    "1.A": {
-                        "basket": "1.A",
-                        "basket_contents": [
-                            "1.A.1",
-                            "1.A.2",
-                            "1.A.3",
-                            "1.A.4",
-                            "1.A.5",
-                        ],
-                        "entities": ["CO2", "CH4", "N2O"],
-                        "dim": "category (BURDI)",
-                    },
-                    "2": {
-                        "basket": "2",
-                        "basket_contents": [
-                            "2.A",
-                            "2.B",
-                            "2.C",
-                            "2.D",
-                            "2.E",
-                            "2.F",
-                            "2.G",
-                        ],
-                        "entities": [
-                            "CO2",
-                            "CH4",
-                            "N2O",
-                            "C2F6",
-                            "CF4",
-                            "HFC125",
-                            "HFC134",
-                            "HFC134a",
-                            "HFC32",
-                            "SF6",
-                        ],
-                        "dim": "category (BURDI)",
-                    },
+                    # "1.A": {  # inconsistent coverage in key years (1990 / 2000)
+                    #     "basket": "1.A",
+                    #     "basket_contents": [
+                    #         "1.A.1",
+                    #         "1.A.2",
+                    #         "1.A.3",
+                    #         "1.A.4",
+                    #         "1.A.5",
+                    #     ],
+                    #     "entities": ["CO2", "CH4", "N2O"],
+                    #     "dim": "category (BURDI)",
+                    # },
+                    # "2": {  # inconsistent coverage in key years (1990 / 2000)
+                    #     "basket": "2",
+                    #     "basket_contents": [
+                    #         "2.A",
+                    #         "2.B",
+                    #         "2.C",
+                    #         "2.D",
+                    #         "2.E",
+                    #         "2.F",
+                    #         "2.G",
+                    #     ],
+                    #     "entities": [
+                    #         "CO2",
+                    #         "CH4",
+                    #         "N2O",
+                    #         "C2F6",
+                    #         "CF4",
+                    #         "HFC125",
+                    #         "HFC134",
+                    #         "HFC134a",
+                    #         "HFC32",
+                    #         "SF6",
+                    #     ],
+                    #     "dim": "category (BURDI)",
+                    # },
                     "4": {
                         "basket": "4",
                         "basket_contents": [
@@ -1574,6 +1715,19 @@ di_processing_templates = {
                         ],
                         "entities": ["CH4", "N2O"],
                         "dim": "category (BURDI)",
+                        "sel": {
+                            "time": [
+                                "1990",
+                                "1991",
+                                "1992",
+                                "1993",
+                                "1994",
+                                "1995",
+                                "1996",
+                                "1997",
+                                "2000",
+                            ]
+                        },
                     },
                     # 5 subsectors are chaotic
                     "6": {
@@ -1648,7 +1802,22 @@ di_processing_templates = {
                 },
                 "livestock": {  # inconsistent
                     "category": ["4.B", "4"],
-                    "entities": ["N2O", f"KYOTOGHG ({gwp_to_use})"],
+                    "entities": ["N2O"],
+                    "time": ["2000"],
+                },
+                "livestock_GHG": {  # remove because N2O removed
+                    "category": [
+                        "4.A",
+                        "4.B",
+                        "4.C",
+                        "4.D",
+                        "4.E",
+                        "4.F",
+                        "4.G",
+                        "4",
+                        "5",
+                    ],
+                    "entities": [f"KYOTOGHG ({gwp_to_use})"],
                     "time": ["2000"],
                 },
             },
@@ -1657,6 +1826,13 @@ di_processing_templates = {
     # HTI: 1994-2000
     "IDN": {
         "DI2023-05-24": {  # 1990-1994, 2000
+            "remove_ts": {
+                "waste": {  # waste subsector data is inconsistent
+                    "entities": ["CH4", "CO2", "N2O", f"KYOTOGHG ({gwp_to_use})"],
+                    "category (BURDI)": ["6.A", "6.B", "6.C", "6.D"],
+                    "time": ["2000"],
+                },
+            },
             "downscale": {
                 "sectors": {  # for 1990-1993
                     "1.B": {
@@ -1750,15 +1926,12 @@ di_processing_templates = {
             "remove_ts": {
                 "agri_2000": {  # data are like that in NC2, but completely
                     # inconsistent with NC1,3
-                    "category": ["4", "4.A", "4.B", "24540", "15163"],
-                    "entities": ["CH4", f"KYOTOGHG ({gwp_to_use})"],
-                    "time": ["2000"],
-                },
-                "agri_1994": {  # inconsistent with later submissions
                     "category": [
                         "4",
+                        "4.A",
                         "4.B",
                         "4.C",
+                        "4.D",
                         "4.E",
                         "4.F",
                         "4.G",
@@ -1766,8 +1939,27 @@ di_processing_templates = {
                         "15163",
                     ],
                     "entities": ["CH4", f"KYOTOGHG ({gwp_to_use})"],
-                    "time": ["1994"],
+                    "time": ["2000"],
                 },
+                "LU_2000": {  # remove GHG sum to avoid building AFOLU without AG
+                    "category": ["5"],
+                    "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                    "time": ["2000"],
+                },
+                # "agri_1994": {  # inconsistent with later submissions
+                #     "category": [
+                #         "4",
+                #         "4.B",
+                #         "4.C",
+                #         "4.E",
+                #         "4.F",
+                #         "4.G",
+                #         "24540",
+                #         "15163",
+                #     ],
+                #     "entities": ["CH4", f"KYOTOGHG ({gwp_to_use})"],
+                #     "time": ["1994"],
+                # },
                 "waste": {
                     "category": ["6", "6.A", "6.B", "6.C", "6.D", "15163", "24540"],
                     "entities": ["CH4", f"KYOTOGHG ({gwp_to_use})"],
@@ -1801,7 +1993,7 @@ di_processing_templates = {
         "DI2023-05-24": {
             "remove_ts": {
                 "agri_n2O": {  # very high compared to CH4 and total emissions
-                    "category": ["4", "4.B", "15163", "24540"],
+                    "category": ["4", "4.A", "4.B", "15163", "24540"],
                     "entities": ["N2O", f"KYOTOGHG ({gwp_to_use})"],
                 },
             },
@@ -1897,11 +2089,7 @@ di_processing_templates = {
                             "category (BURDI)": [
                                 "1",
                                 "2",
-                                "4",
-                                "5",
                                 "6",
-                                "15163",
-                                "24540",
                                 "1.A",
                                 "1.A.1",
                                 "1.A.2",
@@ -1919,13 +2107,48 @@ di_processing_templates = {
                                 "4.D",
                                 "5.A",
                                 "5.B",
+                                "5.E",
                                 "6.A",
                                 "6.B",
                                 "6.D",
-                            ]
+                            ],
+                            "time": [
+                                "2000",
+                                "2004",
+                                "2005",
+                                "2006",
+                                "2008",
+                                "2010",
+                                "2012",
+                            ],
                         },
                     },
                 },
+            },
+            "aggregate_coords": {
+                "category (BURDI)": {
+                    "4": {
+                        "sources": ["4.A", "4.B", "4.C", "4.D"],
+                        "orig_cat_name": "4.  Agriculture",
+                    },
+                    "5": {
+                        "sources": ["5.A", "5.B", "5.E"],
+                        "orig_cat_name": "5.  Land-Use Change and Forestry",
+                        "tolerance": 0.018,  # sum for CO2 inconsistent
+                    },
+                    "15163": {
+                        "sources": ["1", "2", "3", "4", "6"],
+                        "orig_cat_name": "Total GHG emissions excluding LULUCF/LUCF",
+                    },
+                    "24540": {
+                        "sources": ["1", "2", "3", "4", "5", "6"],
+                        "orig_cat_name": "Total GHG emissions including LULUCF/LUCF",
+                    },
+                    # "15163": {
+                    #     "sources": [],
+                    #     "orig_cat_name": ","
+                    # },
+                }
             },
         },
     },
@@ -1989,18 +2212,18 @@ di_processing_templates = {
     # MKD:
     "MKD": {
         "DI2023-05-24": {  # 1990-2009
-            "downscale": {
-                "entities": {
-                    "FGASES": {
-                        "basket": f"FGASES ({gwp_to_use})",
-                        "basket_contents": [f"HFCS ({gwp_to_use})"],
-                    },
-                    "HFC": {
-                        "basket": f"HFCS ({gwp_to_use})",
-                        "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
-                    },
-                },
-            },
+            # "downscale": {
+            #     "entities": {
+            #         "FGASES": {
+            #             "basket": f"FGASES ({gwp_to_use})",
+            #             "basket_contents": [f"HFCS ({gwp_to_use})"],
+            #         },
+            #         "HFC": {
+            #             "basket": f"HFCS ({gwp_to_use})",
+            #             "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
+            #         },
+            #     },
+            # },
             "basket_copy": {
                 "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
                 "entities": ["UnspMixOfHFCs"],
@@ -2020,16 +2243,16 @@ di_processing_templates = {
                         "sel": {"time": ["1995", "2000"]},
                     },
                 },
-                "entities": {
-                    "FGASES": {
-                        "basket": f"FGASES ({gwp_to_use})",
-                        "basket_contents": [f"HFCS ({gwp_to_use})"],
-                    },
-                    "HFC": {
-                        "basket": f"HFCS ({gwp_to_use})",
-                        "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
-                    },
-                },
+                # "entities": {
+                #     "FGASES": {
+                #         "basket": f"FGASES ({gwp_to_use})",
+                #         "basket_contents": [f"HFCS ({gwp_to_use})"],
+                #     },
+                #     "HFC": {
+                #         "basket": f"HFCS ({gwp_to_use})",
+                #         "basket_contents": [f"UnspMixOfHFCs ({gwp_to_use})"],
+                #     },
+                # },
             },
             "basket_copy": {
                 "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
@@ -2069,7 +2292,16 @@ di_processing_templates = {
     # MNE: more data in BUR3
     # MNG: 1990-1998, 2006. Some details missing in 1990-1998 but to disconnected
     # from 2006 data to use that for downscaling
-    # MOZ: 1990, 1994
+    "MOZ": {  # 1990, 1994
+        "DI2023-05-24": {
+            "tolerance": 0.05,  # agriculture inconsistent (likely rounding)
+            "basket_copy": {
+                "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+                "entities": ["PFCS"],
+                "source_GWP": gwp_to_use,
+            },
+        }
+    },
     # MRT: more data in BUR 1 and 2
     "MUS": {
         "DI2023-05-24": {  # 1995, 200-2006, 2013
@@ -2088,7 +2320,21 @@ di_processing_templates = {
         },
     },
     # MWI: 1990, 1994. inconsistency in 1.B.1: 1994: CO2, 1990: CH4
-    # MYS: more data in BUR 3, 4
+    "MYS": {  # more data in BUR 3, 4
+        "DI2023-05-24": {
+            "remove_ts": {
+                "pfc": {
+                    "entities": [
+                        f"PFCS ({gwp_to_use})",
+                        f"FGASES ({gwp_to_use})",
+                        f"KYOTOGHG ({gwp_to_use})",
+                    ],
+                    "time": ["2011"],
+                    "category (BURDI)": ["2.C"],
+                }
+            },
+        }
+    },
     # NAM: more adat in BUR 2, 3
     # NER: 1990, 2000, 2008
     # NGA: miore data in NIR
@@ -2100,9 +2346,45 @@ di_processing_templates = {
     # PAK: 1994, 2008, 2012, 2015 (very limited data)
     # PAN: more data in NIR, BUR2
     # PER: 1994, 2000, 2010, 2012
-    # PNG: 1994, 2000 inconsistent sector coverage
+    "PNG": {  # 1994, 2000 inconsistent sector coverage
+        "DI2023-05-24": {
+            "remove_ts": {
+                "GHG": {  # inconsistent with sectoral data at least in agriculture
+                    "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                    "category (BURDI)": [
+                        "4",
+                        "4.A",
+                        "4.B",
+                        "4.D",
+                        "4.E",
+                        "4.F",
+                        "4.G",
+                    ],
+                    "time": ["1994", "2000"],
+                },
+            },
+            "downscale": {
+                "sectors": {
+                    "4": {
+                        "basket": "4",
+                        "basket_contents": ["4.B", "4.D", "4.E", "4.F", "4.G"],
+                        "entities": ["N2O"],
+                        "dim": "category (BURDI)",
+                    },
+                },
+            },
+        }
+    },
     "PHL": {
         "DI2023-05-24": {  # 1994, 2000
+            "remove_ts": {
+                "waste_CO2": {  # inconsistent with 1994 and unlikely as there
+                    # are no emissions for other gases
+                    "entities": ["CO2"],
+                    "category (BURDI)": ["6"],
+                    "time": ["2000"],
+                }
+            },
             "downscale": {
                 "sectors": {
                     "6": {
@@ -2190,6 +2472,7 @@ di_processing_templates = {
                                 "15163",
                                 "24540",
                             ],
+                            "time": ["2000", "2005", "2010"],
                         },
                     },
                 },
@@ -2203,6 +2486,7 @@ di_processing_templates = {
     # SSD: 2012-2015
     "STP": {
         "DI2023-05-24": {  # 1998 (dwn), 2005 (dwn), 2012:
+            "tolerance": 0.15,  # Agricultural data inconsistent in DI interface
             "downscale": {
                 "entities": {
                     "kyotoghg": {
@@ -2268,13 +2552,23 @@ di_processing_templates = {
             },
             "remove_ts": {
                 "M.AG.ELV": {
-                    "category": ["4", "4.D", "4.E", "4.F", "15163", "24540"],
-                    "entities": ["N2O", f"KYOTOGHG ({gwp_to_use})"],
+                    "category": [
+                        "4",
+                        "4.A",
+                        "4.B",
+                        "4.C",
+                        "4.D",
+                        "4.E",
+                        "4.F",
+                        "15163",
+                        "24540",
+                    ],
+                    "entities": ["N2O", f"KYOTOGHG ({gwp_to_use})", "CH4", "NOx", "CO"],
                     "time": ["1993"],
                 },
             },
         },
-    },
+    },  # TODO: inconsistency through removed data for KYOTOGHG (SARGWP100)
     # TGO: more data in BUR / NIR, 1992-1998, 2000, 2005, 2010, 2013-2018 (
     # downscaling needed for some years, inconsistent detail)
     # THA: 1994 (2000-2013, extensive downscaling needed for 2000-2012).
@@ -2729,9 +3023,13 @@ di_processing_info = {
         "default": di_processing_templates["general"]["copyUnspHFC"],
         "DI2023-05-24": di_processing_templates["general"]["copyUnspHFC"],
     },
+    "CAF": {
+        "default": di_processing_templates["CAF"]["DI2023-05-24"],
+        "DI2023-05-24": di_processing_templates["CAF"]["DI2023-05-24"],
+    },
     "CHL": {
-        "default": di_processing_templates["general"]["copyUnspHFC"],
-        "DI2023-05-24": di_processing_templates["general"]["copyUnspHFC"],
+        "default": di_processing_templates["CHL"]["DI2023-05-24"],
+        "DI2023-05-24": di_processing_templates["CHL"]["DI2023-05-24"],
     },
     "CHN": {
         "default": di_processing_templates["CHN"]["DI2023-05-24"],
@@ -2825,10 +3123,6 @@ di_processing_info = {
         "default": di_processing_templates["LCA"]["DI2023-05-24"],
         "DI2023-05-24": di_processing_templates["LCA"]["DI2023-05-24"],
     },
-    "LKA": {
-        "default": di_processing_templates["general"]["copyFGASES"],
-        "DI2023-05-24": di_processing_templates["general"]["copyFGASES"],
-    },
     "LSO": {
         "default": di_processing_templates["LSO"]["DI2023-05-24"],
         "DI2023-05-24": di_processing_templates["LSO"]["DI2023-05-24"],
@@ -2878,12 +3172,16 @@ di_processing_info = {
         "DI2023-05-24": di_processing_templates["general"]["copyUnspHFC"],
     },
     "MOZ": {
-        "default": di_processing_templates["general"]["copyPFC"],
-        "DI2023-05-24": di_processing_templates["general"]["copyPFC"],
+        "default": di_processing_templates["MOZ"]["DI2023-05-24"],
+        "DI2023-05-24": di_processing_templates["MOZ"]["DI2023-05-24"],
     },
     "MUS": {
         "default": di_processing_templates["MUS"]["DI2023-05-24"],
         "DI2023-05-24": di_processing_templates["MUS"]["DI2023-05-24"],
+    },
+    "MYS": {
+        "default": di_processing_templates["MYS"]["DI2023-05-24"],
+        "DI2023-05-24": di_processing_templates["MYS"]["DI2023-05-24"],
     },
     "PHL": {
         "default": di_processing_templates["PHL"]["DI2023-05-24"],
@@ -2892,6 +3190,10 @@ di_processing_info = {
     "PLW": {
         "default": di_processing_templates["PLW"]["DI2023-05-24"],
         "DI2023-05-24": di_processing_templates["PLW"]["DI2023-05-24"],
+    },
+    "PNG": {
+        "default": di_processing_templates["PNG"]["DI2023-05-24"],
+        "DI2023-05-24": di_processing_templates["PNG"]["DI2023-05-24"],
     },
     "PRY": {
         "default": di_processing_templates["general"]["copyUnspHFCUnspPFC"],
