@@ -3405,13 +3405,13 @@ virtualenv = ">=20.10.0"
 
 [[package]]
 name = "primap2"
-version = "0.11.0"
+version = "0.11.1"
 description = "The next generation of the PRIMAP climate policy analysis suite."
 optional = false
 python-versions = "<3.12,>=3.10"
 files = [
-    {file = "primap2-0.11.0-py3-none-any.whl", hash = "sha256:d88525997c5387975027212834c0babef8908ccd970aa8f1e1bed8b4344f7249"},
-    {file = "primap2-0.11.0.tar.gz", hash = "sha256:afabf8517b2c6f60855078b59e05c56cc4bc15875b8a1d3bfae7bdf17ee7ce94"},
+    {file = "primap2-0.11.1-py3-none-any.whl", hash = "sha256:2734e83a31f0db542c8989d60cfd85f26f5438f54c3baff2011e1259d8f5cb70"},
+    {file = "primap2-0.11.1.tar.gz", hash = "sha256:8842c6a92284d20f7aa0c7111867f26ea66fe72b2d42c848b42a38bee5350855"},
 ]
 
 [package.dependencies]
