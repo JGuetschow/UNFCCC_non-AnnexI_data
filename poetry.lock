@@ -5035,13 +5035,13 @@ files = [
 
 [[package]]
 name = "unfccc-di-api"
-version = "4.0.1"
+version = "4.0.4"
 description = "Python wrapper around the Flexible Query API of the UNFCCC."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "unfccc_di_api-4.0.1-py3-none-any.whl", hash = "sha256:acc7ae9213ec1ac852c90843e7e5113ca394a2964ae367370d9c3d5925f483f2"},
-    {file = "unfccc_di_api-4.0.1.tar.gz", hash = "sha256:ee39106827695db96bbb306ef10ca7a12d56abee7f80c8452bf38e5769e5e116"},
+    {file = "unfccc_di_api-4.0.4-py3-none-any.whl", hash = "sha256:f8f879bb7a629d9088526ecc23f456ab3c4c7184a0cc68540647993411e80e15"},
+    {file = "unfccc_di_api-4.0.4.tar.gz", hash = "sha256:86b53cfe274d9ea53e265d3f998dece53a0bd683618100be83e5e0603e9e32dc"},
 ]
 
 [package.dependencies]
