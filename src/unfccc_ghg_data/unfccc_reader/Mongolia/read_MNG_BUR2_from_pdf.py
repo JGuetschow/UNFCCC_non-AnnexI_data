@@ -1,17 +1,11 @@
 """
 Read Mongolia's BUR2 from pdf
 """
-# TODO: Delete when this is finished
-import os
 
-os.environ[
-    "UNFCCC_GHG_ROOT_PATH"
-] = "/Users/danielbusch/Documents/UNFCCC_non-AnnexI_data/"
-
-import camelot  # noqa: E402
-import pandas as pd  # noqa: E402
-import primap2 as pm2  # noqa: E402
-from config_mng_bur2 import (  # noqa: E402
+import camelot
+import pandas as pd
+import primap2 as pm2
+from config_mng_bur2 import (
     coords_cols,
     coords_defaults,
     coords_terminologies,
@@ -27,7 +21,7 @@ from config_mng_bur2 import (  # noqa: E402
     meta_data,
 )
 
-from unfccc_ghg_data.helper import (  # noqa: E402
+from unfccc_ghg_data.helper import (
     downloaded_data_path,
     extracted_data_path,
     fix_rows,
