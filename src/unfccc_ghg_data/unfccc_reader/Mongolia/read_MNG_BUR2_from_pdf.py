@@ -343,7 +343,7 @@ if __name__ == "__main__":
             ).reset_index(drop=True)
 
     # assign the years to the columns
-    df_hwp = pd.DataFrame(df_hwp.values[1:], columns=df_hwp.iloc[0])
+    df_hwp = pd.DataFrame(df_hwp.to_numpy()[1:], columns=df_hwp.iloc[0])
 
     df_hwp = df_hwp.rename(
         columns={inv_conf_harvested_wood_products["category_column"]: "category"}
@@ -368,7 +368,8 @@ if __name__ == "__main__":
     for sector in list(inv_conf_per_sector.keys()):
         print("-" * 60)
         print(
-            f"Reading sector {sector} on page(s) {[*inv_conf_per_sector[sector]['page_defs']]}."
+            f"Reading sector {sector} on page(s) \
+            {[*inv_conf_per_sector[sector]['page_defs']]}."
         )
 
         df_sector = None
@@ -433,7 +434,7 @@ if __name__ == "__main__":
 
         df_sector["category"] = df_sector["category"].str.replace("\n", "")
 
-        # TODO Is it not the same as remove categories further down?
+        # TODO This is the same functionality as remove_duplicates ?
         if "categories_to_drop" in inv_conf_per_sector[sector]:
             for row in inv_conf_per_sector[sector]["categories_to_drop"]:
                 row_to_delete = df_sector.index[df_sector["category"] == row][0]
@@ -446,7 +447,6 @@ if __name__ == "__main__":
         if "multi_entity" in inv_conf_per_sector[sector]:
             df_sector["entity"] = inv_conf_per_sector[sector]["multi_entity"]["entity"]
             df_sector["unit"] = inv_conf_per_sector[sector]["multi_entity"]["unit"]
-            # df_sector = df_sector.set_index(["entity", "unit", "category"])
 
         else:
             # unit is always the same
@@ -480,6 +480,9 @@ if __name__ == "__main__":
         axis=0,
         join="outer",
     ).reset_index(drop=True)
+
+    # There are more tables in the document that could be read, but are less relevant
+    # on pages 67, 78, 91, 105/6, 110/111
 
     ### convert to interchange format ###
     df_agg_IF = pm2.pm2io.convert_wide_dataframe_if(
