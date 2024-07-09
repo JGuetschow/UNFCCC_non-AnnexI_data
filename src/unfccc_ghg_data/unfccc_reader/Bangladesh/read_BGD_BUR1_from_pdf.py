@@ -9,6 +9,7 @@ from config_bgd_bur1 import coords_terminologies, inv_conf_per_year
 from unfccc_ghg_data.helper import (
     downloaded_data_path,
     extracted_data_path,
+    fix_rows,
 )
 
 if __name__ == "__main__":
@@ -39,6 +40,8 @@ if __name__ == "__main__":
         df_year = None
         for page in inv_conf_per_year[year]["page_defs"].keys():
             print(f"Reading table from page {page}.")
+
+            # read from PDF
             tables_inventory_original = camelot.read_pdf(
                 str(input_folder / pdf_file),
                 pages=page,
@@ -51,34 +54,42 @@ if __name__ == "__main__":
 
             df_page = tables_inventory_original[0].df
 
+            # cut rows at the top if needed
+            skip_rows_start = inv_conf_per_year[year]["page_defs"][page][
+                "skip_rows_start"
+            ]
+            if not skip_rows_start == 0:
+                df_page = df_page[skip_rows_start:]
+
+            # cut rows at the bottom if needed
+            skip_rows_end = inv_conf_per_year[year]["page_defs"][page]["skip_rows_end"]
+            if not skip_rows_end == 0:
+                df_page = df_page[:-skip_rows_end]
+
+            # stack the tables vertically
             if df_year is None:
-                df_year = df_page[
-                    inv_conf_per_year[year]["page_defs"][page]["skip_rows"] :
-                ]
+                df_year = df_page
             else:
                 df_year = pd.concat(
                     [
                         df_year,
-                        df_page[
-                            inv_conf_per_year[year]["page_defs"][page]["skip_rows"] :
-                        ],
+                        df_page,
                     ],
                     axis=0,
                     join="outer",
                 ).reset_index(drop=True)
 
+        # fix content that spreads across multiple rows
+        if "rows_to_fix" in inv_conf_per_year[year]:
+            for n_rows in inv_conf_per_year[year]["rows_to_fix"].keys():
+                print(f"Merge content for {n_rows=}")
+                df_year = fix_rows(
+                    df_year,
+                    rows_to_fix=inv_conf_per_year[year]["rows_to_fix"][n_rows],
+                    col_to_use=0,
+                    n_rows=n_rows,
+                )
         pass
-        # # fix content that spreads across multiple rows
-        # if "rows_to_fix" in inv_conf_per_year[year]:
-        #     for n_rows in inv_conf_per_year[year]["rows_to_fix"].keys():
-        #         print(f"Merge content for {n_rows=}")
-        #         df_year = fix_rows(
-        #             df_year,
-        #             rows_to_fix=inv_conf_per_year[year]["rows_to_fix"][n_rows],
-        #             col_to_use=0,
-        #             n_rows=n_rows,
-        #         )
-        #
         # df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
         #
         # skip_rows = 11
