@@ -752,6 +752,32 @@ country_processing_step1 = {
         "entities": ["HFCS", "PFCS"],
         "source_GWP": gwp_to_use,
     },
+    "downscale": {
+        "sectors": {
+            "1.B_CH4": {
+                "basket": "1.B",
+                "basket_contents": ["1.B.1", "1.B.2"],
+                "entities": ["CH4"],
+                "dim": f"category ({coords_terminologies['category']})",
+                # "tolerance": 0.05,  # some inconsistencies (rounding?)
+            },
+            "1.B_CO2": {
+                "basket": "1.B",
+                "basket_contents": ["1.B.1", "1.B.2"],
+                "entities": ["CO2"],
+                "dim": f"category ({coords_terminologies['category']})",
+                "sel": {
+                    "time": [
+                        "2000",
+                        "2005",
+                        "2010",
+                        "2015",
+                        "2020",
+                    ]
+                },
+            },
+        }
+    },
 }
 
 country_processing_gas_baskets = {"tolerance": 0.02}
