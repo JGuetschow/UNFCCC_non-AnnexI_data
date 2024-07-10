@@ -134,3 +134,36 @@ country_processing_step1 = {
 
 Note that all the specified sources must be either already present in the dataset or aggregated in the same function
 call.
+
+## How to downscale values in the dataset
+To generate as comprehensive a data set as possible, it may be worth interpolating or extrapolating values.
+
+**Example**
+
+The category `1.B` for `CH4` holds the following values
+
+| entity | category (IPCC2006_PRIMAP) | 1990 | 1995 | 2000 | 2005 | 2010  | 2015 | 2020 |
+| ------ | -------------------------- | ---- | ---- | ---- | ---- | ----- | ---- | ---- |
+| CH4    | 1.B                        | 6.23 | 4.37 | 4.83 | 7.48 | 32.33 | 61.0 | 52.2 |
+
+However the children categories `1.B.1` and `1.B.2`come in a lower temporal resolution
+
+
+| entity | category (IPCC2006_PRIMAP) | 1990 | 1995 | 2000 | 2005 | 2010 | 2015 | 2020  |
+| ------ | -------------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ----- |
+| CH4    | 1.B.1                      | 6.23 |      |      |      |      |      | 32.99 |
+| CH4    | 1.B.2                      | 0    |      |      |      |      |      | 19.51 |
+
+In the year 1990 100% of the emissions from `1.B` come from `1.B.1`. This ratio changed in 2020.
+
+With `downcaling`we can now interpolate the ratio of `1.B.1`and `1.B.2`for the years 1995 to 2015 and divide the values from `1.B`accordingly.
+
+The final result will look like this. Note that the calculation results in numbers with many decimal places. For the sake of simplicity, everything after the second decimal place has been cut off in this illustration.
+
+| entity | category (IPCC2006_PRIMAP) | 1990 | 1995 | 2000 | 2005 | 2010  | 2015  | 2020  |
+| ------ | -------------------------- | ---- | ---- | ---- | ---- | ----- | ----- | ----- |
+| CH4    | 1.B                        | 6.23 | 4.37 | 4.83 | 7.48 | 32.33 | 61.0  | 52.2  |
+| CH4    | 1.B.1                      | 6.23 | 4.09 | 4.23 | 6.09 | 24.32 | 42.10 | 32.99 |
+| CH4    | 1.B.2                      | 0    | 0.27 | 0.59 | 1.38 | 8.00  | 18.89 | 19.51 |
+
+There are also situations in which we have to limit the years for the downscaling.
