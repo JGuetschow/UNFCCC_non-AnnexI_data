@@ -257,6 +257,10 @@ if __name__ == "__main__":
         for year in inv_conf_per_entity[entity]["years"]:
             df_entity.loc[:, year] = df_entity[year].str.replace(",", "")
 
+        if "del_value" in inv_conf_per_entity[entity]:
+            for year_del, category_del in inv_conf_per_entity[entity]["del_value"]:
+                df_entity.loc[df_entity["category"] == category_del, year_del] = ""
+
         if df_trend is None:
             df_trend = df_entity
         else:
@@ -422,10 +426,14 @@ if __name__ == "__main__":
         # transpose so categegories are in first columns
         df_sector = df_sector.T
 
+        # strip white spaces from column names
+        df_sector.columns = df_sector.columns.str.strip()
+
         df_sector = df_sector.rename(
             columns={inv_conf_per_sector[sector]["year_column"]: "category"}
         )
 
+        df_sector["category"] = df_sector["category"].str.strip()
         df_sector["category"] = df_sector["category"].str.replace("\n", "")
 
         # TODO This is the same functionality as remove_duplicates ?
