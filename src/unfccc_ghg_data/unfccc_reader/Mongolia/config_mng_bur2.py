@@ -98,6 +98,7 @@ inv_conf_per_year = {
                 "cols": ["287,328,365,410,449,482,540,600,636,675,721,750"],
             },
         },
+        "skip_rows": 11,
     },
     "2020": {
         "page_defs": {
@@ -138,6 +139,7 @@ inv_conf_per_year = {
                 "2.B.4 - Caprolactam. Glyoxal and Glyoxylic Acid",
             ],
         },
+        "skip_rows": 0,
     },
 }
 
@@ -209,7 +211,6 @@ inv_conf_per_entity = {
         "columns_to_drop": ["Share, %", "Categories"],
         "years": ["1990", "1995", "2000", "2005", "2010", "2015", "2020"],
         "unit": "Gg",
-        "del_value": [("1995", "4"), ("2005", "4")],
     },
     "CH4": {
         "page_defs": {
@@ -720,38 +721,30 @@ meta_data = {
 country_processing_step1 = {
     "tolerance": 0.01,
     "aggregate_cats": {
-        # TODO: Remove "M.3.C.AG". Just here to see previous aggregation setup.
-        # "M.3.C.AG": {
-        #     "sources": [
-        #         "3.C.1",
-        #         "3.C.2",
-        #         "3.C.3",
-        #         "3.C.4",
-        #         "3.C.5",
-        #         "3.C.6",
-        #         "3.C.7",
-        #         "3.C.8",
-        #     ],
-        #     "name": "Aggregate sources and non-CO2 emissions sources on land "
-        #     "(Agriculture)",
-        # },
         "M.3.D.AG": {"sources": ["3.D.2"]},
-        # TODO: In this case 3.C should be equivalent to M.3.C.AG, but I'm not sure.
         "M.3.C.AG": {
             "sources": ["3.C.1", "3.C.4", "3.C.5"],
         },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG", "M.3.D.AG"],
         },
-        "M.AG": {"sources": ["3.A.1", "3.A.2", "M.AG.ELV"]},
+        # "3.A" : {"sources" : ["3.A.1", "3.A.2"]},
+        # "3.C" : {"sources" : ["3.C.1",
+        #                       "3.C.2",
+        #                       "3.C.3",
+        #                       "3.C.4",
+        #                       "3.C.5",
+        #                       "3.C.6",
+        #                       "3.C.7",
+        #                       "3.C.8", ]},
+        # "3.D" : {"sources" : ["3.D.1", "3.D.2"]},
+        "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
         "M.3.D.LU": {"sources": ["3.D.1"]},
         "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"]},
         "M.0.EL": {
             "sources": ["1", "2", "M.AG", "4"],
         },
         "3": {"sources": ["M.AG", "M.LULUCF"]},  # consistency check
-        # TODO why is this line repeated? Check if can be removed
-        # "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},  # consistency check
         "0": {"sources": ["1", "2", "3", "4"]},  # consistency check
     },
     "basket_copy": {

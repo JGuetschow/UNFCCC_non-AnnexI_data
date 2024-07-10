@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
         df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
 
-        skip_rows = 11
+        skip_rows = inv_conf_per_year[year]["skip_rows"]
         df_year = pd.concat(
             [df_header, df_year[skip_rows:]], axis=0, join="outer"
         ).reset_index(drop=True)
