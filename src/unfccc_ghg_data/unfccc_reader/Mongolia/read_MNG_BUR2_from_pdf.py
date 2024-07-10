@@ -10,6 +10,7 @@ from config_mng_bur2 import (
     coords_defaults,
     coords_terminologies,
     coords_value_mapping,
+    country_processing_gas_baskets,
     country_processing_step1,
     filter_remove,
     gas_baskets,
@@ -257,9 +258,9 @@ if __name__ == "__main__":
         for year in inv_conf_per_entity[entity]["years"]:
             df_entity.loc[:, year] = df_entity[year].str.replace(",", "")
 
-        if "del_value" in inv_conf_per_entity[entity]:
-            for year_del, category_del in inv_conf_per_entity[entity]["del_value"]:
-                df_entity.loc[df_entity["category"] == category_del, year_del] = ""
+        # if "del_value" in inv_conf_per_entity[entity]:
+        #     for year_del, category_del in inv_conf_per_entity[entity]["del_value"]:
+        #         df_entity.loc[df_entity["category"] == category_del, year_del] = ""
 
         if df_trend is None:
             df_trend = df_entity
@@ -544,7 +545,7 @@ if __name__ == "__main__":
         cat_terminology_out=None,
         category_conversion=None,
         sectors_out=None,
-        processing_info_country=None,
+        processing_info_country=country_processing_gas_baskets,
     )
 
     data_proc_pm2 = process_data_for_country(

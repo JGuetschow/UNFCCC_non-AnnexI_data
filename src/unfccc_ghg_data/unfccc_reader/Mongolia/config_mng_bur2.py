@@ -735,24 +735,21 @@ country_processing_step1 = {
         #     "name": "Aggregate sources and non-CO2 emissions sources on land "
         #     "(Agriculture)",
         # },
-        "M.3.D.AG": {"sources": ["3.D.2"], "name": "Other (Agriculture)"},
+        "M.3.D.AG": {"sources": ["3.D.2"]},
         # TODO: In this case 3.C should be equivalent to M.3.C.AG, but I'm not sure.
         "M.3.C.AG": {
             "sources": ["3.C.1", "3.C.4", "3.C.5"],
-            "name": "Aggregate sources and non-CO2 emissions sources on land ",
         },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG", "M.3.D.AG"],
-            "name": "Agriculture excluding livestock",
         },
-        "M.AG": {"sources": ["3.A.1", "3.A.2", "M.AG.ELV"], "name": "Agriculture"},
-        "M.3.D.LU": {"sources": ["3.D.1"], "name": "Other (LULUCF)"},
-        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"], "name": "LULUCF"},
+        "M.AG": {"sources": ["3.A.1", "3.A.2", "M.AG.ELV"]},
+        "M.3.D.LU": {"sources": ["3.D.1"]},
+        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"]},
         "M.0.EL": {
             "sources": ["1", "2", "M.AG", "4"],
-            "name": "National total emissions excluding LULUCF",
         },
-        "3": {"sources": ["M.AG", "M.LULUCF"], "name": "AFOLU"},  # consistency check
+        "3": {"sources": ["M.AG", "M.LULUCF"]},  # consistency check
         # TODO why is this line repeated? Check if can be removed
         # "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},  # consistency check
         "0": {"sources": ["1", "2", "3", "4"]},  # consistency check
@@ -763,6 +760,8 @@ country_processing_step1 = {
         "source_GWP": gwp_to_use,
     },
 }
+
+country_processing_gas_baskets = {"tolerance": 0.02}
 
 gas_baskets = {
     "FGASES (SARGWP100)": ["HFCS (SARGWP100)", "PFCS (SARGWP100)", "SF6", "NF3"],
