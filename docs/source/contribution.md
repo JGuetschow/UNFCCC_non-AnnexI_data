@@ -167,3 +167,5 @@ The final result will look like this. Note that the calculation results in numbe
 | CH4    | 1.B.2                      | 0    | 0.27 | 0.59 | 1.38 | 8.00  | 18.89 | 19.51 |
 
 There are also situations in which we have to limit the years for the downscaling.
+
+The downscaling is described in the [Primap2 documentation.](https://primap2.readthedocs.io/en/stable/special_usage.html#Downscaling)
