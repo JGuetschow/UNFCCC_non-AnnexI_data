@@ -225,4 +225,418 @@ inv_conf_per_year = {
         },
         "merge_cats": "3C5",
     },
+    "2015": {
+        "page_defs": {
+            "211": {
+                "area": ["75,712,550,88"],
+                "cols": ["375,444,498"],
+                "skip_rows_start": 9,
+                "skip_rows_end": 0,
+            },
+            "212": {
+                "area": ["64,711,524,90"],
+                "cols": ["369,436,492"],
+                "skip_rows_start": 8,
+                "skip_rows_end": 4,
+            },
+        },
+        "rows_to_fix": {
+            3: ["3 - GHG Emissions Agriculture, Livestock & Forest and Other"],
+            -2: [
+                "ch4 emission from rice field",
+                "indirect nitrous oxide (n2o) from n based fertilizer",
+                "Direct nitrous oxide (n2o) emissions from fertilizer application",
+                "Total enteric ch4 emissions",
+                "Total Manure ch4 emissions",
+                "Total Direct n2o emissions from manure system",
+                "Total indirect n2o emissions - Volatilization",
+                "Total indirect n2o emissions - leaching/Runoff",
+                "CO2 from Biomass burning for Energy purpose",
+                "a-co2 emission from soil",
+                "c-co2 emission due to fuel wood removal for consumption",
+            ],
+            2: [
+                # B-Methane emission from domestic waste water and
+                # c-nitrous oxide emission from domestic waste water are the same category
+                # and should be merged
+                "B-Methane emission from domestic waste water",
+                # Total Manure ch4 emissions and
+                # Total Direct n2o emissions from manure system are the same category
+                # and should be merged
+                "Total Manure ch4 emissions",
+            ],
+        },
+        "header": [
+            "Greenhouse gas source and sink categories",
+            "CO2",
+            "CH4",
+            "N2O",
+        ],
+        "unit": [
+            "-",
+            "Gg",
+            "Gg",
+            "Gg",
+        ],
+        "skip_rows": 0,
+        "cat_codes_manual": {
+            "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
+            "1 - a1- electricity Generation": "1.A.1",
+            "2 a. 1-cement Production": "2.A.1",
+            "2 B. 1 - ammonia Production": "2.B.1",
+            "2 C-Metal Industry": "2.C",
+            "2 c. 1 iron and steel Production": "2.C.1",
+            "2. D - Non-Energy Products from Fuels and Solvent Use": "2.D",
+            "2D 1-lubricant Use": "2.D.1",
+            "ch4 emission from rice field": "3.C.7",
+            "indirect nitrous oxide (n2o) from n based fertilizer": "3.C.5",
+            "Direct nitrous oxide (n2o) emissions from fertilizer application": "3.C.4",
+            "Direct carbon Dioxide emissions from urea fertilizer": "3.C.3",
+            "Total enteric ch4 emissions": "3.A.1",
+            "Total Manure ch4 emissions Total Direct n2o emissions from manure system": "3.A.2",
+            "Total indirect n2o emissions -Volatilization": "3.C.5",
+            "Total indirect n2o emissions -leaching/Runoff": "3.C.5",
+            "4 a-solid Waste Disposal": "4.A",
+            "B-Methane emission from domestic waste water c-nitrous oxide emission from domestic waste water": "4.D.1",
+            "D- Metahne emission from industrial waste water": "4.D.2",
+            "Memo items (5)": "MEMO",
+            "Information Items": "INFO",
+            "international Bunkers": "M.BK",
+            "a-international aviation (international Bunkers)": "M.BK.A",
+            "B-international Water-borne navigation (international Bunkers)": "M.BK.M",
+            "CO2 from Biomass burning for Energy purpose": "M.BIO",
+        },
+        "merge_cats": "3C5",
+        # These three categories only appear in 2015 and are all zero
+        "categories_to_drop": [
+            "a-co2 emission from soil",
+            "c-co2 emission due to fuel wood removal for consumption",
+            "B-conversion of forest land to other land use",
+        ],
+    },
+    "2016": {
+        "page_defs": {
+            "213": {
+                "area": ["73,712,544,77"],
+                "cols": ["373,444,498"],
+                "skip_rows_start": 9,
+                "skip_rows_end": 0,
+            },
+            "214": {
+                "area": ["66,711,533,143"],
+                "cols": ["359,435,492"],
+                "skip_rows_start": 8,
+                "skip_rows_end": 4,
+            },
+        },
+        "rows_to_fix": {
+            3: ["3 - GHG Emissions Agriculture, Livestock & Forest and Other"],
+            -2: [
+                "ch4 emission from rice field",
+                "indirect nitrous oxide (n2o) from n based fertilizer",
+                "Direct nitrous oxide (n2o) emissions from fertilizer application",
+                "Total enteric ch4 emissions",
+                "Total Manure ch4 emissions",
+                "Total Direct n2o emissions from manure system",
+                "Total indirect n2o emissions - Volatilization",
+                "Total indirect n2o emissions - leaching/Runoff",
+                "CO2 from Biomass burning for Energy purpose",
+            ],
+            2: [
+                # B-Methane emission from domestic waste water and
+                # c-nitrous oxide emission from domestic waste water are the same category
+                # and should be merged
+                "B-Methane emission from domestic waste water",
+                # Total Manure ch4 emissions and
+                # Total Direct n2o emissions from manure system are the same category
+                # and should be merged
+                "Total Manure ch4 emissions",
+            ],
+        },
+        "header": [
+            "Greenhouse gas source and sink categories",
+            "CO2",
+            "CH4",
+            "N2O",
+        ],
+        "unit": [
+            "-",
+            "Gg",
+            "Gg",
+            "Gg",
+        ],
+        "skip_rows": 0,
+        "cat_codes_manual": {
+            "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
+            "1 - a1- electricity Generation": "1.A.1",
+            "2 a. 1-cement Production": "2.A.1",
+            "2 B. 1 - ammonia Production": "2.B.1",
+            "2 C-Metal Industry": "2.C",
+            "2 c. 1 iron and steel Production": "2.C.1",
+            "2. D - Non-Energy Products from Fuels and Solvent Use": "2.D",
+            "2D 1-lubricant Use": "2.D.1",
+            "ch4 emission from rice field": "3.C.7",
+            "indirect nitrous oxide (n2o) from n based fertilizer": "3.C.5",
+            "Direct nitrous oxide (n2o) emissions from fertilizer application": "3.C.4",
+            "Direct carbon Dioxide emissions from urea fertilizer": "3.C.3",
+            "Total enteric ch4 emissions": "3.A.1",
+            "Total Manure ch4 emissions Total Direct n2o emissions from manure system": "3.A.2",
+            "Total indirect n2o emissions -Volatilization": "3.C.5",
+            "Total indirect n2o emissions -leaching/Runoff": "3.C.5",
+            "4 a-solid Waste Disposal": "4.A",
+            "B-Methane emission from domestic waste water c-nitrous oxide emission from domestic waste water": "4.D.1",
+            "D- Metahne emission from industrial waste water": "4.D.2",
+            "Memo items (5)": "MEMO",
+            "Information Items": "INFO",
+            "international Bunkers": "M.BK",
+            "a-international aviation (international Bunkers)": "M.BK.A",
+            "B-international Water-borne navigation (international Bunkers)": "M.BK.M",
+            "CO2 from Biomass burning for Energy purpose": "M.BIO",
+        },
+        "merge_cats": "3C5",
+    },
+    "2017": {
+        "page_defs": {
+            "215": {
+                "area": ["74,715,543,80"],
+                "cols": ["382,444,497"],
+                "skip_rows_start": 9,
+                "skip_rows_end": 0,
+            },
+            "216": {
+                "area": ["64,720,530,158"],
+                "cols": ["380,433,490"],
+                "skip_rows_start": 8,
+                "skip_rows_end": 4,
+            },
+        },
+        "rows_to_fix": {
+            3: ["3 - GHG Emissions Agriculture, Livestock & Forest and Other"],
+            -2: [
+                "ch4 emission from rice field",
+                "indirect nitrous oxide (n2o) from n based fertilizer",
+                "Direct nitrous oxide (n2o) emissions from fertilizer application",
+                "Total enteric ch4 emissions",
+                "Total Manure ch4 emissions",
+                "Total Direct n2o emissions from manure system",
+                "Total indirect n2o emissions - Volatilization",
+                "Total indirect n2o emissions - leaching/Runoff",
+                "CO2 from Biomass burning for Energy purpose",
+            ],
+            2: [
+                # B-Methane emission from domestic waste water and
+                # c-nitrous oxide emission from domestic waste water are the same category
+                # and should be merged
+                "B-Methane emission from domestic waste water",
+                # Total Manure ch4 emissions and
+                # Total Direct n2o emissions from manure system are the same category
+                # and should be merged
+                "Total Manure ch4 emissions",
+            ],
+        },
+        "header": [
+            "Greenhouse gas source and sink categories",
+            "CO2",
+            "CH4",
+            "N2O",
+        ],
+        "unit": [
+            "-",
+            "Gg",
+            "Gg",
+            "Gg",
+        ],
+        "skip_rows": 0,
+        "cat_codes_manual": {
+            "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
+            "1 - a1- electricity Generation": "1.A.1",
+            "2 a. 1-cement Production": "2.A.1",
+            "2 B. 1 - ammonia Production": "2.B.1",
+            "2 C-Metal Industry": "2.C",
+            "2 c. 1 iron and steel Production": "2.C.1",
+            "2. D - Non-Energy Products from Fuels and Solvent Use": "2.D",
+            "2D 1-lubricant Use": "2.D.1",
+            "ch4 emission from rice field": "3.C.7",
+            "indirect nitrous oxide (n2o) from n based fertilizer": "3.C.5",
+            "Direct nitrous oxide (n2o) emissions from fertilizer application": "3.C.4",
+            "Direct carbon Dioxide emissions from urea fertilizer": "3.C.3",
+            "Total enteric ch4 emissions": "3.A.1",
+            "Total Manure ch4 emissions Total Direct n2o emissions from manure system": "3.A.2",
+            "Total indirect n2o emissions -Volatilization": "3.C.5",
+            "Total indirect n2o emissions -leaching/Runoff": "3.C.5",
+            "4 a-solid Waste Disposal": "4.A",
+            "B-Methane emission from domestic waste water c-nitrous oxide emission from domestic waste water": "4.D.1",
+            "D- Metahne emission from industrial waste water": "4.D.2",
+            "Memo items (5)": "MEMO",
+            "Information Items": "INFO",
+            "international Bunkers": "M.BK",
+            "a-international aviation (international Bunkers)": "M.BK.A",
+            "B-international Water-borne navigation (international Bunkers)": "M.BK.M",
+            "CO2 from Biomass burning for Energy purpose": "M.BIO",
+        },
+        "merge_cats": "3C5",
+    },
+    "2018": {
+        "page_defs": {
+            "217": {
+                "area": ["75,713,542,91"],
+                "cols": ["378,446,499"],
+                "skip_rows_start": 9,
+                "skip_rows_end": 0,
+            },
+            "218": {
+                "area": ["63,714,528,154"],
+                "cols": ["374,438,491"],
+                "skip_rows_start": 8,
+                "skip_rows_end": 4,
+            },
+        },
+        "rows_to_fix": {
+            3: ["3 - GHG Emissions Agriculture, Livestock & Forest and Other"],
+            -2: [
+                "ch4 emission from rice field",
+                "indirect nitrous oxide (n2o) from n based fertilizer",
+                "Direct nitrous oxide (n2o) emissions from fertilizer application",
+                "Total enteric ch4 emissions",
+                "Total Manure ch4 emissions",
+                "Total Direct n2o emissions from manure system",
+                "Total indirect n2o emissions - Volatilization",
+                "Total indirect n2o emissions - leaching/Runoff",
+                "CO2 from Biomass burning for Energy purpose",
+            ],
+            2: [
+                # B-Methane emission from domestic waste water and
+                # c-nitrous oxide emission from domestic waste water are the same category
+                # and should be merged
+                "B-Methane emission from domestic waste water",
+                # Total Manure ch4 emissions and
+                # Total Direct n2o emissions from manure system are the same category
+                # and should be merged
+                "Total Manure ch4 emissions",
+            ],
+        },
+        "header": [
+            "Greenhouse gas source and sink categories",
+            "CO2",
+            "CH4",
+            "N2O",
+        ],
+        "unit": [
+            "-",
+            "Gg",
+            "Gg",
+            "Gg",
+        ],
+        "skip_rows": 0,
+        "cat_codes_manual": {
+            "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
+            "1 - a1- electricity Generation": "1.A.1",
+            "2 a. 1-cement Production": "2.A.1",
+            "2 B. 1 - ammonia Production": "2.B.1",
+            "2 C-Metal Industry": "2.C",
+            "2 c. 1 iron and steel Production": "2.C.1",
+            "2. D - Non-Energy Products from Fuels and Solvent Use": "2.D",
+            "2D 1-lubricant Use": "2.D.1",
+            "ch4 emission from rice field": "3.C.7",
+            "indirect nitrous oxide (n2o) from n based fertilizer": "3.C.5",
+            "Direct nitrous oxide (n2o) emissions from fertilizer application": "3.C.4",
+            "Direct carbon Dioxide emissions from urea fertilizer": "3.C.3",
+            "Total enteric ch4 emissions": "3.A.1",
+            "Total Manure ch4 emissions Total Direct n2o emissions from manure system": "3.A.2",
+            "Total indirect n2o emissions -Volatilization": "3.C.5",
+            "Total indirect n2o emissions -leaching/Runoff": "3.C.5",
+            "4 a-solid Waste Disposal": "4.A",
+            "B-Methane emission from domestic waste water c-nitrous oxide emission from domestic waste water": "4.D.1",
+            "D- Metahne emission from industrial waste water": "4.D.2",
+            "Memo items (5)": "MEMO",
+            "Information Items": "INFO",
+            "international Bunkers": "M.BK",
+            "a-international aviation (international Bunkers)": "M.BK.A",
+            "B-international Water-borne navigation (international Bunkers)": "M.BK.M",
+            "CO2 from Biomass burning for Energy purpose": "M.BIO",
+        },
+        "merge_cats": "3C5",
+    },
+    "2019": {
+        "page_defs": {
+            "219": {
+                "area": ["75,713,542,91"],
+                "cols": ["378,446,499"],
+                "skip_rows_start": 9,
+                "skip_rows_end": 0,
+            },
+            "220": {
+                "area": ["63,714,524,139"],
+                "cols": ["374,438,491"],
+                "skip_rows_start": 8,
+                "skip_rows_end": 4,
+            },
+        },
+        "rows_to_fix": {
+            3: ["3 - GHG Emissions Agriculture, Livestock & Forest and Other"],
+            -2: [
+                "ch4 emission from rice field",
+                "indirect nitrous oxide (n2o) from n based fertilizer",
+                "Direct nitrous oxide (n2o) emissions from fertilizer application",
+                "Total enteric ch4 emissions",
+                "Total Manure ch4 emissions",
+                "Total Direct n2o emissions from manure system",
+                "Total indirect n2o emissions - Volatilization",
+                "Total indirect n2o emissions - leaching/Runoff",
+                "CO2 from Biomass burning for Energy purpose",
+            ],
+            2: [
+                # B-Methane emission from domestic waste water and
+                # c-nitrous oxide emission from domestic waste water are the same category
+                # and should be merged
+                "B-Methane emission from domestic waste water",
+                # Total Manure ch4 emissions and
+                # Total Direct n2o emissions from manure system are the same category
+                # and should be merged
+                "Total Manure ch4 emissions",
+            ],
+        },
+        "header": [
+            "Greenhouse gas source and sink categories",
+            "CO2",
+            "CH4",
+            "N2O",
+        ],
+        "unit": [
+            "-",
+            "Gg",
+            "Gg",
+            "Gg",
+        ],
+        "skip_rows": 0,
+        "cat_codes_manual": {
+            "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
+            "1 - a1- electricity Generation": "1.A.1",
+            "2 a. 1-cement Production": "2.A.1",
+            "2 B. 1 - ammonia Production": "2.B.1",
+            "2 C-Metal Industry": "2.C",
+            "2 c. 1 iron and steel Production": "2.C.1",
+            "2. D - Non-Energy Products from Fuels and Solvent Use": "2.D",
+            "2D 1-lubricant Use": "2.D.1",
+            "ch4 emission from rice field": "3.C.7",
+            "indirect nitrous oxide (n2o) from n based fertilizer": "3.C.5",
+            "Direct nitrous oxide (n2o) emissions from fertilizer application": "3.C.4",
+            "Direct carbon Dioxide emissions from urea fertilizer": "3.C.3",
+            "Total enteric ch4 emissions": "3.A.1",
+            "Total Manure ch4 emissions Total Direct n2o emissions from manure system": "3.A.2",
+            "Total indirect n2o emissions -Volatilization": "3.C.5",
+            "Total indirect n2o emissions -leaching/Runoff": "3.C.5",
+            "4 a-solid Waste Disposal": "4.A",
+            "B-Methane emission from domestic waste water c-nitrous oxide emission from domestic waste water": "4.D.1",
+            "D- Metahne emission from industrial waste water": "4.D.2",
+            "Memo Items (5)": "MEMO",
+            "Information Items": "INFO",
+            "International Bunkers": "M.BK",
+            "a-international aviation (international Bunkers)": "M.BK.A",
+            "B-international Water-borne navigation (international Bunkers)": "M.BK.M",
+            "CO2 from Biomass burning for Energy purpose": "M.BIO",
+        },
+        "merge_cats": "3C5",
+        "categories_to_drop": ["in eq. Million Tons"],
+    },
 }

@@ -104,6 +104,11 @@ if __name__ == "__main__":
                     n_rows=n_rows,
                 )
 
+        if "categories_to_drop" in inv_conf_per_year[year]:
+            for row in inv_conf_per_year[year]["categories_to_drop"]:
+                row_to_delete = df_year.index[df_year[0] == row][0]
+                df_year = df_year.drop(index=row_to_delete)
+
         df_header = pd.DataFrame(
             [inv_conf_per_year[year]["header"], inv_conf_per_year[year]["unit"]]
         )
