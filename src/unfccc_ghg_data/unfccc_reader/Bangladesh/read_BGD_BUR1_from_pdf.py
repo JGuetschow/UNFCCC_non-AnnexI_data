@@ -14,7 +14,9 @@ from config_bgd_bur1 import (
     filter_remove,
     inv_conf,
     inv_conf_per_year,
+    manually_typed,
     meta_data,
+    wide_to_long_col_replace,
 )
 
 from unfccc_ghg_data.helper import (
@@ -200,6 +202,38 @@ if __name__ == "__main__":
                 join="outer",
             ).reset_index(drop=True)
 
+    # ###
+    # 2. Add manually typed tables
+    # ###
+
+    df_typed = None
+    for figure in manually_typed.keys():
+        df_typed_figure = pd.DataFrame(manually_typed[figure]["data"])
+        df_typed_figure["entity"] = manually_typed[figure]["entity"]
+        df_typed_figure["unit"] = manually_typed[figure]["unit"]
+
+        if df_typed is None:
+            df_typed = df_typed_figure
+        else:
+            df_typed = pd.concat(
+                [df_typed, df_typed_figure],
+                axis=0,
+                join="outer",
+            ).reset_index(drop=True)
+
+    # adjust column names for wide to long function
+    df_typed = df_typed.rename(columns=wide_to_long_col_replace)
+    df_typed_long = pd.wide_to_long(
+        df_typed, stubnames="data", i="category", j="time"
+    ).reset_index()
+
+    # merge manually typed and main tables from Annex
+    df_main = pd.concat(
+        [df_main, df_typed_long],
+        axis=0,
+        join="outer",
+    ).reset_index(drop=True)
+
     ### convert to interchange format ###
     print("Converting to interchange format.")
     df_main_IF = pm2.pm2io.convert_long_dataframe_if(
@@ -213,4 +247,25 @@ if __name__ == "__main__":
         convert_str=True,
         time_format="%Y",
     )
-    pass
+
+    ### convert to primap2 format ###
+    print("Converting to primap2 format.")
+    data_pm2 = pm2.pm2io.from_interchange_format(df_main_IF)
+
+    # # ###
+    # # Save raw data to IF and native format.
+    # # ###
+
+    data_if = data_pm2.pr.to_interchange_format()
+
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+        data_if,
+    )
+
+    encoding = {var: compression for var in data_pm2.data_vars}
+    data_pm2.pr.to_netcdf(
+        output_folder
+        / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+        encoding=encoding,
+    )

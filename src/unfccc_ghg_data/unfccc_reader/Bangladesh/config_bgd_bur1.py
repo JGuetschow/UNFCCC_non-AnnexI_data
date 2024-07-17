@@ -1,5 +1,30 @@
 """
 Configuration file to read Bangladesh's BUR 1.
+
+# Overview of all available GHG tables
+# not reading:
+# table 7, page 70 - already in main table in annex
+# table 8, page 71 - only four new data points for 2012
+# figure 22, page 83 - this is a summary of all energy tables
+# figure 23 - image of summary of IPUU, data are available as tables in same
+# chapter
+# table 27 - rice cultivation available in main tables in annex
+# table 28 - N2O from fertilizers in main tables
+# table 29 - indirect N2O from fertilizer in main table
+# table 31 - enteric CH4 by livestocke low priority ??
+# table 32 - manure CH4 by livestocke low priority ??
+# table 37 - already in main tables in annex
+#  table 19-23, ammonia-urea, cement, glass, lubricants, steel mills
+# 2013-2019 on pages 86-88 - already in main table
+
+# reading:
+# table 16, page 78 - 2013-2019 by industry sub-sectors, image! DONE
+# table 17, page 79 - 2013-2019 transportation - image! DONE
+# table 18, page 80 - residential 2013-2019 commercial sector - image! DONE
+# table 19, page 80 - agriculture energy use 2013-2019 - image! DONE
+# figure 20, page 81 - gas leakage 2013-2019 - image!
+
+
 """
 
 coords_terminologies = {
@@ -638,5 +663,118 @@ inv_conf_per_year = {
         },
         "merge_cats": "3C5",
         "categories_to_drop": ["in eq. Million Tons"],
+    },
+}
+
+wide_to_long_col_replace = {
+    "2013": "data2013",
+    "2014": "data2014",
+    "2015": "data2015",
+    "2016": "data2016",
+    "2017": "data2017",
+    "2018": "data2018",
+    "2019": "data2019",
+}
+
+manually_typed = {
+    "figure_16": {
+        # TODO Conflicting entities in figure: CO2e or CO2?
+        # It says CO2 and gG more often, so I'm going with this one
+        "unit": "Gg",
+        "entity": "CO2",
+        "data": {
+            "category": [
+                "1.A.2.a",
+                "1.A.2.b",
+                "1.A.2.c",
+                "1.A.2.d",
+                "1.A.2.e",
+                "1.A.2.f",
+                "1.A.2.g",
+                "1.A.2.h",
+                "1.A.2.i",
+                "1.A.2.j",
+                "1.A.2.k",
+                "1.A.2.l",
+                "1.A.2.m",
+                "1.A.2",
+            ],
+            "2013": [709, 6, 796, 421, 553, 12174, 1, 1, 0, 4, 5, 4885, 1280, 20835],
+            "2014": [706, 0, 636, 409, 515, 13896, 0, 0, 0, 0, 203, 4793, 1276, 22435],
+            "2015": [778, 0, 545, 458, 532, 13660, 0, 0, 0, 0, 195, 5180, 1799, 23148],
+            "2016": [830, 0, 445, 473, 527, 15771, 0, 0, 0, 0, 118, 5375, 1700, 25241],
+            "2017": [883, 0, 344, 492, 522, 15141, 0, 0, 0, 0, 179, 5294, 1546, 24402],
+            "2018": [943, 0, 247, 519, 519, 15949, 0, 0, 0, 0, 193, 5810, 1764, 25947],
+            "2019": [988, 0, 123, 527, 516, 16091, 0, 0, 0, 0, 216, 5935, 2492, 26888],
+        },
+    },
+    "figure_17": {
+        # TODO Conflicting entities in figure: CO2e or CO2?
+        # This category should mainly be combustion emissions -> CO2
+        "entity": "CO2",
+        "unit": "Gg",
+        "data": {
+            "category": [
+                "1.A.3.a.ii",
+                "1.A.3.b.i.2",
+                "1.A.3.b.ii.2",
+                "1.A.3.b.iii",
+                "1.A.3.b.iv",
+                "1.A.3.c",
+                "1.A.3.d.ii",
+                "1.A.3",
+            ],
+            "2013": [694, 1450, 1215, 8960, 979, 115, 162, 13576],
+            "2014": [704, 1485, 914, 8126, 934, 113, 196, 12472],
+            "2015": [738, 1708, 1135, 9082, 1030, 117, 208, 14018],
+            "2016": [757, 1710, 1030, 8504, 1089, 115, 350, 13554],
+            "2017": [822, 1962, 1298, 10201, 1136, 156, 289, 15864],
+            "2018": [890, 2019, 1410, 10320, 1152, 140, 332, 16264],
+            "2019": [938, 2440, 1985, 12682, 1232, 168, 401, 19845],
+        },
+    },
+    "figure_18": {
+        # TODO Conflicting entities in figure: CO2e or CO2?
+        "entity": "CO2",
+        "unit": "Gg",
+        "data": {
+            "category": ["1.A.4.a", "1.A.4.b", "1.A.4"],
+            "2013": [1871, 6703, 8574],
+            "2014": [1619, 6960, 8579],
+            "2015": [1522, 8573, 10095],
+            "2016": [1260, 9755, 11015],
+            "2017": [981, 9702, 10683],
+            "2018": [833, 11355, 12188],
+            "2019": [835, 12317, 13152],
+        },
+    },
+    "figure_19": {
+        # TODO Conflicting entities in figure: CO2e or CO2?
+        "unit": "Gg",
+        "entity": "CO2",
+        "data": {
+            "category": ["1.A.4.c.i", "1.A.4.c.iii", "1.A.4.c"],
+            "2013": [2692, 5, 2697],
+            "2014": [2804, 5, 2809],
+            "2015": [2977, 6, 2983],
+            "2016": [3035, 6, 3040],
+            "2017": [2903, 6, 2909],
+            "2018": [3496, 6, 3502],
+            "2019": [3446, 6, 3452],
+        },
+    },
+    "figure_20": {
+        "unit": "Gg",
+        "entity": "CO2",
+        "data": {
+            "category": ["1.B.2.b.iii.4", "1.B.2.b.iii.5", "1.B.2.b.iii"],
+            "2013": [896, 8440, 9336],
+            "2014": [896, 8440, 9336],
+            "2015": [896, 8440, 9336],
+            "2016": [896, 8440, 9336],
+            "2017": [896, 6429, 7325],
+            "2018": [896, 6429, 7325],
+            "2019": [896, 4289, 5185],
+        },
     },
 }
