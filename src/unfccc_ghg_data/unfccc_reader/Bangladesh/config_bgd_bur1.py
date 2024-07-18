@@ -2,27 +2,28 @@
 Configuration file to read Bangladesh's BUR 1.
 
 # Overview of all available GHG tables
+
 # not reading:
 # table 7, page 70 - already in main table in annex
 # table 8, page 71 - only four new data points for 2012
 # figure 22, page 83 - this is a summary of all energy tables
 # figure 23 - image of summary of IPUU, data are available as tables in same
 # chapter
-# table 27 - rice cultivation available in main tables in annex
-# table 28 - N2O from fertilizers in main tables
-# table 29 - indirect N2O from fertilizer in main table
-# table 31 - enteric CH4 by livestocke low priority ??
-# table 32 - manure CH4 by livestocke low priority ??
+# table 27 - rice cultivation available - in main tables
+# table 28 - N2O from fertilizers - in main tables
+# table 29 - indirect N2O from fertilizer - in main table
+# table 31 - enteric CH4 by livestock - low priority
+# table 32 - manure CH4 by livestock - low priority
 # table 37 - already in main tables in annex
-#  table 19-23, ammonia-urea, cement, glass, lubricants, steel mills
+# table 19-23, ammonia-urea, cement, glass, lubricants, steel mills
 # 2013-2019 on pages 86-88 - already in main table
 
 # reading:
-# table 16, page 78 - 2013-2019 by industry sub-sectors, image! DONE
-# table 17, page 79 - 2013-2019 transportation - image! DONE
-# table 18, page 80 - residential 2013-2019 commercial sector - image! DONE
-# table 19, page 80 - agriculture energy use 2013-2019 - image! DONE
-# figure 20, page 81 - gas leakage 2013-2019 - image!
+# table 16, page 78 - 2013-2019 by industry sub-sectors - typed
+# table 17, page 79 - 2013-2019 transportation - typed
+# table 18, page 80 - residential 2013-2019 commercial sector  - typed
+# table 19, page 80 - agriculture energy use 2013-2019 - typed
+# figure 20, page 81 - gas leakage 2013-2019 - typed
 
 
 """
@@ -52,21 +53,11 @@ gwp_to_use = "AR4GWP100"
 coords_value_mapping = {
     "unit": "PRIMAP1",
     "category": "PRIMAP1",
-    # "entity": {
-    #     "HFCs": f"HFCS ({gwp_to_use})",
-    #     "PFCs": f"PFCS ({gwp_to_use})",
-    #     "SF6": f"SF6 ({gwp_to_use})",
-    #     "other halogenated gases": f"other halogenated gases ({gwp_to_use})",
-    #     "NMVOCs": "NMVOC",
-    # },
 }
 
 filter_remove = {
     "f_memo": {"category": "MEMO"},
     "f_info": {"category": "INFO"},
-    # "f2": {
-    #     "entity": ["Other halogenated gases without CO2 equivalent conversion factors"],
-    # },
 }
 
 meta_data = {
@@ -106,12 +97,12 @@ inv_conf_per_year = {
                 "3 - GHG Emissions Agriculture, Livestock & Forest and Other Land -Use"
             ],
             2: [
-                # B-Methane emission from domestic waste water and
-                # c-nitrous oxide emission from domestic waste water are the same category
+                # "B-Methane emission from domestic waste water" and
+                # "c-nitrous oxide emission from domestic waste water" are the same category
                 # and should be merged
                 "B-Methane emission from domestic waste water",
-                # Total Manure ch4 emissions and
-                # Total Direct n2o emissions from manure system are the same category
+                # "Total Manure ch4 emissions" and
+                # "Total Direct n2o emissions from manure system" are the same category
                 # and should be merged
                 "Total Manure ch4 emissions",
             ],
@@ -140,6 +131,7 @@ inv_conf_per_year = {
             "Gg",
         ],
         "skip_rows": 6,
+        # TODO The manual codes can be summarised for all years
         "cat_codes_manual": {
             "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
@@ -147,6 +139,7 @@ inv_conf_per_year = {
             "1.a3-Transport": "1.A.3",
             "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
+            "2a3 Glass Production": "2.A.3",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -201,12 +194,12 @@ inv_conf_per_year = {
                 "CO2 from Biomass burning for Energy purpose",
             ],
             2: [
-                # B-Methane emission from domestic waste water and
-                # c-nitrous oxide emission from domestic waste water are the same category
+                # "B-Methane emission from domestic waste water" and
+                # "c-nitrous oxide emission from domestic waste water" are the same category
                 # and should be merged
                 "B-Methane emission from domestic waste water",
-                # Total Manure ch4 emissions and
-                # Total Direct n2o emissions from manure system are the same category
+                # "Total Manure ch4 emissions" and
+                # "Total Direct n2o emissions from manure system" are the same category
                 # and should be merged
                 "Total Manure ch4 emissions",
             ],
@@ -231,6 +224,7 @@ inv_conf_per_year = {
             "1.a3-Transport": "1.A.3",
             "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
+            "2a3 Glass Production": "2.A.3",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -287,12 +281,12 @@ inv_conf_per_year = {
                 "c-co2 emission due to fuel wood removal for consumption",
             ],
             2: [
-                # B-Methane emission from domestic waste water and
-                # c-nitrous oxide emission from domestic waste water are the same category
+                # "B-Methane emission from domestic waste wate"r" and
+                # "c-nitrous oxide emission from domestic waste water" are the same category
                 # and should be merged
                 "B-Methane emission from domestic waste water",
-                # Total Manure ch4 emissions and
-                # Total Direct n2o emissions from manure system are the same category
+                # "Total Manure ch4 emissions" and
+                # "Total Direct n2o emissions from manure system" are the same category
                 # and should be merged
                 "Total Manure ch4 emissions",
             ],
@@ -317,6 +311,7 @@ inv_conf_per_year = {
             "1.a3-Transport": "1.A.3",
             "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
+            "2a3 Glass Production": "2.A.3",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -377,12 +372,12 @@ inv_conf_per_year = {
                 "CO2 from Biomass burning for Energy purpose",
             ],
             2: [
-                # B-Methane emission from domestic waste water and
-                # c-nitrous oxide emission from domestic waste water are the same category
+                # "B-Methane emission from domestic waste water" and
+                # "c-nitrous oxide emission from domestic waste water" are the same category
                 # and should be merged
                 "B-Methane emission from domestic waste water",
-                # Total Manure ch4 emissions and
-                # Total Direct n2o emissions from manure system are the same category
+                # "Total Manure ch4 emissions" and
+                # "Total Direct n2o emissions from manure system" are the same category
                 # and should be merged
                 "Total Manure ch4 emissions",
             ],
@@ -407,6 +402,7 @@ inv_conf_per_year = {
             "1.a3-Transport": "1.A.3",
             "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
+            "2a3 Glass Production": "2.A.3",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -461,12 +457,12 @@ inv_conf_per_year = {
                 "CO2 from Biomass burning for Energy purpose",
             ],
             2: [
-                # B-Methane emission from domestic waste water and
-                # c-nitrous oxide emission from domestic waste water are the same category
+                # "B-Methane emission from domestic waste water" and
+                # "c-nitrous oxide emission from domestic waste water" are the same category
                 # and should be merged
                 "B-Methane emission from domestic waste water",
-                # Total Manure ch4 emissions and
-                # Total Direct n2o emissions from manure system are the same category
+                # "Total Manure ch4 emissions" and
+                # "Total Direct n2o emissions from manure system" are the same category
                 # and should be merged
                 "Total Manure ch4 emissions",
             ],
@@ -491,6 +487,7 @@ inv_conf_per_year = {
             "1.a2- Manufacturing industries and construction": "1.A.2",
             "1.a3-Transport": "1.A.3",
             "1.a4-other sectors": "1.A.4",
+            "2a3 Glass Production": "2.A.3",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -545,12 +542,12 @@ inv_conf_per_year = {
                 "CO2 from Biomass burning for Energy purpose",
             ],
             2: [
-                # B-Methane emission from domestic waste water and
-                # c-nitrous oxide emission from domestic waste water are the same category
+                # "B-Methane emission from domestic waste water" and
+                # "c-nitrous oxide emission from domestic waste water" are the same category
                 # and should be merged
                 "B-Methane emission from domestic waste water",
-                # Total Manure ch4 emissions and
-                # Total Direct n2o emissions from manure system are the same category
+                # "Total Manure ch4 emissions" and
+                # "Total Direct n2o emissions from manure system" are the same category
                 # and should be merged
                 "Total Manure ch4 emissions",
             ],
@@ -575,6 +572,7 @@ inv_conf_per_year = {
             "1.a3-Transport": "1.A.3",
             "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
+            "2a3 Glass Production": "2.A.3",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -629,12 +627,12 @@ inv_conf_per_year = {
                 "CO2 from Biomass burning for Energy purpose",
             ],
             2: [
-                # B-Methane emission from domestic waste water and
-                # c-nitrous oxide emission from domestic waste water are the same category
+                # "B-Methane emission from domestic waste water" and
+                # "c-nitrous oxide emission from domestic waste water" are the same category
                 # and should be merged
                 "B-Methane emission from domestic waste water",
-                # Total Manure ch4 emissions and
-                # Total Direct n2o emissions from manure system are the same category
+                # "Total Manure ch4 emissions" and
+                # "Total Direct n2o emissions from manure system" are the same category
                 # and should be merged
                 "Total Manure ch4 emissions",
             ],
@@ -659,6 +657,7 @@ inv_conf_per_year = {
             "1.a3-Transport": "1.A.3",
             "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
+            "2a3 Glass Production": "2.A.3",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -687,6 +686,7 @@ inv_conf_per_year = {
     },
 }
 
+# needed for the pandas wide_to_long function
 wide_to_long_col_replace = {
     "2013": "data2013",
     "2014": "data2014",
@@ -700,7 +700,7 @@ wide_to_long_col_replace = {
 manually_typed = {
     "figure_16": {
         # TODO Conflicting entities in figure: CO2e or CO2?
-        # It says CO2 and gG more often, so I'm going with this one
+        # It says CO2 and gG more often, so I'm going with CO2
         "unit": "Gg",
         "entity": "CO2",
         "data": {
@@ -718,15 +718,112 @@ manually_typed = {
                 "1.A.2.k",
                 "1.A.2.l",
                 "1.A.2.m",
-                "1.A.2",
             ],
-            "2013": [709, 6, 796, 421, 553, 12174, 1, 1, 0, 4, 5, 4885, 1280, 20835],
-            "2014": [706, 0, 636, 409, 515, 13896, 0, 0, 0, 0, 203, 4793, 1276, 22435],
-            "2015": [778, 0, 545, 458, 532, 13660, 0, 0, 0, 0, 195, 5180, 1799, 23148],
-            "2016": [830, 0, 445, 473, 527, 15771, 0, 0, 0, 0, 118, 5375, 1700, 25241],
-            "2017": [883, 0, 344, 492, 522, 15141, 0, 0, 0, 0, 179, 5294, 1546, 24402],
-            "2018": [943, 0, 247, 519, 519, 15949, 0, 0, 0, 0, 193, 5810, 1764, 25947],
-            "2019": [988, 0, 123, 527, 516, 16091, 0, 0, 0, 0, 216, 5935, 2492, 26888],
+            "2013": [
+                709,
+                6,
+                796,
+                421,
+                553,
+                12174,
+                1,
+                1,
+                0,
+                4,
+                5,
+                4885,
+                1280,
+            ],
+            "2014": [
+                706,
+                0,
+                636,
+                409,
+                515,
+                13896,
+                0,
+                0,
+                0,
+                0,
+                203,
+                4793,
+                1276,
+            ],
+            "2015": [
+                778,
+                0,
+                545,
+                458,
+                532,
+                13660,
+                0,
+                0,
+                0,
+                0,
+                195,
+                5180,
+                1799,
+            ],
+            "2016": [
+                830,
+                0,
+                445,
+                473,
+                527,
+                15771,
+                0,
+                0,
+                0,
+                0,
+                118,
+                5375,
+                1700,
+            ],
+            "2017": [
+                883,
+                0,
+                344,
+                492,
+                522,
+                15141,
+                0,
+                0,
+                0,
+                0,
+                179,
+                5294,
+                1546,
+            ],
+            "2018": [
+                943,
+                0,
+                247,
+                519,
+                519,
+                15949,
+                0,
+                0,
+                0,
+                0,
+                193,
+                5810,
+                1764,
+            ],
+            "2019": [
+                988,
+                0,
+                123,
+                527,
+                516,
+                16091,
+                0,
+                0,
+                0,
+                0,
+                216,
+                5935,
+                2492,
+            ],
         },
     },
     "figure_17": {
@@ -743,15 +840,70 @@ manually_typed = {
                 "1.A.3.b.iv",
                 "1.A.3.c",
                 "1.A.3.d.ii",
-                "1.A.3",
             ],
-            "2013": [694, 1450, 1215, 8960, 979, 115, 162, 13576],
-            "2014": [704, 1485, 914, 8126, 934, 113, 196, 12472],
-            "2015": [738, 1708, 1135, 9082, 1030, 117, 208, 14018],
-            "2016": [757, 1710, 1030, 8504, 1089, 115, 350, 13554],
-            "2017": [822, 1962, 1298, 10201, 1136, 156, 289, 15864],
-            "2018": [890, 2019, 1410, 10320, 1152, 140, 332, 16264],
-            "2019": [938, 2440, 1985, 12682, 1232, 168, 401, 19845],
+            "2013": [
+                694,
+                1450,
+                1215,
+                8960,
+                979,
+                115,
+                162,
+            ],
+            "2014": [
+                704,
+                1485,
+                914,
+                8126,
+                934,
+                113,
+                196,
+            ],
+            "2015": [
+                738,
+                1708,
+                1135,
+                9082,
+                1030,
+                117,
+                208,
+            ],
+            "2016": [
+                757,
+                1710,
+                1030,
+                8504,
+                1089,
+                115,
+                350,
+            ],
+            "2017": [
+                822,
+                1962,
+                1298,
+                10201,
+                1136,
+                156,
+                289,
+            ],
+            "2018": [
+                890,
+                2019,
+                1410,
+                10320,
+                1152,
+                140,
+                332,
+            ],
+            "2019": [
+                938,
+                2440,
+                1985,
+                12682,
+                1232,
+                168,
+                401,
+            ],
         },
     },
     "figure_18": {
@@ -759,14 +911,14 @@ manually_typed = {
         "entity": "CO2",
         "unit": "Gg",
         "data": {
-            "category": ["1.A.4.a", "1.A.4.b", "1.A.4"],
-            "2013": [1871, 6703, 8574],
-            "2014": [1619, 6960, 8579],
-            "2015": [1522, 8573, 10095],
-            "2016": [1260, 9755, 11015],
-            "2017": [981, 9702, 10683],
-            "2018": [833, 11355, 12188],
-            "2019": [835, 12317, 13152],
+            "category": ["1.A.4.a", "1.A.4.b"],
+            "2013": [1871, 6703],
+            "2014": [1619, 6960],
+            "2015": [1522, 8573],
+            "2016": [1260, 9755],
+            "2017": [981, 9702],
+            "2018": [833, 11355],
+            "2019": [835, 12317],
         },
     },
     "figure_19": {
@@ -800,13 +952,13 @@ manually_typed = {
     },
 }
 
-# correct values that are obvously wrong in the tables
+# correct values that are obviously wrong in the tables
 values_to_correct = [
     # the sum of 1.A sub-categories does not match the value of 1.A
     ("1.A", "CH4", "2014", 110),
     ("1.A", "CO2", "2014", 77373),
     ("1", "N2O", "2014", 3.8),
-    # For the sum for category 3 and CO2, they forgot to add 3.B
+    # For the sum for CO2 in category 3 they forgot to add 3.B
     ("3", "CO2", "2013", 8140),
     ("3", "CO2", "2014", 8923),
     ("3", "CO2", "2015", 9791),
@@ -830,6 +982,7 @@ country_processing_step1 = {
         },
         # There is no data for 3.D
         # "M.3.D.AG": {"sources": ["3.D.2"], "name": "Other (Agriculture)"},
+        # "M.3.D.AG" is empty, so I'm not sure we need it
         "M.AG.ELV": {
             "sources": ["M.3.C.AG", "M.3.D.AG"],
         },
@@ -844,14 +997,42 @@ country_processing_step1 = {
         "2": {"sources": ["2.A", "2.B", "2.C", "2.D", "2.F"]},  # consistency check IPPU
         "3": {"sources": ["M.AG", "M.LULUCF"]},  # consistency check AFOLU
         "4": {"sources": ["4.A", "4.D"]},  # consistency check waste
+        # check if typed numbers add up to the total of 1.A.2 from the main table
+        "1.A.2": {
+            "sources": [
+                "1.A.2.a",
+                "1.A.2.b",
+                "1.A.2.c",
+                "1.A.2.d",
+                "1.A.2.e",
+                "1.A.2.f",
+                "1.A.2.g",
+                "1.A.2.h",
+                "1.A.2.i",
+                "1.A.2.j",
+                "1.A.2.k",
+                "1.A.2.l",
+                "1.A.2.m",
+            ]
+        },
+        # check if the typed numbers add up to the total of 1.A.4.c in the same table
+        "1.A.4.c": {"sources": ["1.A.4.c.i", "1.A.4.c.iii"]},
+        # check if typed numbers add up to the total of 1.A.4 from the main table
+        "1.A.4": {"sources": ["1.A.4.a", "1.A.4.b", "1.A.4.c"]},
+        # check if the typed numbers add up to the total of 1.A.4.c in the same table
+        "1.B.2.b.iii": {"sources": ["1.B.2.b.iii.4", "1.B.2.b.iii.5"]},
     },
-    # We don't have HFCs and PFCs in the report, hence this is not relevant
+    # We don't have HFCs and PFCs in the report, hence basket_copy is not relevant
     # "basket_copy": {
     #     "GWPs_to_add": ["SARGWP100", "AR5GWP100", "AR6GWP100"],
     #     # "entities": ["HFCS", "PFCS"],
     #     "source_GWP": gwp_to_use,
     # },
 }
+
+# Note on downscaling: Data are always available for the same years: 2013-2019,
+# so temporal downscaling does not makes sense here.
+# TODO: Perhaps entity, category downscaling can be done?
 
 gas_baskets = {
     "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O"],
