@@ -143,6 +143,9 @@ inv_conf_per_year = {
         "cat_codes_manual": {
             "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
+            "1.a2- Manufacturing industries and construction": "1.A.2",
+            "1.a3-Transport": "1.A.3",
+            "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
@@ -224,6 +227,9 @@ inv_conf_per_year = {
         "cat_codes_manual": {
             "1-a - Fuel combustion activities_energy industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
+            "1.a2- Manufacturing industries and construction": "1.A.2",
+            "1.a3-Transport": "1.A.3",
+            "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
@@ -307,6 +313,9 @@ inv_conf_per_year = {
         "cat_codes_manual": {
             "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
+            "1.a2- Manufacturing industries and construction": "1.A.2",
+            "1.a3-Transport": "1.A.3",
+            "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
@@ -394,6 +403,9 @@ inv_conf_per_year = {
         "cat_codes_manual": {
             "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
+            "1.a2- Manufacturing industries and construction": "1.A.2",
+            "1.a3-Transport": "1.A.3",
+            "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
@@ -476,6 +488,9 @@ inv_conf_per_year = {
             "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
             "2 a. 1-cement Production": "2.A.1",
+            "1.a2- Manufacturing industries and construction": "1.A.2",
+            "1.a3-Transport": "1.A.3",
+            "1.a4-other sectors": "1.A.4",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
             "2 c. 1 iron and steel Production": "2.C.1",
@@ -556,6 +571,9 @@ inv_conf_per_year = {
         "cat_codes_manual": {
             "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
+            "1.a2- Manufacturing industries and construction": "1.A.2",
+            "1.a3-Transport": "1.A.3",
+            "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
@@ -637,6 +655,9 @@ inv_conf_per_year = {
         "cat_codes_manual": {
             "1-A - Fuel Combustion Activities_Energy Industries": "1.A",
             "1 - a1- electricity Generation": "1.A.1",
+            "1.a2- Manufacturing industries and construction": "1.A.2",
+            "1.a3-Transport": "1.A.3",
+            "1.a4-other sectors": "1.A.4",
             "2 a. 1-cement Production": "2.A.1",
             "2 B. 1 - ammonia Production": "2.B.1",
             "2 C-Metal Industry": "2.C",
@@ -777,4 +798,64 @@ manually_typed = {
             "2019": [896, 4289, 5185],
         },
     },
+}
+
+# correct values that are obvously wrong in the tables
+values_to_correct = [
+    # the sum of 1.A sub-categories does not match the value of 1.A
+    ("1.A", "CH4", "2014", 110),
+    ("1.A", "CO2", "2014", 77373),
+    ("1", "N2O", "2014", 3.8),
+    # For the sum for category 3 and CO2, they forgot to add 3.B
+    ("3", "CO2", "2013", 8140),
+    ("3", "CO2", "2014", 8923),
+    ("3", "CO2", "2015", 9791),
+    ("3", "CO2", "2016", 10518),
+    ("3", "CO2", "2017", 11359),
+    ("3", "CO2", "2018", 11993),
+    ("3", "CO2", "2019", 12640),
+]
+
+country_processing_step1 = {
+    "tolerance": 0.01,
+    "aggregate_cats": {
+        "3.A": {"sources": ["3.A.1", "3.A.2"]},
+        "M.3.C.AG": {  # "Aggregate sources and non-CO2 emissions sources on land (Agriculture)"
+            "sources": [
+                "3.C.3",
+                "3.C.4",
+                "3.C.5",
+                "3.C.7",
+            ]
+        },
+        # There is no data for 3.D
+        # "M.3.D.AG": {"sources": ["3.D.2"], "name": "Other (Agriculture)"},
+        "M.AG.ELV": {
+            "sources": ["M.3.C.AG", "M.3.D.AG"],
+        },
+        "M.AG": {"sources": ["3.A", "M.AG.ELV"]},  # agriculture
+        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"]},
+        "M.0.EL": {
+            "sources": ["1", "2", "M.AG", "4"],
+        },
+        "1.B": {"sources": ["1.B.2"]},
+        "4.D": {"sources": ["4.D.1", "4.D.2"]},
+        "1": {"sources": ["1.A", "1.B"]},  # consistency check energy
+        "2": {"sources": ["2.A", "2.B", "2.C", "2.D", "2.F"]},  # consistency check IPPU
+        "3": {"sources": ["M.AG", "M.LULUCF"]},  # consistency check AFOLU
+        "4": {"sources": ["4.A", "4.D"]},  # consistency check waste
+    },
+    # We don't have HFCs and PFCs in the report, hence this is not relevant
+    # "basket_copy": {
+    #     "GWPs_to_add": ["SARGWP100", "AR5GWP100", "AR6GWP100"],
+    #     # "entities": ["HFCS", "PFCS"],
+    #     "source_GWP": gwp_to_use,
+    # },
+}
+
+gas_baskets = {
+    "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O"],
+    "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O"],
+    "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O"],
+    "KYOTOGHG (AR6GWP100)": ["CO2", "CH4", "N2O"],
 }

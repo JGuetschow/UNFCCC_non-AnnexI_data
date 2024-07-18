@@ -11,11 +11,14 @@ from config_bgd_bur1 import (
     coords_defaults,
     coords_terminologies,
     coords_value_mapping,
+    country_processing_step1,
     filter_remove,
+    gas_baskets,
     inv_conf,
     inv_conf_per_year,
     manually_typed,
     meta_data,
+    values_to_correct,
     wide_to_long_col_replace,
 )
 
@@ -23,6 +26,7 @@ from unfccc_ghg_data.helper import (
     downloaded_data_path,
     extracted_data_path,
     fix_rows,
+    process_data_for_country,
 )
 
 if __name__ == "__main__":
@@ -248,6 +252,14 @@ if __name__ == "__main__":
         time_format="%Y",
     )
 
+    # correct individual values
+    for category, entity, year, new_value in values_to_correct:
+        df_main_IF.loc[
+            (df_main_IF["category (IPCC2006_PRIMAP)"] == category)
+            & (df_main_IF["entity"] == entity),
+            year,
+        ] = new_value
+
     ### convert to primap2 format ###
     print("Converting to primap2 format.")
     data_pm2 = pm2.pm2io.from_interchange_format(df_main_IF)
@@ -269,3 +281,51 @@ if __name__ == "__main__":
         / (output_filename + coords_terminologies["category"] + "_raw.nc"),
         encoding=encoding,
     )
+
+    # # ###
+    # # Processing
+    # # ###
+
+    # create the gas baskets before aggregating the categories
+    data_proc_pm2_gas_baskets = process_data_for_country(
+        data_country=data_pm2,
+        entities_to_ignore=[],
+        gas_baskets=gas_baskets,
+        filter_dims=None,
+        cat_terminology_out=None,
+        category_conversion=None,
+        sectors_out=None,
+        processing_info_country=None,
+    )
+
+    data_proc_pm2 = process_data_for_country(
+        data_country=data_proc_pm2_gas_baskets,
+        entities_to_ignore=[],
+        gas_baskets=None,
+        filter_dims=None,
+        cat_terminology_out=None,
+        category_conversion=None,
+        sectors_out=None,
+        processing_info_country=country_processing_step1,
+    )
+
+    # # ###
+    # # save processed data to IF and native format
+    # # ###
+
+    terminology_proc = coords_terminologies["category"]
+
+    data_proc_if = data_proc_pm2.pr.to_interchange_format()
+
+    if not output_folder.exists():
+        output_folder.mkdir()
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + terminology_proc), data_proc_if
+    )
+
+    encoding = {var: compression for var in data_proc_pm2.data_vars}
+    data_proc_pm2.pr.to_netcdf(
+        output_folder / (output_filename + terminology_proc + ".nc"), encoding=encoding
+    )
+
+    print("Saved processed data.")
