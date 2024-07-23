@@ -29,6 +29,7 @@
 :caption: Contents
 :maxdepth: 2
 usage
+contribution
 development
 api/unfccc_ghg_data
 changelog

@@ -12,11 +12,13 @@ unfccc\_ghg\_data.unfccc\_reader
   unfccc_ghg_data.unfccc_reader.Argentina
   unfccc_ghg_data.unfccc_reader.Burundi
   unfccc_ghg_data.unfccc_reader.Chile
+  unfccc_ghg_data.unfccc_reader.China
   unfccc_ghg_data.unfccc_reader.Colombia
   unfccc_ghg_data.unfccc_reader.Guinea
   unfccc_ghg_data.unfccc_reader.Indonesia
   unfccc_ghg_data.unfccc_reader.Israel
   unfccc_ghg_data.unfccc_reader.Malaysia
+  unfccc_ghg_data.unfccc_reader.Mauritania
   unfccc_ghg_data.unfccc_reader.Mexico
   unfccc_ghg_data.unfccc_reader.Mongolia
   unfccc_ghg_data.unfccc_reader.Montenegro
@@ -27,5 +29,6 @@ unfccc\_ghg\_data.unfccc\_reader
   unfccc_ghg_data.unfccc_reader.Singapore
   unfccc_ghg_data.unfccc_reader.Taiwan
   unfccc_ghg_data.unfccc_reader.Thailand
+  unfccc_ghg_data.unfccc_reader.United_Arab_Emirates
   unfccc_ghg_data.unfccc_reader.get_submissions_info
   unfccc_ghg_data.unfccc_reader.read_UNFCCC_submission
