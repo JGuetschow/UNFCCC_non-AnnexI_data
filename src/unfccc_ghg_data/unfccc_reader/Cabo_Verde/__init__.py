@@ -9,7 +9,7 @@ including DI (red using the DI-reader) and legacy BUR/NIR (no code)):
 
     from unfccc_ghg_data.helper.functions import (get_country_datasets,
                                                   get_country_submissions)
-    country = 'CV'
+    country = 'CPV'
     # print available submissions
     print("="*15 + " Available submissions " + "="*15)
     get_country_submissions(country, True)
