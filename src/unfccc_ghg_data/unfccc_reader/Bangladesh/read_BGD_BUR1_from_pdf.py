@@ -6,7 +6,14 @@ import camelot
 import numpy as np
 import pandas as pd
 import primap2 as pm2
-from config_bgd_bur1 import (
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    fix_rows,
+    process_data_for_country,
+)
+from unfccc_ghg_data.unfccc_reader.Bangladesh.config_bgd_bur1 import (
     coords_cols,
     coords_defaults,
     coords_terminologies,
@@ -20,13 +27,6 @@ from config_bgd_bur1 import (
     meta_data,
     values_to_correct,
     wide_to_long_col_replace,
-)
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    fix_rows,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":
