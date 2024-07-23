@@ -46,6 +46,10 @@ coords_value_mapping = {
     },
 }
 
+filter_remove = {
+    "f_memo": {"category": "MEMO"},
+}
+
 meta_data = {
     "references": "https://unfccc.int/sites/default/files/resource/BUR_EN_Digital.pdf",  # TODO check other sources
     "rights": "",  # unknown
@@ -86,9 +90,27 @@ inv_conf_per_sector = {
     },
 }
 
+inv_conf = {"cat_code_regexp": r"^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*"}
+
 inv_conf_main = {
     "pages": {
-        "86": {"skip_rows_start": 2},
+        "86": {
+            "skip_rows_start": 2,
+            "entities": ["CO2", "CH4", "N2O"],
+            "column_names": ["category", "CO2", "CH4", "N2O"],
+            "cat_codes_manual": {
+                "Memo items": "MEMO",
+                "International bunkers": "M.BK",
+                "CO² emissions from Biomass": "M.BIO",
+                "CO² emissions from using manure as energy": "M.BIO",
+            },
+            "unit_for_entity": {
+                "CO2": "Gg",
+                "CH4": "Gg",
+                "N2O": "Gg",
+            },
+            # "units" : ["no unit", "Gg", "Gg", "Gg"]
+        },
         "87": {"skip_rows_start": 2},
         "88": {"skip_rows_start": 2},
         "89": {"skip_rows_start": 2},
