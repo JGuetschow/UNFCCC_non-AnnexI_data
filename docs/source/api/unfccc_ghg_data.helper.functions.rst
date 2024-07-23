@@ -73,6 +73,12 @@ find\_and\_replace\_values
 .. autofunction:: find_and_replace_values
 
 
+set\_to\_nan\_in\_ds
+====================
+
+.. autofunction:: set_to_nan_in_ds
+
+
 assert\_values
 ==============
 
