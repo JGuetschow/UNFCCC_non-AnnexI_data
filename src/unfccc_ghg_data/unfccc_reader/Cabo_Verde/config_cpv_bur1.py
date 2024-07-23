@@ -69,7 +69,7 @@ inv_conf_per_sector = {
             "Waste": "4",
         },
         "header": ["category", "entity", *trend_years],
-        "unit": "Gg",
+        "unit": ["Gg"] * 4 + ["Gg CO2eq"] + ["Gg"] * 9,
     },
     "int_bunkers": {
         "page": "39",
@@ -80,8 +80,17 @@ inv_conf_per_sector = {
             "International shipping": "M.BK.M",
         },
         "header": ["category", *trend_years],
-        "unit": "Gg",
+        "unit": "Gg CO2eq",
         "drop_cols": 7,
         "entity": "KYOTOGHG (SARGWP100)",
+    },
+}
+
+inv_conf_main = {
+    "pages": {
+        "86": {"skip_rows_start": 2},
+        "87": {"skip_rows_start": 2},
+        "88": {"skip_rows_start": 2},
+        "89": {"skip_rows_start": 2},
     },
 }
