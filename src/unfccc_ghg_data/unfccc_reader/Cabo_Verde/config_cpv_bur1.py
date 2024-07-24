@@ -181,34 +181,36 @@ inv_conf_main = {
     },
 }
 
-
 country_processing_step1 = {
     # rounding error 0.038 for yr2019/entN2O/cat4: 0.011 + 0.015 != 0.027
     "tolerance": 0.04,
     "aggregate_cats": {
+        # First generate additional categories
+        "0": {"sources": ["1", "2", "3", "4", "5"]},
+        # 3.D would go into M.LULUCF as well but we don't have it
+        "M.LULUCF": {"sources": ["3.B"]},
         # Only 3.C.7 in table, but values are all zero or empty
-        # "M.3.C.AG": {  # "Aggregate sources and non-CO2 emissions sources on land (Agriculture)"
-        #     "sources": [
-        #         "3.C.3",
-        #         "3.C.4",
-        #         "3.C.5",
-        #         "3.C.7",
-        #     ]
-        # },
+        "M.3.C.AG": {
+            "sources": [
+                "3.C.1",
+                "3.C.2",
+                "3.C.3",
+                "3.C.4",
+                "3.C.5",
+                "3.C.6",
+                "3.C.7",
+                "3.C.8",
+            ]
+        },
         # 3.D.2 is all zeros
-        # "M.3.D.AG": {"sources": ["3.D.2"]},
-        # "M.3.D.AG" is empty, so I'm not sure we need it
-        # "M.AG.ELV": {
-        #     "sources": ["M.3.C.AG"],
-        # },
-        # M.AG = 3.A in this case
-        # "M.AG": {"sources": ["3.A", "M.AG.ELV"]},  # agriculture
-        # We don't have 3.D
-        # "M.LULUCF": {"sources": ["3.B"]},
-        # "M.0.EL": {
-        #     "sources": ["1", "2", "M.AG", "4"],
-        # },
-        # "1.B": {"sources": ["1.B.2"]},
+        "M.3.D.AG": {"sources": ["3.D.2"]},
+        "M.AG.ELV": {
+            "sources": ["M.3.C.AG", "M.3.D.AG"],
+        },
+        "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
+        "M.0.EL": {
+            "sources": ["1", "2", "M.AG", "4"],
+        },
         "4.D": {"sources": ["4.D.1", "4.D.2"]},  # consistency check
         "1": {"sources": ["1.A"]},  # consistency check
         "1.A": {
@@ -222,11 +224,11 @@ country_processing_step1 = {
         "4": {"sources": ["4.A", "4.B", "4.C", "4.D", "4.E"]},  # consistency check
     },
     # We don't have HFCs and PFCs in the report, hence basket_copy is not relevant
-    # "basket_copy": {
-    #     "GWPs_to_add": ["SARGWP100", "AR5GWP100", "AR6GWP100"],
-    #     # "entities": ["HFCS", "PFCS"],
-    #     "source_GWP": gwp_to_use,
-    # },
+    "basket_copy": {
+        "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+        "entities": ["HFCS"],
+        "source_GWP": gwp_to_use,
+    },
 }
 
 gas_baskets = {

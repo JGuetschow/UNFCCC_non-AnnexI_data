@@ -20,6 +20,7 @@ from unfccc_ghg_data.unfccc_reader.Cabo_Verde.config_cpv_bur1 import (
     coords_value_mapping_main,
     country_processing_step1,
     filter_remove,
+    gas_baskets,
     inv_conf,
     inv_conf_main,
     inv_conf_per_sector,
@@ -264,19 +265,19 @@ if __name__ == "__main__":
     # # ###
 
     # create the gas baskets before aggregating the categories
-    # data_proc_pm2_gas_baskets = process_data_for_country(
-    #     data_country=data_pm2,
-    #     entities_to_ignore=[],
-    #     gas_baskets=gas_baskets,
-    #     filter_dims=None,
-    #     cat_terminology_out=None,
-    #     category_conversion=None,
-    #     sectors_out=None,
-    #     processing_info_country=None,
-    # )
+    data_proc_pm2_gas_baskets = process_data_for_country(
+        data_country=data_pm2,
+        entities_to_ignore=[],
+        gas_baskets=gas_baskets,
+        filter_dims=None,
+        cat_terminology_out=None,
+        category_conversion=None,
+        sectors_out=None,
+        processing_info_country=None,
+    )
 
     data_proc_pm2 = process_data_for_country(
-        data_country=data_pm2,
+        data_country=data_proc_pm2_gas_baskets,
         entities_to_ignore=[],
         gas_baskets=None,
         filter_dims=None,
