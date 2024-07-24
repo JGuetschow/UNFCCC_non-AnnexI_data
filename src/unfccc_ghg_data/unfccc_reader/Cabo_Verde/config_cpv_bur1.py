@@ -35,6 +35,15 @@ coords_defaults = {
 
 gwp_to_use = "SARGWP100"
 
+coords_value_mapping_main = {
+    "unit": "PRIMAP1",
+    "category": "PRIMAP1",
+    "entity": {
+        "HFCs": f"HFCS ({gwp_to_use})",
+        "HFC": f"HFCS ({gwp_to_use})",
+    },
+}
+
 coords_value_mapping = {
     "unit": "PRIMAP1",
     "category": "PRIMAP1",
@@ -48,6 +57,8 @@ coords_value_mapping = {
 
 filter_remove = {
     "f_memo": {"category": "MEMO"},
+    # They are all NaN and don't match a pre-defined entity
+    "f_fluor": {"entity": "Other fluorinated products"},
 }
 
 meta_data = {
@@ -90,7 +101,13 @@ inv_conf_per_sector = {
     },
 }
 
-inv_conf = {"cat_code_regexp": r"^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*"}
+inv_conf = {
+    "cat_code_regexp": r"^(?P<code>[a-zA-Z0-9\.]{1,11})[\s\.].*",
+    "year": "2019",
+    # TODO check again!
+    # "CO2 emissions from Biomass" and "CO2 emissions from using manure as energy" are the same category
+    "merge_cats": "MBIO",
+}
 
 inv_conf_main = {
     "pages": {
@@ -111,8 +128,55 @@ inv_conf_main = {
             },
             # "units" : ["no unit", "Gg", "Gg", "Gg"]
         },
-        "87": {"skip_rows_start": 2},
-        "88": {"skip_rows_start": 2},
-        "89": {"skip_rows_start": 2},
+        "87": {
+            "skip_rows_start": 2,
+            "entities": ["CO2", "CH4", "N2O", "HFCs", "Other fluorinated products"],
+            "column_names": [
+                "category",
+                "CO2",
+                "CH4",
+                "N2O",
+                "HFCs",
+                "Other fluorinated products",
+            ],
+            "cat_codes_manual": {
+                "2F. Use of products as substitutes for \nsubstances that degrade the ozone layer": "2.F",
+                "2B4. Production of caprolactam, \nglyoxal and glyoxylic acid": "2.B.4",
+            },
+            "unit_for_entity": {
+                "CO2": "Gg",
+                "CH4": "Gg",
+                "N2O": "Gg",
+                "HFCs": "Gg CO2eq",
+            },
+        },
+        "88": {
+            "skip_rows_start": 2,
+            "entities": ["CO2", "CH4", "N2O"],
+            "column_names": ["category", "CO2", "CH4", "N2O"],
+            "cat_codes_manual": {
+                "3C6. Indirect emissions of N²O from manure \nmanagement": "3.C.6",
+                "3C. Aggregate Sources and Sources of Non-CO²\nEmissions in the soil": "3.C",
+            },
+            "unit_for_entity": {
+                "CO2": "Gg",
+                "CH4": "Gg",
+                "N2O": "Gg",
+            },
+        },
+        "89": {
+            "skip_rows_start": 2,
+            "entities": ["CO2", "CH4", "N2O"],
+            "column_names": ["category", "CO2", "CH4", "N2O"],
+            "cat_codes_manual": {
+                "3C6. Indirect emissions of N²O from manure \nmanagement": "3.C.6",
+                "3C. Aggregate Sources and Sources of Non-CO²\nEmissions in the soil": "3.C",
+            },
+            "unit_for_entity": {
+                "CO2": "Gg",
+                "CH4": "Gg",
+                "N2O": "Gg",
+            },
+        },
     },
 }

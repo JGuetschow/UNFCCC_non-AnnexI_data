@@ -13,6 +13,8 @@ from unfccc_ghg_data.unfccc_reader.Cabo_Verde.config_cpv_bur1 import (
     coords_defaults,
     coords_terminologies,
     coords_value_mapping,
+    coords_value_mapping_main,
+    filter_remove,
     inv_conf,
     inv_conf_main,
     inv_conf_per_sector,
@@ -41,11 +43,12 @@ if __name__ == "__main__":
     compression = dict(zlib=True, complevel=9)
 
     # ###
-    # 2. Read sector-specific main tables for 2019
+    # 1. Read sector-specific main tables for 2019
     # ###
 
     df_main = None
-    for page in inv_conf_main["pages"].keys():
+    for page in reversed(inv_conf_main["pages"].keys()):
+        print(f"Read table on page {page}")
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file),
             pages=page,
@@ -105,26 +108,54 @@ if __name__ == "__main__":
                 axis=0,
                 join="outer",
             ).reset_index(drop=True)
-        break
 
-    df_main_if = pm2.pm2io.convert_wide_dataframe_if(
+    df_main["time"] = inv_conf["year"]
+
+    # remove wrong codes in data column
+    df_main["data"] = df_main["data"].str.replace("HFC", "")
+
+    # Sum up the values for duplicate categories
+    cat = inv_conf["merge_cats"]
+    df_temp = df_main.loc[df_main["category"] == cat]
+    df_temp["data"] = df_temp["data"].replace("", np.nan).apply(float)
+    df_temp = df_temp.groupby(
+        ["category", "entity", "unit", "time"], as_index=False
+    ).sum()
+    # change back to empty strings
+    df_temp = df_temp.replace(0, "")
+    # drop category from df
+    df_main = df_main.drop(df_main[df_main["category"] == cat].index)
+    # append the summed up sub-set
+    df_main = pd.concat(
+        [df_main, df_temp],
+        axis=0,
+        join="outer",
+    ).reset_index(drop=True)
+
+    df_main_if = pm2.pm2io.convert_long_dataframe_if(
         df_main,
         coords_cols=coords_cols,
         # add_coords_cols=add_coords_cols,
         coords_defaults=coords_defaults,
         coords_terminologies=coords_terminologies,
-        coords_value_mapping=coords_value_mapping,
+        coords_value_mapping=coords_value_mapping_main,
         # coords_value_filling=coords_value_filling,
-        # filter_remove=filter_remove,
+        filter_remove=filter_remove,
         # filter_keep=filter_keep,
         meta_data=meta_data,
+        convert_str=True,
+        time_format="%Y",
     )
 
+    ### convert to primap2 format ###
+    print("Converting to primap2 format.")
+    data_main_pm2 = pm2.pm2io.from_interchange_format(df_main_if)
+
     # ###
-    # 1. Read trend tables 1995, 2000, 2005, 2010, 2015 and 2019
+    # 2. Read trend tables 1995, 2000, 2005, 2010, 2015 and 2019
     # ###
     df_trend = None
-    for sector in inv_conf_per_sector.keys():
+    for sector in reversed(inv_conf_per_sector.keys()):
         tables_inventory_original = camelot.read_pdf(
             str(input_folder / pdf_file),
             pages=inv_conf_per_sector[sector]["page"],
@@ -180,7 +211,7 @@ if __name__ == "__main__":
                 join="outer",
             ).reset_index(drop=True)
 
-    data_if = pm2.pm2io.convert_wide_dataframe_if(
+    df_trend_if = pm2.pm2io.convert_wide_dataframe_if(
         df_trend,
         coords_cols=coords_cols,
         # add_coords_cols=add_coords_cols,
@@ -188,11 +219,37 @@ if __name__ == "__main__":
         coords_terminologies=coords_terminologies,
         coords_value_mapping=coords_value_mapping,
         # coords_value_filling=coords_value_filling,
-        # filter_remove=filter_remove,
+        filter_remove=filter_remove,
         # filter_keep=filter_keep,
         meta_data=meta_data,
     )
 
     ### convert to primap2 format ###
     print("Converting to primap2 format.")
-    data_pm2 = pm2.pm2io.from_interchange_format(data_if)
+    data_trend_pm2 = pm2.pm2io.from_interchange_format(df_trend_if)
+
+    # ###
+    # Merge the main table for 2019 and the trend tables
+    # ###
+
+    print("Merging main table and trend tables")
+    print("Merging waste table.")
+    data_pm2 = data_main_pm2.pr.merge(data_trend_pm2)  # , tolerance=0.10)
+
+    # # ###
+    # # Save raw data to IF and native format.
+    # # ###
+
+    data_if = data_pm2.pr.to_interchange_format()
+
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+        data_if,
+    )
+
+    encoding = {var: compression for var in data_pm2.data_vars}
+    data_pm2.pr.to_netcdf(
+        output_folder
+        / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+        encoding=encoding,
+    )
