@@ -18,6 +18,7 @@ unfccc\_ghg\_data.unfccc\_reader
   unfccc_ghg_data.unfccc_reader.Guinea
   unfccc_ghg_data.unfccc_reader.Indonesia
   unfccc_ghg_data.unfccc_reader.Israel
+  unfccc_ghg_data.unfccc_reader.Japan
   unfccc_ghg_data.unfccc_reader.Malaysia
   unfccc_ghg_data.unfccc_reader.Mauritania
   unfccc_ghg_data.unfccc_reader.Mexico

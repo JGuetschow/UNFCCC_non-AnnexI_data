@@ -2,4 +2,5 @@
 **/.git* annex.largefiles=nothing
 * annex.largefiles=((mimeencoding=binary)and(largerthan=0))
 *.csv annex.largefiles=anything
+*.xml annex.largefiles=anything
 **/.git* annex.largefiles=nothing

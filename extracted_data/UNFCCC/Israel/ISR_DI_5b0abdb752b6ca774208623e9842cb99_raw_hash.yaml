@@ -1,0 +1,31 @@
+attrs:
+  references: https://di.unfccc.int
+  title: Data submitted to the UNFCCC by country Israel as available in the DI interface
+    on 2024-07-08.
+  comment: Data read from the UNFCCC DI flexible query interface using the API. Data
+    read on 2024-07-08.
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (BURDI)
+  area: area (ISO3)
+  scen: scenario (Access_Date)
+  sec_cats:
+  - class
+  - measure
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - scenario (Access_Date)
+  - measure
+  - provenance
+  - source
+  - area (ISO3)
+  - category (BURDI)
+  - class
+  - entity
+  - unit
+additional_coordinates:
+  orig_cat_name: category (BURDI)
+data_file: ISR_DI_5b0abdb752b6ca774208623e9842cb99_raw_hash.csv
