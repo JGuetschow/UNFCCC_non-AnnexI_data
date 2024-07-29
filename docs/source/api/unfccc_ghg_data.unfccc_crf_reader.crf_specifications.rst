@@ -13,5 +13,6 @@ unfccc\_ghg\_data.unfccc\_crf\_reader.crf\_specifications
   unfccc_ghg_data.unfccc_crf_reader.crf_specifications.crf2022_specification
   unfccc_ghg_data.unfccc_crf_reader.crf_specifications.crf2023_aus_specification
   unfccc_ghg_data.unfccc_crf_reader.crf_specifications.crf2023_specification
+  unfccc_ghg_data.unfccc_crf_reader.crf_specifications.crf2024_specification
   unfccc_ghg_data.unfccc_crf_reader.crf_specifications.crt1_specification
   unfccc_ghg_data.unfccc_crf_reader.crf_specifications.util
