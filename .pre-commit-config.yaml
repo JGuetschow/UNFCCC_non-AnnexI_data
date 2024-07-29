@@ -19,11 +19,11 @@ repos:
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
-        exclude: ".json|.yaml"
+        exclude: ".json|.yaml|.xml"
       - id: fix-byte-order-marker
       - id: mixed-line-ending
       - id: trailing-whitespace
-        exclude: ".json|.yaml"
+        exclude: ".json|.yaml|.xml"
   - repo: local
     hooks:
       # Prevent committing .rej files
