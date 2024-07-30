@@ -1,0 +1,25 @@
+attrs:
+  references: https://unfccc.int/documents/633382
+  rights: ''
+  contact: daniel-busch@climate-resource.de
+  title: Mongolia. Biennial update report (BUR). BUR2 Processed on 2024-07-11 Processed
+    on 2024-07-11
+  comment: Read fom pdf by Daniel Busch Processed on 2024-07-11 Processed on 2024-07-11
+  institution: UNFCCC
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  entity: KYOTOGHG
+  gwp_context: AR6GWP100
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - category (IPCC2006_PRIMAP)
+  - scenario (PRIMAP)
+  - area (ISO3)
+  - provenance
+  - entity
+  - unit
+data_file: MNG_BUR2_2023_IPCC2006_PRIMAP.csv

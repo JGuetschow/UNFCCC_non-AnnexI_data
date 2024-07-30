@@ -17,6 +17,7 @@ from unfccc_ghg_data.unfccc_reader.Mongolia.config_mng_bur2 import (
     coords_defaults,
     coords_terminologies,
     coords_value_mapping,
+    country_processing_gas_baskets,
     country_processing_step1,
     filter_remove,
     gas_baskets,
@@ -97,7 +98,7 @@ if __name__ == "__main__":
 
         df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
 
-        skip_rows = 11
+        skip_rows = inv_conf_per_year[year]["skip_rows"]
         df_year = pd.concat(
             [df_header, df_year[skip_rows:]], axis=0, join="outer"
         ).reset_index(drop=True)
@@ -256,6 +257,10 @@ if __name__ == "__main__":
 
         for year in inv_conf_per_entity[entity]["years"]:
             df_entity.loc[:, year] = df_entity[year].str.replace(",", "")
+
+        # if "del_value" in inv_conf_per_entity[entity]:
+        #     for year_del, category_del in inv_conf_per_entity[entity]["del_value"]:
+        #         df_entity.loc[df_entity["category"] == category_del, year_del] = ""
 
         if df_trend is None:
             df_trend = df_entity
@@ -422,10 +427,14 @@ if __name__ == "__main__":
         # transpose so categegories are in first columns
         df_sector = df_sector.T
 
+        # strip white spaces from column names
+        df_sector.columns = df_sector.columns.str.strip()
+
         df_sector = df_sector.rename(
             columns={inv_conf_per_sector[sector]["year_column"]: "category"}
         )
 
+        df_sector["category"] = df_sector["category"].str.strip()
         df_sector["category"] = df_sector["category"].str.replace("\n", "")
 
         # TODO This is the same functionality as remove_duplicates ?
@@ -536,7 +545,7 @@ if __name__ == "__main__":
         cat_terminology_out=None,
         category_conversion=None,
         sectors_out=None,
-        processing_info_country=None,
+        processing_info_country=country_processing_gas_baskets,
     )
 
     data_proc_pm2 = process_data_for_country(
