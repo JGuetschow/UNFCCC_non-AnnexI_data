@@ -216,24 +216,39 @@ if __name__ == "__main__":
         df_typed_figure["entity"] = manually_typed[figure]["entity"]
         df_typed_figure["unit"] = manually_typed[figure]["unit"]
 
+        # adjust column names for wide to long function
+        df_typed_figure = df_typed_figure.rename(columns=wide_to_long_col_replace)
+        df_typed_figure_long = pd.wide_to_long(
+            df_typed_figure, stubnames="data", i="category", j="time"
+        ).reset_index()
+
+        if "unit_conversion" in manually_typed[figure].keys():
+            df_typed_figure_long["unit"] = manually_typed[figure]["unit_conversion"][
+                "new_unit"
+            ]
+            conv_factor = manually_typed[figure]["unit_conversion"]["conversion_factor"]
+            df_typed_figure_long["data"] = df_typed_figure_long["data"].map(
+                lambda a: a / conv_factor
+            )
+
         if df_typed is None:
-            df_typed = df_typed_figure
+            df_typed = df_typed_figure_long
         else:
             df_typed = pd.concat(
-                [df_typed, df_typed_figure],
+                [df_typed, df_typed_figure_long],
                 axis=0,
                 join="outer",
             ).reset_index(drop=True)
 
-    # adjust column names for wide to long function
-    df_typed = df_typed.rename(columns=wide_to_long_col_replace)
-    df_typed_long = pd.wide_to_long(
-        df_typed, stubnames="data", i="category", j="time"
-    ).reset_index()
+    # # adjust column names for wide to long function
+    # df_typed = df_typed.rename(columns=wide_to_long_col_replace)
+    # df_typed_long = pd.wide_to_long(
+    #     df_typed, stubnames="data", i="category", j="time"
+    # ).reset_index()
 
     # merge manually typed and main tables from Annex
     df_main = pd.concat(
-        [df_main, df_typed_long],
+        [df_main, df_typed],
         axis=0,
         join="outer",
     ).reset_index(drop=True)

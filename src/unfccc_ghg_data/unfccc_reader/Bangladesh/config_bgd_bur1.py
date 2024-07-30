@@ -699,10 +699,9 @@ wide_to_long_col_replace = {
 
 manually_typed = {
     "figure_16": {
-        # TODO Conflicting entities in figure: CO2e or CO2?
-        # It says CO2 and gG more often, so I'm going with CO2
-        "unit": "Gg",
-        "entity": "CO2",
+        # In other than stated in the figure, these are KYOTO gases in CO2eq
+        "unit": "GgCO2eq",
+        "entity": "KYOTOGHG (AR4GWP100)",
         "data": {
             "category": [
                 "1.A.2.a",
@@ -827,10 +826,9 @@ manually_typed = {
         },
     },
     "figure_17": {
-        # TODO Conflicting entities in figure: CO2e or CO2?
-        # This category should mainly be combustion emissions -> CO2
-        "entity": "CO2",
-        "unit": "Gg",
+        # In other than stated in the figure, these are KYOTO gases in CO2eq
+        "unit": "GgCO2eq",
+        "entity": "KYOTOGHG (AR4GWP100)",
         "data": {
             "category": [
                 "1.A.3.a.ii",
@@ -907,9 +905,9 @@ manually_typed = {
         },
     },
     "figure_18": {
-        # TODO Conflicting entities in figure: CO2e or CO2?
-        "entity": "CO2",
-        "unit": "Gg",
+        # In other than stated in the figure, these are KYOTO gases in CO2eq
+        "unit": "GgCO2eq",
+        "entity": "KYOTOGHG (AR4GWP100)",
         "data": {
             "category": ["1.A.4.a", "1.A.4.b"],
             "2013": [1871, 6703],
@@ -922,9 +920,9 @@ manually_typed = {
         },
     },
     "figure_19": {
-        # TODO Conflicting entities in figure: CO2e or CO2?
-        "unit": "Gg",
-        "entity": "CO2",
+        # In other than stated in the figure, these are KYOTO gases in CO2eq
+        "unit": "GgCO2eq",
+        "entity": "KYOTOGHG (AR4GWP100)",
         "data": {
             "category": ["1.A.4.c.i", "1.A.4.c.iii", "1.A.4.c"],
             "2013": [2692, 5, 2697],
@@ -937,8 +935,8 @@ manually_typed = {
         },
     },
     "figure_20": {
-        "unit": "Gg",
-        "entity": "CO2",
+        "unit": "GgCO2eq",
+        "entity": "CH4",
         "data": {
             "category": ["1.B.2.b.iii.4", "1.B.2.b.iii.5", "1.B.2.b.iii"],
             "2013": [896, 8440, 9336],
@@ -949,6 +947,7 @@ manually_typed = {
             "2018": [896, 6429, 7325],
             "2019": [896, 4289, 5185],
         },
+        "unit_conversion": {"new_unit": "Gg", "conversion_factor": 25},
     },
 }
 
@@ -980,9 +979,7 @@ country_processing_step1 = {
                 "3.C.7",
             ]
         },
-        # There is no data for 3.D
-        # "M.3.D.AG": {"sources": ["3.D.2"], "name": "Other (Agriculture)"},
-        # "M.3.D.AG" is empty, so I'm not sure we need it
+        "3.C": {"sources": ["3.C.3", "3.C.4", "3.C.5", "3.C.7"]},
         "M.AG.ELV": {
             "sources": ["M.3.C.AG", "M.3.D.AG"],
         },
@@ -1015,12 +1012,26 @@ country_processing_step1 = {
                 "1.A.2.m",
             ]
         },
+        # check if typed numbers add up to the total of 1.A.3 from the main table
+        "1.A.3": {
+            "sources": [
+                "1.A.3.a.ii",
+                "1.A.3.b.i.2",
+                "1.A.3.b.ii.2",
+                "1.A.3.b.iii",
+                "1.A.3.b.iv",
+                "1.A.3.c",
+                "1.A.3.d.ii",
+            ]
+        },
         # check if the typed numbers add up to the total of 1.A.4.c in the same table
         "1.A.4.c": {"sources": ["1.A.4.c.i", "1.A.4.c.iii"]},
         # check if typed numbers add up to the total of 1.A.4 from the main table
         "1.A.4": {"sources": ["1.A.4.a", "1.A.4.b", "1.A.4.c"]},
         # check if the typed numbers add up to the total of 1.A.4.c in the same table
         "1.B.2.b.iii": {"sources": ["1.B.2.b.iii.4", "1.B.2.b.iii.5"]},
+        # consistency check for 1.B.2
+        "1.B.2": {"sources": ["1.B.2.b.iii"]},
     },
     # We don't have HFCs and PFCs in the report, hence basket_copy is not relevant
     # "basket_copy": {
