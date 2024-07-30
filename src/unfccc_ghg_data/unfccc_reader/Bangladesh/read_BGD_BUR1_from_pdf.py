@@ -240,12 +240,6 @@ if __name__ == "__main__":
                 join="outer",
             ).reset_index(drop=True)
 
-    # # adjust column names for wide to long function
-    # df_typed = df_typed.rename(columns=wide_to_long_col_replace)
-    # df_typed_long = pd.wide_to_long(
-    #     df_typed, stubnames="data", i="category", j="time"
-    # ).reset_index()
-
     # merge manually typed and main tables from Annex
     df_main = pd.concat(
         [df_main, df_typed],
