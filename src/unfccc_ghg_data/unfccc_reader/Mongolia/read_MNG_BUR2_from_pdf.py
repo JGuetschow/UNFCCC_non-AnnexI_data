@@ -1,6 +1,7 @@
 """
 Read Mongolia's BUR2 from pdf
 """
+
 import camelot
 import pandas as pd
 import primap2 as pm2
@@ -16,14 +17,19 @@ from unfccc_ghg_data.unfccc_reader.Mongolia.config_mng_bur2 import (
     coords_defaults,
     coords_terminologies,
     coords_value_mapping,
+    country_processing_gas_baskets,
     country_processing_step1,
     filter_remove,
     gas_baskets,
     inv_conf,
+    inv_conf_harvested_wood_products,
     inv_conf_per_entity,
+    inv_conf_per_sector,
     inv_conf_per_year,
     meta_data,
 )
+
+# pd.options.mode.chained_assignment = None  # default='warn'
 
 if __name__ == "__main__":
     # ###
@@ -92,7 +98,7 @@ if __name__ == "__main__":
 
         df_header = pd.DataFrame([inv_conf["header"], inv_conf["unit"]])
 
-        skip_rows = 11
+        skip_rows = inv_conf_per_year[year]["skip_rows"]
         df_year = pd.concat(
             [df_header, df_year[skip_rows:]], axis=0, join="outer"
         ).reset_index(drop=True)
@@ -218,7 +224,8 @@ if __name__ == "__main__":
                 )
 
         df_entity.columns = df_entity.iloc[0, :]
-        df_entity = df_entity[1:]
+        # make a copy to avoid SettingWithCopyWarning
+        df_entity = df_entity[1:].copy()
 
         # unit is always Gg
         df_entity.loc[:, "unit"] = inv_conf_per_entity[entity]["unit"]
@@ -251,6 +258,10 @@ if __name__ == "__main__":
         for year in inv_conf_per_entity[entity]["years"]:
             df_entity.loc[:, year] = df_entity[year].str.replace(",", "")
 
+        # if "del_value" in inv_conf_per_entity[entity]:
+        #     for year_del, category_del in inv_conf_per_entity[entity]["del_value"]:
+        #         df_entity.loc[df_entity["category"] == category_del, year_del] = ""
+
         if df_trend is None:
             df_trend = df_entity
         else:
@@ -278,15 +289,234 @@ if __name__ == "__main__":
     data_trend_pm2 = pm2.pm2io.from_interchange_format(df_trend_IF)
 
     # ###
-    # Merge main and trend tables.
+    # 3 Read harvested wood products table
     # ###
+
+    # The table for harvested wood products is in a different format
+    # and needs to be read in separately.
+
+    print("-" * 60)
+    print("Reading sector harvested wood products table.")
+    print("-" * 60)
+
+    df_hwp = None
+    for part in [*inv_conf_harvested_wood_products["parts"]]:
+        tables_inventory_original = camelot.read_pdf(
+            str(input_folder / pdf_file),
+            pages=inv_conf_harvested_wood_products["page"],
+            table_areas=inv_conf_harvested_wood_products["parts"][part]["page_defs"][
+                "area"
+            ],
+            columns=inv_conf_harvested_wood_products["parts"][part]["page_defs"][
+                "cols"
+            ],
+            flavor="stream",
+            split_text=True,
+        )
+
+        df_hwp_part = tables_inventory_original[0].df
+
+        if "rows_to_fix" in inv_conf_harvested_wood_products["parts"][part]:
+            for n_rows in inv_conf_harvested_wood_products["parts"][part][
+                "rows_to_fix"
+            ].keys():
+                df_hwp_part = fix_rows(
+                    df_hwp_part,
+                    rows_to_fix=inv_conf_harvested_wood_products["parts"][part][
+                        "rows_to_fix"
+                    ][n_rows],
+                    col_to_use=0,
+                    n_rows=n_rows,
+                )
+
+        df_hwp_part = df_hwp_part.drop(1, axis=0).reset_index(drop=True)
+
+        if df_hwp is None:
+            df_hwp = df_hwp_part
+        else:
+            # stack horizontally
+            df_hwp = pd.concat(
+                [df_hwp, df_hwp_part.drop(0, axis=1)],
+                axis=1,
+                join="outer",
+            ).reset_index(drop=True)
+
+    # assign the years to the columns
+    df_hwp = pd.DataFrame(df_hwp.to_numpy()[1:], columns=df_hwp.iloc[0])
+
+    df_hwp = df_hwp.rename(
+        columns={inv_conf_harvested_wood_products["category_column"]: "category"}
+    )
+
+    df_hwp.loc[:, "category"] = df_hwp.loc[:, "category"].replace(
+        inv_conf_harvested_wood_products["cat_codes_manual"]
+    )
+
+    # unit is always the same
+    df_hwp.loc[:, "unit"] = inv_conf_harvested_wood_products["unit"]
+
+    # and only one entity per table
+    df_hwp.loc[:, "entity"] = inv_conf_harvested_wood_products["entity"]
+
+    # ###
+    # 4. Read in aggregated tables from 1990 - 2020
+    # ###
+
+    df_agg = None
+
+    for sector in list(inv_conf_per_sector.keys()):
+        print("-" * 60)
+        print(
+            f"Reading sector {sector} on page(s) \
+            {[*inv_conf_per_sector[sector]['page_defs']]}."
+        )
+
+        df_sector = None
+
+        for page in [*inv_conf_per_sector[sector]["page_defs"]]:
+            tables_inventory_original = camelot.read_pdf(
+                str(input_folder / pdf_file),
+                pages=page,
+                table_areas=inv_conf_per_sector[sector]["page_defs"][page]["area"],
+                columns=inv_conf_per_sector[sector]["page_defs"][page]["cols"],
+                flavor="stream",
+                split_text=True,
+            )
+
+            df_sector_page = tables_inventory_original[0].df
+
+            if df_sector is None:
+                df_sector = df_sector_page
+            else:
+                df_sector = pd.concat(
+                    [df_sector, df_sector_page],
+                    axis=0,
+                    join="outer",
+                ).reset_index(drop=True)
+
+            print(f"adding table from page {page}.")
+
+        last_row = df_sector.loc[df_sector[0] == "2020"].index[0]
+
+        df_sector = df_sector[0 : last_row + 1]
+
+        if "rows_to_fix" in inv_conf_per_sector[sector]:
+            for n_rows in inv_conf_per_sector[sector]["rows_to_fix"].keys():
+                print(f"Merge content for {n_rows=}")
+                # set the row
+                if "col_to_use" in inv_conf_per_sector[sector].keys():
+                    col_to_use = inv_conf_per_sector[sector]["col_to_use"]
+                else:
+                    col_to_use = 0
+                df_sector = fix_rows(
+                    df_sector,
+                    rows_to_fix=inv_conf_per_sector[sector]["rows_to_fix"][n_rows],
+                    col_to_use=col_to_use,
+                    n_rows=n_rows,
+                )
+
+        df_sector = df_sector.reset_index(drop=True)
+
+        if "rows_to_drop" in inv_conf_per_sector[sector]:
+            for row in inv_conf_per_sector[sector]["rows_to_drop"]:
+                df_sector = df_sector.drop(index=row)
+
+        # TODO: Is it necessary to set the index here?
+        df_sector = df_sector.set_index(0)
+
+        # transpose so categegories are in first columns
+        df_sector = df_sector.T
+
+        # strip white spaces from column names
+        df_sector.columns = df_sector.columns.str.strip()
+
+        df_sector = df_sector.rename(
+            columns={inv_conf_per_sector[sector]["year_column"]: "category"}
+        )
+
+        df_sector["category"] = df_sector["category"].str.strip()
+        df_sector["category"] = df_sector["category"].str.replace("\n", "")
+
+        # TODO This is the same functionality as remove_duplicates ?
+        if "categories_to_drop" in inv_conf_per_sector[sector]:
+            for row in inv_conf_per_sector[sector]["categories_to_drop"]:
+                row_to_delete = df_sector.index[df_sector["category"] == row][0]
+                df_sector = df_sector.drop(index=row_to_delete)
+
+        df_sector.loc[:, "category"] = df_sector.loc[:, "category"].replace(
+            inv_conf_per_sector[sector]["cat_codes_manual"]
+        )
+
+        if "multi_entity" in inv_conf_per_sector[sector]:
+            df_sector["entity"] = inv_conf_per_sector[sector]["multi_entity"]["entity"]
+            df_sector["unit"] = inv_conf_per_sector[sector]["multi_entity"]["unit"]
+
+        else:
+            # unit is always the same
+            df_sector.loc[:, "unit"] = inv_conf_per_sector[sector]["unit"]
+
+            # and only one entity per table
+            df_sector.loc[:, "entity"] = inv_conf_per_sector[sector]["entity"]
+
+        # Some categories are in two tables (summary and sector)
+        # Duplicates need to be removed
+        if "remove_duplicates" in inv_conf_per_sector[sector]:
+            for row in inv_conf_per_sector[sector]["remove_duplicates"]:
+                row_to_delete = df_sector.index[df_sector["category"] == row][0]
+                df_sector = df_sector.drop(index=row_to_delete)
+
+        if df_agg is None:
+            df_agg = df_sector
+        else:
+            df_agg = pd.concat(
+                [df_agg, df_sector],
+                axis=0,
+                join="outer",
+            ).reset_index(drop=True)
+
+        for year in [str(y) for y in range(1990, 2021)]:
+            df_agg.loc[:, year] = df_agg[year].str.replace(",", "")
+
+    # add harvested wood products table and all the other sectors together
+    df_agg = pd.concat(
+        [df_agg, df_hwp],
+        axis=0,
+        join="outer",
+    ).reset_index(drop=True)
+
+    # There are more tables in the document that could be read, but are less relevant
+    # on pages 67, 78, 91, 105/6, 110/111
+
+    ### convert to interchange format ###
+    df_agg_IF = pm2.pm2io.convert_wide_dataframe_if(
+        data_wide=df_agg,
+        coords_cols=coords_cols,
+        coords_defaults=coords_defaults,
+        coords_terminologies=coords_terminologies,
+        coords_value_mapping=coords_value_mapping,
+        # filter_remove=filter_remove,
+        meta_data=meta_data,
+        convert_str=True,
+        time_format="%Y",
+    )
+
+    ### convert to primap2 format ###
+    print("Converting to primap2 format.")
+    data_agg_pm2 = pm2.pm2io.from_interchange_format(df_agg_IF)
+
+    # # ###
+    # # Merge tables.
+    # # ###
 
     print("Merging main and trend table.")
     data_pm2 = data_main_pm2.pr.merge(data_trend_pm2, tolerance=1)
 
-    # ###
-    # Save raw data to IF and native format.
-    # ###
+    print("Merging sector tables.")
+    data_pm2 = data_pm2.pr.merge(data_agg_pm2, tolerance=1)
+
+    # # ###
+    # # Save raw data to IF and native format.
+    # # ###
 
     data_if = data_pm2.pr.to_interchange_format()
 
@@ -302,11 +532,12 @@ if __name__ == "__main__":
         encoding=encoding,
     )
 
-    # ###
-    # Processing
-    # ###
+    # # ###
+    # # Processing
+    # # ###
 
-    data_proc_pm2 = process_data_for_country(
+    # create the gas baskets before aggregating the categories
+    data_proc_pm2_gas_baskets = process_data_for_country(
         data_country=data_pm2,
         entities_to_ignore=[],
         gas_baskets=gas_baskets,
@@ -314,12 +545,23 @@ if __name__ == "__main__":
         cat_terminology_out=None,
         category_conversion=None,
         sectors_out=None,
+        processing_info_country=country_processing_gas_baskets,
+    )
+
+    data_proc_pm2 = process_data_for_country(
+        data_country=data_proc_pm2_gas_baskets,
+        entities_to_ignore=[],
+        gas_baskets=None,
+        filter_dims=None,
+        cat_terminology_out=None,
+        category_conversion=None,
+        sectors_out=None,
         processing_info_country=country_processing_step1,
     )
 
-    # ###
-    # save processed data to IF and native format
-    # ###
+    # # ###
+    # # save processed data to IF and native format
+    # # ###
 
     terminology_proc = coords_terminologies["category"]
 

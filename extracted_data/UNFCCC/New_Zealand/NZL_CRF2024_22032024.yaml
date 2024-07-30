@@ -1,0 +1,26 @@
+attrs:
+  references: https://unfccc.int/ghg-inventories-annex-i-parties/2024
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: 'Data submitted in 2024 to the UNFCCC in the common reporting format (CRF)
+    by New Zealand. Submission date: 22032024'
+  comment: Read fom xlsx file by Johannes Gütschow
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  cat: category (CRF2013_2024)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  sec_cats:
+  - class
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - class
+  - scenario (PRIMAP)
+  - provenance
+  - category (CRF2013_2024)
+  - source
+  - area (ISO3)
+  - entity
+  - unit
+data_file: NZL_CRF2024_22032024.csv
