@@ -255,6 +255,53 @@ country_processing_step1 = {
         "entities": ["HFCS"],
         "source_GWP": gwp_to_use,
     },
+    # "downscale": {
+    #     "sectors": {
+    #         "1.A": {
+    #             "basket": "1",
+    #             "basket_contents": ["1.A"],
+    #             "entities": ["CO2", "CH4", "N2O"],
+    #             "dim": f'category ({coords_terminologies["category"]})',
+    #         },
+    #         # "2_CO2" : {
+    #         #     "basket" : "2",
+    #         #     "basket_contents" : ["2.A", "2.B", "2.C", "2.D", "2.H"],
+    #         #     "entities" : ["CO2"],
+    #         #     "dim" : f'category ({coords_terminologies["category"]})',
+    #         # },
+    #         "2_CH4" : {
+    #             "basket" : "2",
+    #             "basket_contents" : ["2.A", "2.B", "2.C", "2.H"],
+    #             "entities" : ["CH4"],
+    #             "dim" : f'category ({coords_terminologies["category"]})',
+    #         },
+    #     },
+    # },
+}
+
+country_processing_step2 = {
+    "downscale": {
+        "sectors": {
+            "1.A": {
+                "basket": "1",
+                "basket_contents": ["1.A"],
+                "entities": ["CO2", "CH4", "N2O"],
+                "dim": f'category ({coords_terminologies["category"]})',
+            },
+            "2_CO2": {
+                "basket": "2",
+                "basket_contents": ["2.A", "2.B", "2.C", "2.D", "2.H"],
+                "entities": ["CO2"],
+                "dim": f'category ({coords_terminologies["category"]})',
+            },
+            # "2_CH4" : {
+            #     "basket" : "2",
+            #     "basket_contents" : ["2.A", "2.B", "2.C", "2.H"],
+            #     "entities" : ["CH4"],
+            #     "dim" : f'category ({coords_terminologies["category"]})',
+            # },
+        },
+    },
 }
 
 gas_baskets = {
