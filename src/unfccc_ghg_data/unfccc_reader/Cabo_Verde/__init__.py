@@ -23,7 +23,7 @@ You can also obtain this information running
 
 .. code-block:: bash
 
-    poetry run doit country_info country=BDI
+    poetry run doit country_info country=CPV
 
 See below for a listing of scripts for BUR/NIR reading including links.
 
