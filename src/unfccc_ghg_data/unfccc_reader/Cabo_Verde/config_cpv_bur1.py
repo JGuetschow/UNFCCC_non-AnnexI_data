@@ -62,7 +62,7 @@ filter_remove = {
 }
 
 meta_data = {
-    "references": "https://unfccc.int/sites/default/files/resource/BUR_EN_Digital.pdf",  # TODO check other sources
+    "references": "unfccc.int/documents/638907",
     "rights": "",  # unknown
     "contact": "daniel-busch@climate-resource.de",
     "title": "Cabo Verde. Biennial update report (BUR). BUR1",

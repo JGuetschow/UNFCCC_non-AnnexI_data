@@ -1,5 +1,5 @@
 """
-Read Burundi's BUR1 from pdf
+Read Cabo Verde's BUR1 from pdf
 """
 
 import camelot
