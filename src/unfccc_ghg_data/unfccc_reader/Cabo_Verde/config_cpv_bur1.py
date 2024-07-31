@@ -187,6 +187,32 @@ country_processing_step1 = {
     "aggregate_cats": {
         # First generate additional categories
         "0": {"sources": ["1", "2", "3", "4", "5"]},
+        "2.A": {"sources": ["2.A.1", "2.A.2", "2.A.3", "2.A.4", "2.A.5"]},
+        "2.C": {
+            "sources": [
+                "2.C.1",
+                "2.C.2",
+                "2.C.3",
+                "2.C.4",
+                "2.C.5",
+                "2.C.6",
+                "2.C.7",
+            ]
+        },
+        "2.E": {"sources": ["2.E.1", "2.E.2", "2.E.3", "2.E.4", "2.E.5"]},
+        "3.C": {
+            "sources": [
+                "3.C.1",
+                "3.C.2",
+                "3.C.3",
+                "3.C.4",
+                "3.C.5",
+                "3.C.6",
+                "3.C.7",
+                "3.C.8",
+            ]
+        },
+        "3.D": {"sources": ["3.D.2"]},
         # 3.D would go into M.LULUCF as well but we don't have it
         "M.LULUCF": {"sources": ["3.B"]},
         # Only 3.C.7 in table, but values are all zero or empty
