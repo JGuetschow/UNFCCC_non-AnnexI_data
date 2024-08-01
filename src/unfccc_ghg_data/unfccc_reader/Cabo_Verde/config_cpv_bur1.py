@@ -256,7 +256,7 @@ country_processing_step1 = {
     },
     "basket_copy": {
         "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
-        "entities": ["HFCS"],
+        "entities": ["HFCS", "FGASES"],
         "source_GWP": gwp_to_use,
     },
 }
@@ -271,7 +271,6 @@ country_processing_step2 = {
                 "dim": f'category ({coords_terminologies["category"]})',
             },
             # Values for 1995/2000/2005/2010/2015/2019 are only available for CO2 and F-gases (table 6)
-            #
             "2_CO2": {
                 "basket": "2",
                 "basket_contents": ["2.A", "2.B", "2.C", "2.D", "2.H"],
@@ -279,8 +278,48 @@ country_processing_step2 = {
                 "dim": f'category ({coords_terminologies["category"]})',
             },
             "2_KYOTO": {
+                # error of 3.5% for KYOTOGHG (AR6GWP100)
+                "check_consistency": False,
                 "basket": "2",
-                "basket_contents": ["2.A", "2.B", "2.C", "2.F", "2.H", "2.D"],
+                "basket_contents": [
+                    "2.A",
+                    "2.B",
+                    "2.C",
+                    "2.D",
+                    "2.E",
+                    "2.F",
+                    "2.G",
+                    "2.H",
+                ],
+                "entities": [
+                    "KYOTOGHG (SARGWP100)",
+                    "KYOTOGHG (AR4GWP100)",
+                    "KYOTOGHG (AR5GWP100)",
+                    "KYOTOGHG (AR6GWP100)",
+                ],
+                "dim": f'category ({coords_terminologies["category"]})',
+            },
+            "3_CH4": {
+                "basket": "3",
+                "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
+                "entities": ["CH4"],
+                "dim": f'category ({coords_terminologies["category"]})',
+            },
+            "3_CO2": {
+                "basket": "3",
+                "basket_contents": ["3.B", "3.C", "3.D"],
+                "entities": ["CO2"],
+                "dim": f'category ({coords_terminologies["category"]})',
+            },
+            "3_N2O": {
+                "basket": "3",
+                "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
+                "entities": ["N2O"],
+                "dim": f'category ({coords_terminologies["category"]})',
+            },
+            "3_KYOTO": {
+                "basket": "3",
+                "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
                 "entities": [
                     "KYOTOGHG (SARGWP100)",
                     "KYOTOGHG (AR4GWP100)",
