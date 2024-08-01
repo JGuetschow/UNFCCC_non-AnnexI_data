@@ -5,7 +5,10 @@ import camelot
 import pandas as pd
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
-from unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis.config_kna_bur1 import conf
+from unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis.config_kna_bur1 import (
+    conf,
+    conf_general,
+)
 
 if __name__ == "__main__":
     # ###
@@ -35,6 +38,7 @@ if __name__ == "__main__":
 
         df_sector = None
         for page in conf[sector]["page_defs"].keys():
+            print(f"Page {page}")
             tables_inventory_original = camelot.read_pdf(
                 str(input_folder / pdf_file),
                 pages=page,
@@ -43,6 +47,10 @@ if __name__ == "__main__":
             )
 
             df_page = tables_inventory_original[0].df
+
+            skip_rows_start = conf[sector]["page_defs"][page]["skip_rows_start"]
+            if not skip_rows_start == 0:
+                df_page = df_page[skip_rows_start:]
 
             if df_sector is None:
                 df_sector = df_page
@@ -55,5 +63,25 @@ if __name__ == "__main__":
                     axis=0,
                     join="outer",
                 ).reset_index(drop=True)
+
+        df_sector.columns = conf[sector]["header"]
+
+        df_sector["category"] = df_sector["orig_category"]
+
+        # Remove line break characters
+        df_sector["category"] = df_sector["category"].str.replace("\n", " ")
+
+        # first the manual replacements
+        df_sector["category"] = df_sector["category"].replace(
+            conf[sector]["cat_codes_manual"]
+        )
+
+        # then the regex replacements
+        df_sector["category"] = df_sector["category"].str.replace(
+            conf_general["cat_code_regexp"], repl, regex=True
+        )
+
+        df_sector = df_sector.drop(columns="orig_category")
+        pass
 
         pass
