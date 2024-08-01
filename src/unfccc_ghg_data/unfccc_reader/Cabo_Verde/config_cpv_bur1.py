@@ -84,7 +84,12 @@ inv_conf_per_sector = {
             "Waste": "4",
         },
         "header": ["category", "entity", *trend_years],
-        "unit": ["Gg"] * 4 + ["Gg CO2eq"] + ["Gg"] * 9,
+        "unit": ["Gg"] * 4 + ["GgCO2eq"] + ["Gg"] * 9,
+        "unit_conversion": {
+            "index": 6,
+            "conversion_factor": 2240.625,
+        },
+        # "unit": ["Gg"] * 4 + ["Gg CO2eq"] + ["Gg"] * 9,
     },
     "int_bunkers": {
         "page": "39",
@@ -265,6 +270,8 @@ country_processing_step2 = {
                 "entities": ["CO2", "CH4", "N2O"],
                 "dim": f'category ({coords_terminologies["category"]})',
             },
+            # Values for 1995/2000/2005/2010/2015/2019 are only available for CO2 and F-gases (table 6)
+            #
             "2_CO2": {
                 "basket": "2",
                 "basket_contents": ["2.A", "2.B", "2.C", "2.D", "2.H"],
@@ -272,9 +279,8 @@ country_processing_step2 = {
                 "dim": f'category ({coords_terminologies["category"]})',
             },
             "2_KYOTO": {
-                "check_consistency": False,
                 "basket": "2",
-                "basket_contents": ["2.A", "2.B", "2.C", "2.H", "2.D"],
+                "basket_contents": ["2.A", "2.B", "2.C", "2.F", "2.H", "2.D"],
                 "entities": [
                     "KYOTOGHG (SARGWP100)",
                     "KYOTOGHG (AR4GWP100)",
@@ -288,6 +294,10 @@ country_processing_step2 = {
 }
 
 gas_baskets = {
+    "FGASES (SARGWP100)": ["HFCS (SARGWP100)"],
+    "FGASES (AR4GWP100)": ["HFCS (AR4GWP100)"],
+    "FGASES (AR5GWP100)": ["HFCS (AR5GWP100)"],
+    "FGASES (AR6GWP100)": ["HFCS (AR6GWP100)"],
     "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O", "FGASES (SARGWP100)"],
     "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR4GWP100)"],
     "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR5GWP100)"],

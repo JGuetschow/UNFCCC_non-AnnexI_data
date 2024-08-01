@@ -205,6 +205,16 @@ if __name__ == "__main__":
         if "entity" in inv_conf_per_sector[sector].keys():
             df_page["entity"] = inv_conf_per_sector[sector]["entity"]
 
+        if "unit_conversion" in inv_conf_per_sector[sector].keys():
+            for year in trend_years:
+                index = inv_conf_per_sector[sector]["unit_conversion"]["index"]
+                conv_factor = inv_conf_per_sector[sector]["unit_conversion"][
+                    "conversion_factor"
+                ]
+                df_page.loc[index, year] = str(
+                    conv_factor * float(df_page.loc[index, year])
+                )
+
         # stack the tables vertically
         if df_trend is None:
             df_trend = df_page
