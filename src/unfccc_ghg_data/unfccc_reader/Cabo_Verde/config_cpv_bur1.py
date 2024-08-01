@@ -299,6 +299,29 @@ country_processing_step2 = {
                 ],
                 "dim": f'category ({coords_terminologies["category"]})',
             },
+            "2_FGASES": {
+                # error of 3.5% for KYOTOGHG (AR6GWP100)
+                "check_consistency": False,
+                "basket": "2",
+                "basket_contents": [
+                    "2.B",
+                    "2.C",
+                    "2.E",
+                    "2.F",
+                    "2.G",
+                ],
+                "entities": [
+                    "FGASES (SARGWP100)",
+                    "FGASES (AR4GWP100)",
+                    "FGASES (AR5GWP100)",
+                    "FGASES (AR6GWP100)",
+                    "HFCS (SARGWP100)",
+                    "HFCS (AR4GWP100)",
+                    "HFCS (AR5GWP100)",
+                    "HFCS (AR6GWP100)",
+                ],
+                "dim": f'category ({coords_terminologies["category"]})',
+            },
             "3_CH4": {
                 "basket": "3",
                 "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
