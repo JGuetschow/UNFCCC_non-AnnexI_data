@@ -3,11 +3,18 @@ Read Saint Kitts and Nevis' BUR1 from pdf
 """
 import camelot
 import pandas as pd
+import primap2 as pm2
 
 from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
 from unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis.config_kna_bur1 import (
     conf,
     conf_general,
+    coords_cols,
+    coords_defaults,
+    coords_terminologies,
+    coords_value_mapping,
+    filter_remove,
+    meta_data,
 )
 
 if __name__ == "__main__":
@@ -32,7 +39,7 @@ if __name__ == "__main__":
     # ###
 
     df_main = None
-    for sector in conf.keys():
+    for sector in reversed(conf.keys()):
         print("-" * 45)
         print(f"Reading table for {sector}.")
 
@@ -64,7 +71,7 @@ if __name__ == "__main__":
                     join="outer",
                 ).reset_index(drop=True)
 
-        df_sector.columns = conf[sector]["header"]
+        df_sector.columns = conf[sector]["header"] + conf[sector]["entities"]
 
         df_sector["category"] = df_sector["orig_category"]
 
@@ -76,12 +83,64 @@ if __name__ == "__main__":
             conf[sector]["cat_codes_manual"]
         )
 
+        # remove dots from category codes
+        df_sector["category"] = df_sector["category"].str.replace(".", "")
+
         # then the regex replacements
         df_sector["category"] = df_sector["category"].str.replace(
             conf_general["cat_code_regexp"], repl, regex=True
         )
 
         df_sector = df_sector.drop(columns="orig_category")
-        pass
 
-        pass
+        # bring in long format, so it can be concatenated with other tables
+        df_sector = pd.melt(
+            df_sector,
+            id_vars="category",
+            value_vars=conf[sector]["entities"],
+        )
+
+        # pd.melt always outputs value and variable as column names
+        df_sector = df_sector.rename({"value": "data", "variable": "entity"}, axis=1)
+
+        # clean data column
+        df_sector["data"] = df_sector["data"].replace(
+            conf[sector]["replace_data_entries"]
+        )
+        df_sector["data"] = df_sector["data"].str.replace(",", ".")
+        df_sector["data"] = df_sector["data"].str.replace("\n", "")
+
+        df_sector["unit"] = df_sector["entity"].replace(conf[sector]["unit_mapping"])
+
+        if df_main is None:
+            df_main = df_sector
+        else:
+            df_main = pd.concat(
+                [
+                    df_sector,
+                    df_main,
+                ],
+                axis=0,
+                join="outer",
+            ).reset_index(drop=True)
+
+        # break
+
+    # year is the same for all sector tables
+    df_main["time"] = "2018"
+
+    ### convert to interchange format ###
+    print("Converting to interchange format.")
+    df_main_IF = pm2.pm2io.convert_long_dataframe_if(
+        df_main,
+        coords_cols=coords_cols,
+        coords_defaults=coords_defaults,
+        coords_terminologies=coords_terminologies,
+        coords_value_mapping=coords_value_mapping,
+        filter_remove=filter_remove,
+        meta_data=meta_data,
+        convert_str=True,
+        time_format="%Y",
+    )
+
+    pass
