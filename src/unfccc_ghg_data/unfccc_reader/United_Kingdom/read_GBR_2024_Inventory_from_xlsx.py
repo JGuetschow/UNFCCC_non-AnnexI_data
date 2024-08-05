@@ -10,7 +10,13 @@ from several species to one.
 """
 import pandas as pd
 import primap2 as pm2
-from config_uk_inv2024 import (
+
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    process_data_for_country,
+)
+from unfccc_ghg_data.unfccc_reader.United_Kingdom.config_uk_inv2024 import (
     basket_copy,
     cat_conversion,
     cols_to_drop,
@@ -23,12 +29,6 @@ from config_uk_inv2024 import (
     meta_data,
     terminology_proc,
     time_format,
-)
-
-from unfccc_ghg_data.helper import (
-    downloaded_data_path,
-    extracted_data_path,
-    process_data_for_country,
 )
 
 if __name__ == "__main__":
