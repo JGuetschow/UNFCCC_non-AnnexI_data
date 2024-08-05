@@ -1,5 +1,18 @@
 """
 Configuration file to read Saint Kitts and Nevis' BUR 1.
+
+Tables to read:
+- The sector tables in the Annex from page 149
+- trend tables page 111-113
+- page 117
+- page 118
+- page 119
+- page 121
+- page 124
+
+Not reading:
+- page 97 - trend table with data for 2008, because it's in the trend tables from page 111
+- page 113 - slice of trend table on page 111
 """
 
 gwp_to_use = "AR5GWP100"
@@ -29,6 +42,9 @@ coords_value_mapping = {
     "category": "PRIMAP1",
     "entity": {
         "NMVOCs": "NMVOC",
+        "HFCS": f"HFCS ({gwp_to_use})",
+        "PFCS": f"PFCS ({gwp_to_use})",
+        "SF6": f"SF6 ({gwp_to_use})",
         "Other halogenated gases with CO2 equivalent conversion factors (1)": f"UnspMixOfHFCs ({gwp_to_use})",
     },
 }
@@ -44,8 +60,8 @@ meta_data = {
 
 filter_remove = {
     "f_memo": {"category": "MEMO"},
-    "f_HFCS": {
-        "category": "Other halogenated gases without CO2 equivalent conversion factors (2)"
+    "f1": {
+        "entity": "Other halogenated gases without CO2 equivalent conversion factors (2)"
     },
 }
 
@@ -55,6 +71,7 @@ conf_general = {
 
 conf = {
     "energy": {
+        # TODO: List of entities are always keys of unit mapping dict
         "entities": ["CO2", "CH4", "N2O", "NOX", "CO", "NMVOCs", "SO2"],
         "header": ["orig_category"],
         "cat_codes_manual": {
@@ -159,6 +176,40 @@ conf = {
             "NOX": "Gg",
             "CO": "Gg",
             "NMVOC": "Gg",
+        },
+    },
+    "waste": {
+        "entities": [
+            "CO2",
+            "CH4",
+            "N2O",
+            "NOX",
+            "CO",
+            "NMVOC",
+            "SO2",
+        ],
+        "header": ["orig_category"],
+        "cat_codes_manual": {
+            "Information Items": "MEMO",
+            "CO2 from Biomass Combustion for Energy Production": "MBIO",
+        },
+        "page_defs": {
+            "159": {"skip_rows_start": 2},
+        },
+        "replace_data_entries": {
+            "NO,NA": "NO",
+            "NO,NE": "NO",
+            "NE,NO": "NO",
+            "NO,IE": "NO",
+        },
+        "unit_mapping": {
+            "CO2": "Gg",
+            "CH4": "Gg",
+            "N2O": "Gg",
+            "NOX": "Gg",
+            "CO": "Gg",
+            "NMVOC": "Gg",
+            "SO2": "Gg",
         },
     },
 }

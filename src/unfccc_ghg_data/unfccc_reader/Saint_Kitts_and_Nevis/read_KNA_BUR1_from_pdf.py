@@ -60,7 +60,8 @@ if __name__ == "__main__":
                 df_page = df_page[skip_rows_start:]
 
             if df_sector is None:
-                df_sector = df_page
+                # Reset index to avoid pandas' SettingWithCopyWarning
+                df_sector = df_page.reset_index(drop=True)
             else:
                 df_sector = pd.concat(
                     [
@@ -142,5 +143,9 @@ if __name__ == "__main__":
         convert_str=True,
         time_format="%Y",
     )
+
+    ### convert to primap2 format ###
+    print("Converting to primap2 format.")
+    data_main_pm2 = pm2.pm2io.from_interchange_format(df_main_IF)
 
     pass
