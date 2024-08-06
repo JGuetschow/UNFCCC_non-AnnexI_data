@@ -3,9 +3,9 @@ Configuration file to read Saint Kitts and Nevis' BUR 1.
 
 Tables to read:
 - The sector tables in the Annex from page 149 - done
-- trend tables page 111-113
-- page 117
-- page 118
+- trend tables page 111-113 - done
+- page 116 - done
+- page 118- work in progress
 - page 119
 - page 121
 - page 124
@@ -70,6 +70,42 @@ conf_general = {
 }
 
 conf_trend = {
+    "energy_industries": {
+        "entity": f"KYOTOGHG ({gwp_to_use})",
+        "unit": "GgCO2eq",
+        "replace_data_entries": {"NO,NE": "NO"},
+        "cat_codes_manual": {
+            "a. Public electricity and heat production": "1.A.1.a",
+            "b. Petroleum refining": "1.A.1.b",
+            "c. Manufacture of solid fuels": "1.A.1.c",
+        },
+        "header": ["orig_category"],
+        "years": [
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+        ],
+        "extra_columns": [],
+        "rows_to_fix": {3: ["a. Public electricity and heat"]},
+        "page_defs": {
+            "116": {
+                "read_params": dict(
+                    flavor="stream",
+                    table_areas=["72,426,543,333"],
+                    columns=["199,229,261,293,324,356,386,416,448,480,511"],
+                ),
+                "skip_rows_start": 2,
+            },
+        },
+    },
     "overview": {
         "fix_single_value": {
             "cat": "MBIO",
@@ -156,11 +192,11 @@ conf_trend = {
             "keep_value_no": 1,
         },
         "page_defs": {
-            "111": {"skip_rows_start": 1},
-            "112": {"skip_rows_start": 1},
-            "113": {"skip_rows_start": 1},
+            "111": {"read_params": dict(flavor="lattice"), "skip_rows_start": 1},
+            "112": {"read_params": dict(flavor="lattice"), "skip_rows_start": 1},
+            "113": {"read_params": dict(flavor="lattice"), "skip_rows_start": 1},
         },
-    }
+    },
 }
 
 conf = {

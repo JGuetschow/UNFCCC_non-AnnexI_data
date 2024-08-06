@@ -5,7 +5,7 @@ import camelot
 import pandas as pd
 import primap2 as pm2
 
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
+from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path, fix_rows
 from unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis.config_kna_bur1 import (
     conf,
     conf_general,
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # ###
 
     df_trend = None
-    for table in reversed(conf_trend.keys()):
+    for table in conf_trend.keys():
         print("-" * 45)
         print(f"Reading {table} trend table.")
         df_table = None
@@ -49,8 +49,9 @@ if __name__ == "__main__":
             tables_inventory_original = camelot.read_pdf(
                 str(input_folder / pdf_file),
                 pages=page,
-                flavor="lattice",
+                # flavor="lattice",
                 split_text=True,
+                **conf_trend[table]["page_defs"][page]["read_params"],
             )
 
             df_page = tables_inventory_original[0].df
@@ -71,6 +72,17 @@ if __name__ == "__main__":
                     axis=0,
                     join="outer",
                 ).reset_index(drop=True)
+
+        # fix content that spreads across multiple rows
+        if "rows_to_fix" in conf_trend[table]:
+            for n_rows in conf_trend[table]["rows_to_fix"].keys():
+                print(f"Merge content for {n_rows=}")
+                df_table = fix_rows(
+                    df_table,
+                    rows_to_fix=conf_trend[table]["rows_to_fix"][n_rows],
+                    col_to_use=0,
+                    n_rows=n_rows,
+                )
 
         df_table.columns = (
             conf_trend[table]["header"]
@@ -139,50 +151,8 @@ if __name__ == "__main__":
                 join="outer",
             ).reset_index(drop=True)
 
-    #     # fill empty strings with NaN and the forward fill category names
-    #     df_page["category"] = df_page["category"].replace("", np.nan).ffill()
-    #
-    #     # remove /n from category names
-    #     df_page["category"] = df_page["category"].str.replace("\n", "")
-    #     # manual replacement of categories
-    #     df_page["category"] = df_page["category"].replace(
-    #         inv_conf_per_sector[sector]["cat_codes_manual"]
-    #     )
-    #
-    #     # remove all thousand separator commas
-    #     for year in trend_years :
-    #         df_page[year] = df_page[year].str.replace(",", ".")
-    #
-    #     # add unit
-    #     df_page["unit"] = inv_conf_per_sector[sector]["unit"]
-    #
-    #     # add entity if needed
-    #     if "entity" in inv_conf_per_sector[sector].keys() :
-    #         df_page["entity"] = inv_conf_per_sector[sector]["entity"]
-    #
-    #     if "unit_conversion" in inv_conf_per_sector[sector].keys() :
-    #         for year in trend_years :
-    #             index = inv_conf_per_sector[sector]["unit_conversion"]["index"]
-    #             conv_factor = inv_conf_per_sector[sector]["unit_conversion"][
-    #                 "conversion_factor"
-    #             ]
-    #             df_page.loc[index, year] = str(
-    #                 conv_factor * float(df_page.loc[index, year])
-    #             )
-    #
-    #     # stack the tables vertically
-    #     if df_trend is None :
-    #         df_trend = df_page
-    #     else :
-    #         df_trend = pd.concat(
-    #             [
-    #                 df_trend,
-    #                 df_page,
-    #             ],
-    #             axis=0,
-    #             join="outer",
-    #         ).reset_index(drop=True)
-    #
+        # break
+
     df_trend_if = pm2.pm2io.convert_wide_dataframe_if(
         df_trend,
         coords_cols=coords_cols,
