@@ -147,7 +147,6 @@ if __name__ == "__main__":
     )
 
     # adapt source and metadata
-    # TODO: processing info is present twice
     current_source = data_pm2_2006.coords["source"].to_numpy()[0]
     data_temp = data_pm2_2006.pr.loc[{"source": current_source}]
     data_pm2_2006 = data_pm2_2006.pr.set("source", "AI_INV", data_temp)
