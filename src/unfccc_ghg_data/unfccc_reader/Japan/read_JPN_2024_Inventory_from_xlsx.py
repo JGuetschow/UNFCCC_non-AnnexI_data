@@ -5,9 +5,6 @@ Files available here: https://www.nies.go.jp/gio/en/aboutghg/index.html
 
 """
 
-import os
-import sys
-
 import pandas as pd
 import primap2 as pm2
 
@@ -55,17 +52,9 @@ if __name__ == "__main__":
     # ###
     # start data reading
     # ###
-
-    # change working directory to script directory for proper folder names
-    script_path = os.path.abspath(sys.argv[0])
-    script_dir_name = os.path.dirname(script_path)
-    os.chdir(script_dir_name)
-
     data_pm2 = None
 
     for sheet in sheets_to_read:
-        # read sheet for the year. Each sheet contains several tables,
-        # we only read the upper row as the other tables are summary tables
         current_sheet_config = sheets_to_read[sheet]
         df_current = pd.read_excel(
             input_folder / inventory_file,
