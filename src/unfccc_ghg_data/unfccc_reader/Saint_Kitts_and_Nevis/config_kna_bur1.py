@@ -483,3 +483,91 @@ conf = {
         },
     },
 }
+
+fix_values_main = [("3A", "CH4", "0.203")]
+
+gas_baskets = {
+    "FGASES (SARGWP100)": ["HFCS (SARGWP100)", "PFCS (SARGWP100)", "SF6", "NF3"],
+    "FGASES (AR4GWP100)": ["HFCS (AR4GWP100)", "PFCS (AR4GWP100)", "SF6", "NF3"],
+    "FGASES (AR5GWP100)": ["HFCS (AR5GWP100)", "PFCS (AR5GWP100)", "SF6", "NF3"],
+    "FGASES (AR6GWP100)": ["HFCS (AR6GWP100)", "PFCS (AR6GWP100)", "SF6", "NF3"],
+    "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O", "FGASES (SARGWP100)"],
+    "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR4GWP100)"],
+    "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR5GWP100)"],
+    "KYOTOGHG (AR6GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR6GWP100)"],
+}
+
+country_processing_step1 = {
+    "tolerance": 0.01,
+    "aggregate_cats": {
+        "M.3.D.AG": {"sources": ["3.D.2"]},
+        "M.3.C.AG": {
+            "sources": [
+                "3.C.1",
+                "3.C.2",
+                "3.C.3",
+                "3.C.4",
+                "3.C.5",
+                "3.C.6",
+                "3.C.7",
+                "3.C.8",
+            ],
+        },
+        "M.AG.ELV": {
+            "sources": ["M.3.C.AG", "M.3.D.AG"],
+        },
+        "3.A": {"sources": ["3.A.1", "3.A.2"]},
+        "3.C": {
+            "sources": [
+                "3.C.1",
+                "3.C.2",
+                "3.C.3",
+                "3.C.4",
+                "3.C.5",
+                "3.C.6",
+                "3.C.7",
+                "3.C.8",
+            ]
+        },
+        "3.D": {"sources": ["3.D.1", "3.D.2"]},
+        "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
+        "M.3.D.LU": {"sources": ["3.D.1"]},
+        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"]},
+        "M.0.EL": {
+            "sources": ["1", "2", "M.AG", "4"],
+        },
+        "3": {"sources": ["M.AG", "M.LULUCF"]},  # consistency check
+        "0": {"sources": ["1", "2", "3", "4"]},  # consistency check
+    },
+    "basket_copy": {
+        "GWPs_to_add": ["AR4GWP100", "SARGWP100", "AR6GWP100"],
+        "entities": ["HFCS", "PFCS", "KYOTOGHG", "UnspMixOfHFCs"],
+        "source_GWP": gwp_to_use,
+    },
+    # "downscale": {
+    #     "sectors": {
+    #         "1.B_CH4": {
+    #             "basket": "1.B",
+    #             "basket_contents": ["1.B.1", "1.B.2"],
+    #             "entities": ["CH4"],
+    #             "dim": f"category ({coords_terminologies['category']})",
+    #             # "tolerance": 0.05,  # some inconsistencies (rounding?)
+    #         },
+    #         "1.B_CO2": {
+    #             "basket": "1.B",
+    #             "basket_contents": ["1.B.1", "1.B.2"],
+    #             "entities": ["CO2"],
+    #             "dim": f"category ({coords_terminologies['category']})",
+    #             "sel": {
+    #                 "time": [
+    #                     "2000",
+    #                     "2005",
+    #                     "2010",
+    #                     "2015",
+    #                     "2020",
+    #                 ]
+    #             },
+    #         },
+    #     }
+    # },
+}
