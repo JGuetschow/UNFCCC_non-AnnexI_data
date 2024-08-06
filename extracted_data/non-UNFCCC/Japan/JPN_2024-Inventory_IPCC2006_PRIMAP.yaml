@@ -2,8 +2,8 @@ attrs:
   references: https://www.nies.go.jp/gio/en/aboutghg/index.html
   rights: ''
   contact: mail@johannes-guetschow.de
-  title: National GHG Inventory of Japan, 2024 Processed on 2024-07-29
-  comment: Read fom xlsx file by Johannes Gütschow Processed on 2024-07-29
+  title: National GHG Inventory of Japan, 2024 Processed on 2024-08-06
+  comment: Read fom xlsx file by Johannes Gütschow Processed on 2024-08-06
   institution: National Institute for Environmental Studies Japan
   cat: category (IPCC2006_PRIMAP)
   area: area (ISO3)
@@ -14,11 +14,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - scenario (PRIMAP)
   - category (IPCC2006_PRIMAP)
-  - source
   - provenance
   - area (ISO3)
+  - scenario (PRIMAP)
+  - source
   - entity
   - unit
 data_file: JPN_2024-Inventory_IPCC2006_PRIMAP.csv
