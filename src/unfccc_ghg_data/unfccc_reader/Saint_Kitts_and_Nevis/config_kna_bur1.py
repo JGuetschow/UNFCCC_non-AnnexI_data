@@ -5,10 +5,10 @@ Tables to read:
 - The sector tables in the Annex from page 149 - done
 - trend tables page 111-113 - done
 - page 116 - done
-- page 118- work in progress
-- page 119
-- page 121
-- page 124
+- page 118 - done
+- page 119 - done
+- page 121 - done
+- page 123 - wip
 
 Not reading:
 - page 97 - trend table with data for 2008, because it's in the trend tables from page 111
@@ -70,6 +70,144 @@ conf_general = {
 }
 
 conf_trend = {
+    "fugitive": {
+        "rows_to_fix": {2: ["1.B.3 - Other emissions from"]},
+        "page_defs": {
+            "125": {
+                "read_params": dict(flavor="lattice"),
+                "skip_rows_start": 2,
+            },
+            "126": {
+                "read_params": dict(
+                    flavor="stream",
+                    table_areas=["72,681,564,638"],
+                    columns=["203,238,272,305,340,370,402,439,469,504,536"],
+                ),
+                "skip_rows_start": 1,
+            },
+        },
+        "entity": f"KYOTOGHG ({gwp_to_use})",
+        "unit": "GgCO2eq",
+        "header": ["orig_category"],
+        "years": [
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+        ],
+        "extra_columns": [],
+    },
+    "other_sectors": {
+        "page_defs": {
+            "123": {
+                "read_params": dict(flavor="lattice"),
+                "skip_rows_start": 2,
+            },
+        },
+        "entity": f"KYOTOGHG ({gwp_to_use})",
+        "unit": "GgCO2eq",
+        "header": ["orig_category"],
+        "years": [
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+        ],
+        "extra_columns": [],
+    },
+    "transport_sub": {
+        "page_defs": {
+            "121": {
+                "read_params": dict(flavor="lattice"),
+                "skip_rows_start": 2,
+            },
+            "122": {
+                "read_params": dict(flavor="lattice"),
+                "skip_rows_start": 0,
+            },
+        },
+        "entity": f"KYOTOGHG ({gwp_to_use})",
+        "unit": "GgCO2eq",
+        "header": ["orig_category"],
+        "years": [
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+        ],
+        "extra_columns": [],
+    },
+    "transport": {
+        "page_defs": {
+            "119": {
+                "read_params": dict(flavor="lattice"),
+                "skip_rows_start": 2,
+            }
+        },
+        "entity": f"KYOTOGHG ({gwp_to_use})",
+        "unit": "GgCO2eq",
+        "header": ["orig_category"],
+        "years": [
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+        ],
+        "extra_columns": [],
+    },
+    "manufacturing_and_construction": {
+        "page_defs": {
+            "118": {
+                "read_params": dict(flavor="lattice"),
+                "skip_rows_start": 2,
+            }
+        },
+        "entity": f"KYOTOGHG ({gwp_to_use})",
+        "unit": "GgCO2eq",
+        "header": ["orig_category"],
+        "years": [
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+        ],
+        "extra_columns": [],
+    },
     "energy_industries": {
         "entity": f"KYOTOGHG ({gwp_to_use})",
         "unit": "GgCO2eq",
@@ -107,6 +245,8 @@ conf_trend = {
         },
     },
     "overview": {
+        # Inconsistencies for table page 11 and page 125 for categories 1.B, 1.B.1 and 1.B.2
+        "rows_to_drop": ["1B", "1B1", "1B2"],
         "fix_single_value": {
             "cat": "MBIO",
             "year": "2018",

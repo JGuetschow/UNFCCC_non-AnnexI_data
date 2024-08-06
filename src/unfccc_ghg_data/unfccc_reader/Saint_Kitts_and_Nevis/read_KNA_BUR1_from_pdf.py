@@ -99,9 +99,10 @@ if __name__ == "__main__":
         # Remove line break characters
         df_table["category"] = df_table["category"].str.replace("\n", " ")
         # first the manual replacements
-        df_table["category"] = df_table["category"].replace(
-            conf_trend[table]["cat_codes_manual"]
-        )
+        if "cat_codes_manual" in conf_trend[table].keys():
+            df_table["category"] = df_table["category"].replace(
+                conf_trend[table]["cat_codes_manual"]
+            )
         # remove dots from category codes
         df_table["category"] = df_table["category"].str.replace(".", "")
         # then the regex replacements
@@ -111,11 +112,18 @@ if __name__ == "__main__":
 
         df_table = df_table.drop(columns="orig_category")
 
+        # drop rows if needed
+        if "rows_to_drop" in conf_trend[table].keys():
+            for row in conf_trend[table]["rows_to_drop"]:
+                row_to_delete = df_table.index[df_table["category"] == row][0]
+                df_table = df_table.drop(index=row_to_delete)
+
         # clean values
         for year in conf_trend[table]["years"]:
-            df_table[year] = df_table[year].replace(
-                conf_trend[table]["replace_data_entries"]
-            )
+            if "replace_data_entries" in conf_trend[table].keys():
+                df_table[year] = df_table[year].replace(
+                    conf_trend[table]["replace_data_entries"]
+                )
             df_table[year] = df_table[year].str.replace("\n", "")
             df_table[year] = df_table[year].str.replace(",", ".")
             # invisible numbers in trend table on page 112
@@ -152,6 +160,8 @@ if __name__ == "__main__":
             ).reset_index(drop=True)
 
         # break
+    # some categories present in main and detailled tables
+    df_trend = df_trend.drop_duplicates()
 
     df_trend_if = pm2.pm2io.convert_wide_dataframe_if(
         df_trend,
@@ -284,4 +294,27 @@ if __name__ == "__main__":
     print("Converting to primap2 format.")
     data_main_pm2 = pm2.pm2io.from_interchange_format(df_main_IF)
 
-    pass
+    # # ###
+    # # Merge tables.
+    # # ###
+
+    print("Merging main and trend table.")
+    data_pm2 = data_main_pm2.pr.merge(data_trend_pm2, tolerance=1)
+
+    # # ###
+    # # Save raw data to IF and native format.
+    # # ###
+
+    data_if = data_pm2.pr.to_interchange_format()
+
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+        data_if,
+    )
+
+    encoding = {var: compression for var in data_pm2.data_vars}
+    data_pm2.pr.to_netcdf(
+        output_folder
+        / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+        encoding=encoding,
+    )
