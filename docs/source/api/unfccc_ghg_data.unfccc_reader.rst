@@ -10,6 +10,7 @@ unfccc\_ghg\_data.unfccc\_reader
   :toctree: ./
 
   unfccc_ghg_data.unfccc_reader.Argentina
+  unfccc_ghg_data.unfccc_reader.Bangladesh
   unfccc_ghg_data.unfccc_reader.Burundi
   unfccc_ghg_data.unfccc_reader.Chile
   unfccc_ghg_data.unfccc_reader.China
