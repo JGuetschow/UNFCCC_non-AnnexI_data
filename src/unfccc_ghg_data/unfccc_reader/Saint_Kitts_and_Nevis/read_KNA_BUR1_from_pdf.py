@@ -9,6 +9,7 @@ from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path
 from unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis.config_kna_bur1 import (
     conf,
     conf_general,
+    conf_trend,
     coords_cols,
     coords_defaults,
     coords_terminologies,
@@ -33,6 +34,171 @@ if __name__ == "__main__":
 
     def repl(m):  # noqa: D103
         return m.group("code")
+
+    # ###
+    # 2. Read trend tables
+    # ###
+
+    df_trend = None
+    for table in reversed(conf_trend.keys()):
+        print("-" * 45)
+        print(f"Reading {table} trend table.")
+        df_table = None
+        for page in conf_trend[table]["page_defs"].keys():
+            print(f"Page {page}")
+            tables_inventory_original = camelot.read_pdf(
+                str(input_folder / pdf_file),
+                pages=page,
+                flavor="lattice",
+                split_text=True,
+            )
+
+            df_page = tables_inventory_original[0].df
+
+            skip_rows_start = conf_trend[table]["page_defs"][page]["skip_rows_start"]
+            if not skip_rows_start == 0:
+                df_page = df_page[skip_rows_start:]
+
+            if df_table is None:
+                # Reset index to avoid pandas' SettingWithCopyWarning
+                df_table = df_page.reset_index(drop=True)
+            else:
+                df_table = pd.concat(
+                    [
+                        df_table,
+                        df_page,
+                    ],
+                    axis=0,
+                    join="outer",
+                ).reset_index(drop=True)
+
+        df_table.columns = (
+            conf_trend[table]["header"]
+            + conf_trend[table]["years"]
+            + conf_trend[table]["extra_columns"]
+        )
+
+        # drop columns if needed
+        if "drop_cols" in conf_trend[table].keys():
+            df_table = df_table.drop(columns=conf_trend[table]["drop_cols"])
+
+        # category codes from category names
+        df_table["category"] = df_table["orig_category"]
+        # Remove line break characters
+        df_table["category"] = df_table["category"].str.replace("\n", " ")
+        # first the manual replacements
+        df_table["category"] = df_table["category"].replace(
+            conf_trend[table]["cat_codes_manual"]
+        )
+        # remove dots from category codes
+        df_table["category"] = df_table["category"].str.replace(".", "")
+        # then the regex replacements
+        df_table["category"] = df_table["category"].str.replace(
+            conf_general["cat_code_regexp"], repl, regex=True
+        )
+
+        df_table = df_table.drop(columns="orig_category")
+
+        # clean values
+        for year in conf_trend[table]["years"]:
+            df_table[year] = df_table[year].replace(
+                conf_trend[table]["replace_data_entries"]
+            )
+            df_table[year] = df_table[year].str.replace("\n", "")
+            df_table[year] = df_table[year].str.replace(",", ".")
+            # invisible numbers in trend table on page 112
+            if "split_values" in conf_trend[table].keys():
+                cat = conf_trend[table]["split_values"]["cat"]
+                keep_value_no = conf_trend[table]["split_values"]["keep_value_no"]
+                new_value = (
+                    df_table.loc[df_table["category"] == cat, year]
+                    .item()
+                    .split(" ")[keep_value_no]
+                )
+                df_table.loc[df_table["category"] == cat, year] = new_value
+
+        if "fix_single_value" in conf_trend[table].keys():
+            cat = conf_trend[table]["fix_single_value"]["cat"]
+            year = conf_trend[table]["fix_single_value"]["year"]
+            new_value = conf_trend[table]["fix_single_value"]["new_value"]
+            df_table.loc[df_table["category"] == cat, year] = new_value
+
+        df_table["unit"] = conf_trend[table]["unit"]
+        df_table["entity"] = conf_trend[table]["entity"]
+
+        # stack the tables vertically
+        if df_trend is None:
+            df_trend = df_table.reset_index(drop=True)
+        else:
+            df_trend = pd.concat(
+                [
+                    df_trend,
+                    df_table,
+                ],
+                axis=0,
+                join="outer",
+            ).reset_index(drop=True)
+
+    #     # fill empty strings with NaN and the forward fill category names
+    #     df_page["category"] = df_page["category"].replace("", np.nan).ffill()
+    #
+    #     # remove /n from category names
+    #     df_page["category"] = df_page["category"].str.replace("\n", "")
+    #     # manual replacement of categories
+    #     df_page["category"] = df_page["category"].replace(
+    #         inv_conf_per_sector[sector]["cat_codes_manual"]
+    #     )
+    #
+    #     # remove all thousand separator commas
+    #     for year in trend_years :
+    #         df_page[year] = df_page[year].str.replace(",", ".")
+    #
+    #     # add unit
+    #     df_page["unit"] = inv_conf_per_sector[sector]["unit"]
+    #
+    #     # add entity if needed
+    #     if "entity" in inv_conf_per_sector[sector].keys() :
+    #         df_page["entity"] = inv_conf_per_sector[sector]["entity"]
+    #
+    #     if "unit_conversion" in inv_conf_per_sector[sector].keys() :
+    #         for year in trend_years :
+    #             index = inv_conf_per_sector[sector]["unit_conversion"]["index"]
+    #             conv_factor = inv_conf_per_sector[sector]["unit_conversion"][
+    #                 "conversion_factor"
+    #             ]
+    #             df_page.loc[index, year] = str(
+    #                 conv_factor * float(df_page.loc[index, year])
+    #             )
+    #
+    #     # stack the tables vertically
+    #     if df_trend is None :
+    #         df_trend = df_page
+    #     else :
+    #         df_trend = pd.concat(
+    #             [
+    #                 df_trend,
+    #                 df_page,
+    #             ],
+    #             axis=0,
+    #             join="outer",
+    #         ).reset_index(drop=True)
+    #
+    df_trend_if = pm2.pm2io.convert_wide_dataframe_if(
+        df_trend,
+        coords_cols=coords_cols,
+        # add_coords_cols=add_coords_cols,
+        coords_defaults=coords_defaults,
+        coords_terminologies=coords_terminologies,
+        coords_value_mapping=coords_value_mapping,
+        # coords_value_filling=coords_value_filling,
+        filter_remove=filter_remove,
+        # filter_keep=filter_keep,
+        meta_data=meta_data,
+    )
+    #
+    ### convert to primap2 format ###
+    print("Converting to primap2 format.")
+    data_trend_pm2 = pm2.pm2io.from_interchange_format(df_trend_if)
 
     # ###
     # 1. Read in main tables
