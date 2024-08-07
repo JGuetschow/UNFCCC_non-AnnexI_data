@@ -170,6 +170,11 @@ if __name__ == "__main__":
     # some categories present in main and detailled tables
     df_trend = df_trend.drop_duplicates()
 
+    # for cat, year, new_value in fix_values_trend :
+    #     df_trend.loc[
+    #             df_trend["category"] == cat, year
+    #         ] = new_value
+
     df_trend_if = pm2.pm2io.convert_wide_dataframe_if(
         df_trend,
         coords_cols=coords_cols,

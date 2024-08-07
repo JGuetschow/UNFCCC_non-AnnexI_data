@@ -63,6 +63,7 @@ filter_remove = {
     "f1": {
         "entity": "Other halogenated gases without CO2 equivalent conversion factors (2)"
     },
+    "f2": {"entity": "3.D.X"},
 }
 
 conf_general = {
@@ -257,7 +258,7 @@ conf_trend = {
         "replace_data_entries": {"NO,NE": "NO"},
         "cat_codes_manual": {
             "Total CO2 Eq. Emissions without  LULUCF": "M.0.EL",
-            "Total CO2 Eq. Emissions with  LULUCF": "M.LULUCF",
+            "Total CO2 Eq. Emissions with  LULUCF": "0",
             # "1. Energy": "1. Energy",
             "A. Fuel Combustion": "1.A",
             "1.  Energy Industries": "1.A.1",
@@ -277,7 +278,7 @@ conf_trend = {
             "F.  Product uses as ODS substitutes": "2.F",
             "G.  Other product manufacture and": "2.G",
             "use  H.  Other": "2.H",
-            # "3.  Agriculture": "3.  Agriculture",
+            "3.  Agriculture": "M.AG",
             "A.  Enteric Fermentation": "3.A.1",
             "B.  Manure Management": "3.A.2",
             "C.  Rice Cultivation": "3.C.7",
@@ -286,8 +287,8 @@ conf_trend = {
             "F.  Field Burning of Agricultural": "3.C.1.b",  # TODO confirm!
             "Residues  G.  Liming": "3.C.2",
             "H.  Urea applications": "3.C.3",
-            "I.  Other carbon-containing": "3.D",  # TODO confirm!
-            "fertilisers  4. Land Use, Land-Use Change and  Forestry": "3.B",
+            "I.  Other carbon-containing": "3.D.2",  # TODO confirm!
+            "fertilisers  4. Land Use, Land-Use Change and  Forestry": "M.LULUCF",
             "A. Forest Land": "3.B.1",
             "B. Cropland": "3.B.2",
             "C. Grassland": "3.B.3",
@@ -295,7 +296,7 @@ conf_trend = {
             "E. Settlements": "3.B.5",
             "F. Other Land": "3.B.6",
             "G. Harvested wood products": "3.D.1",
-            "H. Other": "3.D.2",
+            "H. Other": "3.D.X",
             "5. Waste": "4",
             "A.  Solid Waste Disposal": "4.A",
             "B.  Biological treatment of solid": "4.B",
@@ -484,7 +485,30 @@ conf = {
     },
 }
 
-fix_values_main = [("3A", "CH4", "0.203")]
+fix_values_main = [
+    # ("3A", "CH4", "0.203"),
+    ("3A2", "CH4", "0.03"),
+    # ("3A", "N2O", "0.01"),
+    ("3A2", "N2O", "0"),
+]
+# (category, year, new_value)
+# There are missing numbers in "Fores Land" on page 112
+# I found them as invisible numbers in the row below
+# but deleted them because I didn't know where they belong.
+# Leaving it as it is now, but numbers could be added upstream TODO
+fix_values_trend = [
+    ("3B1", "2008", "-130.02"),
+    ("3B", "2009", "-130.02"),
+    ("3B", "2010", "-130.02"),
+    ("3B", "2011", "-151.6"),
+    ("3B", "2012", "-151.6"),
+    ("3B", "2013", "-151.6"),
+    ("3B", "2014", "-140.34"),
+    ("3B", "2015", "-140.34"),
+    ("3B", "2016", "-140.34"),
+    ("3B", "2017", "-140.34"),
+    ("3B", "2018", "-140.34"),
+]
 
 gas_baskets = {
     "FGASES (SARGWP100)": ["HFCS (SARGWP100)", "PFCS (SARGWP100)", "SF6", "NF3"],
@@ -517,6 +541,7 @@ country_processing_step1 = {
             "sources": ["M.3.C.AG", "M.3.D.AG"],
         },
         "3.A": {"sources": ["3.A.1", "3.A.2"]},
+        "3.B": {"sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"]},
         "3.C": {
             "sources": [
                 "3.C.1",
@@ -541,7 +566,7 @@ country_processing_step1 = {
     },
     "basket_copy": {
         "GWPs_to_add": ["AR4GWP100", "SARGWP100", "AR6GWP100"],
-        "entities": ["HFCS", "PFCS", "KYOTOGHG", "UnspMixOfHFCs"],
+        "entities": ["HFCS", "PFCS", "UnspMixOfHFCs"],
         "source_GWP": gwp_to_use,
     },
     # "downscale": {
