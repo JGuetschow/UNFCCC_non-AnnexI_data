@@ -63,7 +63,7 @@ filter_remove = {
     "f1": {
         "entity": "Other halogenated gases without CO2 equivalent conversion factors (2)"
     },
-    "f2": {"entity": "3.D.X"},
+    "f2": {"entity": "3.D.2.LULUCF"},
 }
 
 conf_general = {
@@ -296,7 +296,7 @@ conf_trend = {
             "E. Settlements": "3.B.5",
             "F. Other Land": "3.B.6",
             "G. Harvested wood products": "3.D.1",
-            "H. Other": "3.D.X",
+            "H. Other": "3.D.2.LULUCF",  # not sure we this belongs, removing it later
             "5. Waste": "4",
             "A.  Solid Waste Disposal": "4.A",
             "B.  Biological treatment of solid": "4.B",
@@ -486,28 +486,57 @@ conf = {
 }
 
 fix_values_main = [
-    # ("3A", "CH4", "0.203"),
+    # numbers don't add up for 3.A
     ("3A2", "CH4", "0.03"),
-    # ("3A", "N2O", "0.01"),
     ("3A2", "N2O", "0"),
+    # numbers don't add up for 1.B
+    ("1B2a", "CO2", "0.002288"),  # value from 1.B nowhere in sub-categories
+    ("1B2aiii", "CO2", "0.002288"),  # value from 1.B.2.a nowhere in sub-categories
+    ("1B2aiii3", "CO2", "0.002288"),  # value from 1.B.2.a.iii nowhere in sub-categories
 ]
-# (category, year, new_value)
-# There are missing numbers in "Fores Land" on page 112
-# I found them as invisible numbers in the row below
-# but deleted them because I didn't know where they belong.
-# Leaving it as it is now, but numbers could be added upstream TODO
+
 fix_values_trend = [
+    # values for gas basket (KYOTOGHG (AR5GWP100)) don't match
+    # Taking values from main table
+    # energy
+    ("1A3bi", "2018", "64.74"),  # (category, year, new_value)
+    ("1A3bi1", "2018", "64.7"),
+    ("1A3bii", "2018", "12.36"),
+    ("1A3bii1", "2018", "11.07"),
+    ("1A3bii2", "2018", "1.28"),
+    ("1A3biii", "2018", "23.66"),
+    ("1A3biv", "2018", "0.16"),
+    ("1A3c", "2018", "0.17"),
+    ("1B2", "2018", "0.002288"),
+    ("1B2a", "2018", "0.002288"),
+    ("1B2aiii", "2018", "0.002288"),
+    ("1B2aiii3", "2018", "0.002288"),
+    # agriculture
+    ("3A1", "2018", "5.04"),
+    ("3A2", "2018", "0.84"),
+    ("3C4", "2018", "2.65"),
+    ("MAG", "2018", "8.54"),
+    # lulucf
+    # There are missing numbers in "Forest Land" - 3.B.1 on page 112
+    # I found them as invisible numbers in the row below
+    # but deleted them because I didn't know where they belong.
+    # Leaving it as it is now, but numbers could be added upstream TODO
     ("3B1", "2008", "-130.02"),
-    ("3B", "2009", "-130.02"),
-    ("3B", "2010", "-130.02"),
-    ("3B", "2011", "-151.6"),
-    ("3B", "2012", "-151.6"),
-    ("3B", "2013", "-151.6"),
-    ("3B", "2014", "-140.34"),
-    ("3B", "2015", "-140.34"),
-    ("3B", "2016", "-140.34"),
-    ("3B", "2017", "-140.34"),
-    ("3B", "2018", "-140.34"),
+    ("3B1", "2009", "-130.02"),
+    ("3B1", "2010", "-130.02"),
+    ("3B1", "2011", "-151.6"),
+    ("3B1", "2012", "-151.6"),
+    ("3B1", "2013", "-151.6"),
+    ("3B1", "2014", "-140.34"),
+    ("3B1", "2015", "-140.34"),
+    ("3B1", "2016", "-140.34"),
+    ("3B1", "2017", "-140.34"),
+    ("3B1", "2018", "-140.34"),
+    # waste
+    ("4D", "2018", "12.32"),
+    ("4C", "2018", "0.03"),
+    ("4A", "2018", "45.92"),
+    ("4", "2018", "58.27"),
 ]
 
 gas_baskets = {
@@ -522,7 +551,7 @@ gas_baskets = {
 }
 
 country_processing_step1 = {
-    "tolerance": 0.01,
+    "tolerance": 0.01,  # errors up to 10 % due to rounding, e.g. 1.A.3.b.iv 0.16 and 0.17
     "aggregate_cats": {
         "M.3.D.AG": {"sources": ["3.D.2"]},
         "M.3.C.AG": {
@@ -556,13 +585,14 @@ country_processing_step1 = {
         },
         "3.D": {"sources": ["3.D.1", "3.D.2"]},
         "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
+        # "M.AG": {"sources": ["3.A.1", "3.A.2", "3.C.4", "3.C.3", "3.D.2"]},
         "M.3.D.LU": {"sources": ["3.D.1"]},
         "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"]},
         "M.0.EL": {
             "sources": ["1", "2", "M.AG", "4"],
         },
         "3": {"sources": ["M.AG", "M.LULUCF"]},  # consistency check
-        "0": {"sources": ["1", "2", "3", "4"]},  # consistency check
+        "0": {"sources": ["1", "2", "3", "4", "5"]},  # consistency check
     },
     "basket_copy": {
         "GWPs_to_add": ["AR4GWP100", "SARGWP100", "AR6GWP100"],

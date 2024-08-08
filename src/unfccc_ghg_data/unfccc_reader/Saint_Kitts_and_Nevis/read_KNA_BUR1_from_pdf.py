@@ -22,6 +22,7 @@ from unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis.config_kna_bur1 import 
     country_processing_step1,
     filter_remove,
     fix_values_main,
+    fix_values_trend,
     gas_baskets,
     meta_data,
 )
@@ -170,10 +171,11 @@ if __name__ == "__main__":
     # some categories present in main and detailled tables
     df_trend = df_trend.drop_duplicates()
 
-    # for cat, year, new_value in fix_values_trend :
-    #     df_trend.loc[
-    #             df_trend["category"] == cat, year
-    #         ] = new_value
+    for cat, year, new_value in fix_values_trend:
+        # make sure there is exactly one value that matches the filter
+        # TODO ruff wants to remove the assert statements here
+        assert len(df_trend.loc[df_trend["category"] == cat, year]) == 1  # noqa: S101
+        df_trend.loc[df_trend["category"] == cat, year] = new_value
 
     df_trend_if = pm2.pm2io.convert_wide_dataframe_if(
         df_trend,
@@ -290,6 +292,16 @@ if __name__ == "__main__":
 
     # fix values
     for cat, ent, new_value in fix_values_main:
+        # Make sure value to replace is found in data frame
+        # TODO ruff wants to remove the assert statements here
+        assert (  # noqa: S101
+            len(
+                df_main.loc[
+                    (df_main["category"] == cat) & (df_main["entity"] == ent), "data"
+                ]
+            )
+            == 1
+        )
         df_main.loc[
             (df_main["category"] == cat) & (df_main["entity"] == ent), "data"
         ] = new_value
