@@ -15,12 +15,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - provenance
-  - source
-  - class
   - category (CRT1)
-  - area (ISO3)
+  - source
   - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - class
   - entity
   - unit
 data_file: AUS_CRT1_12042024.csv
