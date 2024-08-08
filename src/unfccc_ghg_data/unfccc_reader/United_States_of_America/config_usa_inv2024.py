@@ -138,7 +138,7 @@ inventory_files = {
                     "CH4": f"CH4 ({gwp_to_use})",
                     "N2O": f"N2O ({gwp_to_use})",
                     "LULUCF Carbon Stock Changee": "CO2",
-                    "LULUCF Sector Net Totalf": f"KYOTGHG ({gwp_to_use})",
+                    "LULUCF Sector Net Totalf": f"KYOTOGHG ({gwp_to_use})",
                 },
                 "category": {
                     #'LULUCF Emissionsc': '',
