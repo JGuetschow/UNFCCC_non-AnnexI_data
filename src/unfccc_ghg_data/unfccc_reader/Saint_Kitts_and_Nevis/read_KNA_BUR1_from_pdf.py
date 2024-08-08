@@ -45,7 +45,7 @@ if __name__ == "__main__":
         return m.group("code")
 
     # ###
-    # 2. Read trend tables
+    # 1. Read trend tables
     # ###
 
     df_trend = None
@@ -58,7 +58,6 @@ if __name__ == "__main__":
             tables_inventory_original = camelot.read_pdf(
                 str(input_folder / pdf_file),
                 pages=page,
-                # flavor="lattice",
                 split_text=True,
                 **conf_trend[table]["page_defs"][page]["read_params"],
             )
@@ -118,7 +117,6 @@ if __name__ == "__main__":
         df_table["category"] = df_table["category"].str.replace(
             conf_general["cat_code_regexp"], repl, regex=True
         )
-
         df_table = df_table.drop(columns="orig_category")
 
         # drop rows if needed
@@ -127,7 +125,7 @@ if __name__ == "__main__":
                 row_to_delete = df_table.index[df_table["category"] == row][0]
                 df_table = df_table.drop(index=row_to_delete)
 
-        # clean values
+        # bring values in right format
         for year in conf_trend[table]["years"]:
             if "replace_data_entries" in conf_trend[table].keys():
                 df_table[year] = df_table[year].replace(
@@ -135,7 +133,10 @@ if __name__ == "__main__":
                 )
             df_table[year] = df_table[year].str.replace("\n", "")
             df_table[year] = df_table[year].str.replace(",", ".")
-            # invisible numbers in trend table on page 112
+            # There are "invisible" numbers in trend table on page 112, "A. Forest Land"
+            # I'm removing them here, but they actually belong to the above,
+            # which I didn't know when I wrote this code
+            # TODO: Invisible values can be added to row above directly
             if "split_values" in conf_trend[table].keys():
                 cat = conf_trend[table]["split_values"]["cat"]
                 keep_value_no = conf_trend[table]["split_values"]["keep_value_no"]
@@ -168,7 +169,8 @@ if __name__ == "__main__":
                 join="outer",
             ).reset_index(drop=True)
 
-    # some categories present in main and detailled tables
+    # some categories present in trend table on page 112 and the following detailed
+    # tables for the sub-categories
     df_trend = df_trend.drop_duplicates()
 
     for cat, year, new_value in fix_values_trend:
@@ -180,13 +182,10 @@ if __name__ == "__main__":
     df_trend_if = pm2.pm2io.convert_wide_dataframe_if(
         df_trend,
         coords_cols=coords_cols,
-        # add_coords_cols=add_coords_cols,
         coords_defaults=coords_defaults,
         coords_terminologies=coords_terminologies,
         coords_value_mapping=coords_value_mapping,
-        # coords_value_filling=coords_value_filling,
         filter_remove=filter_remove,
-        # filter_keep=filter_keep,
         meta_data=meta_data,
     )
     #
@@ -195,11 +194,11 @@ if __name__ == "__main__":
     data_trend_pm2 = pm2.pm2io.from_interchange_format(df_trend_if)
 
     # ###
-    # 1. Read in main tables
+    # 2. Read in main tables
     # ###
 
     df_main = None
-    for sector in reversed(conf.keys()):
+    for sector in conf.keys():
         print("-" * 45)
         print(f"Reading table for {sector}.")
 
@@ -210,7 +209,6 @@ if __name__ == "__main__":
                 str(input_folder / pdf_file),
                 pages=page,
                 flavor="lattice",
-                # split_text=True,
             )
 
             df_page = tables_inventory_original[0].df
@@ -284,8 +282,6 @@ if __name__ == "__main__":
                 axis=0,
                 join="outer",
             ).reset_index(drop=True)
-
-        # break
 
     # year is the same for all sector tables
     df_main["time"] = "2018"

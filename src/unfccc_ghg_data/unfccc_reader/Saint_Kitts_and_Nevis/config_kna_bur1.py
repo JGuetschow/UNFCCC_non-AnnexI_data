@@ -1,18 +1,5 @@
 """
 Configuration file to read Saint Kitts and Nevis' BUR 1.
-
-Tables to read:
-- The sector tables in the Annex from page 149 - done
-- trend tables page 111-113 - done
-- page 116 - done
-- page 118 - done
-- page 119 - done
-- page 121 - done
-- page 123 - wip
-
-Not reading:
-- page 97 - trend table with data for 2008, because it's in the trend tables from page 111
-- page 113 - slice of trend table on page 111
 """
 
 gwp_to_use = "AR5GWP100"
@@ -63,7 +50,7 @@ filter_remove = {
     "f1": {
         "entity": "Other halogenated gases without CO2 equivalent conversion factors (2)"
     },
-    "f2": {"entity": "3.D.2.LULUCF"},
+    "f2": {"entity": "3D2LULUCF"},
 }
 
 conf_general = {
@@ -342,7 +329,6 @@ conf_trend = {
 
 conf = {
     "energy": {
-        # TODO: List of entities are always keys of unit mapping dict
         "entities": ["CO2", "CH4", "N2O", "NOX", "CO", "NMVOCs", "SO2"],
         "header": ["orig_category"],
         "cat_codes_manual": {
@@ -496,8 +482,9 @@ fix_values_main = [
 ]
 
 fix_values_trend = [
-    # values for gas basket (KYOTOGHG (AR5GWP100)) don't match
-    # Taking values from main table
+    # Most of the values for (KYOTOGHG (AR5GWP100)) don't match
+    # with the values from the main table.
+    # Replacing with values from main table
     # energy
     ("1A3bi", "2018", "64.74"),  # (category, year, new_value)
     ("1A3bi1", "2018", "64.7"),
@@ -551,7 +538,7 @@ gas_baskets = {
 }
 
 country_processing_step1 = {
-    "tolerance": 0.01,  # errors up to 10 % due to rounding, e.g. 1.A.3.b.iv 0.16 and 0.17
+    "tolerance": 0.01,
     "aggregate_cats": {
         "M.3.D.AG": {"sources": ["3.D.2"]},
         "M.3.C.AG": {
@@ -585,7 +572,6 @@ country_processing_step1 = {
         },
         "3.D": {"sources": ["3.D.1", "3.D.2"]},
         "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
-        # "M.AG": {"sources": ["3.A.1", "3.A.2", "3.C.4", "3.C.3", "3.D.2"]},
         "M.3.D.LU": {"sources": ["3.D.1"]},
         "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"]},
         "M.0.EL": {
@@ -599,30 +585,4 @@ country_processing_step1 = {
         "entities": ["HFCS", "PFCS", "UnspMixOfHFCs"],
         "source_GWP": gwp_to_use,
     },
-    # "downscale": {
-    #     "sectors": {
-    #         "1.B_CH4": {
-    #             "basket": "1.B",
-    #             "basket_contents": ["1.B.1", "1.B.2"],
-    #             "entities": ["CH4"],
-    #             "dim": f"category ({coords_terminologies['category']})",
-    #             # "tolerance": 0.05,  # some inconsistencies (rounding?)
-    #         },
-    #         "1.B_CO2": {
-    #             "basket": "1.B",
-    #             "basket_contents": ["1.B.1", "1.B.2"],
-    #             "entities": ["CO2"],
-    #             "dim": f"category ({coords_terminologies['category']})",
-    #             "sel": {
-    #                 "time": [
-    #                     "2000",
-    #                     "2005",
-    #                     "2010",
-    #                     "2015",
-    #                     "2020",
-    #                 ]
-    #             },
-    #         },
-    #     }
-    # },
 }
