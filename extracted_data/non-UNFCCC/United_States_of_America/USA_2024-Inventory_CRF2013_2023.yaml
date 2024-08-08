@@ -13,11 +13,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - scenario (PRIMAP)
   - area (ISO3)
-  - provenance
-  - source
   - category (CRF2013_2023)
+  - source
+  - provenance
+  - scenario (PRIMAP)
   - entity
   - unit
 data_file: USA_2024-Inventory_CRF2013_2023.csv

@@ -339,7 +339,10 @@ cat_conversion = {
         "4.B": {"sources": ["4.B.1", "4.B.2"]},
         "4": {"sources": ["4.A", "4.B", "4.D"]},
         # consistency check
-        "0": {"sources": ["1", "2", "3", "4"]},
+        "0": {
+            "sources": ["1", "2", "3", "4"],
+            "filter": {"entity": ["CH4", "N2O", "CO2", "NF3", "SF6", "HFCS", "PFCS"]},
+        },
         "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},
     },
 }
