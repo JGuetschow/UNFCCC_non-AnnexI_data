@@ -225,7 +225,9 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                         }
                     )
                     if cat_name_present:
-                        cat_name = subtract_cats_current[cat_to_generate]["name"]
+                        cat_name = subtract_cats_current[cat_to_generate][
+                            "orig_cat_name"
+                        ]
                         data_agg = data_agg.assign_coords(
                             coords={
                                 "orig_cat_name": (
