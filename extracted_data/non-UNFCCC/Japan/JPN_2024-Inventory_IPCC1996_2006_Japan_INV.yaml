@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - scenario (PRIMAP)
   - category (IPCC1996_2006_Japan_INV)
-  - source
   - provenance
   - area (ISO3)
+  - scenario (PRIMAP)
+  - source
   - entity
   - unit
 data_file: JPN_2024-Inventory_IPCC1996_2006_Japan_INV.csv
