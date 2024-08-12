@@ -254,11 +254,6 @@ country_processing_step1 = {
         # "3.A": {"sources": ["3.A.1", "3.A.2"]}, # consistency check
         "4": {"sources": ["4.A", "4.B", "4.C", "4.D", "4.E"]},  # consistency check
     },
-    "basket_copy": {
-        "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
-        "entities": ["HFCS", "FGASES"],
-        "source_GWP": gwp_to_use,
-    },
 }
 
 country_processing_step2 = {
@@ -277,51 +272,52 @@ country_processing_step2 = {
                 "entities": ["CO2"],
                 "dim": f'category ({coords_terminologies["category"]})',
             },
-            "2_KYOTO": {
-                # error of 3.5% for KYOTOGHG (AR6GWP100)
-                "check_consistency": False,
-                "basket": "2",
-                "basket_contents": [
-                    "2.A",
-                    "2.B",
-                    "2.C",
-                    "2.D",
-                    "2.E",
-                    "2.F",
-                    "2.G",
-                    "2.H",
-                ],
-                "entities": [
-                    "KYOTOGHG (SARGWP100)",
-                    "KYOTOGHG (AR4GWP100)",
-                    "KYOTOGHG (AR5GWP100)",
-                    "KYOTOGHG (AR6GWP100)",
-                ],
-                "dim": f'category ({coords_terminologies["category"]})',
-            },
-            "2_FGASES": {
-                # error of 3.5% for KYOTOGHG (AR6GWP100)
-                "check_consistency": False,
-                "basket": "2",
-                "basket_contents": [
-                    "2.B",
-                    "2.C",
-                    "2.E",
-                    "2.F",
-                    "2.G",
-                ],
-                "entities": [
-                    "FGASES (SARGWP100)",
-                    "FGASES (AR4GWP100)",
-                    "FGASES (AR5GWP100)",
-                    "FGASES (AR6GWP100)",
-                    "HFCS (SARGWP100)",
-                    "HFCS (AR4GWP100)",
-                    "HFCS (AR5GWP100)",
-                    "HFCS (AR6GWP100)",
-                ],
-                "dim": f'category ({coords_terminologies["category"]})',
-            },
+            # "2_KYOTO": {  # commented as KYOTOGHG only present for bunkers, so aggregate later
+            #     # error of 3.5% for KYOTOGHG (AR6GWP100)
+            #     "check_consistency": False,
+            #     "basket": "2",
+            #     "basket_contents": [
+            #         "2.A",
+            #         "2.B",
+            #         "2.C",
+            #         "2.D",
+            #         "2.E",
+            #         "2.F",
+            #         "2.G",
+            #         "2.H",
+            #     ],
+            #     "entities": [
+            #         "KYOTOGHG (SARGWP100)",
+            #         "KYOTOGHG (AR4GWP100)",
+            #         "KYOTOGHG (AR5GWP100)",
+            #         "KYOTOGHG (AR6GWP100)",
+            #     ],
+            #     "dim": f'category ({coords_terminologies["category"]})',
+            # },
+            # "2_FGASES": {  # f-gases have no sectoral detail and HFCs only 2019,
+            #     # no downscaling of original data possible
+            #     # error of 3.5% for KYOTOGHG (AR6GWP100)
+            #     "check_consistency": False,
+            #     "basket": "2",
+            #     "basket_contents": [
+            #         "2.B",
+            #         "2.C",
+            #         "2.E",
+            #         "2.F",
+            #         "2.G",
+            #     ],
+            #     "entities": [
+            #         "FGASES (SARGWP100)",
+            #         "FGASES (AR4GWP100)",
+            #         "FGASES (AR5GWP100)",
+            #         "FGASES (AR6GWP100)",
+            #         "HFCS (SARGWP100)",
+            #         "HFCS (AR4GWP100)",
+            #         "HFCS (AR5GWP100)",
+            #         "HFCS (AR6GWP100)",
+            #     ],
+            #     "dim": f'category ({coords_terminologies["category"]})',
+            # },
             "3_CH4": {
                 "basket": "3",
                 "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
@@ -340,18 +336,29 @@ country_processing_step2 = {
                 "entities": ["N2O"],
                 "dim": f'category ({coords_terminologies["category"]})',
             },
-            "3_KYOTO": {
-                "basket": "3",
-                "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
-                "entities": [
-                    "KYOTOGHG (SARGWP100)",
-                    "KYOTOGHG (AR4GWP100)",
-                    "KYOTOGHG (AR5GWP100)",
-                    "KYOTOGHG (AR6GWP100)",
-                ],
-                "dim": f'category ({coords_terminologies["category"]})',
+            # "3_KYOTO": {  # no original data here. aggregate basket later
+            #     "basket": "3",
+            #     "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
+            #     "entities": [
+            #         "KYOTOGHG (SARGWP100)",
+            #         "KYOTOGHG (AR4GWP100)",
+            #         "KYOTOGHG (AR5GWP100)",
+            #         "KYOTOGHG (AR6GWP100)",
+            #     ],
+            #     "dim": f'category ({coords_terminologies["category"]})',
+            # },
+        },
+        "entities": {
+            "FGASES": {
+                "basket": "FGASES (SARGWP100)",
+                "basket_contents": ["HFCS (SARGWP100)"],
             },
         },
+    },
+    "basket_copy": {
+        "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+        "entities": ["HFCS"],
+        "source_GWP": gwp_to_use,
     },
 }
 
