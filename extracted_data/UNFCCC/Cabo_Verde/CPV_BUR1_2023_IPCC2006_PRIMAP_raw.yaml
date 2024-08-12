@@ -1,0 +1,22 @@
+attrs:
+  references: unfccc.int/documents/638907
+  rights: ''
+  contact: daniel-busch@climate-resource.de
+  title: Cabo Verde. Biennial update report (BUR). BUR1
+  comment: Read fom pdf by Daniel Busch
+  institution: UNFCCC
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - scenario (PRIMAP)
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - source
+  - entity
+  - unit
+data_file: CPV_BUR1_2023_IPCC2006_PRIMAP_raw.csv
