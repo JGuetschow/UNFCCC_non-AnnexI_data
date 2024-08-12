@@ -1,0 +1,24 @@
+attrs:
+  references: https://naei.beis.gov.uk/reports/reports?report_id=1140
+  rights: ''
+  contact: mail@johannes-guetschow.de
+  title: Devolved Administration GHG Inventory 1990-2022 Processed on 2024-07-31
+  comment: Read fom xlsx file by Johannes Gütschow Processed on 2024-07-31
+  institution: National Atmospheric Emissions Inventory (United Kingdom)
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  entity: PFCS
+  gwp_context: AR6GWP100
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - source
+  - area (ISO3)
+  - provenance
+  - category (IPCC2006_PRIMAP)
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: GBR_2024-Inventory_IPCC2006_PRIMAP.csv

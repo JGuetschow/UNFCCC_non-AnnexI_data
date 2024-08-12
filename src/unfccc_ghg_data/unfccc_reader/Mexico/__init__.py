@@ -1,6 +1,6 @@
 """Read Mexico's BURs, NIRs, NCs
 
-Scripts and configurations to read Argentina's submissions to the UNFCCC.
+Scripts and configurations to read Mexico's submissions to the UNFCCC.
 Currently, the following submissions and datasets are available (all datasets
 including DI (red using the DI-reader) and legacy BUR/NIR (no code)):
 
