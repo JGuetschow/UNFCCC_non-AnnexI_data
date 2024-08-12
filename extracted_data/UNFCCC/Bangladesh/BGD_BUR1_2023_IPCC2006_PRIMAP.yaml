@@ -1,0 +1,24 @@
+attrs:
+  references: https://unfccc.int/documents/634149
+  rights: ''
+  contact: daniel-busch@climate-resource.de
+  title: Bangladesh. Biennial update report (BUR). BUR1 Processed on 2024-08-12 Processed
+    on 2024-08-12
+  comment: Read fom pdf by Daniel Busch Processed on 2024-08-12 Processed on 2024-08-12
+  institution: UNFCCC
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  entity: KYOTOGHG
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - provenance
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - source
+  - scenario (PRIMAP)
+  - entity
+  - unit
+data_file: BGD_BUR1_2023_IPCC2006_PRIMAP.csv
