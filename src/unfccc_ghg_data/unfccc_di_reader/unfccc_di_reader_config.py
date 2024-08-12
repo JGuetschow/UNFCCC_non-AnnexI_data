@@ -341,7 +341,7 @@ cat_conversion = {
             "2.H": {"sources": ["M.2.H.1_2", "2.H.3"], "orig_cat_name": "Other"},
             "2": {
                 "sources": ["2.A", "2.B", "2.C", "2.D", "2.F", "2.H"],
-                "name": "Industrial Processes and Product Use",
+                "orig_cat_name": "Industrial Processes and Product Use",
             },
             "3.A": {"sources": ["3.A.1", "3.A.2"], "orig_cat_name": "Livestock"},
             "3.C.1": {
