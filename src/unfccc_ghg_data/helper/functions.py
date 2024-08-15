@@ -182,6 +182,22 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                 time=processing_info_country["remove_years"]
             )
 
+        # move timeseries if desired
+        if "move_ts" in processing_info_country:
+            for case in processing_info_country["move_ts"]:
+                move_info = copy.deepcopy(processing_info_country["move_ts"][case])
+                entities = move_info["entities"]
+                dim = move_info["dim"]
+                sel = move_info["sel"].copy()
+                sel.update({dim: move_info["from"]})
+                to_val = move_info["to"]
+                for entity in entities:
+                    ts_to_move = data_country[entity].pr.loc[sel]
+                    data_country[entity] = data_country[entity].pr.set(
+                        dim, to_val, ts_to_move
+                    )
+                    data_country[entity].pr.loc[sel] *= np.nan
+
         # subtract categories
         if "subtract_cats" in processing_info_country:
             subtract_cats_current = processing_info_country["subtract_cats"]
