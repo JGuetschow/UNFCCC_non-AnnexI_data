@@ -45,7 +45,7 @@ coords_defaults = {
     "source": "BGD-GHG-Inventory",
     "provenance": "measured",
     "area": "BGD",
-    "scenario": "BUR2",
+    "scenario": "BUR1",
 }
 
 gwp_to_use = "AR4GWP100"
