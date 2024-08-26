@@ -175,6 +175,18 @@ if __name__ == "__main__":
     aggregate_cats_N2O = {
         "3.A.2": {"sources": ["3.A.2.b"], "orig_cat_name": "3A2 Manure Management"},
         "3.A": {"sources": ["3.A.2"], "orig_cat_name": "3A Livestock"},
+        "3": {
+            "sources": ["3.A", "3.B", "3.C", "3.D"],
+            "orig_cat_name": "3 AGRICULTURE, FORESTRY AND OTHER LAND USE",
+        },
+    }
+
+    aggregate_cats_CH4 = {
+        "3.A": {"sources": ["3.A.1", "3.A.2"], "orig_cat_name": "3A Livestock"},
+        "3": {
+            "sources": ["3.A", "3.B", "3.C", "3.D"],
+            "orig_cat_name": "3 AGRICULTURE, FORESTRY AND OTHER LAND USE",
+        },
     }
 
     aggregate_cats_CO2CH4N2O = {
@@ -308,6 +320,7 @@ if __name__ == "__main__":
                 ]
             ).sum(min_count=1)
 
+            df_combine = df_combine.drop(columns=[cat_label, "orig_cat_name"])
             df_combine.insert(0, cat_label, cat_to_agg)
             df_combine.insert(
                 1, "orig_cat_name", aggregate_cats[cat_to_agg]["orig_cat_name"]
@@ -320,10 +333,11 @@ if __name__ == "__main__":
             print(f"no data to aggregate category {cat_to_agg}")
 
     # delete cat 3 for N2O as it's wrong
-    index_3A_N2O = data_if[
-        (data_if[cat_label] == "3") & (data_if["entity"] == "N2O")
+    index_3_N2O = data_if[
+        (data_if[cat_label].isin(["3", "3.A", "3.A.2"]))
+        & (data_if["entity"].isin(["N2O"]))
     ].index
-    data_if = data_if.drop(index_3A_N2O)
+    data_if = data_if.drop(index_3_N2O)
 
     # aggregate cat 3 for N2O
     for cat_to_agg in aggregate_cats_N2O:
@@ -356,6 +370,55 @@ if __name__ == "__main__":
                 ]
             ).sum(min_count=1)
 
+            df_combine = df_combine.drop(columns=[cat_label, "orig_cat_name"])
+            df_combine.insert(0, cat_label, cat_to_agg)
+            df_combine.insert(
+                1, "orig_cat_name", aggregate_cats_N2O[cat_to_agg]["orig_cat_name"]
+            )
+
+            df_combine = df_combine.reset_index()
+
+            data_if = pd.concat([data_if, df_combine])
+        else:
+            print(f"no data to aggregate category {cat_to_agg}")
+
+    index_3_CH4 = data_if[
+        (data_if[cat_label].isin(["3", "3.A"])) & (data_if["entity"].isin(["CH4"]))
+    ].index
+    data_if = data_if.drop(index_3_CH4)
+
+    # aggregate cat 3 for CH4
+    for cat_to_agg in aggregate_cats_CH4:
+        mask = data_if[cat_label].isin(aggregate_cats_CH4[cat_to_agg]["sources"])
+        df_test = data_if[mask]
+        df_test = df_test[df_test["entity"] == "CH4"]
+
+        if len(df_test) > 0:
+            print(f"Aggregating category {cat_to_agg}")
+            df_combine = df_test.copy(deep=True)
+
+            time_format = "%Y"
+            time_columns = [
+                col
+                for col in df_combine.columns.to_numpy()
+                if matches_time_format(col, time_format)
+            ]
+
+            for col in time_columns:
+                df_combine[col] = pd.to_numeric(df_combine[col], errors="coerce")
+
+            df_combine = df_combine.groupby(
+                by=[
+                    "source",
+                    "scenario (PRIMAP)",
+                    "provenance",
+                    "area (ISO3)",
+                    "entity",
+                    "unit",
+                ]
+            ).sum(min_count=1)
+
+            df_combine = df_combine.drop(columns=[cat_label, "orig_cat_name"])
             df_combine.insert(0, cat_label, cat_to_agg)
             df_combine.insert(
                 1, "orig_cat_name", aggregate_cats_N2O[cat_to_agg]["orig_cat_name"]
@@ -369,11 +432,11 @@ if __name__ == "__main__":
 
     # delete cat 3.A.2 for CO2CH4N2O as it's wrong
     index_3A2_CO2CH4N2O = data_if[
-        (data_if[cat_label] == "3.A.2") & (data_if["entity"] == "CH4CO2N2O (SARGWP100)")
+        (data_if[cat_label] == "3.A.2") & (data_if["entity"] == "CO2CH4N2O (SARGWP100)")
     ].index
     data_if = data_if.drop(index_3A2_CO2CH4N2O)
 
-    # aggregate cat 3 for N2O
+    # aggregate cat 3 for CO2CH4N2O
     for cat_to_agg in aggregate_cats_CO2CH4N2O:
         mask = data_if[cat_label].isin(aggregate_cats_CO2CH4N2O[cat_to_agg]["sources"])
         df_test = data_if[mask]
@@ -404,6 +467,7 @@ if __name__ == "__main__":
                 ]
             ).sum(min_count=1)
 
+            df_combine = df_combine.drop(columns=[cat_label, "orig_cat_name"])
             df_combine.insert(0, cat_label, cat_to_agg)
             df_combine.insert(
                 1,
@@ -416,6 +480,12 @@ if __name__ == "__main__":
             data_if = pd.concat([data_if, df_combine])
         else:
             print(f"no data to aggregate category {cat_to_agg}")
+
+    # Fix 4.B.1 for CH4 as it's  wrong
+    index_4B1_CH4 = data_if[
+        (data_if[cat_label] == "4.B.1") & (data_if["entity"] == "CH4")
+    ].index
+    data_if.loc[index_4B1_CH4]["2019"] = data_if.loc[index_4B1_CH4]["2019"] / 100
 
     data_if.attrs = attrs
 
