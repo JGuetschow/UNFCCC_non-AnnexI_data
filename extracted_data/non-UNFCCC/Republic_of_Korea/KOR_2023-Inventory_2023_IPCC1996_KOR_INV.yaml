@@ -14,10 +14,10 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - category (IPCC1996_KOR_INV)
   - provenance
-  - scenario (PRIMAP)
+  - category (IPCC1996_KOR_INV)
   - area (ISO3)
+  - scenario (PRIMAP)
   - source
   - entity
   - unit
