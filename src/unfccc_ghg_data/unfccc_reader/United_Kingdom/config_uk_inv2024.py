@@ -412,23 +412,23 @@ cat_conversion = {
         "3.B.3": "3.A.2.h",  # 3B23_Manure_Management_X_swine
         "3.B.4": "3.A.2.i",  # 3B24_Manure_Management_X_other:poultry
         "3.B.5": "3.C.6",  # 3B25_Manure_Management_Indirect_Emissions_swine
-        "3.D.a.1": "3.C.4.a",  # 3D11_Agriculural_Soils_Inorganic_N_Fertilisers
-        "3.D.a.2.a": "M.3.C.4.b.i",  # 3D12a_Agricultural_Soils_Manure_Applied_to_Soils
-        "3.D.a.2.b": "M.3.C.4.b.ii",  # 3D12b_Agricultural_Soils_Sewage_Sludge_Applied_to_Soils
-        "3.D.a.2.c": "M.3.C.4.b.iii",  # 3D12c_Agricultural_Soils_Other_Organic_Fertilisers_Applied_to_Soils
+        "3.D.a.1": "M.3.C.4.a.AG",  # 3D11_Agriculural_Soils_Inorganic_N_Fertilisers
+        "3.D.a.2.a": "M.3.C.4.b.i.AG",  # 3D12a_Agricultural_Soils_Manure_Applied_to_Soils
+        "3.D.a.2.b": "M.3.C.4.b.ii.AG",  # 3D12b_Agricultural_Soils_Sewage_Sludge_Applied_to_Soils
+        "3.D.a.2.c": "M.3.C.4.b.iii.AG",  # 3D12c_Agricultural_Soils_Other_Organic_Fertilisers_Applied_to_Soils
         "3.D.a.3": "3.C.4.c",  # 3D13_Agricultural_Soils_Manure_Deposited_by_Grazing_Animals
         "3.D.a.4": "3.C.4.d",  # 3D14_Agriculural_Soils_Residues
-        "3.D.a.5": "M.3.C.4.e",  # 3D15_Agricultural_soils_Mineralization/Immobilization
-        "3.D.a.6": "M.3.C.4.f",  # 3D16_Agricultural_soils_Cultivation_of_Organic_Soils
-        "3.D.b.1": "M.3.C.5.AG.a",  # 3D21_Agriculural_Soils_Indirect_Deposition
-        "3.D.b.2": "M.3.C.5.AG.b",  # 3D22_Agriculural_Soils_Indirect_Leaching_and_Run-off
+        "3.D.a.5": "M.3.C.4.e.AG",  # 3D15_Agricultural_soils_Mineralization/Immobilization
+        "3.D.a.6": "M.3.C.4.f.AG",  # 3D16_Agricultural_soils_Cultivation_of_Organic_Soils
+        "3.D.b.1": "M.3.C.5.a.AG",  # 3D21_Agriculural_Soils_Indirect_Deposition
+        "3.D.b.2": "M.3.C.5.b.AG",  # 3D22_Agriculural_Soils_Indirect_Leaching_and_Run-off
         "3.F.1.a": "M.3.C.1.b.i",  # 3F11_Field_burning_wheat
         "3.F.1.b": "M.3.C.1.b.ii",  # 3F12_Field_burning_barley
         "3.F.1.d": "M.3.C.1.b.iii",  # 3F14_Field_burning_other_cereals
         "3.F.5": "M.3.C.1.b.iv",  # 3F5_Field_burning_other_residues
         "3.G.1": "M.3.C.2.a",  # 3G1_Liming - limestone
         "3.G.2": "M.3.C.2.b",  # 3G2_Liming - dolomite
-        "3.H": "3.C.3",  # 3H_Urea application
+        "3.H": "M.3.C.3.AG",  # 3H_Urea application
         "4": "M.3.C.5.LU",  # 4_Indirect_N2O_Emissions (LULUCF)
         "4.A": "M.3.B.1.DR",  # 4A_Forest Land_Emissions_from_Drainage
         "4.A.1": "3.B.1.a",  # 4A1_ Forest Land remaining Forest Land
@@ -609,23 +609,48 @@ cat_conversion = {
         },
         "3.C.1": {"sources": ["3.C.1.b"]},
         "M.3.C.1.AG": {"sources": ["3.C.1.b"]},
-        "3.C.2": {"sources": ["M.3.C.2.a", "M.3.C.2.b"]},
-        "3.C.4.b": {"sources": ["M.3.C.4.b.i", "M.3.C.4.b.ii", "M.3.C.4.b.iii"]},
+        "M.3.C.2.AG": {"sources": ["M.3.C.2.a.AG", "M.3.C.2.b.AG"]},
+        "3.C.2": {"sources": ["M.3.C.2.AG"]},
+        "3.C.3": {"sources": ["M.3.C.3.AG"]},
+        "3.C.4.a": {"sources": ["M.3.C.4.a.AG"]},
+        "M.3.C.4.b.AG": {
+            "sources": ["M.3.C.4.b.i.AG", "M.3.C.4.b.ii.AG", "M.3.C.4.b.iii.AG"]
+        },
+        "3.C.4.b": {"sources": ["M.3.C.4.b.AG"]},
+        "3.C.4.e": {"sources": ["M.3.C.4.e.AG"]},
+        "3.C.4.f": {"sources": ["M.3.C.4.f.AG"]},
+        "M.3.C.4.AG": {
+            "sources": [
+                "3.C.4.a.AG",
+                "3.C.4.b.AG",
+                "3.C.4.c",
+                "3.C.4.d",
+                "M.3.C.4.e.AG",
+                "M.3.C.4.f.AG",
+            ]
+        },
         "3.C.4": {
             "sources": [
                 "3.C.4.a",
                 "3.C.4.b",
                 "3.C.4.c",
                 "3.C.4.d",
-                "M.3.C.4.e",
-                "M.3.C.4.f",
+                "3.C.4.e",
+                "3.C.4.f",
             ]
         },
-        "M.3.C.5.AG": {"sources": ["M.3.C.5.AG.a", "M.3.C.5.AG.b"]},
+        "M.3.C.5.AG": {"sources": ["M.3.C.5.a.AG", "M.3.C.5.b.AG"]},
         "3.C.5": {"sources": ["M.3.C.5.AG", "M.3.C.5.LU"]},
         "3.C": {"sources": ["3.C.1", "3.C.2", "3.C.3", "3.C.4", "3.C.5", "3.C.6"]},
         "M.3.C.AG": {
-            "sources": ["M.3.C.1.AG", "3.C.2", "3.C.3", "3.C.4", "M.3.C.5.AG", "3.C.6"]
+            "sources": [
+                "M.3.C.1.AG",
+                "M.3.C.2.AG",
+                "M.3.C.3.AG",
+                "M.3.C.4.AG",
+                "M.3.C.5.AG",
+                "3.C.6",
+            ]
         },
         "M.3.C.LU": {"sources": ["M.3.C.5.LU"]},
         "M.3.D.LU": {"sources": ["3.D.1"]},

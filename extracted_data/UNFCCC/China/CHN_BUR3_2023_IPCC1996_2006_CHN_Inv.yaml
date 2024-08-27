@@ -12,8 +12,8 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - provenance
   - scenario (PRIMAP)
+  - provenance
   - area (ISO3)
   - category (IPCC1996_2006_CHN_Inv)
   - source

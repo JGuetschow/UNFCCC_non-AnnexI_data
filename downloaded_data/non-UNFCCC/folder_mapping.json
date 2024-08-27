@@ -1,7 +1,9 @@
 {
     "CHL": "Chile",
+    "GBR": "United_Kingdom_of_Great_Britain_and_Northern_Ireland",
     "JPN": "Japan",
     "KOR": "Republic_of_Korea",
     "PSE": "PSE",
-    "TWN": "Taiwan"
+    "TWN": "Taiwan",
+    "USA": "United_States_of_America"
 }

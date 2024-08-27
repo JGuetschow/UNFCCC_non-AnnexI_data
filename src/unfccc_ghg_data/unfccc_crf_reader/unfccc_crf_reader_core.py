@@ -37,6 +37,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
     filter_remove_input: dict[str, dict[str, str | list]] | None = None,
     filter_keep_input: dict[str, dict[str, str | list]] | None = None,
     meta_data_input: dict[str, str] | None = None,
+    type: str = "CRF",
 ) -> pd.DataFrame:
     """
     Convert a given pandas long format crf table to PRIMAP2 interchange format
@@ -60,6 +61,8 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
     meta_data_input: Optional[Dict[str,str]]
         Meta data information. If values filled by this function automatically
         are given as input the automatic values are overwritten.
+    type: str default = "CRF"
+        read CRF or CRF data
 
     Returns
     -------
@@ -67,6 +70,10 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
         Pandas DataFrame containing the data in PRIMAP2 interchange format
         Metadata is stored as attrs in the DataFrame
     """
+    # check type
+    if type not in ["CRF", "CRT"]:
+        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+
     coords_cols = {
         "category": "category",
         "entity": "entity",
@@ -76,21 +83,37 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
         "data": "data",
     }
 
+    # set scenario and terminologies
+    if type == "CRF":
+        category_terminology = f"CRF2013_{submission_year}"
+        class_terminology = "CRF2013"
+        scenario = f"CRF{submission_year}"
+        title = f"Data submitted in {submission_year} to the UNFCCC in the common "
+        "reporting format (CRF)"
+    else:
+        category_terminology = f"CRT{submission_year}"
+        class_terminology = f"CRT{submission_year}"
+        scenario = f"CRT{submission_year}"
+        title = (
+            f"Data submitted in {submission_year} to the UNFCCC using the "
+            f"common reporting tables (CRT)"
+        )
+
     add_coords_cols = {
         #    "orig_cat_name": ["orig_cat_name", "category"],
     }
-
+    # TODO: fix this for CRT
     coords_terminologies = {
         "area": "ISO3",
-        "category": f"CRF2013_{submission_year}",
+        "category": category_terminology,
         "scenario": "PRIMAP",
-        "class": "CRF2013",
+        "class": class_terminology,
     }
 
     coords_defaults = {
         "source": "UNFCCC",
         "provenance": "measured",
-        "scenario": f"CRF{submission_year}",
+        "scenario": scenario,
     }
     if coords_defaults_input is not None:
         for key in coords_defaults_input.keys():
@@ -125,8 +148,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
         f"{submission_year}",
         "rights": "",
         "contact": "mail@johannes-guetschow.de",
-        "title": f"Data submitted in {submission_year} to the UNFCCC in the common "
-        f"reporting format (CRF)",
+        "title": title,
         "comment": "Read fom xlsx file by Johannes Gütschow",
         "institution": "United Nations Framework Convention on Climate Change "
         "(www.unfccc.int)",
