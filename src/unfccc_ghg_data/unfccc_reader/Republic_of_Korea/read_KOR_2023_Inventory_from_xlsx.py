@@ -25,6 +25,7 @@ from unfccc_ghg_data.unfccc_reader.Republic_of_Korea.config_KOR_INV2023 import (
     filter_remove_2006,
     filter_remove_after_agg,
     fix_rows,
+    processing_info_country_basket_copy,
 )
 
 if __name__ == "__main__":
@@ -390,7 +391,7 @@ if __name__ == "__main__":
         data_pm2_2006,
         entities_to_ignore=[],
         gas_baskets=gas_baskets,
-        processing_info_country=None,
+        processing_info_country=processing_info_country_basket_copy,
     )
 
     # convert back to IF to have units in the fixed format

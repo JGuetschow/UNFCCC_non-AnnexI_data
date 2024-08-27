@@ -837,7 +837,7 @@ CRT1 = {
             ["1.B.2.a.vi. Other", ["1.B.2.a.6"], 1],
             ["Drop down list:", ["\\IGNORE"], 2],
             ["1.B.2.a.vi.1. Abandoned wells", ["1.B.2.a.6.1"], 2],
-            ["1.B.2.a.vi.2. Other (please specify)", ["1.B.1.a.6.2"], 2],
+            ["1.B.2.a.vi.2. Other (please specify)", ["1.B.2.a.6.2"], 2],
             ["NA", ["\\IGNORE"], 3],
             ["1.B.2.b. Natural gas", ["1.B.2.b"], 0],
             ["1.B.2.b.i. Exploration", ["1.B.2.b.1"], 1],
