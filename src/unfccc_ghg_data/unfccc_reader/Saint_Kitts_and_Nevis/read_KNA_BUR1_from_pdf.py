@@ -20,6 +20,7 @@ from unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis.config_kna_bur1 import 
     coords_terminologies,
     coords_value_mapping,
     country_processing_step1,
+    country_processing_step2,
     filter_remove,
     fix_values_main,
     fix_values_trend,
@@ -359,6 +360,17 @@ if __name__ == "__main__":
         category_conversion=None,
         sectors_out=None,
         processing_info_country=country_processing_step1,
+    )
+
+    data_proc_pm2 = process_data_for_country(
+        data_country=data_proc_pm2,
+        entities_to_ignore=[],
+        gas_baskets={},
+        filter_dims=None,
+        cat_terminology_out=None,
+        category_conversion=None,
+        sectors_out=None,
+        processing_info_country=country_processing_step2,
     )
 
     # # ###

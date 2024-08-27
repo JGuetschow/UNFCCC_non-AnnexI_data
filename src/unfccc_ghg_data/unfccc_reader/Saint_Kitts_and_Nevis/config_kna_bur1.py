@@ -269,12 +269,12 @@ conf_trend = {
             "A.  Enteric Fermentation": "3.A.1",
             "B.  Manure Management": "3.A.2",
             "C.  Rice Cultivation": "3.C.7",
-            "D.  Agricultural Soils": "3.C.4",  # TODO confirm!
+            "D.  Agricultural Soils": "3.C.4",  # TODO confirm! 3c4 and 3c5
             "E.  Prescribed Burning of Savannahs": "3.C.1.d",  # TODO confirm!
             "F.  Field Burning of Agricultural": "3.C.1.b",  # TODO confirm!
             "Residues  G.  Liming": "3.C.2",
             "H.  Urea applications": "3.C.3",
-            "I.  Other carbon-containing": "3.D.2",  # TODO confirm!
+            "I.  Other carbon-containing": "3.D.2",  # TODO confirm! ?
             "fertilisers  4. Land Use, Land-Use Change and  Forestry": "M.LULUCF",
             "A. Forest Land": "3.B.1",
             "B. Cropland": "3.B.2",
@@ -584,5 +584,46 @@ country_processing_step1 = {
         "GWPs_to_add": ["AR4GWP100", "SARGWP100", "AR6GWP100"],
         "entities": ["HFCS", "PFCS", "UnspMixOfHFCs"],
         "source_GWP": gwp_to_use,
+    },
+}
+
+country_processing_step2 = {
+    "downscale": {
+        "entities": {
+            "KYOTO": {
+                "basket": "KYOTOGHG (AR5GWP100)",
+                "basket_contents": [
+                    "CH4",
+                    "CO2",
+                    "N2O",
+                    "HFCS (AR5GWP100)",
+                    "PFCS (AR5GWP100)",
+                    "SF6",
+                ],
+                "sel": {
+                    f'category ({coords_terminologies["category"]})': [
+                        "1",
+                        "1.A",
+                        "1.B",  # not all zero - but doesn't work
+                        "1.C",  # all zero -> doesn't work
+                        "2",  # all zero -> doesn't work
+                        "2.A",  # all zero -> doesn't work
+                        "2.B",  # all zero -> doesn't work
+                        "2.C",  # all zero -> doesn't work
+                        "2.D",  # all zero -> doesn't work
+                        "2.E",  # all zero -> doesn't work
+                        "2.F",  # all zero -> doesn't work
+                        "2.G",  # all zero -> doesn't work
+                        "2.H",  # all zero -> doesn't work
+                        "3",
+                        "3.A",
+                        "3.B",
+                        "3.C",
+                        "3.D",
+                        "4",
+                    ]
+                },
+            },
+        },
     },
 }
