@@ -4,8 +4,8 @@ attrs:
   rights: ''
   contact: mail@johannes-guetschow.de
   title: 'Republic of Korea: National Greenhouse Gas Inventory Report 2023 Processed
-    on 2024-08-22'
-  comment: Read fom xlsx file by Johannes Gütschow Processed on 2024-08-22
+    on 2024-08-27'
+  comment: Read fom xlsx file by Johannes Gütschow Processed on 2024-08-27
   institution: Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory
     and Research Center
   cat: category (IPCC2006_PRIMAP)
@@ -16,9 +16,9 @@ dimensions:
   '*':
   - time
   - provenance
-  - scenario (PRIMAP)
-  - area (ISO3)
   - category (IPCC2006_PRIMAP)
+  - area (ISO3)
+  - scenario (PRIMAP)
   - source
   - entity
   - unit

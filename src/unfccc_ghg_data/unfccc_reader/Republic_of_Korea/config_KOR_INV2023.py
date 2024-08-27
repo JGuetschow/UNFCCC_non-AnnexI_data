@@ -619,7 +619,7 @@ filter_remove_after_agg = {
 
 processing_info_country_basket_copy = {
     "basket_copy": {
-        "GWPs_to_add": ["AR4GWP100", "AR4GWP100", "AR6GWP100"],
+        "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
         "entities": ["HFCS", "PFCS"],
         "source_GWP": "SARGWP100",
     }
