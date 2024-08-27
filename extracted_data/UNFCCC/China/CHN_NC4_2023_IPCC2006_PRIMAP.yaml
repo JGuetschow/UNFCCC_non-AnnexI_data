@@ -1,8 +1,8 @@
 attrs:
   rights: ''
   contact: mail@johannes-guetschow.de
-  title: ' Processed on 2024-06-05'
-  comment: Read fom pdf file by Johannes Gütschow Processed on 2024-06-05
+  title: ' Processed on 2024-08-15'
+  comment: Read fom pdf file by Johannes Gütschow Processed on 2024-08-15
   institution: United Nations Framework Convention on Climate Change (UNFCCC)
   references: https://unfccc.int/documents/636695
   cat: category (IPCC2006_PRIMAP)
@@ -13,10 +13,10 @@ dimensions:
   '*':
   - time
   - source
-  - area (ISO3)
-  - scenario (PRIMAP)
   - category (IPCC2006_PRIMAP)
+  - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
   - entity
   - unit
 data_file: CHN_NC4_2023_IPCC2006_PRIMAP.csv

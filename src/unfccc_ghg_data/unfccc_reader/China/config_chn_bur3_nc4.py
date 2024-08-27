@@ -347,37 +347,37 @@ category_conversion = {
             "3.B.1": {
                 "sources": ["3.B.1.a"],
                 "filter": {
-                    "entity": ["CO2"],
+                    "entity": ["CO2", "CH4", "N2O"],
                 },
             },
             "3.C.1": {
                 "sources": ["3.C.1.b", "3.C.1.c"],
                 "filter": {
-                    "entity": ["CH4"],
+                    "entity": ["CH4", "N2O"],
                 },
             },
             "M.3.C.1.AG": {
                 "sources": ["3.C.1.c"],
                 "filter": {
-                    "entity": ["CH4"],
+                    "entity": ["CH4", "N2O"],
                 },
             },
             "M.3.C.AG": {
                 "sources": ["M.3.C.1.AG", "M.3.C.45.AG", "3.C.7"],
                 "filter": {
-                    "entity": ["CH4"],
+                    "entity": ["CH4", "N2O"],
                 },
             },
             "3.C": {
                 "sources": ["M.3.C.AG"],
                 "filter": {
-                    "entity": ["CH4"],
+                    "entity": ["CH4", "N2O"],
                 },
             },
             "M.AG.ELV": {
                 "sources": ["M.3.C.AG"],
                 "filter": {
-                    "entity": ["CH4"],
+                    "entity": ["CH4", "N2O"],
                 },
             },
             "M.AG": {  # check consistency (not consistent in table)
@@ -737,7 +737,7 @@ config_bur3 = {
                 "source_GWP": gwp_to_use,
             },
         },
-        "CHN": {  # TODO: doesn't work for NC4. Change config
+        "CHN": {
             "basket_copy": {  # needed for 2005
                 "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
                 "entities": ["HFCS", "PFCS"],
