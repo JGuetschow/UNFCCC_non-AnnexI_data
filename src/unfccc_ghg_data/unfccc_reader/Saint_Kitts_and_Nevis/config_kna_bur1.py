@@ -63,7 +63,7 @@ conf_trend = {
         "page_defs": {
             "125": {
                 "read_params": dict(flavor="lattice"),
-                "skip_rows_start": 2,
+                "skip_rows_start": 1,
             },
             "126": {
                 "read_params": dict(
@@ -494,6 +494,7 @@ fix_values_trend = [
     ("1A3biii", "2018", "23.66"),
     ("1A3biv", "2018", "0.16"),
     ("1A3c", "2018", "0.17"),
+    ("1B", "2018", "0.002288"),
     ("1B2", "2018", "0.002288"),
     ("1B2a", "2018", "0.002288"),
     ("1B2aiii", "2018", "0.002288"),
@@ -604,17 +605,19 @@ country_processing_step2 = {
                     f'category ({coords_terminologies["category"]})': [
                         "1",
                         "1.A",
-                        "1.B",  # not all zero - but doesn't work
-                        "1.C",  # all zero -> doesn't work
-                        "2",  # all zero -> doesn't work
-                        "2.A",  # all zero -> doesn't work
-                        "2.B",  # all zero -> doesn't work
-                        "2.C",  # all zero -> doesn't work
-                        "2.D",  # all zero -> doesn't work
-                        "2.E",  # all zero -> doesn't work
-                        "2.F",  # all zero -> doesn't work
-                        "2.G",  # all zero -> doesn't work
-                        "2.H",  # all zero -> doesn't work
+                        "1.B",
+                        # "1.C",  # we don't have trend values for 1.C
+                        # Downscaling currently doesn't work for all zero basket content, see
+                        # https://github.com/pik-primap/primap2/issues/254#issue-2491434285
+                        # "2",  # all zero -> doesn't work
+                        # "2.A",  # all zero -> doesn't work
+                        # "2.B",  # all zero -> doesn't work
+                        # "2.C",  # all zero -> doesn't work
+                        # "2.D",  # all zero -> doesn't work
+                        # "2.E",  # all zero -> doesn't work
+                        # "2.F",  # all zero -> doesn't work
+                        # "2.G",  # all zero -> doesn't work
+                        # "2.H",  # all zero -> doesn't work
                         "3",
                         "3.A",
                         "3.B",
