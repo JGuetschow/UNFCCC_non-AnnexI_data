@@ -2,11 +2,30 @@
 
 ## How to choose which tables to read from a PDF?
 
-## What's behind `gwp_to_use`?
+Usually there are detailed tables for in the Annex. That's always a good start.
+Our aim is to cover all primap sectors and entities for as many years as possible. Sometimes we can approximate
+missing values through downscaling (see [downscaling]).
+
+## What are the Primap sectors?
+
+For the calculation we need the following sectors and entities:
+
+* 1.A, 1.B.1, 1.B.2, 1.B.3, 1.C  (CO2, CH4, N2O)
+* 2, 2.A, 2.B, 2.C, 2.D, 2.E, 2.G, 2.H (HFCs, PFCs, SF6, NF3)
+* 3.A  (CO2, CH4, N2O)
+* M.AG.ELV  (CO2, CH4, N2O)
+* M.LULUCF  (CO2, CH4, N2O)
+* 4  (CO2, CH4, N2O)
+* 5 (CO2, CH4, N2O)
+
+Some of the sectors are not directly reported, but can be generated via [category aggregation].
 
 ## How do I know what's the correct GWP (`gwp_to_use`) for a report?
 
 The report should mention which GWP conversion was used. Search for `gwp` in the report.
+Use this [table](https://ghgprotocol.org/sites/default/files/ghgp/Global-Warming-Potential-Values%20%28Feb%2016%202016%29_1.pdf)
+for the conversion factors for SAR, AR4, AR5. Use this [document](https://ghgprotocol.org/sites/default/files/2024-08/Global-Warming-Potential-Values%20%28August%202024%29.pdf)
+for AR4, AR5, and AR6.
 
 ## How to choose the tolerance when merging datasets?
 
