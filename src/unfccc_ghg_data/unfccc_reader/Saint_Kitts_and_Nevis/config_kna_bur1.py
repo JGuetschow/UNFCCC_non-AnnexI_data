@@ -233,8 +233,8 @@ conf_trend = {
         },
     },
     "overview": {
-        # Inconsistencies for table page 11 and page 125 for categories 1.B, 1.B.1 and 1.B.2
-        "rows_to_drop": ["1B", "1B1", "1B2"],
+        # Inconsistencies for table page 11 and page 125 for categories 1.B, 1.B.1
+        "rows_to_drop": ["1B", "1B1"],
         "fix_single_value": {
             "cat": "MBIO",
             "year": "2018",
@@ -255,7 +255,7 @@ conf_trend = {
             "5.  Other": "1.A.5",
             "B. Fugitive Emissions from Fuels": "1.B",
             "1.  Solid Fuels": "1.B.1",
-            "2.  Oil and Natural Gas and other…": "1.B.2",
+            "2.  Oil and Natural Gas and other…": "M.1.B.23",
             # "2.  Industrial Processes": "2.  Industrial Processes",
             "A.  Mineral Industry": "2.A",
             "B.  Chemical Industry": "2.B",
@@ -270,11 +270,11 @@ conf_trend = {
             "B.  Manure Management": "3.A.2",
             "C.  Rice Cultivation": "3.C.7",
             "D.  Agricultural Soils": "3.C.4",  # TODO confirm! 3c4 and 3c5
-            "E.  Prescribed Burning of Savannahs": "3.C.1.d",  # TODO confirm!
-            "F.  Field Burning of Agricultural": "3.C.1.b",  # TODO confirm!
+            "E.  Prescribed Burning of Savannahs": "3.C.1.c",  # TODO confirm!
+            "F.  Field Burning of Agricultural": "3.C.1.b",
             "Residues  G.  Liming": "3.C.2",
             "H.  Urea applications": "3.C.3",
-            "I.  Other carbon-containing": "3.D.2",  # TODO confirm! ?
+            "I.  Other carbon-containing": "M.3.D.2.AG",  # TODO confirm! ?
             "fertilisers  4. Land Use, Land-Use Change and  Forestry": "M.LULUCF",
             "A. Forest Land": "3.B.1",
             "B. Cropland": "3.B.2",
@@ -541,10 +541,11 @@ gas_baskets = {
 country_processing_step1 = {
     "tolerance": 0.01,
     "aggregate_cats": {
-        "M.3.D.AG": {"sources": ["3.D.2"]},
+        "M.3.D.AG": {"sources": ["M.3.D.2.AG"]},
+        "3.C.1.AG": {"sources": ["3.C.1.b", "3.C.1.c"]},
         "M.3.C.AG": {
             "sources": [
-                "3.C.1",
+                "3.C.1.AG",
                 "3.C.2",
                 "3.C.3",
                 "3.C.4",
@@ -573,8 +574,9 @@ country_processing_step1 = {
         },
         "3.D": {"sources": ["3.D.1", "3.D.2"]},
         "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
+        "3.C.1.LU": {"sources": ["3.C.1.a", "3.C.1.d"]},
         "M.3.D.LU": {"sources": ["3.D.1"]},
-        "M.LULUCF": {"sources": ["3.B", "M.3.D.LU"]},
+        "M.LULUCF": {"sources": ["3.B", "3.C.1.LU", "M.3.D.LU"]},
         "M.0.EL": {
             "sources": ["1", "2", "M.AG", "4"],
         },
@@ -590,6 +592,14 @@ country_processing_step1 = {
 
 country_processing_step2 = {
     "downscale": {
+        # "sectors": {
+        #     "M.1.B.23": {
+        #         "basket": "M.1.B.23",
+        #         "basket_contents": ["1.B.2", "1.B.3"],
+        #         "entities": ["KYOTOGHG (AR5GWP100)"],
+        #         "dim": f'category ({coords_terminologies["category"]})',
+        #     },
+        # },
         "entities": {
             "KYOTO": {
                 "basket": "KYOTOGHG (AR5GWP100)",
@@ -606,6 +616,8 @@ country_processing_step2 = {
                         "1",
                         "1.A",
                         "1.B",
+                        # "1.B.2",
+                        # "1.B.3"
                         # "1.C",  # we don't have trend values for 1.C
                         # Downscaling currently doesn't work for all zero basket content, see
                         # https://github.com/pik-primap/primap2/issues/254#issue-2491434285
