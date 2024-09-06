@@ -29,8 +29,8 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
-                "HFC": f"HFCS ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
+                # "HFC": f"HFCS ({gwp_to_use})",
                 "CH4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -39,9 +39,21 @@ table_def_trends = {
         "filter_remove": {
             "f1": {
                 "time": ["∆(1990-2021)", "%. 2021", "∆(2010-2021)"],
-            }
+            },
+            "fN2O": {  # indirect N2O from manure missing
+                "entity": ["N2O", "Total"],
+            },
+            "fHFC": {  # inconsistent with individual HFCs
+                "entity": ["HFC"],
+            },
         },
         "replace_str_data": {",": "."},
+        "remove_vals": {
+            "r1": {  # value inconsistent sector tables
+                "entities": ["CO2", "CH4"],
+                "filter": {"category": ["M.0.EL"], "time": ["2013"]},
+            }
+        },
     },
     "GHG_main_sectors": {
         "header": "category",
@@ -61,7 +73,7 @@ table_def_trends = {
             "category": {
                 "Energy": "1",
                 "IPPU": "2",
-                "Agriculture": "M.AG",
+                # "Agriculture": "M.AG",
                 "Waste": "4",
                 "Total": "M.0.EL",
                 "FOLU": "M.LULUCF",
@@ -71,9 +83,22 @@ table_def_trends = {
         "filter_remove": {
             "f1": {
                 "time": ["∆(1990-2021)", "%, 2021", "∆(2010-2021)"],
-            }
+            },
+            "fAG": {  # indirect N2O from manure missing
+                "category": ["Agriculture"],
+            },
         },
         "replace_str_data": {" ": ""},
+        "remove_vals": {
+            "rounding_error": {  # rounding error
+                "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                "filter": {"category": ["M.LULUCF"], "time": ["2002"]},
+            },
+            "r1": {  # value inconsistent sector tables
+                "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                "filter": {"category": ["M.0.EL", "1"], "time": ["2013"]},
+            },
+        },
     },
     "0_prec": {
         "header": "entity",
@@ -161,7 +186,10 @@ table_def_trends = {
         "filter_remove": {
             "f1": {
                 "time": ["∆(1990-2021)"],
-            }
+            },
+            "f2": {
+                "entity": ["NMVOCs"],  # inconsistent with inventory and subsectors
+            },
         },
     },
     "GHG_energy_sectors": {
@@ -196,7 +224,7 @@ table_def_trends = {
             "r1": {  # value inconsistent with fugitive table
                 "entities": [f"KYOTOGHG ({gwp_to_use})"],
                 "filter": {"category": ["1", "1.B"], "time": ["2013"]},
-            }
+            },
         },
     },
     "bunkers_gases": {
@@ -215,7 +243,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "CH4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -255,6 +283,7 @@ table_def_trends = {
         "replace_str_data": {",": "."},
     },
     "MBIO_CO2": {
+        "dont_read": True,
         "header": "entity",
         "tables": {
             "38": 0,
@@ -278,7 +307,7 @@ table_def_trends = {
                 "time": ["∆ (1990-2021)"],
             }
         },
-    },
+    },  # wrong by a factor of 10 until 2004 (compared to inventory and factor)
     "ffc_gases": {
         "header": "entity",
         "tables": {
@@ -295,7 +324,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "CH4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -368,6 +397,12 @@ table_def_trends = {
                 "time": ["∆ (1990-2021)", "%, 2021"],
             }
         },
+        "remove_vals": {
+            "r2": {  # GHG sum smaller than CO2 value
+                "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                "filter": {"category": ["M.1.A.2.CON"], "time": ["2019", "2020"]},
+            },
+        },
     },
     "CO2_ffc_sectors": {
         "header": "category",
@@ -420,7 +455,7 @@ table_def_trends = {
             "category": {
                 "Electricity and Heat Production": "1.A.1",
                 "Construction": "M.1.A.2.CON",
-                "Manufacturing industries": "M.1.A.2.IND",
+                "Manufacturing Industries": "M.1.A.2.IND",
                 "Transport": "1.A.3",
                 "Commercial sector": "1.A.4.a",
                 "Residential sector": "1.A.4.b",
@@ -453,7 +488,7 @@ table_def_trends = {
             "category": {
                 "Electricity and Heat Production": "1.A.1",
                 "Construction": "M.1.A.2.CON",
-                "Manufacturing industries": "M.1.A.2.IND",
+                "Manufacturing Industries": "M.1.A.2.IND",
                 "Transport": "1.A.3",
                 "Commercial sector": "1.A.4.a",
                 "Residential sector": "1.A.4.b",
@@ -563,38 +598,39 @@ table_def_trends = {
             }
         },
     },
-    # 'SO2_ffc_sectors': {
-    #     'header': 'category',
-    #     'tables': {
-    #         '48': 1,
-    #         '49': 0,
-    #     },
-    #     'long_kw': 'Years',
-    #     'long_var': 'time',
-    #     "coords_cols": {
-    #         "category": "category",
-    #     },
-    #     "coords_defaults": {
-    #         'entity': 'SO2',
-    #         'unit': 't SO2 / yr',
-    #     },
-    #     "coords_value_mapping": {
-    #         "category": {
-    #             'Electricity and Heat Production': '1.A.1',
-    #             'Manufacturing Industries and Construction': '1.A.2',
-    #             'Тransport': '1.A.3',  # noqa: RUF003
-    #             'Commercial sector': '1.A.4.a',
-    #             'Residential sector': '1.A.4.b',
-    #             'Agriculture': '1.A.4.c',
-    #             'Total': '1.A',
-    #         }
-    #     },
-    #     "filter_remove": {
-    #         "f1": {
-    #             "time": ["∆(1990−2021)", "%2021"],  # noqa: RUF003
-    #         }
-    #     },
-    # },  # TODO: inconsistent (parially unit problem?)
+    "SO2_ffc_sectors": {
+        "dont_read": True,
+        "header": "category",
+        "tables": {
+            "48": 1,
+            "49": 0,
+        },
+        "long_kw": "Years",
+        "long_var": "time",
+        "coords_cols": {
+            "category": "category",
+        },
+        "coords_defaults": {
+            "entity": "SO2",
+            "unit": "t SO2 / yr",
+        },
+        "coords_value_mapping": {
+            "category": {
+                "Electricity and Heat Production": "1.A.1",
+                "Manufacturing Industries and Construction": "1.A.2",
+                "Тransport": "1.A.3",
+                "Commercial sector": "1.A.4.a",
+                "Residential sector": "1.A.4.b",
+                "Agriculture": "1.A.4.c",
+                "Total": "1.A",
+            }
+        },
+        "filter_remove": {
+            "f1": {
+                "time": ["∆(1990−2021)", "%2021"],
+            }
+        },
+    },  # TODO: inconsistent (parially unit problem?)
     "fugitive_gases": {
         "header": "entity",
         "tables": {
@@ -611,7 +647,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "CH4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -620,6 +656,12 @@ table_def_trends = {
         "filter_remove": {
             "f1": {
                 "time": ["%. 2021", "∆ (1990-2021)"],
+            }
+        },
+        "remove_vals": {
+            "r1": {  # value inconsistent with fugitive table
+                "entities": [f"KYOTOGHG ({gwp_to_use})", "CH4"],
+                "filter": {"time": ["2013"]},
             }
         },
     },
@@ -649,6 +691,12 @@ table_def_trends = {
             "f1": {
                 "time": ["∆(1990-2021)", "%. 2021"],
             }
+        },
+        "remove_vals": {
+            "2013_error": {
+                "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                "filter": {"category": ["1.B.2.b", "1.B"], "time": ["2013"]},
+            },
         },
     },
     "fugitive_prec": {
@@ -727,7 +775,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "СН4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -745,6 +793,7 @@ table_def_trends = {
         },
     },
     "GHG_oil_sectors": {
+        "dont_read": True,
         "header": "category",
         "tables": {
             "62": 1,
@@ -770,8 +819,9 @@ table_def_trends = {
                 "time": ["∆ (1990−2021)", "%. 2021"],
             }
         },
-    },
+    },  # not consistent with inventory (other sector split)
     "oil_prod_gases": {  # NMVOC is in Gg
+        "dont_read": True,
         "header": "entity",
         "tables": {
             "63": 1,
@@ -787,7 +837,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "СН4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -803,8 +853,9 @@ table_def_trends = {
                 ],  # complicated because of different entity. skip for now
             },
         },
-    },
+    },  # venting and flaring summed, not compatble with inventory
     "oil_trans_gases": {  # NMVOC is in Gg
+        "dont_read": True,
         "header": "entity",
         "tables": {
             "66": 1,
@@ -821,7 +872,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "CH4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -837,7 +888,7 @@ table_def_trends = {
                 ],  # complicated because of different entity. skip for now
             },
         },
-    },
+    },  # summed with other sectors in inventory
     "gas_gases": {
         "header": "entity",
         "tables": {
@@ -854,7 +905,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "CH4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
                 "СО2": "CO2",
@@ -910,7 +961,7 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "entity": {
-                "Total": f"KYOTGHG ({gwp_to_use})",
+                "Total": f"KYOTOGHG ({gwp_to_use})",
                 "HFCs": f"HFCS ({gwp_to_use})",
                 "СН4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
@@ -1246,12 +1297,15 @@ table_def_trends = {
             "entity": {
                 "СН4": f"CH4 ({gwp_to_use})",
                 "N2O": f"N2O ({gwp_to_use})",
-                "Total": f"KYOTOGHG ({gwp_to_use})",
+                # "Total": f"KYOTOGHG ({gwp_to_use})",
             }
         },
         "filter_remove": {
             "f1": {
                 "time": ["%, 2021", "∆(1990-2021)"],
+            },
+            "fN2O": {  # indirect N2O from manure missing
+                "entity": ["N2O", "Total"],
             },
         },
     },
@@ -1271,18 +1325,31 @@ table_def_trends = {
         },
         "coords_value_mapping": {
             "category": {
-                "Enteric Fermentation": "3.A",
+                "Enteric Fermentation": "3.A.1",
                 "Manure Management": "3.A.2",
-                "Biomass Burning": "M.3.C.AG",
+                "Biomass Burning": "M.3.C.1.AG",
                 "N2O Emissions from Managed Soils": "M.AS",  # 3.C.6 included? it's not in Manure management
                 "Rice Cultivation": "3.C.7",
-                "Total": "M.AG",
+                # "Total": "M.AG",
             }
         },
         "filter_remove": {
             "f1": {
                 "time": ["∆(1990-2021)", "%. 2021"],
-            }
+            },
+            "ftot": {  # indirect N2O from manure missing
+                "category": ["Total"],
+            },
+        },
+        "remove_vals": {
+            "2020_error": {  # factor of 10 error
+                "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                "filter": {"category": ["3.A.2"], "time": ["2020"]},
+            },
+            "mm_error": {  # doesn't fit gas sum
+                "entities": [f"KYOTOGHG ({gwp_to_use})"],
+                "filter": {"category": ["3.A.2"], "time": ["2004", "2005"]},
+            },
         },
     },
     "CH4_3A1_sectors": {
@@ -1716,7 +1783,10 @@ table_def_trends = {
         "filter_remove": {
             "f1": {
                 "time": ["∆(1990-2021)", "%2021"],
-            }
+            },
+            "fsec": {  # inconsistent with CH4 data
+                "category": ["Industrial", "Total"],
+            },
         },
     },
     "domestic_ww_gases": {
@@ -1943,6 +2013,33 @@ table_def_inventory = {
         "filter_remove": {
             "fcat": {"category": ["Memo Items (3)", "Information Items"]},
         },
+        "remove_vals": {
+            "N2O_rounding": {  # rounding errors
+                "entities": ["N2O"],
+                "filter": {
+                    "category": [
+                        "1.A.4.a",
+                        "1.A.4.b",
+                        "1.A.4.c",
+                        "1.A.4",
+                        "1.B",
+                        "1.B.2.a",
+                        "1.B.2.b",
+                        "1.B.2",
+                        "M.BK.A",
+                        "1.A.2",
+                    ]
+                },
+            },
+            "CH4_rounding": {
+                "entities": ["CH4"],
+                "filter": {"category": ["M.BK.A"]},
+            },
+            "SO2_rounding": {  # rounding errors
+                "entities": ["SO2"],
+                "filter": {"category": ["1.A.4", "1.A.4.a", "1.A.4.b", "1.A.4.c"]},
+            },
+        },
     },
     "2010_energy": {
         "time": "2010",
@@ -1971,6 +2068,46 @@ table_def_inventory = {
         "filter_remove": {
             "fcat": {"category": ["Memo Items (3)", "Information Items"]},
         },
+        "remove_vals": {
+            "N2O_rounding": {  # rounding errors
+                "entities": ["N2O"],
+                "filter": {
+                    "category": [
+                        "1.A.4.a",
+                        "1.A.4.b",
+                        "1.A.4.c",
+                        "1.A.4",
+                        "1.A.1",
+                        "1.B",
+                        "1.B.2.a",
+                        "1.B.2.b",
+                        "1.B.2",
+                        "M.BK.A",
+                        "1.A.2",
+                    ]
+                },
+            },
+            "NMVOC": {  # reason unclear
+                "entities": ["NMVOC"],
+                "filter": {"category": ["1.A.4.c"]},
+            },
+            "CH4_rounding": {
+                "entities": ["CH4"],
+                "filter": {
+                    "category": [
+                        "1.A.4.c",
+                        "1.B.1.a.i.2",
+                        "1.B.1.a.ii.2",
+                        "M.BK.A",
+                        "1.A.2",
+                    ]
+                },
+            },
+            "SO2_rounding": {  # rounding errors
+                "entities": ["SO2"],
+                "filter": {"category": ["1.A.4", "1.A.4.a", "1.A.4.b", "1.A.4.c"]},
+            },
+        },
     },
     "2021_energy": {
         "time": "2021",
@@ -1998,6 +2135,28 @@ table_def_inventory = {
         },
         "filter_remove": {
             "fcat": {"category": ["Memo Items (3)", "Information Items"]},
+        },
+        "remove_vals": {
+            "N2O_rounding": {  # rounding errors
+                "entities": ["N2O"],
+                "filter": {
+                    "category": [
+                        "1.A.4.a",
+                        "1.A.4.b",
+                        "1.A.4.c",
+                        "1.B",
+                        "1.B.2.a",
+                        "1.B.2.b",
+                        "1.B.2",
+                        "M.BK.A",
+                        "1.A.2",
+                    ]
+                },
+            },
+            "CH4_rounding": {
+                "entities": ["CH4"],
+                "filter": {"category": ["1.A.4.c", "M.BK.A"]},
+            },
         },
     },
     "1990_IPPU": {
@@ -2034,7 +2193,7 @@ table_def_inventory = {
                 "HFCs": f"HFCS ({gwp_to_use})",
                 "NF3": f"NF3 ({gwp_to_use})",
                 "SF6": f"SF6 ({gwp_to_use})",
-                "Other halogenated gases with CO2-eq. conversion factors (1)": f"OtherHFCS ({gwp_to_use})",
+                "Other halogenated gases with CO2-eq. conversion factors (1)": f"UnspMixOfHFCs ({gwp_to_use})",
             },
         },
         "filter_remove": {
@@ -2049,6 +2208,16 @@ table_def_inventory = {
             }
         },
         "ffill_rows": [0],
+        "remove_vals": {
+            "NMVOC_rounding": {  # rounding errors
+                "entities": ["NMVOC"],
+                "filter": {"category": ["2.C"]},
+            },
+            "CH4_rounding": {
+                "entities": ["CH4"],
+                "filter": {"category": ["2", "2.B"]},
+            },
+        },
     },
     "2010_IPPU": {
         "time": "2010",
@@ -2085,7 +2254,7 @@ table_def_inventory = {
                 "HFCs": f"HFCS ({gwp_to_use})",
                 "NF3": f"NF3 ({gwp_to_use})",
                 "SF6": f"SF6 ({gwp_to_use})",
-                "Other halogenated gases with CO2-eq. conversion factors (1)": f"OtherHFCS ({gwp_to_use})",
+                "Other halogenated gases with CO2-eq. conversion factors (1)": f"UnspMixOfHFCs ({gwp_to_use})",
             },
         },
         "filter_remove": {
@@ -2100,6 +2269,16 @@ table_def_inventory = {
             }
         },
         "ffill_rows": [0],
+        "remove_vals": {
+            "NMVOC_rounding": {  # rounding errors (2.B sum error)
+                "entities": ["NMVOC"],
+                "filter": {"category": ["2.C", "2.B"]},
+            },
+            "CH4_rounding": {
+                "entities": ["CH4"],
+                "filter": {"category": ["2", "2.B"]},
+            },
+        },
     },
     "2021_IPPU": {
         "time": "2021",
@@ -2137,7 +2316,7 @@ table_def_inventory = {
                 "HFCs": f"HFCS ({gwp_to_use})",
                 "NF3": f"NF3 ({gwp_to_use})",
                 "SF6": f"SF6 ({gwp_to_use})",
-                "Other halogenated gases with CO2-eq. conversion factors (1)": f"OtherHFCS ({gwp_to_use})",
+                "Other halogenated gases with CO2-eq. conversion factors (1)": f"UnspMixOfHFCs ({gwp_to_use})",
             },
         },
         "filter_remove": {
@@ -2152,6 +2331,16 @@ table_def_inventory = {
             }
         },
         "ffill_rows": [0],
+        "remove_vals": {
+            "NMVOC_rounding": {  # 2.B sum error
+                "entities": ["NMVOC"],
+                "filter": {"category": ["2.B"]},
+            },
+            "CH4_rounding": {
+                "entities": ["CH4"],
+                "filter": {"category": ["2.C"]},
+            },
+        },
     },
     "1990_AFOLU": {
         "time": "1990",
@@ -2177,6 +2366,39 @@ table_def_inventory = {
             },
         },
         "filter_remove": {},
+        "remove_vals": {
+            "r1": {  # value inconsistent with fugitive table
+                "entities": ["CO2"],
+                "filter": {"category": ["3.B.1", "3.B.2", "3.B.3"]},
+            },
+            "N2O_rounding": {  # rounding errors
+                "entities": ["N2O"],
+                "filter": {
+                    "category": [
+                        "3.A.2.c",
+                        "3.A.2.d",
+                        "3.A.2.e",
+                        "3.A.2.f",
+                        "3.A.2.g",
+                        "3.A.2.h",
+                        "3.A.2.i",
+                        "3.C.1.b",
+                        "3.C.1",
+                    ]
+                },
+            },
+            "CH4_rounding": {  # rounding errors
+                "entities": ["CH4"],
+                "filter": {
+                    "category": [
+                        "3.A.2.e",
+                        "3.A.2.f",
+                        "3.A.2.g",
+                        "3.C.1",  # sum error
+                    ]
+                },
+            },
+        },
     },
     "2010_AFOLU": {
         "time": "2010",
@@ -2202,6 +2424,34 @@ table_def_inventory = {
             },
         },
         "filter_remove": {},
+        "remove_vals": {
+            "r1": {  # value inconsistent with fugitive table
+                "entities": ["NOx", "CO"],
+                "filter": {"category": ["3.B.1"]},
+            },
+            "N2O_rounding": {  # rounding errors
+                "entities": ["N2O"],
+                "filter": {
+                    "category": [
+                        "3.A.2.d",
+                        "3.A.2.e",
+                        "3.A.2.f",
+                        "3.A.2.g",
+                        "3.A.2.h",
+                    ]
+                },
+            },
+            "CH4_rounding": {  # rounding errors
+                "entities": ["CH4"],
+                "filter": {
+                    "category": [
+                        "3.A.2.e",
+                        "3.A.1.h",
+                        "3.A.2.h",
+                    ]
+                },
+            },
+        },
     },
     "2021_AFOLU": {
         "time": "2021",
@@ -2227,6 +2477,28 @@ table_def_inventory = {
             },
         },
         "filter_remove": {},
+        "remove_vals": {
+            "r1": {  # value inconsistent with fugitive table
+                "entities": ["NOx", "CO"],
+                "filter": {"category": ["3.B.1"]},
+            },
+            "N2O_rounding": {  # rounding errors
+                "entities": ["N2O"],
+                "filter": {
+                    "category": [
+                        "3.A.2.d",
+                        "3.A.2.e",
+                        "3.A.2.f",
+                        "3.A.2.g",
+                        "3.A.2.h",
+                    ]
+                },
+            },
+            "CH4_rounding": {  # rounding errors
+                "entities": ["CH4"],
+                "filter": {"category": ["3.A.1.h", "3.A.2.e", "3.A.2.g", "3.A.2.h"]},
+            },
+        },
     },
     "1990_waste": {
         "time": "1990",
@@ -2278,7 +2550,7 @@ table_def_inventory = {
         "time": "2021",
         "unit": "Gg",
         "tables": {
-            "208": 0,
+            "208": 2,
         },
         "unit_row": 0,
         "entity_row": 0,
@@ -2476,6 +2748,7 @@ config_general = {
         "area": "UZB",
         "source": "UZB-GHG-Inventory",
         "provenance": "measured",
+        "scenario": "BTR1",
     },
     "coords_terminologies": {
         "area": "ISO3",
@@ -2493,402 +2766,208 @@ config_general = {
 }
 
 
-#######################3
-
-# for processing
-terminology_proc = "IPCC2006_PRIMAP"
-
-cat_conversion = {
-    "mapping": {
-        "1.A.1.a.i": "1.A.1.a.i",  # 1A1ai_Public_Electricity&Heat_Production
-        "1.A.1.a.iii": "1.A.1.a.iii",  # 1A1aiii_Public_Heat_Production
-        "1.A.1.b": "1.A.1.b",  # 1A1b_Petroleum_Refining
-        "1.A.1.c.i": "1.A.1.c.i",  # 1A1ci_Manufacture_of_solid_fuels
-        "1.A.1.c.ii": "1.A.1.c.ii",  # 1A1cii_Oil_and_gas_extraction
-        "1.A.1.c.iii": "1.A.1.c.iii",  # 1A1ciii_Other_energy_industries
-        "1.A.2.a": "1.A.2.a",  # 1A2a_Iron_and_steel
-        "1.A.2.b": "1.A.2.b",  # 1A2b_Non-Ferrous_Metals
-        "1.A.2.c": "1.A.2.c",  # 1A2c_Chemicals
-        "1.A.2.d": "1.A.2.d",  # 1A2d_Pulp_Paper_Print
-        "1.A.2.e": "1.A.2.e",  # 1A2e_food_processing_beverages_and_tobacco
-        "1.A.2.f": "1.A.2.f",  # 1A2f_Non-metallic_minerals
-        "1.A.2.g.iii": "1.A.2.i",  # 1A2giii_Mining_and_quarrying
-        "1.A.2.g.v": "1.A.2.k",  # 1A2gv_Construction
-        "1.A.2.g.vii": "1.A.2.m.i",  # 1A2gvii_Off-road_vehicles_and_other_machinery
-        "1.A.2.g.v.iii": "1.A.2.m.ii",  # 1A2gviii_Other_manufacturing_industries_and_construction
-        "1.A.3.a": "1.A.3.a.ii",  # 1A3a_Domestic_aviation
-        "1.A.3.b.i": "1.A.3.b.i",  # 1A3bi_Cars
-        "1.A.3.b.ii": "1.A.3.b.ii",  # 1A3bii_Light_duty_trucks
-        "1.A.3.b.iii": "1.A.3.b.iii",  # 1A3biii_Heavy_duty_trucks_and_buses
-        "1.A.3.b.iv": "1.A.3.b.iv",  # 1A3biv_Motorcycles
-        "1.A.3.b.v": "M.1.A.3.b.v",  # 1A3bv_Other_road_transport (no direct match in IPCC2006)
-        "1.A.3.c": "1.A.3.c",  # 1A3c_Railways
-        "1.A.3.d": "1.A.3.d.ii",  # 1A3d_Domestic_navigation
-        "1.A.3.e.ii": "1.A.3.e.ii",  # 1A3eii_Other_Transportation (subsector consistent with CRF reporting)
-        "1.A.4.a.i": "1.A.4.a.i",  # 1A4ai_Commercial/Institutional (stationary)
-        "1.A.4.a.ii": "1.A.4.a.ii",  # 1A4aii_Commercial/Institutional_Mobile
-        "1.A.4.b.i": "1.A.4.b.i",  # 1A4bi_Residential_stationary
-        "1.A.4.b.ii": "1.A.4.b.ii",  # 1A4bii_Residential:Off-road
-        "1.A.4.c.i": "1.A.4.c.i",  # 1A4ci_Agriculture/Forestry/Fishing:Stationary
-        "1.A.4.c.ii": "1.A.4.c.ii",  # 1A4cii_Agriculture/Forestry/Fishing:Off-road
-        "1.A.4.c.iii": "1.A.4.c.iii",  # 1A4ciii_Fishing
-        "1.A.5.b": "1.A.5.b",  # 1A5b_Other:Mobile
-        "1.B.1.a.i.1": "1.B.1.a.i.1",  # 1B1ai_Underground_mines:Mining_activities
-        "1.B.1.a.i.2": "1.B.1.a.i.2",  # 1B1ai_Underground_mines:Post-mining_activities
-        "1.B.1.a.i.3": "1.B.1.a.i.3",  # 1B1ai_Underground_mines:Abandoned
-        "1.B.1.a.ii.1": "1.B.1.a.ii.1",  # 1B1aii_Surface_mines:Mining_activities
-        "1.B.1.b": "1.B.1.c",  # 1B1b_Solid_Fuel_Transformation
-        "1.B.2.a.1": "1.B.2.a.iii.1",  # 1B2a1_Oil_exploration
-        "1.B.2.a.2": "1.B.2.a.iii.2",  # 1B2a2_Oil_Production
-        "1.B.2.a.3": "1.B.2.a.iii.3",  # 1B2a3_Oil_transport
-        "1.B.2.a.4": "1.B.2.a.iii.4",  # 1B2a4_Oil_refining/storage
-        "1.B.2.a.6": "1.B.2.a.iii.6",  # 1B2a6_Oil_Production
-        "1.B.2.b.1": "1.B.2.b.iii.1",  # 1B2b1_Gas_exploration
-        "1.B.2.b.2": "1.B.2.b.iii.2",  # 1B2b2_Gas_production
-        "1.B.2.b.3": "1.B.2.b.iii.3",  # 1B2b3_Gas_processing
-        "1.B.2.b.4": "1.B.2.b.iii.4",  # 1B2b4_Gas_transmission_and_storage
-        "1.B.2.b.5": "1.B.2.b.iii.5",  # 1B2b5_Gas_distribution
-        "1.B.2.c-ven.i": "1.B.2.a.i",  # 1B2c_Venting_Oil
-        "1.B.2.c-ven.ii": "1.B.2.b.i",  # 1B2c_Venting_Gas
-        "1.B.2.c-fla.i": "1.B.2.a.ii",  # 1B2c_Flaring_Oil
-        "1.B.2.c-fla.ii": "1.B.2.b.ii",  # 1B2c_Flaring_Gas
-        "1.B.2.d": "1.B.3.b",  # 1B2d_Other_energy_industries
-        "2.A.1": "2.A.1",  # 2A1_Cement_Production
-        "2.A.2": "2.A.2",  # 2A2_Lime_Production
-        "2.A.3": "2.A.3",  # 2A3_Glass_production
-        "2.A.4.a": "2.A.4.a",  # 2A4a_Other_process_uses_of_carbonates:ceramics
-        "2.A.4.b": "2.A.4.b",  # 2A4b_Other_uses_of_Soda_Ash
-        "2.A.4.d": "2.A.4.d",  # 2A4d_Other_process_uses_of_carbonates:other
-        "2.B.1": "2.B.1",  # 2B1_Chemical_Industry:Ammonia_production
-        "2.B.10": "2.B.10",  # 2B10_Chemical_Industry:Other
-        "2.B.2": "2.B.2",  # 2B2_Nitric_Acid_Production
-        "2.B.3": "2.B.3",  # 2B3_Adipic_Acid_Production
-        "2.B.6": "2.B.6",  # 2B6_Titanium_dioxide_production
-        "2.B.7": "2.B.7",  # 2B7_Soda_Ash_Production
-        "2.B.8.a": "2.B.8.a",  # 2B8a_Methanol_production
-        "2.B.8.b": "2.B.8.b",  # 2B8b_Ethylene_Production
-        "2.B.8.c": "2.B.8.c",  # 2B8c_Ethylene_Dichloride_and_Vinyl_Chloride_Monomer
-        "2.B.8.d": "2.B.8.d",  # 2B8d_Ethylene_Oxide
-        "2.B.8.e": "2.B.8.e",  # 2B8e_Acrylonitrile
-        "2.B.8.f": "2.B.8.f",  # 2B8f_Carbon_black_production
-        "2.B.8.g": "2.B.8.g",  # 2B8g_Petrochemical_and_carbon_black_production:Other
-        "2.B.9.a.i": "2.B.9.a.i",  # 2B9a1_Fluorchemical_production:By-product_emissions
-        "2.B.9.b.iii": "2.B.9.b.iii",  # 2B9b3_Fluorchemical_production:Fugitive_emissions
-        "2.C.1.a": "2.C.1.a",  # 2C1a_Steel
-        "2.C.1.b": "2.C.1.b",  # 2C1b_Pig_iron
-        "2.C.1.d": "2.C.1.d",  # 2C1d_Sinter
-        "2.C.3.a": "2.C.3.a",  # 2C3_Aluminium_Production
-        "2.C.3.b": "2.C.3.b",  # 2C3_Aluminium_Production
-        "2.C.4": "2.C.4",  # 2C4_Magnesium_production
-        "2.C.6": "2.C.6",  # 2C6_Zinc_Production
-        "2.D.1": "2.D.1",  # 2D1_Lubricant_Use
-        "2.D.2": "2.D.2",  # 2D2 Non-energy_products_from_fuels_and_solvent_use:Paraffin_wax_use
-        "2.D.3": "2.D.3",  # 2D3_Other_NEU
-        "2.E.1": "2.E.1",  # 2E1_Integrated_circuit_or_semiconductor
-        "2.F.1.a": "M.2.F.1.a.i",  # 2F1a_Commercial_refrigeration
-        "2.F.1.b": "M.2.F.1.a.ii",  # 2F1b_Domestic_refrigeration
-        "2.F.1.c": "M.2.F.1.a.iii",  # 2F1c_Industrial_refrigeration
-        "2.F.1.d": "M.2.F.1.a.iv",  # 2F1d_Transport_refrigeration
-        "2.F.1.e": "2.F.1.b",  # 2F1e_Mobile_air_conditioning
-        "2.F.1.f": "M.2.F.1.a.v",  # 2F1f_Stationary_air_conditioning
-        "2.F.2.a": "M.2.F.2.a",  # 2F2a_Closed_foam_blowing_agents (not in CRF2023_2023)
-        "2.F.2.b": "M.2.F.2.b",  # 2F2b_Open_foam_blowing_agents (not in CRF2023_2023)
-        "2.F.3": "2.F.3",  # 2F3_Fire_Protection
-        "2.F.4.a": "M.2.F.4.a",  # 2F4a_Metered_dose_inhalers
-        "2.F.4.b": "M.2.F.4.b",  # 2F4b_Aerosols:Other
-        "2.F.5": "2.F.5",  # 2F5_Solvents
-        "2.F.6.b": "2.F.6.b",  # 2F6b_Other_Applications:Contained-Refrigerant_containers
-        "2.G.1": "2.G.1",  # 2G1_Electrical_equipment
-        "2.G.2.a": "2.G.2.a",  # 2G2_Military_applications
-        "2.G.2.b": "2.G.2.b",  # 2G2_Particle_accelerators
-        "2.G.2.e": "M.2.G.2.c.i",  # 2G2e_Electronics_and_shoes
-        "2.G.3.a": "2.G.3.a",  # 2G3a_Medical aplications
-        "2.G.3.b": "2.G.3.c",  # 2G3b_N2O_from_product_uses:_Other
-        "2.G.4": "2.G.4",  # 2G4_Other_product_manufacture_and_use
-        "3.A.1.Aa": "3.A.1.a.i",  # 3A1a_Enteric_Fermentation_dairy_cattle
-        "3.A.1.Ab": "3.A.1.a.ii",  # 3A1b_Enteric_Fermentation_non-dairy_cattle
-        "3.A.2": "3.A.1.c",  # 3A2_Enteric_Fermentation_sheep
-        "3.A.3": "3.A.1.h",  # 3A3_Enteric_Fermentation_swine
-        "3.A.4": "3.A.1.j",  # 3A4_Enteric_Fermentation_other:deer
-        "3.B.1.Aa": "3.A.2.a.i",  # 3B21a_Manure_Management_X_dairy_cattle
-        "3.B.1.Ab": "3.A.2.a.ii",  # 3B21b_Manure_Management_X_non-dairy_cattle
-        "3.B.2": "3.A.2.c",  # 3B22_Manure_Management_X_sheep
-        "3.B.3": "3.A.2.h",  # 3B23_Manure_Management_X_swine
-        "3.B.4": "3.A.2.i",  # 3B24_Manure_Management_X_other:poultry
-        "3.B.5": "3.C.6",  # 3B25_Manure_Management_Indirect_Emissions_swine
-        "3.D.a.1": "M.3.C.4.a.AG",  # 3D11_Agriculural_Soils_Inorganic_N_Fertilisers
-        "3.D.a.2.a": "M.3.C.4.b.i.AG",  # 3D12a_Agricultural_Soils_Manure_Applied_to_Soils
-        "3.D.a.2.b": "M.3.C.4.b.ii.AG",  # 3D12b_Agricultural_Soils_Sewage_Sludge_Applied_to_Soils
-        "3.D.a.2.c": "M.3.C.4.b.iii.AG",  # 3D12c_Agricultural_Soils_Other_Organic_Fertilisers_Applied_to_Soils
-        "3.D.a.3": "3.C.4.c",  # 3D13_Agricultural_Soils_Manure_Deposited_by_Grazing_Animals
-        "3.D.a.4": "3.C.4.d",  # 3D14_Agriculural_Soils_Residues
-        "3.D.a.5": "M.3.C.4.e.AG",  # 3D15_Agricultural_soils_Mineralization/Immobilization
-        "3.D.a.6": "M.3.C.4.f.AG",  # 3D16_Agricultural_soils_Cultivation_of_Organic_Soils
-        "3.D.b.1": "M.3.C.5.a.AG",  # 3D21_Agriculural_Soils_Indirect_Deposition
-        "3.D.b.2": "M.3.C.5.b.AG",  # 3D22_Agriculural_Soils_Indirect_Leaching_and_Run-off
-        "3.F.1.a": "M.3.C.1.b.i",  # 3F11_Field_burning_wheat
-        "3.F.1.b": "M.3.C.1.b.ii",  # 3F12_Field_burning_barley
-        "3.F.1.d": "M.3.C.1.b.iii",  # 3F14_Field_burning_other_cereals
-        "3.F.5": "M.3.C.1.b.iv",  # 3F5_Field_burning_other_residues
-        "3.G.1": "M.3.C.2.a",  # 3G1_Liming - limestone
-        "3.G.2": "M.3.C.2.b",  # 3G2_Liming - dolomite
-        "3.H": "M.3.C.3.AG",  # 3H_Urea application
-        "4": "M.3.C.5.LU",  # 4_Indirect_N2O_Emissions (LULUCF)
-        "4.A": "M.3.B.1.DR",  # 4A_Forest Land_Emissions_from_Drainage
-        "4.A.1": "3.B.1.a",  # 4A1_ Forest Land remaining Forest Land
-        "4.A.2": "3.B.1.b",  # 4A2_Cropland_converted_to_Forest_Land (and other land types)
-        "4.B.1": "3.B.2.a",  # 4B1_Cropland Remaining Cropland
-        "4.B.2": "3.B.2.b",  # 4B2_Forest_Land_converted_to_Cropland (and other land types)
-        "4.C": "M.3.B.3.DR",  # 4C_Grassland_Emissions_from_Drainage
-        "4.C.1": "3.B.3.a",  # 4C1_Grassland Remaining Grassland
-        "4.C.2": "3.B.3.b",  # 4C2_Forest_Land_converted_to_Grassland (and other land types)
-        "4.D": "M.3.B.4.DR",  # 4D_Wetlands_Emissions_from_Drainage
-        "4.D.1": "3.B.4.a",  # 4D1_Wetlands remaining wetlands
-        "4.D.2": "3.B.4.b",  # 4D2_Land_converted_to_Wetlands_Peat_Extraction
-        "4.E": "M.3.B.5.DR",  # 4E_Settlements_Emissions_from_Drainage
-        "4.E.1": "3.B.5.a",  # 4E1_Settlements remaining settlements
-        "4.E.2": "3.B.5.b",  # 4E2_Forest_Land_converted_to_Settlements (and other land types)
-        "4.G": "3.D.1",  # 4G_Harvested Wood Products
-        "5.A.1.a": "M.4.A.1.a",  # 5A1a_Managed_Waste_Disposal_sites_anaerobic
-        "5.B.1.a": "M.4.B.1.a",  # 5B1a_composting_municipal_solid_waste
-        "5.B.2.a": "M.4.B.2.a",  # 5B2a_Anaerobic_digestion_municipal_solid_waste
-        "5.C.1.a.ii.4": "M.4.C.1.a.ii.4",  # 5C1.1b_Biogenic:Sewage_sludge
-        "5.C.1.b.i": "M.4.C.1.b.i",  # 5C1.2a_Non-biogenic:municipal_solid_waste
-        "5.C.1.b.ii.3": "M.4.C.1.b.ii.3",  # 5C1.2b_Non-biogenic:Clinical_waste
-        "5.C.2.a.ii.5": "M.4.C.2.a.ii.5",  # 5C2.1b_Biogenic:Other
-        "5.C.2.b.ii.5": "M.4.C.2.b.ii.5",  # 5C2.2b_Non-biogenic:Other
-        "5.D.1": "4.D.1",  # 5D1_Domestic_wastewater_treatment
-        "5.D.2": "4.D.2",  # 5D2_Industrial_wastewater_treatment
-        "Aviation_Bunkers": "M.BK.A",  # Aviation_Bunkers
-        "Marine_Bunkers": "M.BK.B",  # Marine_Bunkers
-    },
-    "aggregate": {
-        # need to aggregate the whole tree as only leaves are given in the data
-        # 1
-        ## 1.A
-        "1.A.1.a": {"sources": ["1.A.1.a.i", "1.A.1.a.iii"]},
-        "1.A.1.c": {"sources": ["1.A.1.c.i", "1.A.1.c.ii", "1.A.1.c.iii"]},
-        "1.A.1": {"sources": ["1.A.1.a", "1.A.1.b", "1.A.1.c"]},
-        "1.A.2.m": {"sources": ["1.A.2.m.i", "1.A.2.m.ii"]},
+aggregate_coords = {
+    f"category ({config_general['coords_terminologies']['category']})": {
         "1.A.2": {
-            "sources": [
-                "1.A.2.a",
-                "1.A.2.b",
-                "1.A.2.c",
-                "1.A.2.d",
-                "1.A.2.e",
-                "1.A.2.f",
-                "1.A.2.i",
-                "1.A.2.k",
-                "1.A.2.m",
-            ]
+            "sources": ["M.1.A.2.CON", "M.1.A.2.IND"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O", f"KYOTOGHG ({gwp_to_use})"],
+            },
         },
-        "1.A.3.a": {"sources": ["1.A.3.a.ii"]},
-        "1.A.3.b": {
-            "sources": [
-                "1.A.3.b.i",
-                "1.A.3.b.ii",
-                "1.A.3.b.iii",
-                "1.A.3.b.iv",
-                "M.1.A.3.b.v",
-            ]
+        "1.A.4": {
+            "sources": ["1.A.4.a", "1.A.4.b", "1.A.4.c"],
+            "filter": {
+                "entity": [
+                    "CH4",
+                    "CO2",
+                    "N2O",
+                    f"KYOTOGHG ({gwp_to_use})",
+                    "SO2",
+                    "NMVOC",
+                    "CO",
+                    "NOx",
+                ],
+            },
         },
-        "1.A.3.d": {"sources": ["1.A.3.d.ii"]},
-        "1.A.3.e": {"sources": ["1.A.3.e.ii"]},
-        "1.A.3": {"sources": ["1.A.3.a", "1.A.3.b", "1.A.3.c", "1.A.3.d", "1.A.3.e"]},
-        "1.A.4.a": {"sources": ["1.A.4.a.i", "1.A.4.a.ii"]},
-        "1.A.4.b": {"sources": ["1.A.4.b.i", "1.A.4.b.ii"]},
-        "1.A.4.c": {"sources": ["1.A.4.c.i", "1.A.4.c.ii", "1.A.4.c.iii"]},
-        "1.A.4": {"sources": ["1.A.4.a", "1.A.4.b", "1.A.4.c"]},
-        "1.A.5": {"sources": ["1.A.5.b"]},
-        "1.A": {"sources": ["1.A.1", "1.A.2", "1.A.3", "1.A.4", "1.A.5"]},
-        ## 1.B
-        "1.B.1.a.i": {"sources": ["1.B.1.a.i.1", "1.B.1.a.i.2", "1.B.1.a.i.3"]},
-        "1.B.1.a.ii": {"sources": ["1.B.1.a.ii.1"]},
-        "1.B.1.a": {"sources": ["1.B.1.a.i", "1.B.1.a.ii"]},
-        "1.B.1": {"sources": ["1.B.1.a", "1.B.1.c"]},
-        "1.B.2.a.iii": {
-            "sources": [
-                "1.B.2.a.iii.1",
-                "1.B.2.a.iii.2",
-                "1.B.2.a.iii.3",
-                "1.B.2.a.iii.4",
-                "1.B.2.a.iii.6",
-            ]
+        "1.B.1": {
+            "sources": ["1.B.1.a"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
         },
-        "1.B.2.a": {"sources": ["1.B.2.a.i", "1.B.2.a.ii", "1.B.2.a.iii"]},
-        "1.B.2.b.iii": {
-            "sources": [
-                "1.B.2.b.iii.1",
-                "1.B.2.b.iii.2",
-                "1.B.2.b.iii.3",
-                "1.B.2.b.iii.4",
-                "1.B.2.b.iii.5",
-            ]
+        "1.B.2": {
+            "sources": ["1.B.2.a", "1.B.2.b"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
         },
-        "1.B.2.b": {"sources": ["1.B.2.b.i", "1.B.2.b.ii", "1.B.2.b.iii"]},
-        "1.B.2": {"sources": ["1.B.2.a", "1.B.2.b"]},
-        "1.B.3": {"sources": ["1.B.3.b"]},
-        "1.B": {"sources": ["1.B.1", "1.B.2", "1.B.3"]},
-        ## 1
-        "1": {"sources": ["1.A", "1.B"]},
-        # 2
-        ## 2.A
-        "2.A.4": {"sources": ["2.A.4.a", "2.A.4.b", "2.A.4.d"]},
-        "2.A": {"sources": ["2.A.1", "2.A.2", "2.A.3", "2.A.4"]},
-        ## 2.B
-        "2.B.8": {
-            "sources": [
-                "2.B.8.a",
-                "2.B.8.b",
-                "2.B.8.c",
-                "2.B.8.d",
-                "2.B.8.e",
-                "2.B.8.f",
-                "2.B.8.g",
-            ]
+        "1.B": {
+            "sources": ["1.B.1", "1.B.2", "1.B.3"],
+            "filter": {
+                "entity": ["CH4"],
+                "time": ["2013"],
+            },
         },
-        "2.B.9.a": {"sources": ["2.B.9.a.i"]},
-        "2.B.9.b": {"sources": ["2.B.9.b.iii"]},
-        "2.B.9": {"sources": ["2.B.9.a", "2.B.9.b"]},
-        "2.B": {
-            "sources": [
-                "2.B.1",
-                "2.B.2",
-                "2.B.3",
-                "2.B.6",
-                "2.B.7",
-                "2.B.8",
-                "2.B.9",
-                "2.B.10",
-            ]
+        "1": {
+            "sources": ["1.A", "1.B", "1.C"],
+            "filter": {
+                "entity": ["CH4"],
+                "time": ["2013"],
+            },
         },
-        ## 2.C
-        "2.C.1": {"sources": ["2.C.1.a", "2.C.1.b", "2.C.1.d"]},
-        "2.C.3": {"sources": ["2.C.3.a", "2.C.3.b"]},
-        "2.C": {"sources": ["2.C.1", "2.C.3", "2.C.4", "2.C.6"]},
-        ## 2.D
-        "2.D": {"sources": ["2.D.1", "2.D.2", "2.D.3"]},
-        ## 2.E
-        "2.E": {"sources": ["2.E.1"]},
-        ## 2.F
-        "2.F.1.a": {
-            "sources": [
-                "M.2.F.1.a.i",
-                "M.2.F.1.a.ii",
-                "M.2.F.1.a.iii",
-                "M.2.F.1.a.iv",
-                "M.2.F.1.a.v",
-            ]
+        "2.F": {
+            "sources": ["2.F.1"],
+            "filter": {
+                "entity": ["HFC125", "HFC134a", "HFC143a", "HFC32"],
+            },
         },
-        "2.F.1": {"sources": ["2.F.1.a", "2.F.1.b"]},
-        "2.F.2": {"sources": ["M.2.F.2.a", "M.2.F.2.b"]},
-        "2.F.4": {"sources": ["M.2.F.4.a", "M.2.F.4.b"]},
-        "2.F.6": {"sources": ["2.F.6.b"]},
-        "2.F": {"sources": ["2.F.1", "2.F.2", "2.F.3", "2.F.4", "2.F.5", "2.F.6"]},
-        ## 2.G
-        "2.G.2.c": {"sources": ["M.2.G.2.c.i"]},
-        "2.G.2": {"sources": ["2.G.2.a", "2.G.2.b", "2.G.2.c"]},
-        "2.G.3": {"sources": ["2.G.3.a", "2.G.3.c"]},
-        "2.G": {"sources": ["2.G.1", "2.G.2", "2.G.3", "2.G.4"]},
-        ## 2
-        "2": {"sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G"]},
-        # 3
-        ## 3.A
-        "3.A.1.a": {"sources": ["3.A.1.a.i", "3.A.1.a.ii"]},
-        "3.A.1": {"sources": ["3.A.1.a", "3.A.1.c", "3.A.1.h", "3.A.1.j"]},
-        "3.A.2.a": {"sources": ["3.A.2.a.i", "3.A.2.a.ii"]},
-        "3.A.2": {"sources": ["3.A.2.a", "3.A.2.c", "3.A.2.h", "3.A.2.i"]},
-        "3.A": {"sources": ["3.A.1", "3.A.2"]},
-        ## 3.B
-        "3.B.1": {"sources": ["3.B.1.a", "3.B.1.b", "M.3.B.1.DR"]},
-        "3.B.2": {"sources": ["3.B.2.a", "3.B.2.b"]},
-        "3.B.3": {"sources": ["3.B.3.a", "3.B.3.b", "M.3.B.3.DR"]},
-        "3.B.4": {"sources": ["3.B.4.a", "3.B.4.b", "M.3.B.4.DR"]},
-        "3.B.5": {"sources": ["3.B.5.a", "3.B.5.b", "M.3.B.5.DR"]},
-        "3.B": {"sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5"]},
-        ## 3.C
-        "3.C.1.b": {
-            "sources": ["M.3.C.1.b.i", "M.3.C.1.b.ii", "M.3.C.1.b.iii", "M.3.C.1.b.iv"]
+        "2": {
+            "sources": ["2.F"],
+            "filter": {
+                "entity": ["HFC125", "HFC134a", "HFC143a", "HFC32"],
+            },
         },
-        "3.C.1": {"sources": ["3.C.1.b"]},
-        "M.3.C.1.AG": {"sources": ["3.C.1.b"]},
-        "M.3.C.2.AG": {"sources": ["M.3.C.2.a.AG", "M.3.C.2.b.AG"]},
-        "3.C.2": {"sources": ["M.3.C.2.AG"]},
-        "3.C.3": {"sources": ["M.3.C.3.AG"]},
-        "3.C.4.a": {"sources": ["M.3.C.4.a.AG"]},
-        "M.3.C.4.b.AG": {
-            "sources": ["M.3.C.4.b.i.AG", "M.3.C.4.b.ii.AG", "M.3.C.4.b.iii.AG"]
+        "3.A": {
+            "sources": ["3.A.1", "3.A.2"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
         },
-        "3.C.4.b": {"sources": ["M.3.C.4.b.AG"]},
-        "3.C.4.e": {"sources": ["M.3.C.4.e.AG"]},
-        "3.C.4.f": {"sources": ["M.3.C.4.f.AG"]},
-        "M.3.C.4.AG": {
-            "sources": [
-                "3.C.4.a.AG",
-                "3.C.4.b.AG",
-                "3.C.4.c",
-                "3.C.4.d",
-                "M.3.C.4.e.AG",
-                "M.3.C.4.f.AG",
-            ]
+        "3.C.1": {
+            "sources": ["3.C.1.a", "3.C.1.b"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
         },
-        "3.C.4": {
-            "sources": [
-                "3.C.4.a",
-                "3.C.4.b",
-                "3.C.4.c",
-                "3.C.4.d",
-                "3.C.4.e",
-                "3.C.4.f",
-            ]
+        "M.3.C.1.AG": {
+            "sources": ["3.C.1.b"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
         },
-        "M.3.C.5.AG": {"sources": ["M.3.C.5.a.AG", "M.3.C.5.b.AG"]},
-        "3.C.5": {"sources": ["M.3.C.5.AG", "M.3.C.5.LU"]},
-        "3.C": {"sources": ["3.C.1", "3.C.2", "3.C.3", "3.C.4", "3.C.5", "3.C.6"]},
-        "M.3.C.AG": {
-            "sources": [
-                "M.3.C.1.AG",
-                "M.3.C.2.AG",
-                "M.3.C.3.AG",
-                "M.3.C.4.AG",
-                "M.3.C.5.AG",
+        "M.3.C.1.LU": {
+            "sources": ["3.C.1.a"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
+        },
+        # "3.C": {"sources": [
+        #     "3.C.1", "3.C.4", "3.C.5", "3.C.6", "3.C.7", "3.C.8", "3.C.9",
+        #     "3.C.10", "3.C.11", "3.C.12", "3.C.13"]},
+        "3.C": {
+            "sources": [  # build from available time-series not inventory
+                "3.C.1",
+                "M.3.C.45.AG",
                 "3.C.6",
-            ]
+                "3.C.7",
+            ],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
         },
-        "M.3.C.LU": {"sources": ["M.3.C.5.LU"]},
-        "M.3.D.LU": {"sources": ["3.D.1"]},
-        # 3.D
-        "3.D": {"sources": ["3.D.1"]},
-        "M.AG.ELV": {"sources": ["M.3.C.AG"]},
-        "3": {"sources": ["3.A", "3.B", "3.C", "3.D"]},
-        "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
-        "M.LULUCF": {"sources": ["3.B", "M.3.C.LU", "M.3.D.LU"]},
-        # 4
-        "4.A.1": {"sources": ["M.4.A.1.a"]},
-        "4.A": {"sources": ["4.A.1"]},
-        "4.B.1": {"sources": ["M.4.B.1.a"]},
-        "4.B.2": {"sources": ["M.4.B.2.a"]},
-        "4.B": {"sources": ["4.B.1", "4.B.2"]},
-        "4.C.1": {"sources": ["M.4.C.1.a.ii.4", "M.4.C.1.b.i", "M.4.C.1.b.ii.3"]},
-        "4.C.2": {"sources": ["M.4.C.2.a.ii.5", "M.4.C.2.b.ii.5"]},
-        "4.C": {"sources": ["4.C.1", "4.C.2"]},
-        "4.D": {"sources": ["4.D.1", "4.D.2"]},
-        "4": {"sources": ["4.A", "4.B", "4.C", "4.D"]},
-        # top level and bunkers
-        "0": {"sources": ["1", "2", "3", "4"]},
-        "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},
-        "M.BK": {"sources": ["M.BK.A", "M.BK.B"]},
-    },
+        "M.3.C.AG": {
+            "sources": [  # build from available time-series not inventory
+                "M.3.C.1.AG",
+                "M.3.C.45.AG",
+                "3.C.6",
+                "3.C.7",
+            ],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
+        },
+        "M.AG.ELV": {
+            "sources": ["M.3.C.AG"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
+        },
+        "M.AG": {  # consistency check
+            "sources": ["M.AG.ELV", "3.A"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
+        },
+        "M.LULUCF": {
+            "sources": ["3.B", "3.D", "M.3.C.1.LU"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O"],
+            },
+        },
+        "3": {
+            "sources": ["M.AG", "M.LULUCF"],
+            "filter": {
+                "entity": ["CH4", "CO2", "N2O", f"KYOTOGHG ({gwp_to_use})"],
+            },
+        },
+        "0": {  # consistency check
+            "sources": ["1", "2", "3", "4"],
+            "filter": {
+                "entity": [
+                    "CH4",
+                    "CO2",
+                    "N2O",
+                    "HFC125",
+                    "HFC134a",
+                    "HFC143a",
+                    "HFC32",
+                    f"UnspMixOfHFCs ({gwp_to_use})",
+                ],
+            },
+        },
+        "M.0.EL": {  # consistency check
+            "sources": ["1", "2", "M.AG", "4"],
+            "filter": {
+                "entity": [
+                    "CH4",
+                    "CO2",
+                    "N2O",
+                    "HFC125",
+                    "HFC134a",
+                    "HFC143a",
+                    "HFC32",
+                    f"UnspMixOfHFCs ({gwp_to_use})",
+                ],
+            },
+        },
+    }
 }
 
 basket_copy = {
-    "GWPs_to_add": ["SARGWP100", "AR4GWP100", "AR6GWP100"],
-    "entities": ["HFCS", "PFCS"],
+    "GWPs_to_add": ["SARGWP100", "AR5GWP100", "AR6GWP100"],
+    "entities": ["UnspMixOfHFCs", "PFCS"],
     "source_GWP": gwp_to_use,
 }
 
 gas_baskets = {
+    "HFCS (SARGWP100)": [
+        "HFC125",
+        "HFC134a",
+        "HFC143a",
+        "HFC32",
+        "UnspMixOfHFCs (SARGWP100)",
+    ],
+    "HFCS (AR4GWP100)": [
+        "HFC125",
+        "HFC134a",
+        "HFC143a",
+        "HFC32",
+        "UnspMixOfHFCs (AR4GWP100)",
+    ],
+    "HFCS (AR5GWP100)": [
+        "HFC125",
+        "HFC134a",
+        "HFC143a",
+        "HFC32",
+        "UnspMixOfHFCs (AR5GWP100)",
+    ],
+    "HFCS (AR6GWP100)": [
+        "HFC125",
+        "HFC134a",
+        "HFC143a",
+        "HFC32",
+        "UnspMixOfHFCs (AR6GWP100)",
+    ],
     "FGASES (SARGWP100)": ["HFCS (SARGWP100)", "PFCS (SARGWP100)", "SF6", "NF3"],
     "FGASES (AR4GWP100)": ["HFCS (AR4GWP100)", "PFCS (AR4GWP100)", "SF6", "NF3"],
     "FGASES (AR5GWP100)": ["HFCS (AR5GWP100)", "PFCS (AR5GWP100)", "SF6", "NF3"],

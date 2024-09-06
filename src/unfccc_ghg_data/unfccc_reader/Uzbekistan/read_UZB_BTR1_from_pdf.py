@@ -4,6 +4,7 @@ Read Uzbekistans's BTR1 inventory from pdf
 Most tables are read, but not all.
 Some tables are ignored due to inconsistencies (precursors)
 
+
 """
 import camelot
 import numpy as np
@@ -15,84 +16,20 @@ from unfccc_ghg_data.helper import (
     extracted_data_path,
     fix_rows,
     make_long_table,
+    process_data_for_country,
     set_to_nan_in_ds,
 )
 from unfccc_ghg_data.unfccc_reader.Uzbekistan.config_uzb_btr1 import (
+    aggregate_coords,
+    basket_copy,
     cat_code_regexp,
     config_general,
+    gas_baskets,
     page_def_inventory,
     page_def_trends,
     table_def_inventory,
     table_def_trends,
 )
-
-# NIR tables for 1990, 2010, 2021 on page 187-208
-# trend tables:
-# precursors not listed, but also available
-# mot all detail tables listed
-# [X] Total for main gases: 21
-# [X] KyotoGHG for main sectors: 23
-# [X] gases for energy sector totals: 29
-# [X] Kyotoghg for energy sector main subsectors: 30
-# [X] Bunkers, gases: 36
-# [X] 1.A gases: 38
-# [X] KyotoGHG for main sectors: 40, 41
-# [X] CO2 for 1.A.X sectors: 42
-# [X] CH4 for 1.A.X sectors: 43,44
-# [X] N2O for 1.A.X sectors: 44, 45
-# [] KyotoGHG 1.A.3 subsectors: 51
-# [X] 1.B gases: 55
-# [X] 1.B.x KyotoGHG: 56
-# [x] CH4 from coal mining: 58, 59 (check if that covers 1.B.1)
-# [x] gases from oil (1.B.2.a?): 61
-# [X] KyotoGHG for oil subsectors: 62
-# [X] gases from oil production: 63
-# [] KyotoGHG oil production subsectors: 64
-# [X] gases from oil transportation: 66, 67
-# [x] gases for natural gas: 69
-# [x] precursors for natural gas: 69
-# [] KyotoGHG for natural gas subsectors
-# [X] IPPU gases: 76
-# [X] IPPU precursors: 76
-# [X] KyotoGHG IPPU subsectors: 78
-# [x] CO2 2.A: 81
-# [X] CO2, SO2 in 2.A.1
-# [] Skip the other 2.A.x tables as contained in table on page 81
-# [X] 2.B gases: 92, 93
-# [] KyotoGHG 2.B.x: 94
-# [] Detail tables for individual chemicals (95, 98, 101, 103, 105)
-# [X] 2.C gases: 107
-# [] Metal industry detail tables (108, 109, 111, 112, 113)
-# [X] 2.D.1 CO2: 115 (other sectors NE)
-# [X] 2.F gases: 116
-# [X] 2.H NMVOC only
-##########################
-# [X] M.AG, gases: 123
-# [X] KyotoGHG M.AG subcategories: 124
-# [X] CH4 3.A.1.x : 127
-# [] manure management gases: 131 (not needed)
-# [X] 3.A.2.x, CH4: 132
-# [X] direct + indirect N2O manure management: 133, 134
-# [X] direct N2O mm, subsectors: 134, 135
-# [X] crop residues burning gases: 137 (all other burning NO)
-# [] Liming: NO, Urea: NO, but text reads like NE
-# [X] N2O from soils: 140
-# [X] CH4 from rice: 144
-# [X] KyotoGHG Land+subsectors: 148 (CO2 only)
-# [] CO2 removals in Forest land remaining forest land (fires included): 151
-# [X] gases for forest fires (read for non-CO2): 152
-# [] CO2 from cropland remaining cropland: 158
-# [] CO2 from grassland remaining grassland: 163
-# [X] Waste by gas: 166
-# [X] Waste by sector: 167
-# [X] CH4 from solid waste: 169
-# [X] Wastewater CH4, N2O: 176
-# [X] Wastewater KyotoGHG for subsectors: 177
-# [X] Domestic wastewater, gases: 179
-# [X] Industrial wastewater CH$: 183
-# []
-# []
-
 
 if __name__ == "__main__":
     pd.set_option("future.no_silent_downcasting", True)
@@ -124,8 +61,14 @@ if __name__ == "__main__":
     # tables_to_read = ["bunkers_gases"]
 
     for table in tables_to_read:
-        print(f"Reading {table}")
         table_def_current = table_def_trends[table].copy()
+        if "dont_read" in table_def_current.keys():
+            if table_def_current["dont_read"] is True:
+                print(f"Skipping table {table}")
+                continue
+
+        print(f"Reading {table}")
+
         data_table = None
         for page in table_def_current["tables"]:
             # prep parameters
@@ -375,10 +318,11 @@ if __name__ == "__main__":
             else:
                 data_table = data_table.pr.merge(data_pm2)
 
-        # if "remove_vals" in table_def_current:
-        #     for case in table_def_current['remove_vals']:
-        #         data_table = set_to_nan_in_ds(data_table,
-        #         **table_def_current['remove_vals'][case])
+        if "remove_vals" in table_def_current:
+            for case in table_def_current["remove_vals"]:
+                data_table = set_to_nan_in_ds(
+                    data_table, **table_def_current["remove_vals"][case]
+                )
 
         if data_inv is None:
             data_inv = data_table
@@ -394,7 +338,7 @@ if __name__ == "__main__":
     data_trend = data_trend[vars_to_keep]
 
     # merge trends and inventory
-    data_pm2 = data_inv.pr.merge(data_trend)
+    data_pm2 = data_trend.pr.merge(data_inv)
 
     # convert back to IF to have units in the fixed format
     data_if = data_pm2.pr.to_interchange_format()
@@ -404,7 +348,11 @@ if __name__ == "__main__":
     # ###
     pm2.pm2io.write_interchange_format(
         output_folder
-        / (output_filename + config_general["coords_terminologies"]["category"]),
+        / (
+            output_filename
+            + config_general["coords_terminologies"]["category"]
+            + "_raw"
+        ),
         data_if,
     )
 
@@ -412,51 +360,121 @@ if __name__ == "__main__":
     data_pm2.pr.to_netcdf(
         output_folder
         / (
+            output_filename
+            + config_general["coords_terminologies"]["category"]
+            + "_raw"
+            + ".nc"
+        ),
+        encoding=encoding,
+    )
+
+    # ###
+    # sector aggregation
+    # ###
+
+    data_pm2_agg = data_pm2.copy()
+
+    # actual processing
+
+    country_processing = {
+        "basket_copy": basket_copy,
+        "aggregate_coords": aggregate_coords,
+    }
+
+    data_pm2_agg = process_data_for_country(
+        data_pm2_agg,
+        entities_to_ignore=[],
+        gas_baskets=gas_baskets,
+        processing_info_country=country_processing,
+        # sectors_out=sectors_to_save,
+    )
+
+    # adapt source and metadata
+    current_source = data_pm2_agg.coords["source"].to_numpy()[0]
+    data_temp = data_pm2_agg.pr.loc[{"source": current_source}]
+    data_pm2_agg = data_pm2_agg.pr.set("source", "AI_INV", data_temp)
+    data_pm2_agg = data_pm2_agg.pr.loc[{"source": ["AI_INV"]}]
+
+    # convert back to IF to have units in the fixed format
+    data_if_agg = data_pm2_agg.pr.to_interchange_format()
+
+    pm2.pm2io.write_interchange_format(
+        output_folder
+        / (output_filename + config_general["coords_terminologies"]["category"]),
+        data_if_agg,
+    )
+
+    encoding = {var: compression for var in data_pm2_agg.data_vars}
+    data_pm2_agg.pr.to_netcdf(
+        output_folder
+        / (
             output_filename + config_general["coords_terminologies"]["category"] + ".nc"
         ),
         encoding=encoding,
     )
 
-    #################################
 
-    # # ###
-    # # conversion to ipcc 2006 categories
-    # # ###
-    #
-    # data_pm2_2006 = data_pm2.copy()
-    #
-    # # actual processing
-    #
-    # country_processing = {
-    #     "basket_copy": basket_copy,
-    # }
-    #
-    # data_pm2_2006 = process_data_for_country(
-    #     data_pm2_2006,
-    #     entities_to_ignore=[],
-    #     gas_baskets=gas_baskets,
-    #     processing_info_country=country_processing,
-    #     cat_terminology_out=terminology_proc,
-    #     category_conversion=cat_conversion,
-    #     # sectors_out=sectors_to_save,
-    # )
-    #
-    # # adapt source and metadata
-    # current_source = data_pm2_2006.coords["source"].to_numpy()[0]
-    # data_temp = data_pm2_2006.pr.loc[{"source": current_source}]
-    # data_pm2_2006 = data_pm2_2006.pr.set("source", "AI_INV", data_temp)
-    # data_pm2_2006 = data_pm2_2006.pr.loc[{"source": ["AI_INV"]}]
-    #
-    # # convert back to IF to have units in the fixed format
-    # data_if_2006 = data_pm2_2006.pr.to_interchange_format()
-    #
-    # pm2.pm2io.write_interchange_format(
-    #     output_folder / (output_filename + terminology_proc),
-    #     data_if_2006,
-    # )
-    #
-    # encoding = {var: compression for var in data_pm2_2006.data_vars}
-    # data_pm2_2006.pr.to_netcdf(
-    #     output_folder / (output_filename + terminology_proc + ".nc"),
-    #     encoding=encoding,
-    # )
+# NIR tables for 1990, 2010, 2021 on page 187-208
+# trend tables:
+# precursors not listed, but also available
+# mot all detail tables listed
+# [X] Total for main gases: 21
+# [X] KyotoGHG for main sectors: 23
+# [X] gases for energy sector totals: 29
+# [X] Kyotoghg for energy sector main subsectors: 30
+# [X] Bunkers, gases: 36
+# [X] 1.A gases: 38
+# [X] KyotoGHG for main sectors: 40, 41
+# [X] CO2 for 1.A.X sectors: 42
+# [X] CH4 for 1.A.X sectors: 43,44
+# [X] N2O for 1.A.X sectors: 44, 45
+# [] KyotoGHG 1.A.3 subsectors: 51
+# [X] 1.B gases: 55
+# [X] 1.B.x KyotoGHG: 56
+# [x] CH4 from coal mining: 58, 59 (check if that covers 1.B.1)
+# [x] gases from oil (1.B.2.a?): 61
+# [X] KyotoGHG for oil subsectors: 62
+# [X] gases from oil production: 63
+# [] KyotoGHG oil production subsectors: 64
+# [X] gases from oil transportation: 66, 67
+# [x] gases for natural gas: 69
+# [x] precursors for natural gas: 69
+# [] KyotoGHG for natural gas subsectors
+# [X] IPPU gases: 76
+# [X] IPPU precursors: 76
+# [X] KyotoGHG IPPU subsectors: 78
+# [x] CO2 2.A: 81
+# [X] CO2, SO2 in 2.A.1
+# [] Skip the other 2.A.x tables as contained in table on page 81
+# [X] 2.B gases: 92, 93
+# [] KyotoGHG 2.B.x: 94
+# [] Detail tables for individual chemicals (95, 98, 101, 103, 105)
+# [X] 2.C gases: 107
+# [] Metal industry detail tables (108, 109, 111, 112, 113)
+# [X] 2.D.1 CO2: 115 (other sectors NE)
+# [X] 2.F gases: 116
+# [X] 2.H NMVOC only
+##########################
+# [X] M.AG, gases: 123
+# [X] KyotoGHG M.AG subcategories: 124
+# [X] CH4 3.A.1.x : 127
+# [] manure management gases: 131 (not needed)
+# [X] 3.A.2.x, CH4: 132
+# [X] direct + indirect N2O manure management: 133, 134
+# [X] direct N2O mm, subsectors: 134, 135
+# [X] crop residues burning gases: 137 (all other burning NO)
+# [] Liming: NO, Urea: NO, but text reads like NE
+# [X] N2O from soils: 140
+# [X] CH4 from rice: 144
+# [X] KyotoGHG Land+subsectors: 148 (CO2 only)
+# [] CO2 removals in Forest land remaining forest land (fires included): 151
+# [X] gases for forest fires (read for non-CO2): 152
+# [] CO2 from cropland remaining cropland: 158
+# [] CO2 from grassland remaining grassland: 163
+# [X] Waste by gas: 166
+# [X] Waste by sector: 167
+# [X] CH4 from solid waste: 169
+# [X] Wastewater CH4, N2O: 176
+# [X] Wastewater KyotoGHG for subsectors: 177
+# [X] Domestic wastewater, gases: 179
+# [X] Industrial wastewater CH$: 183
