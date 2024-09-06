@@ -13,10 +13,10 @@ dimensions:
   '*':
   - time
   - source
-  - area (ISO3)
-  - scenario (PRIMAP)
   - category (IPCC1996_2006_CHN_Inv)
+  - area (ISO3)
   - provenance
+  - scenario (PRIMAP)
   - entity
   - unit
 data_file: CHN_NC4_2023_IPCC1996_2006_CHN_Inv.csv
