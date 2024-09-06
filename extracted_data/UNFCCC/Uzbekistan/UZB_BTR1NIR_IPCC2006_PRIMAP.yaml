@@ -1,0 +1,25 @@
+attrs:
+  rights: ''
+  references: https://unfccc.int/documents/640099
+  contact: mail@johannes-guetschow.de
+  title: NATIONAL REPORT - Inventory of anthropogenic emissions sources and sinks
+    of greenhouse gases in the Republic of Uzbekistan 1990-2021 Processed on 2024-09-06
+  comment: Read fom pdf file by Johannes Gütschow Processed on 2024-09-06
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  cat: category (IPCC2006_PRIMAP)
+  gwp_context: AR4GWP100
+  entity: NMVOC
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - area (ISO3)
+  - scenario (PRIMAP)
+  - source
+  - provenance
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - unit
+data_file: UZB_BTR1NIR_IPCC2006_PRIMAP.csv
