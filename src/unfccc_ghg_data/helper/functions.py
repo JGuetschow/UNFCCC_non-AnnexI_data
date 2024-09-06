@@ -948,6 +948,8 @@ def fix_rows(
             locs_to_merge = list(range(loc - 1, loc + 1))
         elif n_rows == -3:  # noqa: PLR2004
             locs_to_merge = list(range(loc - 1, loc + 2))
+        elif n_rows == -4:  # noqa: PLR2004
+            locs_to_merge = list(range(loc - 1, loc + 3))
         elif n_rows == -5:  # noqa: PLR2004
             locs_to_merge = list(range(loc - 1, loc + 4))
         else:
@@ -1030,6 +1032,68 @@ def make_wide_table(
                 df_all = df_to_add
             else:
                 df_all = pd.concat([df_all, df_to_add], axis=1, join="outer")
+        return df_all
+
+
+def make_long_table(
+    data: pd.DataFrame,
+    keyword: str,
+) -> pd.DataFrame | None:
+    """
+    Make long table from a table horizontally combined blocks
+
+    Make a long table from a table which is a horizontal
+    concatenation of tables for different time periods
+
+    This function assumes that the table header is in
+    the first row and the columns are numerical
+
+    Parameters
+    ----------
+    data
+        Input table as pandas.DataFrame
+    keyword
+
+    Returns
+    -------
+    pandas.DataFrame in long format
+
+    """
+    kw_locs = data.iloc[0] == keyword
+    kw_locs = list(np.where(kw_locs)[0])
+
+    if len(kw_locs) < 2:  # noqa: PLR2004
+        print(f'Keyword "{keyword}" not found multiple times')
+        return data
+
+    else:
+        df_all = None
+        for ikw in range(len(kw_locs)):
+            if ikw < len(kw_locs) - 1:
+                end_pos = kw_locs[ikw + 1]
+            else:
+                end_pos = len(data.columns)
+            df_to_add = data.iloc[:, range(kw_locs[ikw], end_pos)]
+            df_to_add.columns = df_to_add.iloc[0]
+            idx_to_drop = df_to_add.index[0]
+            df_to_add = df_to_add.drop(idx_to_drop)
+
+            # remove all rows which have no year
+            filter_nan = (
+                (~df_to_add[keyword].isna())
+                & (df_to_add[keyword] != "NaN")
+                & (df_to_add[keyword] != "")
+            )
+            df_to_add = df_to_add.loc[filter_nan]
+
+            if df_all is None:
+                df_all = df_to_add
+            else:
+                try:
+                    df_all = pd.concat([df_all, df_to_add])
+                except Exception as ex:
+                    print(f"Table parts not compatible, Exception: {ex}")
+
         return df_all
 
 
