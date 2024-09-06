@@ -12,6 +12,7 @@
     "IDN": "Indonesia",
     "ISR": "Israel",
     "JPN": "Japan",
+    "KNA": "Saint_Kitts_and_Nevis",
     "KOR": "Republic_of_Korea",
     "MAR": "Morocco",
     "MEX": "Mexico",
@@ -24,5 +25,6 @@
     "SGP": "Singapore",
     "THA": "Thailand",
     "TWN": "Taiwan",
-    "USA": "United_States_of_America"
+    "USA": "United_States_of_America",
+    "UZB": "Uzbekistan"
 }
