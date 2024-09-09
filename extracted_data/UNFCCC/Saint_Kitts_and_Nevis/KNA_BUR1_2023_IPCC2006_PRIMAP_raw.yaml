@@ -12,11 +12,11 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - source
-  - category (IPCC2006_PRIMAP)
-  - area (ISO3)
   - scenario (PRIMAP)
   - provenance
+  - area (ISO3)
+  - source
+  - category (IPCC2006_PRIMAP)
   - entity
   - unit
 data_file: KNA_BUR1_2023_IPCC2006_PRIMAP_raw.csv
