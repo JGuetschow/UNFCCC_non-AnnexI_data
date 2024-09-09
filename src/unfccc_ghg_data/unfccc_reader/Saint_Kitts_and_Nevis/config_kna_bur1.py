@@ -616,8 +616,8 @@ country_processing_step2 = {
                         "1",
                         "1.A",
                         "1.B",
-                        # "1.B.2",
-                        # "1.B.3"
+                        "1.B.2",
+                        # "1.B.3" # all zero -> doesn't work
                         # "1.C",  # we don't have trend values for 1.C
                         # Downscaling currently doesn't work for all zero basket content, see
                         # https://github.com/pik-primap/primap2/issues/254#issue-2491434285
