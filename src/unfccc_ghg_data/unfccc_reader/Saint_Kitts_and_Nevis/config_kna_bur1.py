@@ -269,12 +269,12 @@ conf_trend = {
             "A.  Enteric Fermentation": "3.A.1",
             "B.  Manure Management": "3.A.2",
             "C.  Rice Cultivation": "3.C.7",
-            "D.  Agricultural Soils": "3.C.4",  # TODO confirm! 3c4 and 3c5
-            "E.  Prescribed Burning of Savannahs": "3.C.1.c",  # TODO confirm!
+            "D.  Agricultural Soils": "3.C.4",
+            "E.  Prescribed Burning of Savannahs": "3.C.1.c",
             "F.  Field Burning of Agricultural": "3.C.1.b",
             "Residues  G.  Liming": "3.C.2",
             "H.  Urea applications": "3.C.3",
-            "I.  Other carbon-containing": "M.3.D.2.AG",  # TODO confirm! ?
+            "I.  Other carbon-containing": "M.3.D.2.AG",
             "fertilisers  4. Land Use, Land-Use Change and  Forestry": "M.LULUCF",
             "A. Forest Land": "3.B.1",
             "B. Cropland": "3.B.2",
@@ -283,7 +283,7 @@ conf_trend = {
             "E. Settlements": "3.B.5",
             "F. Other Land": "3.B.6",
             "G. Harvested wood products": "3.D.1",
-            "H. Other": "3.D.2.LULUCF",  # not sure we this belongs, removing it later
+            "H. Other": "3.D.2.LULUCF",
             "5. Waste": "4",
             "A.  Solid Waste Disposal": "4.A",
             "B.  Biological treatment of solid": "4.B",
