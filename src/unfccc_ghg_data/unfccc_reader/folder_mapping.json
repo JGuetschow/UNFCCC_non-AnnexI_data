@@ -7,6 +7,7 @@
     "CHN": "China",
     "COL": "Colombia",
     "CPV": "Cabo_Verde",
+    "GBR": "United_Kingdom",
     "GIN": "Guinea",
     "IDN": "Indonesia",
     "ISR": "Israel",
@@ -23,5 +24,7 @@
     "PER": "Peru",
     "SGP": "Singapore",
     "THA": "Thailand",
-    "TWN": "Taiwan"
+    "TWN": "Taiwan",
+    "USA": "United_States_of_America",
+    "UZB": "Uzbekistan"
 }

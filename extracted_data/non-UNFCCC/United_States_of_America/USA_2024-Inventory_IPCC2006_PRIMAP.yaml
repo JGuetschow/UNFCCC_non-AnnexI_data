@@ -1,0 +1,26 @@
+attrs:
+  references: 
+    https://www.epa.gov/ghgemissions/inventory-us-greenhouse-gas-emissions-and-sinks-1990-2022
+  rights: ''
+  contact: johannes.guetschow@climate-resource.com
+  title: 'Inventory of U.S. Greenhouse Gas Emissions and Sinks: 1990-2022 Processed
+    on 2024-08-08'
+  comment: Read fom csv files by Johannes Gütschow Processed on 2024-08-08
+  institution: United States Environmental Protection Agency
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+  entity: PFCS
+  gwp_context: AR6GWP100
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - scenario (PRIMAP)
+  - area (ISO3)
+  - provenance
+  - source
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - unit
+data_file: USA_2024-Inventory_IPCC2006_PRIMAP.csv

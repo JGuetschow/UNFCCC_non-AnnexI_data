@@ -10,6 +10,7 @@ unfccc\_ghg\_data.unfccc\_reader
   :toctree: ./
 
   unfccc_ghg_data.unfccc_reader.Argentina
+  unfccc_ghg_data.unfccc_reader.Bangladesh
   unfccc_ghg_data.unfccc_reader.Burundi
   unfccc_ghg_data.unfccc_reader.Chile
   unfccc_ghg_data.unfccc_reader.China
@@ -31,5 +32,7 @@ unfccc\_ghg\_data.unfccc\_reader
   unfccc_ghg_data.unfccc_reader.Taiwan
   unfccc_ghg_data.unfccc_reader.Thailand
   unfccc_ghg_data.unfccc_reader.United_Arab_Emirates
+  unfccc_ghg_data.unfccc_reader.United_Kingdom
+  unfccc_ghg_data.unfccc_reader.United_States_of_America
   unfccc_ghg_data.unfccc_reader.get_submissions_info
   unfccc_ghg_data.unfccc_reader.read_UNFCCC_submission

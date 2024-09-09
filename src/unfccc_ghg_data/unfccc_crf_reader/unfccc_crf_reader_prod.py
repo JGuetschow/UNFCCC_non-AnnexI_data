@@ -177,6 +177,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
                     f"Submission date: {submission_date}"
                 },
                 entity_mapping=entity_mapping,
+                type=type,
             )
 
             # now convert to native PRIMAP2 format

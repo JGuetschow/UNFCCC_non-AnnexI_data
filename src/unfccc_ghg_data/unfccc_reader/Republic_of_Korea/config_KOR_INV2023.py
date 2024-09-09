@@ -616,3 +616,11 @@ filter_remove_after_agg = {
         "category (IPCC2006_PRIMAP)": ["2.E_1", "2.E_2"],
     },
 }
+
+processing_info_country_basket_copy = {
+    "basket_copy": {
+        "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
+        "entities": ["HFCS", "PFCS"],
+        "source_GWP": "SARGWP100",
+    }
+}

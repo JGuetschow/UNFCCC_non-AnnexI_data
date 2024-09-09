@@ -6,7 +6,7 @@ attrs:
     Australia. Submission date: 12042024'
   comment: Read fom xlsx file by Johannes Gütschow
   institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
-  cat: category (CRF2013_1)
+  cat: category (CRT1)
   area: area (ISO3)
   scen: scenario (PRIMAP)
   sec_cats:
@@ -15,12 +15,12 @@ time_format: '%Y'
 dimensions:
   '*':
   - time
-  - category (CRF2013_1)
+  - category (CRT1)
+  - source
+  - scenario (PRIMAP)
   - provenance
   - area (ISO3)
-  - scenario (PRIMAP)
   - class
-  - source
   - entity
   - unit
 data_file: AUS_CRT1_12042024.csv

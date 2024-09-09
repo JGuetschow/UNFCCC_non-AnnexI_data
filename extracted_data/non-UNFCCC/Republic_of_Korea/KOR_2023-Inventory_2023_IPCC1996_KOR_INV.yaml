@@ -15,10 +15,10 @@ dimensions:
   '*':
   - time
   - provenance
-  - source
   - category (IPCC1996_KOR_INV)
-  - scenario (PRIMAP)
   - area (ISO3)
+  - scenario (PRIMAP)
+  - source
   - entity
   - unit
 data_file: KOR_2023-Inventory_2023_IPCC1996_KOR_INV.csv
