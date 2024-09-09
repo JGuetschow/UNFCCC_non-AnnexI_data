@@ -1,0 +1,22 @@
+attrs:
+  references: https://unfccc.int/documents/633382
+  rights: ''
+  contact: daniel-busch@climate-resource.de
+  title: Saint Kitts and Nevis. Biennial update report (BUR). BUR1
+  comment: Read fom pdf by Daniel Busch
+  institution: UNFCCC
+  cat: category (IPCC2006_PRIMAP)
+  area: area (ISO3)
+  scen: scenario (PRIMAP)
+time_format: '%Y'
+dimensions:
+  '*':
+  - time
+  - scenario (PRIMAP)
+  - provenance
+  - area (ISO3)
+  - source
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - unit
+data_file: KNA_BUR1_2023_IPCC2006_PRIMAP_raw.csv
