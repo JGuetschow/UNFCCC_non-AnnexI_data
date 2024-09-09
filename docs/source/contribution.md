@@ -1,5 +1,11 @@
 # Data reading FAQ
 
+## How to run a data reading script?
+
+Create a run configuration in Pycharm. Set the environment
+variable `UNFCCC_GHG_ROOT_PATH=/Users/your/path/to/UNFCCC_non-AnnexI_data` and the root directory
+to the root directory of the repository. Then click on `Run` or `Debug` to execute the script.
+
 ## How to choose which tables to read from a PDF?
 
 Usually there are detailed tables for in the Annex. That's always a good start.
@@ -188,3 +194,34 @@ The final result will look like this. Note that the calculation results in numbe
 There are also situations in which we have to limit the years for the downscaling.
 
 The downscaling is described in the [Primap2 documentation.](https://primap2.readthedocs.io/en/stable/special_usage.html#Downscaling)
+
+## How upload the data?
+
+When everything is done we upload the extracted data, specifically `.nc`, `.yaml` and `.csv` files for
+raw and processed data. In total there should be 6 files. They should show up as untracked files
+when running `git status`.
+The following command updates the folder mapping.
+
+```shell
+poetry run doit map_folders folder=src/unfccc_ghg_data/unfccc_reader
+```
+
+To execute the data reading script run:
+
+```shell
+poetry run doit read_unfccc_submission country=<ISO3code> submission=<submission>
+```
+
+Fill the parameters with the ISO3 country code, for example `BGD` for Bangladesh, and the submission,
+for example `BUR1` for the first biannual update report. The command will run the data reading script
+and stage the files. The extracted files will be overwritten or created. So it does not matter if they files were
+already created or not at this point. Lastly push the extracted files with
+
+```shell
+datalad push --to origin
+```
+
+`origin` is the name of the remote where we store our data. It may have a different name depending
+on how it was set up. Check if everything was updated correctly in the browser.
+In case it did not work, there may be unsaved files in your repository. You can
+check with `datalad status`.
