@@ -43,6 +43,7 @@ def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
     info = []
     pattern = re.compile(r"BUR ?\d")
     pattern_NC = re.compile(r"NC ?\d")
+    pattern_BTR = re.compile(r"BTR ?\d")
     i = 0
     last_excep = None
     while i < max_tries:
@@ -72,7 +73,11 @@ def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
             if match:
                 kind = match.group(0).replace(" ", "")
             else:
-                kind = None
+                match = pattern_BTR.search(title)
+                if match:
+                    kind = match.group(0).replace(" ", "")
+                else:
+                    kind = None
 
         # TODO: might improve speed by first searching for class="document-line"
         #  and then operating on thie resulting subtree for the info
@@ -97,7 +102,11 @@ def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
 
         # get files
         sub_files = html.find(
-            class_=["form-select form-control", "form-select form-control download"]
+            class_=[
+                "form-select form-control",
+                "form-select form-control download",
+                "small-download form-select form-control download",
+            ]
         )
         if sub_files:
             files = sub_files.find_all("option", value=True)

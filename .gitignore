@@ -13,6 +13,9 @@ geckodriver.log
 
 # Databases
 *.db
+*.db.bak
+*.db.dat
+*.db.dir
 
 # Jupyter cache
 .jupyter_cache
