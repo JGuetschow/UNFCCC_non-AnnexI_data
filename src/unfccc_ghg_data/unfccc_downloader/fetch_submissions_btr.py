@@ -79,6 +79,8 @@ if __name__ == "__main__":
                 title = link.contents[0]
             if href.startswith("/documents"):
                 href = "https://unfccc.int" + href
+            elif href.startswith("documents"):
+                href = "https://unfccc.int/" + href
             # Only add pages in the format https://unfccc.int/documents/65587
             # to further downloads
             if str(Path(href).parent).endswith("documents"):
