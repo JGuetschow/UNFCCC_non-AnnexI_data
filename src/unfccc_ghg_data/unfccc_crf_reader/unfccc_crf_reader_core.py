@@ -27,6 +27,8 @@ from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, root_path
 from . import crf_specifications as crf
 from .util import NoCRFFilesError
 
+pd.set_option("future.no_silent_downcasting", True)
+
 
 ### reading functions
 def convert_crf_table_to_pm2if(  # noqa: PLR0913
@@ -432,6 +434,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
             "NULL",
             "NaN",
             "",
+            " ",
         ],
         keep_default_na=False,
     )
@@ -443,7 +446,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         last_row_nan = False
 
     cols_to_drop = []
-    # remove empty first column (for Australia tables start with an empty column)
+    # remove empty first column (because CRTables start with an empty column)
     # df_raw = df_raw.dropna(how="all", axis=1)
     if df_raw.iloc[:, 0].isna().all():
         cols_to_drop.append(df_raw.columns.to_numpy()[0])
@@ -510,6 +513,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     # remove double spaces
     entities = [entity.strip() for entity in entities]
     entities = [re.sub("\\s+", " ", entity) for entity in entities]
+    entities = [re.sub("_x000d_ ", "", entity) for entity in entities]
 
     # replace the old header
     if len(header) > 2:  # noqa: PLR2004
@@ -819,7 +823,7 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
     return unique_files
 
 
-def get_info_from_crf_filename(
+def get_info_from_crf_filename(  # noqa: PLR0912
     filename: str,
 ) -> dict[str, Union[int, str]]:
     """
@@ -861,16 +865,31 @@ def get_info_from_crf_filename(
     else:
         # not enough parts, we probably have a CRT file with different separator
         name_parts = filename.split("-")
-        file_info["party"] = name_parts[0]
-        file_info["submission_year"] = int(name_parts[2])
-        file_info["version"] = name_parts[3]
-        try:
-            file_info["data_year"] = int(name_parts[4])
-        except:  # noqa: E722
-            print(f"Data year string {name_parts[4]} " "could not be converted to int.")
-            file_info["data_year"] = name_parts[4]
-        file_info["date"] = name_parts[5]
-        file_info["extra"] = name_parts[6]
+        if len(name_parts) >= 5:  # noqa: PLR2004
+            if name_parts[1] == "CRT":
+                file_info["party"] = name_parts[0]
+                file_info["submission_year"] = int(name_parts[2])
+                file_info["version"] = name_parts[3]
+                try:
+                    file_info["data_year"] = int(name_parts[4])
+                except:  # noqa: E722
+                    print(
+                        f"Data year string {name_parts[4]} "
+                        "could not be converted to int."
+                    )
+                    file_info["data_year"] = name_parts[4]
+                file_info["date"] = name_parts[5]
+                # treat time code and note as optional
+                if len(name_parts) > 6:  # noqa: PLR2004
+                    file_info["extra"] = name_parts[6]
+                else:
+                    file_info["extra"] = ""
+            else:
+                message = f"File {filename} is not a valid CRF or CRT file."
+                raise ValueError(message)
+        else:
+            message = f"File {filename} is not a valid CRF or CRT file."
+            raise ValueError(message)
 
     return file_info
 
@@ -918,9 +937,12 @@ def filter_filenames(
     filtered_files = []
     for file in files_to_filter:
         if not file.is_dir():
-            file_info = get_info_from_crf_filename(file.name)
-            if check_crf_file_info(file_info, file_filter):
-                filtered_files.append(file)
+            try:
+                file_info = get_info_from_crf_filename(file.name)
+                if check_crf_file_info(file_info, file_filter):
+                    filtered_files.append(file)
+            except ValueError:
+                pass
 
     return filtered_files
 
@@ -1155,8 +1177,13 @@ def get_latest_date_for_country(
 
     if type == "CRT":
         type_folder = "BTR"
+        if country_code == "AUS" and submission_year == 1:
+            date_format = "%d%m%Y"
+        else:
+            date_format = "%Y%m%d"
     else:
         type_folder = type
+        date_format = "%d%m%Y"
     if country_code in folder_mapping:
         file_filter = {}
         file_filter["party"] = country_code
@@ -1174,7 +1201,8 @@ def get_latest_date_for_country(
                     / country_folders
                     / f"{type_folder}{submission_year}",
                     file_filter,
-                )
+                ),
+                date_format=date_format,
             )
         else:
             dates = []
@@ -1186,7 +1214,7 @@ def get_latest_date_for_country(
                 )
                 if folder_submission.exists():
                     dates = dates + get_submission_dates(folder_submission, file_filter)
-            submission_date = find_latest_date(dates)
+            submission_date = find_latest_date(dates, date_format=date_format)
     else:
         raise ValueError(  # noqa: TRY003
             f"No data folder found for country {country_code}. "

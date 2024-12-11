@@ -1,6 +1,30 @@
 from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_core import (
     get_info_from_crf_filename,
+    get_latest_date_for_country,
 )
+
+# def test_get_submission_dates()
+#     filter = {}
+#
+#     folder: Path,
+# file_filter: dict[str, Union[str, int, list]],
+
+
+def test_get_latest_date_for_country():
+    # RUS CRF
+    expected = "22082023"
+    date = get_latest_date_for_country("RUS", 2023, type="CRF")
+    assert date == expected
+
+    # AUS CRT
+    expected = "12042024"
+    date = get_latest_date_for_country("AUS", 1, type="CRT")
+    assert date == expected
+
+    # RUS CRT
+    expected = "20241108"
+    date = get_latest_date_for_country("RUS", 1, type="CRT")
+    assert date == expected
 
 
 def test_get_info_from_crf_filename():

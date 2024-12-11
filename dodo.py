@@ -498,7 +498,7 @@ def task_test_read_unfccc_crf_for_year():
     return {
         "actions": [
             (read_CRF,),
-            (map_folders, ["extracted_data/UNFCCC"]),
+            # (map_folders, ["extracted_data/UNFCCC"]),
         ],
         "verbosity": 2,
         "setup": ["in_venv"],

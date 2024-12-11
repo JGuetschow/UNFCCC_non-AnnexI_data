@@ -70,6 +70,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     if country_code == "None":
         country_code = None
 
+    exceptions = []
     unknown_categories = []
     last_row_info = []
     ds_all = None
@@ -89,19 +90,21 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
             countries_to_read = all_countries
         else:
             raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
-    for country_code in countries_to_read:
+    for current_country_code in countries_to_read:
         # get country name
-        country_name = get_country_name(country_code)
-        print(f"reading for country: {country_code}")
+        country_name = get_country_name(current_country_code)
+        print(f"reading for country: {current_country_code}")
         # get specification and available tables
         # if we only have a single country check if we might have a country specific
         # specification (currently only Australia, 2023)
-        if country_code is not None:
+        if current_country_code is not None:
             try:
-                crf_spec = getattr(crf, f"{type}{submission_year}_{country_code}")
+                crf_spec = getattr(
+                    crf, f"{type}{submission_year}_{current_country_code}"
+                )
                 print(
                     f"Using country specific specification: "
-                    f"{type}{submission_year}_{country_code}"
+                    f"{type}{submission_year}_{current_country_code}"
                 )
             except Exception:
                 # no country specific specification, check for general specification
@@ -140,41 +143,53 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
 
         try:
             submission_date = get_latest_date_for_country(
-                country_code, submission_year, type=type
+                current_country_code, submission_year, type=type
             )
         except Exception:
-            print(f"No submissions for country {country_name}, {type}{submission_year}")
+            message = (
+                f"No submissions for country {country_name}, {type}{submission_year}"
+            )
+            print(message)
+            exceptions.append(f"No_sub: {country_name}: {message}")
             submission_date = None
+            pass
 
         if submission_date is not None:
             for table in tables:
-                # read table for given years
-                ds_table, new_unknown_categories, new_last_row_info = read_crf_table(
-                    country_code,
-                    table,
-                    submission_year,
-                    date=submission_date,
-                    data_year=[data_year],
-                    debug=True,
-                    type=type,
-                )
-
-                # collect messages on unknown rows etc
-                unknown_categories = unknown_categories + new_unknown_categories
-                last_row_info = last_row_info + new_last_row_info
-
-                # convert to PRIMAP2 IF
-                # first drop the orig_cat_name col as it can have multiple values for
-                # one category
-                ds_table = ds_table.drop(columns=["orig_cat_name"])
-
-                # TODO: catch entity conversion errors and make list of error entities
-                # if we need to map entities pass this info to the conversion function
-                if "entity_mapping" in crf_spec[table]:
-                    entity_mapping = crf_spec[table]["entity_mapping"]
-                else:
-                    entity_mapping = None
                 try:
+                    # read table for given years
+                    (
+                        ds_table,
+                        new_unknown_categories,
+                        new_last_row_info,
+                    ) = read_crf_table(
+                        current_country_code,
+                        table,
+                        submission_year,
+                        date=submission_date,
+                        data_year=[data_year],
+                        debug=True,
+                        type=type,
+                    )
+
+                    # collect messages on unknown rows etc
+                    unknown_categories = unknown_categories + new_unknown_categories
+                    last_row_info = last_row_info + new_last_row_info
+
+                    # convert to PRIMAP2 IF
+                    # first drop the orig_cat_name col as it can have multiple values
+                    # for one category
+                    ds_table = ds_table.drop(columns=["orig_cat_name"])
+
+                    # TODO: catch entity conversion errors and make list of error
+                    #  entities
+                    # if we need to map entities pass this info to the conversion
+                    # function
+                    if "entity_mapping" in crf_spec[table]:
+                        entity_mapping = crf_spec[table]["entity_mapping"]
+                    else:
+                        entity_mapping = None
+
                     ds_table_if = convert_crf_table_to_pm2if(
                         ds_table,
                         submission_year,
@@ -225,11 +240,11 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     else:
                         ds_all = ds_all.combine_first(ds_table_pm2)
                 except Exception as e:
-                    print(
-                        f"Error occured when converting table {table} for"
-                        f" {country_name} to PRIMAP2 IF. Exception: {e}"
-                    )
-                    # TODO: error handling and logging
+                    message = f"Error occured when converting table {table} for"
+                    f" {country_name} to PRIMAP2 IF. Exception: {e}"
+                    print(message)
+                    exceptions.append(f"Error: {country_name}: {message}")
+                    pass
 
     # process log messages.
     today = date.today()
@@ -291,6 +306,12 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     # write data in native PRIMAP2 format
     encoding = {var: compression for var in ds_all.data_vars}
     ds_all.pr.to_netcdf(output_folder / (output_filename + ".nc"), encoding=encoding)
+
+    # write exceptions
+    f_ex = open(output_folder / f"exceptions_{output_filename}.txt", "w")
+    for ex in exceptions:
+        f_ex.write(f"{ex}\n")
+    f_ex.close()
 
     return ds_all
 
