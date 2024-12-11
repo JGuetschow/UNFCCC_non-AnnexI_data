@@ -843,19 +843,35 @@ def get_info_from_crf_filename(
     filename = os.path.splitext(filename)[0]
     name_parts = filename.split("_")
     file_info = {}
-    file_info["party"] = name_parts[0]
-    file_info["submission_year"] = int(name_parts[1])
-    try:
-        file_info["data_year"] = int(name_parts[2])
-    except:  # noqa: E722
-        print(f"Data year string {name_parts[2]} " "could not be converted to int.")
-        file_info["data_year"] = name_parts[2]
-    file_info["date"] = name_parts[3]
-    # the last part (time code) is missing for CRT tables
-    if len(name_parts) > 4:  # noqa: PLR2004
-        file_info["extra"] = name_parts[4]
+    if len(name_parts) >= 4:  # noqa: PLR2004
+        # CRF file name convention (unfortunately also used for some CRT files)
+        file_info["party"] = name_parts[0]
+        file_info["submission_year"] = int(name_parts[1])
+        try:
+            file_info["data_year"] = int(name_parts[2])
+        except:  # noqa: E722
+            print(f"Data year string {name_parts[2]} " "could not be converted to int.")
+            file_info["data_year"] = name_parts[2]
+        file_info["date"] = name_parts[3]
+        # the last part (time code) is missing for CRT tables in CRF sile format
+        if len(name_parts) > 4:  # noqa: PLR2004
+            file_info["extra"] = name_parts[4]
+        else:
+            file_info["extra"] = ""
     else:
-        file_info["extra"] = ""
+        # not enough parts, we probably have a CRT file with different separator
+        name_parts = filename.split("-")
+        file_info["party"] = name_parts[0]
+        file_info["submission_year"] = int(name_parts[2])
+        file_info["version"] = int(name_parts[3])
+        try:
+            file_info["data_year"] = int(name_parts[4])
+        except:  # noqa: E722
+            print(f"Data year string {name_parts[4]} " "could not be converted to int.")
+            file_info["data_year"] = name_parts[4]
+        file_info["date"] = name_parts[5]
+        file_info["extra"] = name_parts[6]
+
     return file_info
 
 

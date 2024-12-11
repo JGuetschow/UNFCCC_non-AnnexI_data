@@ -15,7 +15,7 @@ import pandas as pd
 import primap2 as pm2
 import xarray as xr
 
-from unfccc_ghg_data.helper import get_country_name, log_path
+from unfccc_ghg_data.helper import all_countries, get_country_name, log_path
 
 from . import crf_specifications as crf
 from .unfccc_crf_reader_core import (
@@ -82,8 +82,13 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
 
     if country_code is not None:
         countries_to_read = [country_code]
-    else:
-        countries_to_read = all_crf_countries
+    else:  # noqa: PLR5501
+        if type == "CRF":
+            countries_to_read = all_crf_countries
+        elif type == "CRT":
+            countries_to_read = all_countries
+        else:
+            raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
     for country_code in countries_to_read:
         # get country name
         country_name = get_country_name(country_code)
