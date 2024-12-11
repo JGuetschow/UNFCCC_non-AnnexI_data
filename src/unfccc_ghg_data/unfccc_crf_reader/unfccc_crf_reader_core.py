@@ -863,7 +863,7 @@ def get_info_from_crf_filename(
         name_parts = filename.split("-")
         file_info["party"] = name_parts[0]
         file_info["submission_year"] = int(name_parts[2])
-        file_info["version"] = int(name_parts[3])
+        file_info["version"] = name_parts[3]
         try:
             file_info["data_year"] = int(name_parts[4])
         except:  # noqa: E722
