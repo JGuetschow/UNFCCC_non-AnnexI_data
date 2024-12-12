@@ -492,7 +492,7 @@ def task_test_read_unfccc_crf_for_year():
             data_year=data_year,
             totest=totest,
             country_code=read_config_crf["country"],
-            type=read_config_crf["type"],
+            submission_type=read_config_crf["type"],
         )
 
     return {

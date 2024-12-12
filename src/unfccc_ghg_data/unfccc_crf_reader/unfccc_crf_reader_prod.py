@@ -140,7 +140,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
         country_name,
         submission_year=submission_year,
         submission_date=submission_date,
-        type=type,
+        submission_type=type,
         verbose=True,
     )
 
@@ -151,7 +151,11 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
         for table in tables:
             # read table for all years
             ds_table, new_unknown_categories, new_last_row_info = read_crf_table(
-                country_code, table, submission_year, date=submission_date, type=type
+                country_code,
+                table,
+                submission_year,
+                date=submission_date,
+                submission_type=type,
             )  # , data_year=[1990])
 
             # collect messages on unknown rows etc
@@ -177,7 +181,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
                     f"Submission date: {submission_date}"
                 },
                 entity_mapping=entity_mapping,
-                type=type,
+                submission_type=type,
             )
 
             # now convert to native PRIMAP2 format
@@ -499,7 +503,7 @@ def read_new_crf_for_year_datalad(  # noqa: PLR0912
                     country_info["name"],
                     submission_year=submission_year,
                     submission_date=country_info["date"],
-                    type=type,
+                    submission_type=type,
                     verbose=False,
                 )
                 if not data_read:
@@ -603,7 +607,7 @@ def get_input_and_output_files_for_country(
         country_codes=country_code,
         submission_year=submission_year,
         date=submission_date,
-        type=type,
+        submission_type=type,
     )
     if not input_files:
         raise NoCRFFilesError(  # noqa: TRY003
@@ -648,7 +652,7 @@ def submission_has_been_read(  # noqa: PLR0913
     country_name: str,
     submission_year: int,
     submission_date: str,
-    type: str = "CRF",
+    submission_type: str = "CRF",
     verbose: Optional[bool] = True,
 ) -> bool:
     """
@@ -664,7 +668,7 @@ def submission_has_been_read(  # noqa: PLR0913
         year of submissions for CRF or submission round for CRT
     submission_date
         date of submission (as in the filename)
-    type: str: default "CRF"
+    submission_type: str: default "CRF"
         CRF or CRT
     verbose: bool (optional, default True)
         if True print additional output
@@ -674,7 +678,9 @@ def submission_has_been_read(  # noqa: PLR0913
     True if data has been read, False otherwise
     """
     output_folder = extracted_data_path_UNFCCC / country_name.replace(" ", "_")
-    output_filename = f"{country_code}_{type}{submission_year}_{submission_date}"
+    output_filename = (
+        f"{country_code}_{submission_type}{submission_year}_{submission_date}"
+    )
 
     #    check if the submission_year is correctly used for CRT
     if output_folder.exists():
@@ -685,14 +691,14 @@ def submission_has_been_read(  # noqa: PLR0913
             if verbose:
                 print(
                     f"Data already available for {country_code}, "
-                    f"{type}{submission_year}, version {submission_date}."
+                    f"{submission_type}{submission_year}, version {submission_date}."
                 )
         elif existing_suffixes:
             has_been_read = False
             if verbose:
                 print(
                     f"Partial data available for {country_code}, "
-                    f"{type}{submission_year}, version {submission_date}. "
+                    f"{submission_type}{submission_year}, version {submission_date}. "
                     "Please check if all files have been written after "
                     f"reading. Existing suffixes: {existing_suffixes}"
                 )
@@ -701,7 +707,7 @@ def submission_has_been_read(  # noqa: PLR0913
             if verbose:
                 print(
                     f"No read data available for {country_code}, "
-                    f"{type}{submission_year}, version {submission_date}. "
+                    f"{submission_type}{submission_year}, version {submission_date}. "
                 )
     else:
         has_been_read = False

@@ -34,8 +34,8 @@ Missing tables are:
 
 
 TODO:
-* Add missing tables
-* Add activity data
+ * Add missing tables
+ * Add activity data
 
 """
 
@@ -56,7 +56,11 @@ CRT1 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": [
+                "",
+                np.nan,
+                '(1) "Total GHG emissions" does not include NOX, ' "CO, NMVOC and SOX.",
+            ],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -141,7 +145,14 @@ CRT1 = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "AMOUNT CAPTURED (4) CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": [
+                "",
+                np.nan,
+                "Note: Minimum level of aggregation is needed to protect "
+                "confidential business and military information, where it "
+                "would identify particular entity's/entities' "
+                "confidential data.",
+            ],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -257,7 +268,7 @@ CRT1 = {
         "status": "tested",
         "table": {
             "firstrow": 7,
-            "lastrow": 119,
+            "lastrow": 131,
             "header": ["group", "entity", "unit"],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category", "class"],
@@ -269,7 +280,14 @@ CRT1 = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "AMOUNT CAPTURED (4) CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": [
+                "",
+                np.nan,
+                "Note: Minimum level of aggregation is needed to protect "
+                "confidential business and military information, where it "
+                "would identify particular entity's/entities' confidential "
+                "data.",
+            ],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -408,6 +426,12 @@ CRT1 = {
             ["Liquefied petroleum gases (LPG)", ["1.A.2.g.vii", "LPG"], 3],
             ["Other liquid fuels (please specify)", ["1.A.2.g.vii", "OtherLiquid"], 3],
             ["NA", ["\\IGNORE", "\\IGNORE"], 3],
+            # GUY
+            [
+                "Other liquid fuels [IPCC Software 1.A.3.e.ii]",
+                ["1.A.2.g.vii", "OLOther"],
+                4,
+            ],
             ["Gaseous fuels (6)", ["1.A.2.g.vii", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.2.g.vii", "OtherFF"], 3],
             ["Biomass (3)", ["1.A.2.g.vii", "Biomass"], 3],
@@ -420,6 +444,18 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.3", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.3", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.3", "Biomass"], 4],
+            # GUY
+            [
+                "Non-specified Industry [IPCC Software 1.A.2.m]",
+                ["1.A.2.g.viii.1", "Total"],
+                3,
+            ],
+            ["Liquid fuels", ["1.A.2.g.viii.1", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.1", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.1", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",

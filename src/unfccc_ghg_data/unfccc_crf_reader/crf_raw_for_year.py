@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 country_info["name"],
                 submission_year=submission_year,
                 submission_date=country_info["date"],
-                type=type,
+                submission_type=type,
                 verbose=False,
             )
             if not data_read:

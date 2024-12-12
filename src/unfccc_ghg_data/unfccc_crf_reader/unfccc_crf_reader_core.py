@@ -39,7 +39,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
     filter_remove_input: dict[str, dict[str, str | list]] | None = None,
     filter_keep_input: dict[str, dict[str, str | list]] | None = None,
     meta_data_input: dict[str, str] | None = None,
-    type: str = "CRF",
+    submission_type: str = "CRF",
 ) -> pd.DataFrame:
     """
     Convert a given pandas long format crf table to PRIMAP2 interchange format
@@ -63,7 +63,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
     meta_data_input: Optional[Dict[str,str]]
         Meta data information. If values filled by this function automatically
         are given as input the automatic values are overwritten.
-    type: str default = "CRF"
+    submission_type: str default = "CRF"
         read CRF or CRF data
 
     Returns
@@ -73,7 +73,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
         Metadata is stored as attrs in the DataFrame
     """
     # check type
-    if type not in ["CRF", "CRT"]:
+    if submission_type not in ["CRF", "CRT"]:
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
 
     coords_cols = {
@@ -86,7 +86,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0913
     }
 
     # set scenario and terminologies
-    if type == "CRF":
+    if submission_type == "CRF":
         category_terminology = f"CRF2013_{submission_year}"
         class_terminology = "CRF2013"
         scenario = f"CRF{submission_year}"
@@ -182,7 +182,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     data_year: int | list[int] | None = None,
     date: str | None = None,
     folder: str | None = None,
-    type: str = "CRF",
+    submission_type: str = "CRF",
     debug: bool = False,
 ) -> tuple[pd.DataFrame, list[list], list[list]]:
     """
@@ -212,7 +212,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     folder: str (optional)
         Folder that contains the xls files. If not given folders are determined by the
         submissions_year and country_code variables
-    type: str default = "CRF"
+    submission_type: str default = "CRF"
         read CRF or CRF data
     debug: bool (optional)
         if true print some debug information like column headers
@@ -228,7 +228,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
 
     """
     # check type
-    if type not in ["CRF", "CRT"]:
+    if submission_type not in ["CRF", "CRT"]:
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
 
     if isinstance(country_codes, str):
@@ -241,7 +241,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
         data_year=data_year,
         date=date,
         folder=folder,
-        type=type,
+        submission_type=submission_type,
     )
     # nasty fix for cases where exporting ran overnight and not all files have
     # the same date
@@ -270,7 +270,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
                 data_year=data_year,
                 date=prv_date,
                 folder=folder,
-                type=type,
+                submission_type=submission_type,
             )
             if len(more_input_files) > 0:
                 print(f"Found {len(more_input_files)} additional input files.")
@@ -278,7 +278,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
             else:
                 print("Found no additional input files")
 
-    if input_files == []:
+    if not input_files:
         raise NoCRFFilesError(  # noqa: TRY003
             f"No files found for {country_codes}, "
             f"submission_year={submission_year}, "
@@ -292,22 +292,24 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     # specification (currently only Australia, 2023)
     if len(country_codes) == 1:
         try:
-            crf_spec = getattr(crf, f"{type}{submission_year}_{country_codes[0]}")
+            crf_spec = getattr(
+                crf, f"{submission_type}{submission_year}_{country_codes[0]}"
+            )
             print(
                 f"Using country specific specification: "
-                f"{type}{submission_year}_{country_codes[0]}"
+                f"{submission_type}{submission_year}_{country_codes[0]}"
             )
         except:  # noqa: E722
             # no country specific specification, check for general specification
             try:
-                crf_spec = getattr(crf, f"{type}{submission_year}")
+                crf_spec = getattr(crf, f"{submission_type}{submission_year}")
             except:  # noqa: E722
                 raise ValueError(  # noqa: TRY003, TRY200
                     f"No terminology exists for submission year " f"{submission_year}"
                 )
     else:
         try:
-            crf_spec = getattr(crf, f"{type}{submission_year}")
+            crf_spec = getattr(crf, f"{submission_type}{submission_year}")
         except:  # noqa: E722
             raise ValueError(  # noqa: TRY003, TRY200
                 f"No terminology exists for submission year " f"{submission_year}"
@@ -701,7 +703,7 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
     data_year: Optional[Union[int, list[int]]] = None,
     date: Optional[str] = None,
     folder: Optional[str] = None,
-    type: str = "CRF",
+    submission_type: str = "CRF",
 ) -> list[Path]:
     """
     Find all files according to given parameters
@@ -725,17 +727,17 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
         Folder that contains the xls files. If not given fodlers are determined by the
         submissions_year and country_code variables
 
-    type: str default = "CRF"
+    submission_type: str default = "CRF"
         read CRF or CRF data
 
     Returns
     -------
         List[Path]: list of Path objects for the files
     """
-    if type == "CRT":
+    if submission_type == "CRT":
         type_folder = "BTR"
     else:
-        type_folder = type
+        type_folder = submission_type
 
     if isinstance(country_codes, str):
         country_codes = [country_codes]
@@ -776,7 +778,7 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
         country_folders = [folder]
 
     file_filter_template = {}
-    if type == "CRF":
+    if submission_type == "CRF":
         file_filter_template["submission_year"] = submission_year
     # don't filter for submission year in BTR as it's  the actual year and
     # not the submissions round (and we don't know yet if it will be the same
@@ -854,7 +856,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
         try:
             file_info["data_year"] = int(name_parts[2])
         except:  # noqa: E722
-            print(f"Data year string {name_parts[2]} " "could not be converted to int.")
+            print(f"Data year string {name_parts[2]} could not be converted to int.")
             file_info["data_year"] = name_parts[2]
         file_info["date"] = name_parts[3]
         # the last part (time code) is missing for CRT tables in CRF sile format
@@ -1082,7 +1084,7 @@ def create_category_tree(
 
         elif current_cat_level < last_cat_info["level"]:
             # the new level is smaller (closer to the trunk)
-            # than the last one. Thus we remove all parents
+            # than the last one. Thus, we remove all parents
             # from this level on
             parent_info = parent_info[0 : current_cat_level + 1]
             category_tree.create_node(
@@ -1154,18 +1156,18 @@ def filter_category(
 def get_latest_date_for_country(
     country_code: str,
     submission_year: int,
-    type: str = "CRF",
+    submission_type: str = "CRF",
 ) -> str:
     """
     Find the latest submission date for a country
 
     Parameters
     ----------
-    country: str
+    country_code: str
         3-letter country code
     submission_year: int
         Year of the submission to find the l;atest date for
-    type: str, default CRF
+    submission_type: str, default CRF
         Check for CRF or CRT tables
 
     Returns
@@ -1175,19 +1177,20 @@ def get_latest_date_for_country(
     with open(downloaded_data_path_UNFCCC / "folder_mapping.json") as mapping_file:
         folder_mapping = json.load(mapping_file)
 
-    if type == "CRT":
+    if submission_type == "CRT":
         type_folder = "BTR"
         if country_code == "AUS" and submission_year == 1:
             date_format = "%d%m%Y"
         else:
             date_format = "%Y%m%d"
     else:
-        type_folder = type
+        type_folder = submission_type
         date_format = "%d%m%Y"
     if country_code in folder_mapping:
-        file_filter = {}
-        file_filter["party"] = country_code
-        if type == "CRF":
+        file_filter = {
+            "party": country_code,
+        }
+        if submission_type == "CRF":
             file_filter["submission_year"] = submission_year
         # don't filter for submission year in BTR as it's  the actual year and
         # not the submissions round (and we don't know yet if it will be the same
@@ -1309,6 +1312,9 @@ def find_latest_date(
     ----------
     dates: List[str]
         List of dates
+    date_format: str, default "%d%m%Y"
+        Format for the date. Unfortunately CRF uses %d%m%Y while CRT uses %Y%m%d with
+        some exceptions for early submissions which use the CRF file namig scheme
 
     Returns
     -------

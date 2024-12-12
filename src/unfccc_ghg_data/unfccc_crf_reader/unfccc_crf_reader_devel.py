@@ -29,7 +29,7 @@ from .util import all_crf_countries
 def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     submission_year: int,
     data_year: int | None = None,
-    type: str = "CRF",
+    submission_type: str = "CRF",
     totest: bool | None = False,
     country_code: str | None = None,
 ) -> xr.Dataset:
@@ -45,7 +45,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         submission year to read
     data_year
         year to read
-    type: str = CRF
+    submission_type: str = CRF
         read CRF or CRT data
     totest
         if true only read tables with "totest" status
@@ -57,9 +57,9 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     xr.Dataset with data for given parameters
     """
     # long name for type
-    if type == "CRF":
+    if submission_type == "CRF":
         type_name = "common reporting format"
-    elif type == "CRT":
+    elif submission_type == "CRT":
         type_name = "common reporting tables"
     else:
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
@@ -75,7 +75,8 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     last_row_info = []
     ds_all = None
     print(
-        f"{type} test reading for {type}{submission_year}. Using data year {data_year}"
+        f"{submission_type} test reading for {submission_type}{submission_year}. "
+        f"Using data year {data_year}"
     )
     if totest:
         print("Reading only tables to test.")
@@ -84,9 +85,9 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     if country_code is not None:
         countries_to_read = [country_code]
     else:  # noqa: PLR5501
-        if type == "CRF":
+        if submission_type == "CRF":
             countries_to_read = all_crf_countries
-        elif type == "CRT":
+        elif submission_type == "CRT":
             countries_to_read = all_countries
         else:
             raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
@@ -100,16 +101,16 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         if current_country_code is not None:
             try:
                 crf_spec = getattr(
-                    crf, f"{type}{submission_year}_{current_country_code}"
+                    crf, f"{submission_type}{submission_year}_{current_country_code}"
                 )
                 print(
                     f"Using country specific specification: "
-                    f"{type}{submission_year}_{current_country_code}"
+                    f"{submission_type}{submission_year}_{current_country_code}"
                 )
             except Exception:
                 # no country specific specification, check for general specification
                 try:
-                    crf_spec = getattr(crf, f"{type}{submission_year}")
+                    crf_spec = getattr(crf, f"{submission_type}{submission_year}")
                 except Exception as ex:
                     raise ValueError(  # noqa: TRY003
                         f"No terminology exists for submission year "
@@ -117,10 +118,10 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     ) from ex
         else:
             try:
-                crf_spec = getattr(crf, f"{type}{submission_year}")
+                crf_spec = getattr(crf, f"{submission_type}{submission_year}")
             except Exception as ex:
                 raise ValueError(  # noqa: TRY003
-                    f"No terminology exists for {type}{submission_year}"
+                    f"No terminology exists for {submission_type}{submission_year}"
                 ) from ex
 
         if totest:
@@ -137,17 +138,18 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
             ]
         print(
             f"The following tables are available in the "
-            f"{type}{submission_year} specification: {tables}"
+            f"{submission_type}{submission_year} specification: {tables}"
         )
         print("#" * 80)
 
         try:
             submission_date = get_latest_date_for_country(
-                current_country_code, submission_year, type=type
+                current_country_code, submission_year, submission_type=submission_type
             )
         except Exception:
             message = (
-                f"No submissions for country {country_name}, {type}{submission_year}"
+                f"No submissions for country {country_name}, "
+                f"{submission_type}{submission_year}"
             )
             print(message)
             exceptions.append(f"No_sub: {country_name}: {message}")
@@ -169,7 +171,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                         date=submission_date,
                         data_year=[data_year],
                         debug=True,
-                        type=type,
+                        submission_type=submission_type,
                     )
 
                     # collect messages on unknown rows etc
@@ -195,12 +197,12 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                         submission_year,
                         meta_data_input={
                             "title": f"Data submitted in {submission_year} to the "
-                            f"UNFCCC in the {type_name} ({type}) "
+                            f"UNFCCC in the {type_name} ({submission_type}) "
                             f"by {country_name}. "
                             f"Submission date: {submission_date}"
                         },
                         entity_mapping=entity_mapping,
-                        type=type,
+                        submission_type=submission_type,
                     )
 
                     # now convert to native PRIMAP2 format
@@ -240,27 +242,28 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     else:
                         ds_all = ds_all.combine_first(ds_table_pm2)
                 except Exception as e:
-                    message = f"Error occured when converting table {table} for"
-                    f" {country_name} to PRIMAP2 IF. Exception: {e}"
+                    message = (
+                        f"Error occured when converting table {table} for"
+                        f" {country_name} to PRIMAP2 IF. Exception: {e}"
+                    )
                     print(message)
                     exceptions.append(f"Error: {country_name}: {message}")
                     pass
 
     # process log messages.
     today = date.today()
+    output_folder = log_path / f"test_read_{submission_type}{submission_year}"
+    if not output_folder.exists():
+        output_folder.mkdir()
     if len(unknown_categories) > 0:
         if country_code is not None:
             log_location = (
-                log_path
-                / f"{type}{submission_year}"
-                / f"{data_year}_unknown_categories_{country_code}"
+                output_folder / f"{data_year}_unknown_categories_{country_code}"
                 f"_{today.strftime('%Y-%m-%d')}.csv"
             )
         else:
             log_location = (
-                log_path
-                / f"{type}{submission_year}"
-                / f"{data_year}_unknown_categories_"
+                output_folder / f"{data_year}_unknown_categories_"
                 f"{today.strftime('%Y-%m-%d')}.csv"
             )
         print(f"Unknown rows found. Savin log to {log_location}")
@@ -269,34 +272,40 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     if len(last_row_info) > 0:
         if country_code is not None:
             log_location = (
-                log_path
-                / f"{type}{submission_year}"
-                / f"{data_year}_last_row_info_{country_code}_"
+                output_folder / f"{data_year}_last_row_info_{country_code}_"
                 f"{today.strftime('%Y-%m-%d')}.csv"
             )
         else:
             log_location = (
-                log_path / f"{type}{submission_year}" / f"{data_year}_last_row_info_"
+                output_folder / f"{data_year}_last_row_info_"
                 f"{today.strftime('%Y-%m-%d')}.csv"
             )
         print(f"Data found in the last row. Saving log to " f"{log_location}")
         save_last_row_info(last_row_info, log_location)
 
+    # write exceptions
+    f_ex = open(
+        output_folder / f"{data_year}_exceptions_{today.strftime('%Y-%m-%d')}.txt", "w"
+    )
+    for ex in exceptions:
+        f_ex.write(f"{ex}\n")
+    f_ex.close()
+
     # save the data:
     print(f"Save dataset to log folder: {log_path}")
     compression = dict(zlib=True, complevel=9)
-    output_folder = log_path / f"test_read_{type}{submission_year}"
+
     if country_code is not None:
         output_filename = (
-            f"{type}{submission_year}_{country_code}_" f"{today.strftime('%Y-%m-%d')}"
+            f"{submission_type}{submission_year}_{country_code}_"
+            f"{today.strftime('%Y-%m-%d')}"
         )
     else:
-        output_filename = f"{type}{submission_year}_{today.strftime('%Y-%m-%d')}"
+        output_filename = (
+            f"{submission_type}{submission_year}_{today.strftime('%Y-%m-%d')}"
+        )
     if totest:
         output_filename = output_filename + "_totest"
-
-    if not output_folder.exists():
-        output_folder.mkdir()
 
     # write data in interchange format
     pm2.pm2io.write_interchange_format(
@@ -306,12 +315,6 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     # write data in native PRIMAP2 format
     encoding = {var: compression for var in ds_all.data_vars}
     ds_all.pr.to_netcdf(output_folder / (output_filename + ".nc"), encoding=encoding)
-
-    # write exceptions
-    f_ex = open(output_folder / f"exceptions_{output_filename}.txt", "w")
-    for ex in exceptions:
-        f_ex.write(f"{ex}\n")
-    f_ex.close()
 
     return ds_all
 
