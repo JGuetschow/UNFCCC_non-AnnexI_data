@@ -865,7 +865,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
     else:
         # not enough parts, we probably have a CRT file with different separator
         name_parts = filename.split("-")
-        if len(name_parts) >= 5:  # noqa: PLR2004
+        if len(name_parts) >= 5 and "DataEntry" not in name_parts:  # noqa: PLR2004
             if name_parts[1] == "CRT":
                 file_info["party"] = name_parts[0]
                 file_info["submission_year"] = int(name_parts[2])
