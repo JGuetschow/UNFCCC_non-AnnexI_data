@@ -426,12 +426,14 @@ CRT1 = {
             ["Liquefied petroleum gases (LPG)", ["1.A.2.g.vii", "LPG"], 3],
             ["Other liquid fuels (please specify)", ["1.A.2.g.vii", "OtherLiquid"], 3],
             ["NA", ["\\IGNORE", "\\IGNORE"], 3],
-            # GUY
+            # GUY, MDV
             [
                 "Other liquid fuels [IPCC Software 1.A.3.e.ii]",
                 ["1.A.2.g.vii", "OLOther"],
                 4,
             ],
+            # SGP
+            ["Residual fuel oil", ["1.A.2.g.vii", "ResFuelOil"], 4],
             ["Gaseous fuels (6)", ["1.A.2.g.vii", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.2.g.vii", "OtherFF"], 3],
             ["Biomass (3)", ["1.A.2.g.vii", "Biomass"], 3],
@@ -456,6 +458,30 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
+            # AUT
+            ["Other Manufacturing Industries", ["1.A.2.g.viii.3", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.3", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.3", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.3", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.3", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.3", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.3", "Biomass"], 4],
+            # ESP, NZL, POL, TUR
+            ["Other", ["1.A.2.g.viii.10", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.10", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.10", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.10", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.10", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.10", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.10", "Biomass"], 4],
+            # SGP
+            ["Others", ["1.A.2.g.viii.10", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.10", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.10", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.10", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.10", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.10", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.10", "Biomass"], 4],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",
