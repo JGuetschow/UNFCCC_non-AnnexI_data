@@ -441,12 +441,6 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         keep_default_na=False,
     )
 
-    if len(df_raw) < nrows:
-        # print(f"read data truncated because of all-nan rows")
-        last_row_nan = True
-    else:
-        last_row_nan = False
-
     cols_to_drop = []
     # remove empty first column (because CRTables start with an empty column)
     # df_raw = df_raw.dropna(how="all", axis=1)
@@ -515,7 +509,9 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     # remove double spaces
     entities = [entity.strip() for entity in entities]
     entities = [re.sub("\\s+", " ", entity) for entity in entities]
-    entities = [re.sub("_x000d_ ", "", entity) for entity in entities]
+    entities = [re.sub("_x000d_", "", entity) for entity in entities]
+    entities = [re.sub("_x000D_", "", entity) for entity in entities]
+    entities = [re.sub("\\s+", " ", entity) for entity in entities]
 
     # replace the old header
     if len(header) > 2:  # noqa: PLR2004
@@ -554,7 +550,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         )
 
         for idx in range(1, len(df_current)):
-            current_cat = df_current.iloc[idx][cat_col]
+            current_cat = str(df_current.iloc[idx][cat_col])
             if current_cat in table_properties["stop_cats"]:
                 # we've reached the end of the table, so stop processing
                 # and remove all further rows
@@ -639,16 +635,15 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                 )
     else:
         for idx in range(1, len(df_current)):
-            current_cat = df_current.iloc[idx][cat_col]
+            current_cat = str(df_current.iloc[idx][cat_col])
             if current_cat in table_properties["stop_cats"]:
                 # we've reached the end of the table, so stop processing
                 # and remove all further rows
                 df_current = df_current.drop(df_current.index[idx:])
                 new_cats = new_cats[0:idx]
                 break
-            if current_cat in all_cats:
-                new_cats[idx] = unique_mapping[current_cat]
-                if (idx == len(df_current) - 1) and not last_row_nan:
+            else:
+                if idx == len(df_current) - 1:
                     print(
                         f"found information in last row: category {current_cat}, "
                         f"row {idx}"
@@ -656,14 +651,17 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                     info_last_row.append(
                         [table, file_info["party"], current_cat, file_info["data_year"]]
                     )
-            else:
-                print(
-                    f"Unknown category '{current_cat}' found in {table} for "
-                    f"{file_info['party']}, {file_info['data_year']}."
-                )
-                unknown_categories.append(
-                    [table, file_info["party"], current_cat, file_info["data_year"]]
-                )
+                if current_cat in all_cats:
+                    new_cats[idx] = unique_mapping[current_cat]
+
+                else:
+                    print(
+                        f"Unknown category '{current_cat}' found in {table} for "
+                        f"{file_info['party']}, {file_info['data_year']}."
+                    )
+                    unknown_categories.append(
+                        [table, file_info["party"], current_cat, file_info["data_year"]]
+                    )
 
     for idx, col in enumerate(table_properties["categories"]):
         df_current.insert(loc=idx, column=col, value=[cat[idx] for cat in new_cats])
@@ -1131,10 +1129,11 @@ def filter_category(
 
     """
     string_exclude = "\\C!-"
+    string_include = "\\C-"
     regex_exclude = r"\\C!-([A-Z\-]+)\\"
     regex_exclude_full = r"(\\C!-[A-Z\-]+\\)"
-    string_country = f"\\C-{country}\\"
-    regex_countries = r"^\\C-[A-Z]{3}\\"
+    regex_include = r"\\C-([A-Z\-]+)\\"
+    regex_include_full = r"(\\C-[A-Z\-]+\\)"
     new_mapping = mapping.copy()
     if mapping[0].startswith(string_exclude):
         re_result = re.search(regex_exclude, mapping[0])
@@ -1145,10 +1144,15 @@ def filter_category(
         else:
             re_result = re.search(regex_exclude_full, mapping[0])
             new_mapping[0] = mapping[0][len(re_result.group(1)) + 1 :]
-    elif mapping[0].startswith(string_country):
-        new_mapping[0] = mapping[0][len(string_country) + 1 :]
-    elif re.match(regex_countries, mapping[0]):
-        new_mapping[0] = "\\REMOVE"
+    elif mapping[0].startswith(string_include):
+        re_result = re.search(regex_include, mapping[0])
+        countries_in = re_result.group(1)
+        countries_in = countries_in.split("-")
+        if country in countries_in:
+            re_result = re.search(regex_include_full, mapping[0])
+            new_mapping[0] = mapping[0][len(re_result.group(1)) + 1 :]
+        else:
+            new_mapping[0] = "\\REMOVE"
 
     return new_mapping
 

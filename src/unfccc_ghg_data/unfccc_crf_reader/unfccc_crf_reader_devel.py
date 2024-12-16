@@ -432,4 +432,4 @@ def save_last_row_info(
     df_processed_lost_row_info = pd.DataFrame(
         processed_last_row_info, columns=["Table", "Country", "Categories"]
     )
-    df_processed_lost_row_info.to_csv("test_last_row_info.csv", index=False)
+    df_processed_lost_row_info.to_csv(file, index=False)
