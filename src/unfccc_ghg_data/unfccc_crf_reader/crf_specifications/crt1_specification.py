@@ -490,6 +490,14 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
+            # SVN
+            ["Non-specified Industry", ["1.A.2.g.viii.1", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.1", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.1", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.1", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
             # MLT
             ["All Industry", ["1.A.2.g.viii.2", "Total"], 3],
             ["Liquid fuels", ["1.A.2.g.viii.2", "Liquid"], 4],
@@ -562,6 +570,29 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.11", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.11", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.11", "Biomass"], 4],
+            # CHE
+            ["Other Boilers and Engines Industry", ["1.A.2.g.viii.9", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.9", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.9", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.9", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.9", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.9", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.9", "Biomass"], 4],
+            # PRT
+            ["Rubber", ["1.A.2.g.viii.6", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.6", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.6", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.6", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.6", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.6", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.6", "Biomass"], 4],
+            ["Other Transformation Industry", ["1.A.2.g.viii.13", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.13", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.13", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.13", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.13", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.13", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.13", "Biomass"], 4],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",
@@ -651,6 +682,8 @@ CRT1 = {
             ["Fossil part of biodiesel", ["1.A.3.b.i", "OFFBiodieselFC"], 4],
             # SVN
             ["Fossil part of biofuel", ["1.A.3.b.i", "OFFBiofuelFC"], 4],
+            # SVK
+            ["Fossil part of biofuels", ["1.A.3.b.i", "OFFBiofuelFC"], 4],
             # NOR
             ["Biodiesel fossil fraction", ["1.A.3.b.i", "OFFBiodieselFC"], 4],
             # NZL
@@ -691,6 +724,8 @@ CRT1 = {
             ["Fossil part of biodiesel", ["1.A.3.b.ii", "OFFBiodieselFC"], 4],
             # SVN
             ["Fossil part of biofuel", ["1.A.3.b.ii", "OFFBiofuelFC"], 4],
+            # SVK
+            ["Fossil part of biofuels", ["1.A.3.b.ii", "OFFBiofuelFC"], 4],
             # NOR
             ["Biodiesel fossil fraction", ["1.A.3.b.ii", "OFFBiodieselFC"], 4],
             # NZL
@@ -733,6 +768,8 @@ CRT1 = {
             ["Fossil part of biodiesel", ["1.A.3.b.iii", "OFFBiodieselFC"], 4],
             # SVN
             ["Fossil part of biofuel", ["1.A.3.b.iii", "OFFBiofuelFC"], 4],
+            # SVK
+            ["Fossil part of biofuels", ["1.A.3.b.iii", "OFFBiofuelFC"], 4],
             # NOR
             ["Biodiesel fossil fraction", ["1.A.3.b.iii", "OFFBiodieselFC"], 4],
             # NZL
@@ -758,6 +795,8 @@ CRT1 = {
             ["Lube", ["1.A.3.b.iv", "Lubricants"], 4],
             # MLT, SVN
             ["Lubricants", ["1.A.3.b.iv", "Lubricants"], 4],
+            # PRT
+            ["Lubricant Oil", ["1.A.3.b.iv", "Lubricants"], 4],
             # RUS
             ["Other motor fuels", ["1.A.3.b.iv", "OMotorFuel"], 4],
             ["Gaseous fuels (6)", ["1.A.3.b.iv", "Gaseous"], 3],
@@ -775,6 +814,8 @@ CRT1 = {
             ["FAME fossil part", ["1.A.3.b.iv", "OFFBiodieselFC"], 4],
             # SVN
             ["Fossil part of biofuel", ["1.A.3.b.iv", "OFFBiofuelFC"], 4],
+            # SVK
+            ["Fossil part of biofuels", ["1.A.3.b.iv", "OFFBiofuelFC"], 4],
             # v. Other
             ["1.A.3.b.v. Other (please specify)", ["1.A.3.b.v", "Total"], 2],
             # AUS
@@ -823,6 +864,15 @@ CRT1 = {
             ["Biomass (3)", ["1.A.3.b.v.11", "Biomass"], 4],
             ["Other fossil fuels (please specify)(7)", ["1.A.3.b.v.11", "OtherFF"], 4],
             ["nan", ["\\IGNORE", "\\IGNORE"], 5],
+            # SVK
+            ["Urea-based catalysts", ["1.A.3.b.v.12", "total"], 3],
+            ["Gasoline", ["1.A.3.b.v.12", "Gasoline"], 4],
+            ["Diesel oil", ["1.A.3.b.v.12", "DieselOil"], 4],
+            ["Liquefied petroleum gases (LPG)", ["1.A.3.b.v.12", "LPG"], 4],
+            ["Other liquid fuels (please specify)", ["1.A.3.b.v.12", "OtherLiquid"], 4],
+            ["Gaseous fuels (6)", ["1.A.3.b.v.12", "Gaseous"], 4],
+            ["Biomass (3)", ["1.A.3.b.v.12", "Biomass"], 4],
+            ["Other fossil fuels (please specify)(7)", ["1.A.3.b.v.12", "OtherFF"], 4],
             # c. Railways
             ["1.A.3.c. Railways", ["1.A.3.c", "Total"], 1],
             ["Liquid fuels", ["1.A.3.c", "Liquid"], 2],
@@ -1174,7 +1224,7 @@ CRT1 = {
             ["Other fossil fuels(7)", ["1.A.5.a.ii", "OtherFF"], 3],
             ["Peat (8)", ["1.A.5.a.ii", "Peat"], 3],
             ["Biomass (3)", ["1.A.5.a.ii", "Biomass"], 3],
-            # RUS
+            # RUS, SVK
             ["Other", ["1.A.5.a.ii", "total"], 2],
             ["Liquid fuels", ["1.A.5.a.ii", "Liquid"], 3],
             ["Solid fuels", ["1.A.5.a.ii", "Solid"], 3],
@@ -1278,6 +1328,32 @@ CRT1 = {
             ["Gaseous fuels (6)", ["1.A.5.a.xv", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.5.a.xv", "OtherFF"], 3],
             ["Biomass(3)", ["1.A.5.a.xv", "Biomass"], 3],
+            # SVK
+            ["Military use Jet Kerosene", ["1.A.5.b.ix", "total"], 2],
+            ["Liquid fuels", ["1.A.5.b.ix", "Liquid"], 3],
+            ["Solid fuels", ["1.A.5.b.ix", "Solid"], 3],
+            ["Gaseous fuels (6)", ["1.A.5.b.ix", "Gaseous"], 3],
+            ["Other fossil fuels (7)", ["1.A.5.b.ix", "OtherFF"], 3],
+            ["Biomass(3)", ["1.A.5.b.ix", "Biomass"], 3],
+            ["Military Gasoline", ["1.A.5.b.x", "total"], 2],
+            ["Liquid fuels", ["1.A.5.b.x", "Liquid"], 3],
+            ["Solid fuels", ["1.A.5.b.x", "Solid"], 3],
+            ["Gaseous fuels (6)", ["1.A.5.b.x", "Gaseous"], 3],
+            ["Other fossil fuels (7)", ["1.A.5.b.x", "OtherFF"], 3],
+            ["Biomass(3)", ["1.A.5.b.x", "Biomass"], 3],
+            ["Military Diesel Oil", ["1.A.5.b.xi", "total"], 2],
+            ["Liquid fuels", ["1.A.5.b.xi", "Liquid"], 3],
+            ["Solid fuels", ["1.A.5.b.xi", "Solid"], 3],
+            ["Gaseous fuels (6)", ["1.A.5.b.xi", "Gaseous"], 3],
+            ["Other fossil fuels (7)", ["1.A.5.b.xi", "OtherFF"], 3],
+            ["Biomass(3)", ["1.A.5.b.xi", "Biomass"], 3],
+            # PRT
+            ["Military aviation", ["1.A.5.b.ii", "total"], 2],
+            ["Liquid fuels", ["1.A.5.b.ii", "Liquid"], 3],
+            ["Solid fuels", ["1.A.5.b.ii", "Solid"], 3],
+            ["Gaseous fuels (6)", ["1.A.5.b.ii", "Gaseous"], 3],
+            ["Other fossil fuels (7)", ["1.A.5.b.ii", "OtherFF"], 3],
+            ["Biomass(3)", ["1.A.5.b.ii", "Biomass"], 3],
             # Information Item
             ["Information item: (16)", ["\\IGNORE", "\\IGNORE"], 0],
             [
@@ -1287,6 +1363,9 @@ CRT1 = {
             ],
             ["Biomass (3)", ["\\IGNORE", "\\IGNORE"], 1],
             ["Fossil fuels (7)", ["\\IGNORE", "\\IGNORE"], 1],
+            # PRT, SVK
+            ["Biomass(3)", ["\\IGNORE", "\\IGNORE"], 1],
+            ["Other fossil fuels (7)", ["\\IGNORE", "\\IGNORE"], 1],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",
@@ -1388,6 +1467,8 @@ CRT1 = {
             ["Emisson from coke oven gas subsystem", ["1.B.1.c.iv"], 1],
             # SVN
             ["SO2 scrubbing", ["1.B.1.c.iii"], 1],
+            # SVK
+            ["CO2 emissions from Charcoal and biochar", ["1.B.1.c.vi"], 1],
         ],
         "entity_mapping": {
             "EMISSIONS (1) CH4": "CH4 emissions",  # this is necessary because there
@@ -1470,13 +1551,15 @@ CRT1 = {
             # GUY, MDV
             [
                 "Other fugitive from natural gas industry [IPCC Software 1.B.2.b.iii.6]",
-                ["1.B.2.a.vi.3.d"],
+                ["1.B.2.b.vi.3.d"],
                 3,
             ],
             # SGP
             ["NA", ["\\IGNORE"], 3],
             # NOR
-            ["Other", ["1.B.2.a.vi.3.d"], 3],
+            ["Other", ["1.B.2.b.vi.3.d"], 3],
+            # SVK
+            ["Storage of gas", ["1.B.2.b.vi.3.e"], 3],
             ["1.B.2.c. Venting and flaring", ["1.B.2.c"], 0],
             ["1.B.2.c.i. Venting", ["1.B.2.c-ven"], 1],
             ["1.B.2.c.i.1. Oil", ["1.B.2.c-ven.i"], 2],
@@ -1691,6 +1774,11 @@ CRT1 = {
             ["Particleboard Production", ["2.H.3.k"], 3],
             # NOR
             ["Ore mines", ["2.H.3.l"], 3],
+            # PRT
+            ["Carbon electrodes consumption", ["2.H.3.l"], 3],
+            ["Chipboard Production", ["2.H.3.k"], 3],
+            # CHE
+            ["Blasting and shooting", ["2.H.3.m"], 3],
             # AUS
             ["2.H. Other (please specify) (5)", ["2.H"], 1],
             ["2.H.2. Food and Beverages Industry", ["2.H.2"], 2],
@@ -1967,6 +2055,10 @@ CRT1 = {
             ["\\C-MLT\\ Growing Lambs", ["3.A.2.a.MLT-i"], 2],
             ["\\C-MLT\\ Other Mature Ewes", ["3.A.2.a.MLT-ii"], 2],
             ["\\C-MLT\\ Mature Ewes", ["3.A.2.a.MLT-iii"], 2],
+            # SVK
+            ["\\C-SVK\\ Mature ewes", ["3.A.2.a.SVK-i"], 2],
+            ["\\C-SVK\\ Growing lambs", ["3.A.2.a.SVK-ii"], 2],
+            ["\\C-SVK\\ Other mature sheeps", ["3.A.2.a.SVK-iii"], 2],
             # TUR
             ["\\C-TUR\\ Domestic sheep", ["3.A.2.a.TUR-i"], 2],
             ["\\C-TUR\\ Merino sheep", ["3.A.2.a.TUR-ii"], 2],
@@ -1998,6 +2090,9 @@ CRT1 = {
             ["\\C-MLT\\ Fattening pigs more than 50kg", ["3.A.3.a.MLT-iv"], 2],
             ["\\C-MLT\\ Young pigs 20-50kg", ["3.A.3.a.MLT-v"], 2],
             ["\\C-MLT\\ Piglets less than 20kg", ["3.A.3.a.MLT-vi"], 2],
+            # SVK
+            ["\\C-SVK\\ Breeding swine", ["3.A.3.a.SVK-i"], 2],
+            ["\\C-SVK\\ Market swine", ["3.A.3.a.SVK-ii"], 2],
             # NZL
             ["\\C-NZL\\ Pigs", ["\\IGNORE"], 2],
             # most countries
@@ -2025,9 +2120,11 @@ CRT1 = {
             ["Ducks and other poultry", ["3.A.4.h.v.4"], 3],
             ["Turkeys", ["3.A.4.h.v.5"], 3],
             ["Broilers", ["3.A.4.h.v.6"], 3],
+            # CHE
+            ["Livestock outside agriculture", ["3.A.4.h.v.11"], 3],
             # AUS
             ["3.A.4. Other livestock (4)", ["3.A.4"], 0],
-            ["Drop-down list:", ["\\IGNORE"], 1],
+            ["Drop down list:", ["\\IGNORE"], 1],
             ["3.A.4.a. Buffalo", ["3.A.4.a"], 1],
             ["3.A.4.b. Camels", ["3.A.4.b"], 1],
             ["3.A.4.c. Deer", ["3.A.4.c"], 1],
@@ -2036,7 +2133,7 @@ CRT1 = {
             ["3.A.4.f. Mules and asses", ["3.A.4.f"], 1],
             ["3.A.4.g. Poultry", ["3.A.4.g"], 1],
             ["3.A.4.h. Other", ["3.A.4.h"], 1],
-            ["Drop down list:", ["\\IGNORE"], 2],
+            ["Drop-down list:", ["\\IGNORE"], 2],
             ["3.A.4.h.i. Rabbit", ["3.A.4.h.i"], 2],
             ["3.A.4.h.ii. Reindeer", ["3.A.4.h.ii"], 2],
             ["3.A.4.h.iii. Ostrich", ["3.A.4.h.iii"], 2],
@@ -2134,6 +2231,10 @@ CRT1 = {
             ["\\C-MLT\\ Growing Lambs", ["3.B.2.a.MLT-i"], 2],
             ["\\C-MLT\\ Other Mature Ewes", ["3.B.2.a.MLT-ii"], 2],
             ["\\C-MLT\\ Mature Ewes", ["3.B.2.a.MLT-iii"], 2],
+            # SVK
+            ["\\C-SVK\\ Mature ewes", ["3.A.2.a.SVK-i"], 2],
+            ["\\C-SVK\\ Growing lambs", ["3.A.2.a.SVK-ii"], 2],
+            ["\\C-SVK\\ Other mature sheeps", ["3.A.2.a.SVK-iii"], 2],
             # TUR
             ["\\C-TUR\\ Domestic sheep", ["3.B.2.a.TUR-i"], 2],
             ["\\C-TUR\\ Merino sheep", ["3.B.2.a.TUR-ii"], 2],
@@ -2165,6 +2266,9 @@ CRT1 = {
             ["\\C-MLT\\ Fattening pigs more than 50kg", ["3.B.3.a.MLT-iv"], 2],
             ["\\C-MLT\\ Young pigs 20-50kg", ["3.B.3.a.MLT-v"], 2],
             ["\\C-MLT\\ Piglets less than 20kg", ["3.B.3.a.MLT-vi"], 2],
+            # SVK
+            ["\\C-SVK\\ Breeding swine", ["3.A.3.a.SVK-i"], 2],
+            ["\\C-SVK\\ Market swine", ["3.A.3.a.SVK-ii"], 2],
             # NZL
             ["\\C-NZL\\ Pigs", ["\\IGNORE"], 2],
             # most countries
@@ -2196,59 +2300,8 @@ CRT1 = {
             ["Broilers", ["3.B.4.h.v.6"], 3],
             # AUS
             ["Alpacas", ["3.B.4.h.v.i"], 3],
-            # ["3.B.4. Other livestock (4)", ["3.B.4"], 0],
-            # ["Drop down list:", ["\\IGNORE"], 1],
-            # ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
-            # ["3.B.4.b. Camels", ["3.B.4.b"], 1],
-            # ["3.B.4.c. Deer", ["3.B.4.c"], 1],
-            # ["3.B.4.d. Goats", ["3.B.4.d"], 1],
-            # ["3.B.4.e. Horses", ["3.B.4.e"], 1],
-            # ["3.B.4.f. Mules and asses", ["3.B.4.f"], 1],
-            # ["3.B.4.g. Poultry", ["3.B.4.g"], 1],
-            # ["3.B.4.h. Other", ["3.B.4.h"], 1],
-            # ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 2],
-            # ["3.B.4.h.ii. Reindeer", ["3.B.4.h.ii"], 2],
-            # ["3.B.4.h.iii. Ostrich", ["3.B.4.h.iii"], 2],
-            # ["3.B.4.h.iv. Fur-bearing animals (5)", ["3.B.4.h.iv"], 2],
-            # ["3.B.4.h.v. Other (please specify)", ["3.B.4.h.v"], 2],
-            # ["Alpacas", ["3.B.4.h.v.i"], 3],
-            # ["3.B.1. Cattle", ["3.B.1"], 0],
-            # ["Option A:", ["\\IGNORE"], 1],
-            # ["3.B.1.a. Dairy cattle", ["3.B.1.Aa"], 2],
-            # ["3.B.1.b. Non-dairy cattle", ["3.B.1.Ab"], 2],
-            # ["Option B (country-specific): (3)", ["\\IGNORE"], 1],
-            # ["3.B.1.a. Other", ["\\IGNORE"], 2],
-            # ["Drop down list:", ["\\IGNORE"], 3],
-            # ["3.B.1.a.i. Mature dairy cattle", ["\\IGNORE"], 3],
-            # ["3.B.1.a.ii. Other mature cattle", ["\\IGNORE"], 3],
-            # ["3.B.1.a.iii. Growing cattle", ["\\IGNORE"], 3],
-            # ["3.B.1.a.iv. Other (please specify)", ["3.B.1.C"], 3],
-            # ["Dairy Cattle", ["3.B.1.C-AUS-a"], 4],
-            # ["Beef Cattle - Pasture", ["3.B.1.C-AUS-b"], 4],
-            # ["Beef Cattle - Feedlot", ["3.B.1.C-AUS-c"], 4],
-            # ["3.B.2. Sheep", ["3.B.2"], 0],
-            # ["3.B.2.a. Other (please specify)", ["\\IGNORE"], 1],
-            # ["Sheep", ["\\IGNORE"], 2],
-            # ["3.B.3. Swine", ["3.B.3"], 0],
-            # ["3.B.3.a. Other (please specify)", ["\\IGNORE"], 1],
-            # ["Swine", ["\\IGNORE"], 2],
-            # ["3.B.4. Other livestock (4)", ["3.B.4"], 0],
-            # ["Drop-down list:", ["\\IGNORE"], 1],
-            # ["3.B.4.a. Buffalo", ["3.B.4.a"], 2],
-            # ["3.B.4.b. Camels", ["3.B.4.b"], 2],
-            # ["3.B.4.c. Deer", ["3.B.4.c"], 2],
-            # ["3.B.4.d. Goats", ["3.B.4.d"], 2],
-            # ["3.B.4.e. Horses", ["3.B.4.e"], 2],
-            # ["3.B.4.f. Mules and Asses", ["3.B.4.f"], 2],
-            # ["3.B.4.g. Poultry", ["3.B.4.g"], 2],
-            # ["3.B.4.h. Other", ["3.B.4.h"], 2],
-            # ["Drop-down list:", ["\\IGNORE"], 3],
-            # ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 3],
-            # ["3.B.4.h.ii. Reindeer", ["3.B.4.h.ii"], 3],
-            # ["3.B.4.h.iii. Ostrich", ["3.B.4.h.iii"], 3],
-            # ["3.B.4.h.iv. Fur-bearing animals (5)", ["3.B.4.h.iv"], 3],
-            # ["3.B.4.h.v. Other (please specify)", ["3.B.4.h.v"], 3],
-            # ["Alpacas", ["\\IGNORE"], 4],
+            # CHE
+            ["Livestock outside agriculture", ["3.A.4.h.v.11"], 3],
         ],
         "entity_mapping": {
             "EMISSIONS CH4 producing potential (Bo) (2) (average) CH4": "CH4"
@@ -2378,6 +2431,10 @@ CRT1 = {
             ["\\C-MLT\\ Growing Lambs", ["3.B.2.a.MLT-i"], 2],
             ["\\C-MLT\\ Other Mature Ewes", ["3.B.2.a.MLT-ii"], 2],
             ["\\C-MLT\\ Mature Ewes", ["3.B.2.a.MLT-iii"], 2],
+            # SVK
+            ["\\C-SVK\\ Mature ewes", ["3.B.2.a.SVK-i"], 2],
+            ["\\C-SVK\\ Growing lambs", ["3.B.2.a.SVK-ii"], 2],
+            ["\\C-SVK\\ Other mature sheeps", ["3.B.2.a.SVK-iii"], 2],
             # TUR
             ["\\C-TUR\\ Domestic sheep", ["3.B.2.a.TUR-i"], 2],
             ["\\C-TUR\\ Merino sheep", ["3.B.2.a.TUR-ii"], 2],
@@ -2409,11 +2466,13 @@ CRT1 = {
             ["\\C-MLT\\ Fattening pigs more than 50kg", ["3.B.3.a.MLT-iv"], 2],
             ["\\C-MLT\\ Young pigs 20-50kg", ["3.B.3.a.MLT-v"], 2],
             ["\\C-MLT\\ Piglets less than 20kg", ["3.B.3.a.MLT-vi"], 2],
+            # SVK
+            ["\\C-SVK\\ Breeding swine", ["3.B.3.a.SVK-i"], 2],
+            ["\\C-SVK\\ Market swine", ["3.B.3.a.SVK-ii"], 2],
             # NZL
             ["\\C-NZL\\ Pigs", ["\\IGNORE"], 2],
-            # most countries
             ["3.B.4. Other livestock (6)", ["3.B.4"], 0],
-            ["Drop down list", ["\\IGNORE"], 1],  # AUS
+            ["Drop-down list", ["\\IGNORE"], 1],  # AUS
             ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
             ["3.B.4.b. Camels", ["3.B.4.b"], 1],
             ["3.B.4.c. Deer", ["3.B.4.c"], 1],
@@ -2440,6 +2499,8 @@ CRT1 = {
             ["Broilers", ["3.B.4.h.v.6"], 3],
             # AUS
             ["Alpacas", ["3.B.4.h.v.i"], 3],
+            # CHE
+            ["Livestock outside agriculture", ["3.B.4.h.v.11"], 3],
         ],
         "entity_mapping": {
             "EMISSIONS N2O Direct Nitrogen leaching and run-off": "N2O",
@@ -2659,6 +2720,13 @@ CRT1 = {
             ["Land converted to Settlement", ["4.H.1"]],
             ["Aquaculture", ["4.H.10"]],
             ["Seagrass", ["4.H.11"]],
+            # GUY, MDV
+            ["N2O emissions from aquaculture [IPCC Software 3.C.12]", ["4.H.6"]],
+            ["Other emissions from LULUCF [IPCC Software 3.D.2]", ["4.H.9"]],
+            # SGP, NZL
+            ["Other", ["4.H.9"]],
+            # JPN
+            ["Concrete using Biochar", ["4.H.10"]],
             # currently ignoring memo item
         ],
         "entity_mapping": {
@@ -2681,7 +2749,11 @@ CRT1 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", "nan"],
+            "stop_cats": [
+                "",
+                "nan",
+                '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
+            ],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -2702,6 +2774,24 @@ CRT1 = {
             ["5.D.3. Other", ["5.D.3"]],
             ["5.E. Other (please specify)", ["5.E"]],
             ["Accidential fires at Solid Waste Disposal Sites", ["5.E.9"]],
+            # GUY, MDV
+            [
+                "CH₄ and N₂O emissions from methane flaring at waste facilities "
+                "[IPCC Software 4.E]",
+                ["5.E.6"],
+            ],
+            ["Other waste emissions [IPCC Software 4.E, SO₂ from 4.A-4.D]", ["5.E.5"]],
+            # SGP
+            ["NA", ["\\IGNORE"]],
+            # CHE
+            ["Car shredding", ["5.E.10"]],
+            # ESP
+            ["Accidental combustion", ["5.E.3"]],
+            ["Sludge Spreading", ["5.E.7"]],
+            # JPN
+            ["Decomposition of fossil-fuel derived surfactants", ["5.E.4"]],
+            # PRT
+            ["Biogas burning without energy recovery", ["5.E.6"]],
             ["Memo item: (3)", ["\\IGNORE"]],
             ["5.F.1. Long-term storage of C in waste disposal sites", ["M.Memo.LTSW"]],
             ["5.F.2. Annual change in total long-term C storage", ["M.Memo.ACLT"]],
@@ -2728,7 +2818,12 @@ CRT1 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": [],  # "", "nan"],
+            "stop_cats": [
+                "(1) The emissions of HFCs, PFCs, unspecified mix of HFCs and PFCs and "
+                "other F-gases are to be expressed as CO2 eq. emissions. Data on "
+                "disaggregated emissions of HFCs and PFCs are to be provided in "
+                "table 2(II) of this common reporting format."
+            ],
             "unit_info": unit_info["summary"],
         },
         "sector_mapping": [
@@ -2783,6 +2878,18 @@ CRT1 = {
             ["5.D. Wastewater treatment and discharge", ["5.D"]],
             ["5.E. Other (6)", ["5.E"]],
             ["6. Other (please specify) (7)", ["6"]],
+            # GUY, MDV
+            ["Other sources of emissions/removals [IPCC Software 5.C]", ["6.A"]],
+            # CHE
+            ["Other non-specified", ["6.A"]],
+            # JPN
+            ["Smoking", ["6.B"]],
+            # NZL
+            ["\\C-NZL 6. Tokelau_1. Energy", ["6.NZL-A"]],
+            ["\\C-NZL 6. Tokelau_2. Industrial Processes and Product Use", ["6.NZL-B"]],
+            ["\\C-NZL 6. Tokelau_3. Agriculture", ["6.NZL-C"]],
+            ["\\C-NZL 6. Tokelau_5. Waste", ["6.NZL-D"]],
+            # AUS
             ["NA", ["\\IGNORE"]],
             ["", ["\\IGNORE"]],
             ["nan", ["\\IGNORE"]],
