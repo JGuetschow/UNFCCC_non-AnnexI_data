@@ -1817,20 +1817,6 @@ CRT1 = {
             ["3.A.1.a.ii. Other mature cattle", ["3.A.1.B.b"], 5],
             ["3.A.1.a.iii. Growing cattle", ["3.A.1.B.c"], 5],
             ["3.A.1.a.iv. Other (please specify)", ["3.A.1.B.d"], 5],
-            # # MLT
-            # ["\\C-MLT\\ 3.A.1.a.i. Mature dairy cattle", ["3.A.1.C.A-i"], 5],
-            # ["\\C-MLT\\ 3.A.1.a.ii. Other mature cattle", ["3.A.1.C.A-ii"], 5],
-            # ["\\C-MLT\\ 3.A.1.a.iii. Growing cattle", ["3.A.1.C.A-iii"], 5],
-            # ["\\C-MLT\\ 3.A.1.a.iv. Other (please specify)", ["3.A.1.C.A-iv"], 5],
-            # # NLD, NOR
-            # ["\\C-NLD-NOR\\ 3.A.1.a.i. Mature dairy cattle", ["3.A.1.C.A-i"], 5],
-            # ["\\C-NLD-NOR\\ 3.A.1.a.ii. Other mature cattle", ["3.A.1.C.A-ii"], 5],
-            # ["\\C-NLD-NOR\\ 3.A.1.a.iii. Growing cattle", ["3.A.1.C.A-iii"], 5],
-            # # POL (ignore as covering full parent cat)
-            # ["\\C-POL\\ 3.A.1.a.iv. Other (please specify)", ["\\IGNORE"], 5],
-            # # SVN
-            # ["\\C-SVN\\ 3.A.1.a.i. Mature dairy cattle", ["3.A.1.C.A-i"], 5],
-            # ["\\C-SVN\\ 3.A.1.a.iv. Other (please specify)", ["3.A.1.C.A-iv"], 5],
             # Other livestock
             ["3.A.2. Sheep", ["3.A.2"], 2],
             ["3.A.3. Swine", ["3.A.3"], 2],
@@ -1849,20 +1835,6 @@ CRT1 = {
             ["3.B.1.a.ii. Other mature cattle", ["3.B.1.B.b"], 5],
             ["3.B.1.a.iii. Growing cattle", ["3.B.1.B.c"], 5],
             ["3.B.1.a.iv. Other (please specify)", ["3.B.1.B.d"], 5],
-            # # MLT
-            # ["\\C-MLT\\ 3.B.1.a.i. Mature dairy cattle", ["3.B.1.C.A-i"], 5],
-            # ["\\C-MLT\\ 3.B.1.a.ii. Other mature cattle", ["3.B.1.C.A-ii"], 5],
-            # ["\\C-MLT\\ 3.B.1.a.iii. Growing cattle", ["3.B.1.C.A-iii"], 5],
-            # ["\\C-MLT\\ 3.B.1.a.iv. Other (please specify)", ["3.B.1.C.A-iv"], 5],
-            # # NLD, NOR
-            # ["\\C-NLD-NOR\\ 3.B.1.a.i. Mature dairy cattle", ["3.B.1.C.A-i"], 5],
-            # ["\\C-NLD-NOR\\ 3.B.1.a.ii. Other mature cattle", ["3.B.1.C.A-ii"], 5],
-            # ["\\C-NLD-NOR\\ 3.B.1.a.iii. Growing cattle", ["3.B.1.C.A-iii"], 5],
-            # # POL
-            # ["\\C-POL\\ 3.B.1.a.iv. Other (please specify)", ["\\IGNORE"], 5],
-            # # SVN
-            # ["\\C-SVN\\ 3.B.1.a.i. Mature dairy cattle", ["3.B.1.C.A-i"], 5],
-            # ["\\C-SVN\\ 3.B.1.a.iv. Other (please specify)", ["3.B.1.C.A-ii"], 5],
             ["3.B.2. Sheep", ["3.B.2"], 2],
             ["3.B.3. Swine", ["3.B.3"], 2],
             ["3.B.4. Other livestock", ["3.B.4"], 2],
@@ -2490,7 +2462,14 @@ CRT1 = {
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION Organic amendments added (3)",
                 "IMPLIED EMISSION FACTOR (1) CH4",
             ],
-            "stop_cats": ["", "nan"],
+            "stop_cats": [
+                "",
+                "nan",
+                "(1) The IEF implicitly takes account of all relevant corrections for "
+                "continuously flooded fields without organic amendments, the correction"
+                " for organic amendments and the effect of different soil "
+                "characteristics, if considered in the calculation of CH4 emissions.",
+            ],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2506,7 +2485,11 @@ CRT1 = {
             ["3.C.3.a. Water depth 50–100 cm", ["3.C.3.a"]],  # noqa: RUF001
             ["3.C.3.b. Water depth > 100 cm", ["3.C.3.b"]],
             ["3.C.4. Other (please specify)", ["3.C.4"]],
+            # AUS
             ["NA", ["\\IGNORE"]],
+            # GUY, MDV
+            ["Other rice ecosystems [IPCC Software 3.C.7]", ["\\IGNORE"]],
+            # ignore as just for comparison
             ["Upland rice(4)", ["\\IGNORE"]],
             ["Total(4)", ["\\IGNORE"]],
         ],
@@ -2534,7 +2517,11 @@ CRT1 = {
                 # "volatilises as NH3 and NOX",
                 # "Value 0.11",
             ],
-            "stop_cats": ["", "nan"],
+            "stop_cats": [
+                "",
+                "nan",
+                "(1) To convert from N2O–N to N2O emissions, multiply by 44/28.",  # noqa: RUF001
+            ],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
