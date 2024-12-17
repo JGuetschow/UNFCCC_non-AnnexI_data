@@ -1776,7 +1776,7 @@ CRT1 = {
             ["Ore mines", ["2.H.3.l"], 3],
             # PRT
             ["Carbon electrodes consumption", ["2.H.3.l"], 3],
-            ["Chipboard Production", ["2.H.3.k"], 3],
+            ["Chipboard production", ["2.H.3.k"], 3],
             # CHE
             ["Blasting and shooting", ["2.H.3.m"], 3],
             # AUS
@@ -2565,7 +2565,7 @@ CRT1 = {
         "status": "tested",
         "table": {
             "firstrow": 7,
-            "lastrow": 23,
+            "lastrow": 24,
             "header": ["group", "entity", "unit"],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
@@ -2744,7 +2744,7 @@ CRT1 = {
         "status": "tested",
         "table": {
             "firstrow": 8,
-            "lastrow": 30,
+            "lastrow": 31,
             "header": ["entity", "unit"],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
@@ -2787,7 +2787,7 @@ CRT1 = {
             ["Car shredding", ["5.E.10"]],
             # ESP
             ["Accidental combustion", ["5.E.3"]],
-            ["Sludge Spreading", ["5.E.7"]],
+            ["Sludge spreading", ["5.E.7"]],
             # JPN
             ["Decomposition of fossil-fuel derived surfactants", ["5.E.4"]],
             # PRT
@@ -2813,7 +2813,7 @@ CRT1 = {
         "status": "tested",
         "table": {
             "firstrow": 8,
-            "lastrow": 70,
+            "lastrow": 71,
             "header": ["entity", "unit"],
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
@@ -2885,10 +2885,13 @@ CRT1 = {
             # JPN
             ["Smoking", ["6.B"]],
             # NZL
-            ["\\C-NZL 6. Tokelau_1. Energy", ["6.NZL-A"]],
-            ["\\C-NZL 6. Tokelau_2. Industrial Processes and Product Use", ["6.NZL-B"]],
-            ["\\C-NZL 6. Tokelau_3. Agriculture", ["6.NZL-C"]],
-            ["\\C-NZL 6. Tokelau_5. Waste", ["6.NZL-D"]],
+            ["\\C-NZL\\ 6. Tokelau_1. Energy", ["6.NZL-A"]],
+            [
+                "\\C-NZL\\ 6. Tokelau_2. Industrial Processes and Product Use",
+                ["6.NZL-B"],
+            ],
+            ["\\C-NZL\\ 6. Tokelau_3. Agriculture", ["6.NZL-C"]],
+            ["\\C-NZL\\ 6. Tokelau_5. Waste", ["6.NZL-D"]],
             # AUS
             ["NA", ["\\IGNORE"]],
             ["", ["\\IGNORE"]],
