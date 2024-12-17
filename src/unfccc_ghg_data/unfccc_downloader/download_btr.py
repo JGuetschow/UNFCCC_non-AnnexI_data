@@ -154,6 +154,16 @@ if __name__ == "__main__":
                             "Zip format not supported, please unzip on the command "
                             "line."
                         )
+                    except OSError as ex:
+                        if ex.errno == 36:  # noqa: PLR2004
+                            print(
+                                f"A filename is too long in file: "
+                                f"{local_filename.relative_to(root_path)}. "
+                                "Unzip manually if any other files needed."
+                                f" Message: {ex}"
+                            )
+                        else:
+                            raise
                 else:
                     print(
                         f"Not attempting to extract "
