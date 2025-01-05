@@ -131,9 +131,12 @@ if __name__ == "__main__":
                     for cookie in cookies_selenium:
                         cookies[cookie["name"]] = cookie["value"]
 
-                r = requests.get(url, stream=True, cookies=cookies)  # noqa: S113
-                with open(str(local_filename), "wb") as f:
-                    shutil.copyfileobj(r.raw, f)
+                try:
+                    r = requests.get(url, stream=True, cookies=cookies)  # noqa: S113
+                    with open(str(local_filename), "wb") as f:
+                        shutil.copyfileobj(r.raw, f)
+                except ConnectionError as ex:
+                    print(f"ConnectionError occurred: {ex}")
 
                 # check file size. if 210 or 212 bytes it's the error page
                 if Path(local_filename).stat().st_size in error_file_sizes:
