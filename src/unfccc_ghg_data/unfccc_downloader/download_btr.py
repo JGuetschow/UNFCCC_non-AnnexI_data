@@ -110,6 +110,7 @@ if __name__ == "__main__":
                     f"{local_filename.relative_to(root_path)}. "
                     f" Message: {ex}"
                 )
+                continue
             else:
                 raise
 
