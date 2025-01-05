@@ -97,11 +97,21 @@ if __name__ == "__main__":
         if not local_filename.parent.exists():
             local_filename.parent.mkdir()
 
-        if local_filename.exists():
-            # check file size. if 210 or 212 bytes it's the error page
-            if Path(local_filename).stat().st_size in error_file_sizes:
-                # found the error page. delete file
-                os.remove(local_filename)
+        try:
+            if local_filename.exists():
+                # check file size. if 210 or 212 bytes it's the error page
+                if Path(local_filename).stat().st_size in error_file_sizes:
+                    # found the error page. delete file
+                    os.remove(local_filename)
+        except OSError as ex:
+            if ex.errno == 36:  # noqa: PLR2004
+                print(
+                    f"Filename is too long: "
+                    f"{local_filename.relative_to(root_path)}. "
+                    f" Message: {ex}"
+                )
+            else:
+                raise
 
         # now we have removed error pages, so a present file should not be overwritten
         if (not local_filename.exists()) and (not local_filename.is_symlink()):
