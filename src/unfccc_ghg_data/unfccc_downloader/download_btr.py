@@ -135,7 +135,7 @@ if __name__ == "__main__":
                     r = requests.get(url, stream=True, cookies=cookies)  # noqa: S113
                     with open(str(local_filename), "wb") as f:
                         shutil.copyfileobj(r.raw, f)
-                except ConnectionError as ex:
+                except requests.exceptions.ConnectionError as ex:
                     print(f"ConnectionError occurred: {ex}")
 
                 # check file size. if 210 or 212 bytes it's the error page
