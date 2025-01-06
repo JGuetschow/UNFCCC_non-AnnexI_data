@@ -12,6 +12,7 @@ from random import randrange
 
 import pandas as pd
 import requests
+from requests import ConnectionError
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 
@@ -136,13 +137,13 @@ if __name__ == "__main__":
                     r = requests.get(url, stream=True, cookies=cookies)  # noqa: S113
                     with open(str(local_filename), "wb") as f:
                         shutil.copyfileobj(r.raw, f)
-                except requests.exceptions.ConnectionError as ex:
-                    print(f"ConnectionError occurred: {ex}")
 
-                # check file size. if 210 or 212 bytes it's the error page
-                if Path(local_filename).stat().st_size in error_file_sizes:
-                    # found the error page. delete file
-                    os.remove(local_filename)
+                    # check file size. if 210 or 212 bytes it's the error page
+                    if Path(local_filename).stat().st_size in error_file_sizes:
+                        # found the error page. delete file
+                        os.remove(local_filename)
+                except ConnectionError as ex:
+                    print(f"ConnectionError occurred: {ex}")
 
                 # sleep a bit to avoid running into captchas
                 time.sleep(randrange(5, 15))  # noqa: S311
