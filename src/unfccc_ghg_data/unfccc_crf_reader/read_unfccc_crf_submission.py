@@ -16,7 +16,7 @@ if __name__ == "__main__":
     parser.add_argument("--country", help="Country name or code")
     parser.add_argument("--submission_year", help="Submission round to read", type=int)
     parser.add_argument(
-        "--submission_date", help="Date of submission to read", default=None
+        "--date_or_version", help="Date or version of submission to read", default=None
     )
     parser.add_argument(
         "--re_read", help="Read data also if already read before", action="store_true"
@@ -27,16 +27,16 @@ if __name__ == "__main__":
 
     country = args.country
     submission_year = args.submission_year
-    submission_date = args.submission_date
+    date_or_version = args.date_or_version
     re_read = args.re_read
-    type = args.type
-    if submission_date == "None":
-        submission_date = None
+    submission_type = args.type
+    if date_or_version == "None":
+        date_or_version = None
 
     read_crf_for_country(
         country,
         submission_year=submission_year,
-        submission_date=submission_date,
+        date_or_version=date_or_version,
         re_read=re_read,
-        type=type,
+        submission_type=submission_type,
     )

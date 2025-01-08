@@ -16,9 +16,6 @@ if __name__ == "__main__":
     # parser.add_argument('--countries', help='List of country codes', default=None)
     parser.add_argument("--submission_year", help="Submission round to read", type=int)
     parser.add_argument(
-        "--submission_date", help="Date of submission to read", default=None
-    )
-    parser.add_argument(
         "--re_read", help="Read data also if already read before", action="store_true"
     )
     parser.add_argument("--type", help="CRF or CRT tables", default="CRF")
@@ -36,5 +33,5 @@ if __name__ == "__main__":
         submission_year=int(submission_year),
         #    countries=countries,
         re_read=re_read,
-        type=type,
+        submission_type=type,
     )

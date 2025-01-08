@@ -52,6 +52,10 @@ all_crf_countries = [
     "USA",  # 49
 ]
 
+BTR_urls = {
+    1: "https://unfccc.int/first-biennial-transparency-reports",
+}
+
 
 class NoCRFFilesError(Exception):
     """Error raised when no CRF files are found"""

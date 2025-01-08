@@ -27,6 +27,7 @@ sphinx-exec-code = "^0.10"
 ghostscript = "^0.7"
 sphinx-markdown-tables = "^0.0.17"
 xarray = ">=2024.6.0"
+jinja2 = "3.1.5"
 
 [tool.poetry.extras]
 plots = ["matplotlib"]

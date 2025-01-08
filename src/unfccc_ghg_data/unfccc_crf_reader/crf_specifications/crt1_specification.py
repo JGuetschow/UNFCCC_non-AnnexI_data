@@ -39,7 +39,6 @@ TODO:
 
 """
 
-
 from .util import unit_info
 
 gwp_to_use = "AR5GWP100"
@@ -433,6 +432,15 @@ CRT1 = {
             ],
             # SGP
             ["Residual fuel oil", ["1.A.2.g.vii", "ResFuelOil"], 4],
+            # CAN
+            [
+                "Biodiesel (5 percent fossil portion)",
+                ["1.A.2.g.vii", "OLBiodieselFC"],
+                4,
+            ],
+            ["Lubricating Oil (Two-Stroke Engines)", ["1.A.2.g.vii", "Lubricants"], 4],
+            # FIN
+            ["Gasoil", ["1.A.2.g.vii", "Gasoil"], 4],
             ["Gaseous fuels (6)", ["1.A.2.g.vii", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.2.g.vii", "OtherFF"], 3],
             ["Biomass (3)", ["1.A.2.g.vii", "Biomass"], 3],
@@ -498,6 +506,14 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
+            # LTU
+            ["Non-specified industry", ["1.A.2.g.viii.1", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.1", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.1", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.1", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
             # MLT
             ["All Industry", ["1.A.2.g.viii.2", "Total"], 3],
             ["Liquid fuels", ["1.A.2.g.viii.2", "Liquid"], 4],
@@ -522,8 +538,36 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.3", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.3", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.3", "Biomass"], 4],
+            # BEL
+            ["Other non-specified", ["1.A.2.g.viii.4", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.4", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.4", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.4", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.4", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.4", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.4", "Biomass"], 4],
+            # CZE
+            ["Other non_specified", ["1.A.2.g.viii.4", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.4", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.4", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.4", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.4", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.4", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.4", "Biomass"], 4],
             # NLD
             ["Other Industrial Sectors", ["1.A.2.g.viii.4", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.4", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.4", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.4", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.4", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.4", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.4", "Biomass"], 4],
+            # CHN
+            [
+                "Manufacturing industries which separate data are not available",
+                ["1.A.2.g.viii.4", "Total"],
+                3,
+            ],
             ["Liquid fuels", ["1.A.2.g.viii.4", "Liquid"], 4],
             ["Solid fuels", ["1.A.2.g.viii.4", "Solid"], 4],
             ["Gaseous fuels (6)", ["1.A.2.g.viii.4", "Gaseous"], 4],
@@ -548,6 +592,14 @@ CRT1 = {
             ["Biomass (3)", ["1.A.2.g.viii.5", "Biomass"], 4],
             # ESP, NZL, POL, TUR
             ["Other", ["1.A.2.g.viii.10", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.10", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.10", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.10", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.10", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.10", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.10", "Biomass"], 4],
+            # HRV
+            ["other", ["1.A.2.g.viii.10", "Total"], 3],
             ["Liquid fuels", ["1.A.2.g.viii.10", "Liquid"], 4],
             ["Solid fuels", ["1.A.2.g.viii.10", "Solid"], 4],
             ["Gaseous fuels (6)", ["1.A.2.g.viii.10", "Gaseous"], 4],
@@ -593,6 +645,18 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.13", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.13", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.13", "Biomass"], 4],
+            # USA
+            [
+                "Construction, agriculture, and other non-transport vehicles",
+                ["1.A.2.g.viii.11", "Total"],
+                3,
+            ],
+            ["Liquid fuels", ["1.A.2.g.viii.11", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.11", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.11", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.11", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.11", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.11", "Biomass"], 4],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",

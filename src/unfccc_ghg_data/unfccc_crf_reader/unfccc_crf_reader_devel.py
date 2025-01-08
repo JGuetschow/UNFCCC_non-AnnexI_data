@@ -21,6 +21,7 @@ from . import crf_specifications as crf
 from .unfccc_crf_reader_core import (
     convert_crf_table_to_pm2if,
     get_latest_date_for_country,
+    get_latest_version_for_country,
     read_crf_table,
 )
 from .util import all_crf_countries
@@ -143,9 +144,16 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         print("#" * 80)
 
         try:
-            submission_date = get_latest_date_for_country(
-                current_country_code, submission_year, submission_type=submission_type
-            )
+            if submission_type == "CRF":
+                date_or_version = get_latest_date_for_country(
+                    current_country_code,
+                    submission_year,
+                    submission_type=submission_type,
+                )
+            else:
+                date_or_version = get_latest_version_for_country(
+                    current_country_code, submission_year
+                )
         except Exception:
             message = (
                 f"No submissions for country {country_name}, "
@@ -153,10 +161,10 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
             )
             print(message)
             exceptions.append(f"No_sub: {country_name}: {message}")
-            submission_date = None
+            date_or_version = None
             pass
 
-        if submission_date is not None:
+        if date_or_version is not None:
             for table in tables:
                 try:
                     # read table for given years
@@ -168,7 +176,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                         current_country_code,
                         table,
                         submission_year,
-                        date=submission_date,
+                        date_or_version=date_or_version,
                         data_year=[data_year],
                         debug=True,
                         submission_type=submission_type,
@@ -199,7 +207,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                             "title": f"Data submitted in {submission_year} to the "
                             f"UNFCCC in the {type_name} ({submission_type}) "
                             f"by {country_name}. "
-                            f"Submission date: {submission_date}"
+                            f"Submission date / version: {date_or_version}"
                         },
                         entity_mapping=entity_mapping,
                         submission_type=submission_type,
