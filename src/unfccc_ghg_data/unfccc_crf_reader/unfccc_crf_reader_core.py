@@ -300,7 +300,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
             f"No files found for {country_codes}, "
             f"submission_year={submission_year}, "
             f"data_year={data_year}, "
-            f"date_or_version={date_or_version}, "
+            f"date/version={date_or_version}, "
             f"folder={folder}."
         )
 
@@ -393,6 +393,8 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
 
     """
     # check if file exists and if not download
+    # TODO: fix such that it also follows links (if the target of the link is a link
+    #  check if that exists and if not download)
     if file.is_symlink():
         if not file.exists():
             dlds = dl.api.Dataset(root_path)
@@ -903,7 +905,8 @@ def get_info_from_crf_filename(  # noqa: PLR0912
         * party: the party that submitted the data (3 letter code)
         * submission_year: year of submission
         * data_year: year in which the emissions took place
-        * date_or_version: date_or_version of the submission
+        * date: date of the submission
+        * version: version of the submission. if not given filled with V0.0
         * extra: rest of the file name
 
     """
@@ -919,7 +922,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
         except:  # noqa: E722
             print(f"Data year string {name_parts[2]} could not be converted to int.")
             file_info["data_year"] = name_parts[2]
-        file_info["date_or_version"] = name_parts[3]
+        file_info["date"] = name_parts[3]
         # the last part (time code) is missing for CRT tables in CRF sile format
         if len(name_parts) > 4:  # noqa: PLR2004
             file_info["extra"] = name_parts[4]
@@ -942,7 +945,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
                         "could not be converted to int."
                     )
                     file_info["data_year"] = name_parts[4]
-                file_info["date_or_version"] = name_parts[5]
+                file_info["date"] = name_parts[5]
                 # treat time code and note as optional
                 if len(name_parts) > 6:  # noqa: PLR2004
                     file_info["extra"] = name_parts[6]
@@ -999,7 +1002,7 @@ def filter_filenames(  # noqa: PLR0913
     if data_year is not None:
         file_filter["data_year"] = data_year
     if date is not None:
-        file_filter["date_or_version"] = date
+        file_filter["date"] = date
     if version is not None:
         file_filter["version"] = version
 
@@ -1041,8 +1044,8 @@ def check_crf_file_info(  # noqa: PLR0911, PLR0912
     if "submission_year" in file_filter.keys():
         if file_info["submission_year"] != file_filter["submission_year"]:
             return False
-    if "date_or_version" in file_filter.keys():
-        if file_info["date_or_version"] != file_filter["date_or_version"]:
+    if "date" in file_filter.keys():
+        if file_info["date"] != file_filter["date"]:
             return False
     if "version" in file_filter.keys():
         if file_info["version"] != file_filter["version"]:
@@ -1380,9 +1383,9 @@ def get_submission_dates(
         List[str]:
             List of dates as str
     """
-    if "date_or_version" in file_filter:
+    if "date" in file_filter:
         raise ValueError(  # noqa: TRY003
-            "'date_or_version' present in 'file_filter'. This makes no sense as "
+            "'date' present in 'file_filter'. This makes no sense as "
             "the function's purpose is to return available dates."
         )
 
@@ -1391,7 +1394,7 @@ def get_submission_dates(
     else:
         raise ValueError(f"Folder {folder} does not exist")  # noqa: TRY003
 
-    dates = [get_info_from_crf_filename(file.name)["date_or_version"] for file in files]
+    dates = [get_info_from_crf_filename(file.name)["date"] for file in files]
     dates = list(set(dates))
 
     return dates
@@ -1458,7 +1461,7 @@ def get_submission_parties(
         Folder to analyze
 
     file_filter: Dict[str, Union[str, int, List]]
-        Dict with possible fields "submission_year", "data_year", "date_or_version"
+        Dict with possible fields "submission_year", "data_year", "date", "version"
 
     Returns
     -------
