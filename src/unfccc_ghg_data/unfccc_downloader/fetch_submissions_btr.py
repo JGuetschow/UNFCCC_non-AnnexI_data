@@ -17,6 +17,8 @@ from unfccc_ghg_data.unfccc_downloader import (
     get_unfccc_submission_info,
 )
 
+# TODO: use categories like in AnnexI downloading (for round 2)
+
 if __name__ == "__main__":
     max_tries = 10
 
@@ -81,7 +83,12 @@ if __name__ == "__main__":
                 href = "https://unfccc.int" + href
             elif href.startswith("documents"):
                 href = "https://unfccc.int/" + href
+            if href.startswith("/node"):
+                href = "https://unfccc.int" + href
+            if href.startswith("/NODE"):
+                href = "https://unfccc.int" + href
             # Only add pages in the format https://unfccc.int/documents/65587
+            # or https://unfccc.int/[node/NODE]/65587
             # to further downloads
             if str(Path(href).parent).endswith("documents"):
                 targets.append({"title": title, "url": href})

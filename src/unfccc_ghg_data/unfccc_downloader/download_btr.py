@@ -27,7 +27,9 @@ from unfccc_ghg_data.unfccc_downloader import get_BTR_name_and_URL
 # how-to-download-a-file-using-seleniums-webdriver
 # for automatic downloading see https://stackoverflow.com/questions/70740163/
 # python-selenium-firefox-driver-dismiss-open-save-file-popup
+# TODO: use categories like in AnnexI downloading
 ###############
+
 
 if __name__ == "__main__":
     descr = (
