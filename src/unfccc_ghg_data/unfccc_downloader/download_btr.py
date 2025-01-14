@@ -162,7 +162,7 @@ if __name__ == "__main__":
                         # unlock files in folder as they might be updated by the zip
                         # file. Sometimes a new zip file contains files with the same
                         # name (updated) as older zip files
-                        dlds.unlock(local_filename.parent / "*")
+                        dlds.unlock(local_filename.parent)
                         zipped_file = zipfile.ZipFile(str(local_filename), "r")
                         zipped_file.extractall(str(local_filename.parent))
                         print(f"Extracted {len(zipped_file.namelist())} files.")
