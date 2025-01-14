@@ -357,9 +357,13 @@ CRT1 = {
             ["Peat (8)", ["1.A.2.g", "Peat"], 2],
             ["Biomass (3)", ["1.A.2.g", "Biomass"], 2],
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 2],
-            # ARG, ECU
-            ["1.A.2.g. Other (please specify)(11)", ["1.A.2.g", "Total"], 1],
-            ["Dropdown list", ["\\IGNORE", "\\IGNORE"], 2],
+            # TODO currently different parent category strings need repetition of the
+            #  full tree. Fix or make individual mappings for countries below
+            # # ARG, ECU
+            # ["1.A.2.g. Other (please specify)(11)", ["1.A.2.g", "Total"], 1],
+            # # CHL
+            # ["1.A.2.g. Other (please specify) (11)", ["1.A.2.g", "Total"], 1],
+            # ["Dropdown list", ["\\IGNORE", "\\IGNORE"], 2],
             # 1.A.2.g.i Manufacturing of machinery
             ["1.A.2.g.i. Manufacturing of machinery", ["1.A.2.g.i", "Total"], 2],
             ["Liquid fuels", ["1.A.2.g.i", "Liquid"], 3],
@@ -444,6 +448,8 @@ CRT1 = {
             ["Lubricating Oil (Two-Stroke Engines)", ["1.A.2.g.vii", "Lubricants"], 4],
             # FIN
             ["Gasoil", ["1.A.2.g.vii", "Gasoil"], 4],
+            # SWE
+            ["All Liquid Fuels", ["1.A.2.g.vii", "OLOther"], 4],
             ["Gaseous fuels (6)", ["1.A.2.g.vii", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.2.g.vii", "OtherFF"], 3],
             ["Biomass (3)", ["1.A.2.g.vii", "Biomass"], 3],
@@ -684,6 +690,18 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.11", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.11", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.11", "Biomass"], 4],
+            # SWE
+            [
+                "All stationary combustin within CRF 1.A.2.g",
+                ["1.A.2.g.viii.7", "Total"],
+                3,
+            ],
+            ["Liquid Fuels", ["1.A.2.g.viii.7", "Liquid"], 4],
+            ["Solid Fuels", ["1.A.2.g.viii.7", "Solid"], 4],
+            ["Gaseous Fuels", ["1.A.2.g.viii.7", "Gaseous"], 4],
+            ["Other Fossil Fuels", ["1.A.2.g.viii.7", "OtherFF"], 4],
+            ["Peat", ["1.A.2.g.viii.7", "Peat"], 4],
+            ["Biomass", ["1.A.2.g.viii.7", "Biomass"], 4],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",
