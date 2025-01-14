@@ -10,6 +10,7 @@ from datetime import date
 from pathlib import Path
 from random import randrange
 
+import datalad as dl
 import pandas as pd
 import requests
 from requests import ConnectionError
@@ -32,6 +33,8 @@ from unfccc_ghg_data.unfccc_downloader import get_BTR_name_and_URL
 
 
 if __name__ == "__main__":
+    dlds = dl.api.Dataset(root_path)
+
     descr = (
         "Download and unzip data from UNFCCC Biannial Transparency Reports Submissions."
         " Based on download.py from national-inventory-submissions "
@@ -156,6 +159,10 @@ if __name__ == "__main__":
                 # unzip data (only for new downloads)
                 if local_filename.suffix == ".zip":
                     try:
+                        # unlock files in folder as they might be updated by the zip
+                        # file. Sometimes a new zip file contains files with the same
+                        # name (updated) as older zip files
+                        dlds.unlock(local_filename.parent / "*")
                         zipped_file = zipfile.ZipFile(str(local_filename), "r")
                         zipped_file.extractall(str(local_filename.parent))
                         print(f"Extracted {len(zipped_file.namelist())} files.")
