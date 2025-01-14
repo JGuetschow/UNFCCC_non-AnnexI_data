@@ -632,6 +632,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                             file_info["party"],
                             current_cat,
                             file_info["data_year"],
+                            idx,
                         ]
                     )
                     # copy back the parent info to continue with next category
@@ -647,10 +648,16 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
             else:
                 print(
                     f"Unknown category '{current_cat}' found in {table} for "
-                    f"{file_info['party']}, {file_info['data_year']}."
+                    f"{file_info['party']}, {file_info['data_year']}, {idx}."
                 )
                 unknown_categories.append(
-                    [table, file_info["party"], current_cat, file_info["data_year"]]
+                    [
+                        table,
+                        file_info["party"],
+                        current_cat,
+                        file_info["data_year"],
+                        idx,
+                    ]
                 )
     else:
         for idx in range(1, len(df_current)):

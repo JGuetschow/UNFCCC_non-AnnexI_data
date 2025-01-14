@@ -357,6 +357,9 @@ CRT1 = {
             ["Peat (8)", ["1.A.2.g", "Peat"], 2],
             ["Biomass (3)", ["1.A.2.g", "Biomass"], 2],
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 2],
+            # ARG, ECU
+            ["1.A.2.g. Other (please specify)(11)", ["1.A.2.g", "Total"], 1],
+            ["Dropdown list", ["\\IGNORE", "\\IGNORE"], 2],
             # 1.A.2.g.i Manufacturing of machinery
             ["1.A.2.g.i. Manufacturing of machinery", ["1.A.2.g.i", "Total"], 2],
             ["Liquid fuels", ["1.A.2.g.i", "Liquid"], 3],
@@ -514,6 +517,14 @@ CRT1 = {
             ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
             ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
             ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
+            # ARG
+            ["Unspecified industries", ["1.A.2.g.viii.1", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.1", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.1", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.1", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.1", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.1", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.1", "Biomass"], 4],
             # MLT
             ["All Industry", ["1.A.2.g.viii.2", "Total"], 3],
             ["Liquid fuels", ["1.A.2.g.viii.2", "Liquid"], 4],
@@ -548,6 +559,22 @@ CRT1 = {
             ["Biomass (3)", ["1.A.2.g.viii.4", "Biomass"], 4],
             # CZE
             ["Other non_specified", ["1.A.2.g.viii.4", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.4", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.4", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.4", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.4", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.4", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.4", "Biomass"], 4],
+            # BRA
+            ["Not specified", ["1.A.2.g.viii.4", "Total"], 3],
+            ["Liquid fuels", ["1.A.2.g.viii.4", "Liquid"], 4],
+            ["Solid fuels", ["1.A.2.g.viii.4", "Solid"], 4],
+            ["Gaseous fuels (6)", ["1.A.2.g.viii.4", "Gaseous"], 4],
+            ["Other fossil fuels (7)", ["1.A.2.g.viii.4", "OtherFF"], 4],
+            ["Peat (8)", ["1.A.2.g.viii.4", "Peat"], 4],
+            ["Biomass (3)", ["1.A.2.g.viii.4", "Biomass"], 4],
+            # GHA
+            ["Non-specified sectors", ["1.A.2.g.viii.4", "Total"], 3],
             ["Liquid fuels", ["1.A.2.g.viii.4", "Liquid"], 4],
             ["Solid fuels", ["1.A.2.g.viii.4", "Solid"], 4],
             ["Gaseous fuels (6)", ["1.A.2.g.viii.4", "Gaseous"], 4],
@@ -1538,6 +1565,7 @@ CRT1 = {
             "EMISSIONS (1) CH4": "CH4 emissions",  # this is necessary because there
             # is an error in the table and the CH4 emissions don't have the removals
             # subtracted which would be correct according to the footnotes
+            # TODO: check!!!
             "EMISSIONS (1) CO2": "CO2",  #  emissions",
             "RECOVERY/FLARING (2) CH4": "CH4 removals",
             "RECOVERY/FLARING (2) CO2": "CO2 removals",

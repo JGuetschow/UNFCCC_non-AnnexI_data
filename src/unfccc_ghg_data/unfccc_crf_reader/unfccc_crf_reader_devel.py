@@ -251,7 +251,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                         ds_all = ds_all.combine_first(ds_table_pm2)
                 except Exception as e:
                     message = (
-                        f"Error occured when converting table {table} for"
+                        f"Error occurred when converting table {table} for"
                         f" {country_name} to PRIMAP2 IF. Exception: {e}"
                     )
                     print(message)
@@ -346,7 +346,7 @@ def save_unknown_categories_info(
     """
     # process unknown categories
     df_unknown_cats = pd.DataFrame(
-        unknown_categories, columns=["Table", "Country", "Category", "Year"]
+        unknown_categories, columns=["Table", "Country", "Category", "Year", "index"]
     )
 
     processed_cats = []
@@ -367,10 +367,16 @@ def save_unknown_categories_info(
                 years_country = df_current_cat_table[
                     df_current_cat_table["Country"] == country
                 ]["Year"].unique()
+                idx_country = df_current_cat_table[
+                    df_current_cat_table["Country"] == country
+                ]["index"].unique()
                 if set(years_country) == all_years:
-                    countries_cat = f"{countries_cat}; {country}"
+                    countries_cat = f"{countries_cat}; {country} ({idx_country})"
                 else:
-                    countries_cat = f"{countries_cat}; {country} ({years_country})"
+                    countries_cat = (
+                        f"{countries_cat}; {country} ({years_country}) "
+                        f"({idx_country})"
+                    )
             processed_cats.append([table, cat, countries_cat])
 
     if not file.parents[1].exists():
