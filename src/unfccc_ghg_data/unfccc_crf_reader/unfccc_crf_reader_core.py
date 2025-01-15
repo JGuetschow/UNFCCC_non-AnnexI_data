@@ -11,6 +11,7 @@ import os
 import re
 from collections import Counter
 from collections.abc import Generator
+from copy import deepcopy
 from datetime import datetime, timedelta
 from operator import itemgetter
 from pathlib import Path
@@ -404,16 +405,21 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     file_info = get_info_from_crf_filename(file.name)
 
     # find non-unique categories in mapping
-    all_cats_mapping = table_spec["sector_mapping"]
-    all_cats = [cat[0] for cat in all_cats_mapping]
+    all_cats_mapping = deepcopy(table_spec["sector_mapping"])
+    # prep specification
+    all_cats_mapping = prep_specification(
+        specification=all_cats_mapping, country=file_info["party"]
+    )
+    all_cats = [cat[0][0] for cat in all_cats_mapping]
 
     unique_cats = [cat for (cat, count) in Counter(all_cats).items() if count == 1]
     unique_cat_tuples = [
-        mapping for mapping in all_cats_mapping if mapping[0] in unique_cats
+        mapping for mapping in all_cats_mapping if mapping[0][0] in unique_cats
     ]
     unique_mapping = dict(
         zip(
-            [tup[0] for tup in unique_cat_tuples], [tup[1] for tup in unique_cat_tuples]
+            [tup[0][0] for tup in unique_cat_tuples],
+            [tup[1] for tup in unique_cat_tuples],
         )
     )
     non_unique_cats = [cat for (cat, count) in Counter(all_cats).items() if count > 1]
@@ -686,7 +692,13 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                         f"{file_info['party']}, {file_info['data_year']}."
                     )
                     unknown_categories.append(
-                        [table, file_info["party"], current_cat, file_info["data_year"]]
+                        [
+                            table,
+                            file_info["party"],
+                            current_cat,
+                            file_info["data_year"],
+                            idx,
+                        ]
                     )
 
     for idx, col in enumerate(table_properties["categories"]):
@@ -1123,24 +1135,30 @@ def create_category_tree(
         "id": "root",
     }
 
-    # filter categories in case country is given
-    if country is not None:
-        # remove country tags from categories and mark categories
-        # for other countries for removal
-        specification = [filter_category(mapping, country) for mapping in specification]
-        # remove the categories for other countries
-        specification = [
-            mapping for mapping in specification if mapping[0] != "\\REMOVE"
-        ]
+    # prep mappings
+    specification_list = prep_specification(
+        specification=specification, country=country
+    )
 
     # build a tree from specification
     # when looping over the categories present in the table
     # to read data from we walk along this tree
-    for idx, mapping in enumerate(specification):
+    for idx, mapping in enumerate(specification_list):
         current_cat = mapping[0]
         current_cat_level = mapping[2]
+        if len(current_cat) > 1:
+            message = (
+                "More than one category names in mapping rule. "
+                "This is currently not supported. "
+                "Use country specific mappings to incorporte differences in "
+                f"category names. Rule: {mapping}, Country: {country}"
+            )
+            print(message)
+            raise ValueError(message)
+        current_cat = current_cat[0]
+
         if current_cat_level == last_cat_info["level"]:
-            # cat has the same level as preceeding on, so no change to
+            # cat has the same level as preceeding one, so no change to
             # parent node
             category_tree.create_node(
                 current_cat, idx, parent=parent_info[-1]["id"], data=mapping
@@ -1186,6 +1204,57 @@ def create_category_tree(
     return category_tree
 
 
+def prep_specification(
+    specification: list[list],
+    country: Optional[str] = None,
+) -> list[list]:
+    """
+    Prepare specification to build tree or use directly
+
+    Unifies data format and filter for country
+
+    Parameters
+    ----------
+    specification :
+        The table specification to process
+    country :
+        Country to filter for
+
+    Returns
+    -------
+        list with modified specification
+
+    """
+    # prep mappings (make sure first item is a list)
+    specification_list = [listify(mapping) for mapping in specification]
+
+    # filter categories in case country is given
+    if country is not None:
+        # remove country tags from categories and mark categories
+        # for other countries for removal
+        specification_list = [
+            filter_category(mapping, country) for mapping in specification_list
+        ]
+        # remove the categories for other countries
+        specification_list = [
+            mapping for mapping in specification_list if mapping[0] != ["\\REMOVE"]
+        ]
+    return specification_list
+
+
+def listify(mapping: list) -> list:
+    """Make sure first item of mapping is a list"""
+    if isinstance(mapping[0], str):
+        mapping[0] = [mapping[0]]
+    elif isinstance(mapping[0], list):
+        pass
+    else:
+        raise TypeError(  # noqa: TRY003
+            f"First element of mapping has to be str or list: {mapping}"
+        )
+    return mapping
+
+
 def filter_category(
     mapping: list,
     country: str,
@@ -1217,25 +1286,28 @@ def filter_category(
     regex_include = r"\\C-([A-Z\-]+)\\"
     regex_include_full = r"(\\C-[A-Z\-]+\\)"
     new_mapping = mapping.copy()
-    if mapping[0].startswith(string_exclude):
-        re_result = re.search(regex_exclude, mapping[0])
-        countries_ex = re_result.group(1)
-        countries_ex = countries_ex.split("-")
-        if country in countries_ex:
-            new_mapping[0] = "\\REMOVE"
+    new_items = []
+    for item in mapping[0]:
+        if item.startswith(string_exclude):
+            re_result = re.search(regex_exclude, item)
+            countries_ex = re_result.group(1)
+            countries_ex = countries_ex.split("-")
+            if country not in countries_ex:
+                re_result = re.search(regex_exclude_full, item)
+                new_items.append(item[len(re_result.group(1)) + 1 :])
+        elif item.startswith(string_include):
+            re_result = re.search(regex_include, item)
+            countries_in = re_result.group(1)
+            countries_in = countries_in.split("-")
+            if country in countries_in:
+                re_result = re.search(regex_include_full, item)
+                new_items.append(item[len(re_result.group(1)) + 1 :])
         else:
-            re_result = re.search(regex_exclude_full, mapping[0])
-            new_mapping[0] = mapping[0][len(re_result.group(1)) + 1 :]
-    elif mapping[0].startswith(string_include):
-        re_result = re.search(regex_include, mapping[0])
-        countries_in = re_result.group(1)
-        countries_in = countries_in.split("-")
-        if country in countries_in:
-            re_result = re.search(regex_include_full, mapping[0])
-            new_mapping[0] = mapping[0][len(re_result.group(1)) + 1 :]
-        else:
-            new_mapping[0] = "\\REMOVE"
+            new_items.append(item)
 
+    if not new_items:
+        new_items = ["\\REMOVE"]
+    new_mapping[0] = new_items
     return new_mapping
 
 
@@ -1357,7 +1429,7 @@ def get_latest_version_for_country(
                     downloaded_data_path_UNFCCC / folder / f"BTR{submission_round}"
                 )
                 if folder_submission.exists():
-                    versions = versions + get_submission_dates(
+                    versions = versions + get_submission_versions(
                         folder_submission, file_filter
                     )
             submission_version = find_latest_version(versions)

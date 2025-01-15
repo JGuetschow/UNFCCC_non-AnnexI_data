@@ -75,19 +75,19 @@ def test_get_info_from_crf_filename():
 
 def test_filter_category():
     # general
-    map_gen = ["Option C (country-specific):", ["\\IGNORE"], 4]
+    map_gen = [["Option C (country-specific):"], ["\\IGNORE"], 4]
     assert filter_category(map_gen, "MOZ") == map_gen
 
     # country specific
     expected = [
-        "Other (as specified in table 3(I).A)",
+        ["Other (as specified in table 3(I).A)"],
         ["3.A.1.C"],
         5,
     ]
-    expected_remove = ["\\REMOVE", ["3.A.1.C"], 5]
+    expected_remove = [["\\REMOVE"], ["3.A.1.C"], 5]
     # exclude multiple
     map_excl_multiple = [
-        "\\C!-AUS-MLT-LUX-POL-SVN-USA\\ Other (as specified in table 3(I).A)",
+        ["\\C!-AUS-MLT-LUX-POL-SVN-USA\\ Other (as specified in table 3(I).A)"],
         ["3.A.1.C"],
         5,
     ]
@@ -96,22 +96,22 @@ def test_filter_category():
 
     # exclude single
     map_excl_single = [
-        "\\C!-AUS\\ Other (as specified in table 3(I).A)",
+        ["\\C!-AUS\\ Other (as specified in table 3(I).A)"],
         ["3.A.1.C"],
         5,
     ]
     expected = [
-        "Other (as specified in table 3(I).A)",
+        ["Other (as specified in table 3(I).A)"],
         ["3.A.1.C"],
         5,
     ]
-    expected_remove = ["\\REMOVE", ["3.A.1.C"], 5]
+    expected_remove = [["\\REMOVE"], ["3.A.1.C"], 5]
     assert filter_category(map_excl_single, "MOZ") == expected
     assert filter_category(map_excl_single, "AUS") == expected_remove
 
     # include multiple
     map_incl_multiple = [
-        "\\C-AUS-NLD\\ Other (as specified in table 3(I).A)",
+        ["\\C-AUS-NLD\\ Other (as specified in table 3(I).A)"],
         ["3.A.1.C"],
         5,
     ]
@@ -120,9 +120,25 @@ def test_filter_category():
     assert filter_category(map_incl_multiple, "NLD") == expected
 
     # include single
-    map_incl_single = ["\\C-AUS\\ Other (as specified in table 3(I).A)", ["3.A.1.C"], 5]
+    map_incl_single = [
+        ["\\C-AUS\\ Other (as specified in table 3(I).A)"],
+        ["3.A.1.C"],
+        5,
+    ]
     assert filter_category(map_incl_single, "MOZ") == expected_remove
     assert filter_category(map_incl_single, "AUS") == expected
+
+    # multiple items
+    map_incl_mult_items = [
+        [
+            "\\C-AUS\\ Other (as specified in table 3(I).A)",
+            "\\C-NLD\\ Other (as specified in table 3(I).A)",
+        ],
+        ["3.A.1.C"],
+        5,
+    ]
+    assert filter_category(map_incl_mult_items, "MOZ") == expected_remove
+    assert filter_category(map_incl_mult_items, "AUS") == expected
 
 
 def test_get_country_folders():
