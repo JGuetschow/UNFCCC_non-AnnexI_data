@@ -9,6 +9,7 @@ from .crf2023_specification import CRF2023
 from .crf2024_specification import CRF2024
 from .crt1_specification import CRT1
 from .crt1_tun_specification import CRT1_TUN
+from .ctf1_specification import CTF1
 
 __all__ = [
     "CRF2021",
@@ -18,4 +19,5 @@ __all__ = [
     "CRF2024",
     "CRT1",
     "CRT1_TUN",
+    "CTF1",
 ]

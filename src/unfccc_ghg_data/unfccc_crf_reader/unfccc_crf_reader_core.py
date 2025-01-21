@@ -733,7 +733,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     return df_long, unknown_categories, info_last_row
 
 
-def get_crf_files(  # noqa: PLR0912, PLR0913
+def get_crf_files(  # noqa: PLR0912, PLR0913, PLR0915
     country_codes: Union[str, list[str]],
     submission_year: int,
     data_year: Optional[Union[int, list[int]]] = None,
@@ -760,7 +760,7 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
         Folder that contains the xls files. If not given folders are determined by the
         submissions_year and country_code variables
     submission_type: str default = "CRF"
-        read CRF or CRF data
+        read CRF, CRT, or CTF data
 
     Returns
     -------
@@ -815,13 +815,15 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
                     input_files = input_files + filter_filenames(
                         input_folder_path.glob("*.xlsx"), **file_filter
                     )
-            elif submission_type == "CRT":
+            elif submission_type in ["CRT", "CTF"]:
                 if date_or_version == "latest":
                     for country in country_codes:
                         file_filter = file_filter_template.copy()
                         file_filter["party"] = country
                         versions = get_submission_versions(folder, file_filter)
+                        file_filter["type"] = submission_type
                         file_filter["version"] = find_latest_version(versions)
+
                         input_files = input_files + filter_filenames(
                             input_folder_path.glob("*.xlsx"), **file_filter
                         )
@@ -829,13 +831,14 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
                     file_filter = file_filter_template.copy()
                     if date_or_version is not None:
                         file_filter["version"] = date_or_version
+                    file_filter["type"] = submission_type
                     input_files = input_files + filter_filenames(
                         input_folder_path.glob("*.xlsx"), **file_filter
                     )
             else:
                 raise ValueError(  # noqa: TRY003
                     f"Unknown submissions type: {submission_type}."
-                    "Only CRF and CRT are allowed."
+                    "Only CRF, CRT, and CTF are allowed."
                 )
     if len(input_files) == 0:
         raise ValueError(f"No input files found in {country_folders}")  # noqa: TRY003
@@ -867,14 +870,14 @@ def get_country_folders(
     submission_year :
         Year of the submission of the data for CRF and submission round for CRT/BTR
     submission_type :
-        read CRF or CRF data
+        read CRF, CRT, or CTF data
 
     Returns
     -------
         List[Path]: list of Path objects for the folders
 
     """
-    if submission_type == "CRT":
+    if submission_type in ["CRT", "CTF"]:
         type_folder = "BTR"
     else:
         type_folder = submission_type
@@ -907,7 +910,7 @@ def get_country_folders(
     return country_folders
 
 
-def get_info_from_crf_filename(  # noqa: PLR0912
+def get_info_from_crf_filename(  # noqa: PLR0912 PLR0915
     filename: str,
 ) -> dict[str, Union[int, str]]:
     """
@@ -927,6 +930,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
         * date: date of the submission
         * version: version of the submission. if not given filled with V0.0
         * extra: rest of the file name
+        * type: CRF, CRT, CTF
 
     """
     filename = os.path.splitext(filename)[0]
@@ -934,6 +938,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
     file_info = {}
     if len(name_parts) >= 4:  # noqa: PLR2004
         # CRF file name convention (unfortunately also used for some CRT files)
+        file_info["type"] = "CRF"
         file_info["party"] = name_parts[0]
         file_info["submission_year"] = int(name_parts[1])
         try:
@@ -951,8 +956,9 @@ def get_info_from_crf_filename(  # noqa: PLR0912
     else:
         # not enough parts, we probably have a CRT file with different separator
         name_parts = filename.split("-")
-        if len(name_parts) >= 5 and "DataEntry" not in name_parts:  # noqa: PLR2004
-            if name_parts[1] == "CRT":
+        if len(name_parts) >= 4 and "DataEntry" not in name_parts:  # noqa: PLR2004
+            if name_parts[1] == "CRT" and len(name_parts) >= 5:  # noqa: PLR2004
+                file_info["type"] = "CRT"
                 file_info["party"] = name_parts[0]
                 file_info["submission_year"] = int(name_parts[2])
                 file_info["version"] = name_parts[3]
@@ -970,8 +976,33 @@ def get_info_from_crf_filename(  # noqa: PLR0912
                     file_info["extra"] = name_parts[6]
                 else:
                     file_info["extra"] = ""
+            elif name_parts[1] == "CTF" and name_parts[2] == "NDC":
+                file_info["type"] = "CTF"
+                file_info["party"] = name_parts[0]
+                if len(name_parts) >= 6:  # noqa: PLR2004
+                    file_info["submission_year"] = int(name_parts[3])
+                    file_info["version"] = name_parts[4]
+                    # file type has no year as multiple years contained
+                    file_info["data_year"] = 0
+                    file_info["date"] = name_parts[5]
+                    # treat time code and note as optional
+                    if len(name_parts) > 6:  # noqa: PLR2004
+                        file_info["extra"] = name_parts[6]
+                    else:
+                        file_info["extra"] = ""
+                else:
+                    year_parts = name_parts[3].split("_")
+                    file_info["submission_year"] = int(year_parts[0])
+                    if len(year_parts) > 1:
+                        file_info["extra"] = year_parts[1]
+                    else:
+                        file_info["extra"] = ""
+                    # file type has no year as multiple years contained
+                    file_info["version"] = "V0.0"
+                    file_info["data_year"] = 0
+                    file_info["date"] = file_info["submission_year"]
             else:
-                message = f"File {filename} is not a valid CRF or CRT file."
+                message = f"File {filename} is not a valid CRF, CRT, or CTF-NDC file."
                 raise ValueError(message)
         else:
             message = f"File {filename} is not a valid CRF or CRT file."
@@ -987,6 +1018,7 @@ def filter_filenames(  # noqa: PLR0913
     submission_year: Optional[str] = None,
     date: Optional[str] = None,
     version: Optional[str] = None,
+    type: Optional[str] = None,
 ) -> list[Path]:
     """Filter a list of filenames of CRF/CRT files
 
@@ -1006,7 +1038,10 @@ def filter_filenames(  # noqa: PLR0913
     date: Optional[str] (default: None)
         Date. If given only files with the given submission date will be returned
     version: Optional[str] (default: None)
-        Date. If given only files with the given submission version (CRT/BTR)
+        Version. If given only files with the given submission version
+        (CRT/CTF from BTR)
+    type: Optional[str] (default: None)
+        Type of data for BTRs. CRT or CTF
 
     Returns
     -------
@@ -1024,6 +1059,8 @@ def filter_filenames(  # noqa: PLR0913
         file_filter["date"] = date
     if version is not None:
         file_filter["version"] = version
+    if type is not None:
+        file_filter["type"] = type
 
     filtered_files = []
     for file in files_to_filter:
@@ -1068,6 +1105,9 @@ def check_crf_file_info(  # noqa: PLR0911, PLR0912
             return False
     if "version" in file_filter.keys():
         if file_info["version"] != file_filter["version"]:
+            return False
+    if "type" in file_filter.keys():
+        if file_info["type"] != file_filter["type"]:
             return False
     if "data_year" in file_filter.keys():
         if isinstance(file_filter["data_year"], int):
@@ -1326,7 +1366,7 @@ def get_latest_date_for_country(
     submission_year: int
         Year of the submission to find the l;atest date_or_version for
     submission_type: str, default CRF
-        Check for CRF or CRT tables
+        Check for CRF or CRT/CTF tables
 
     Returns
     -------
@@ -1388,6 +1428,7 @@ def get_latest_date_for_country(
 def get_latest_version_for_country(
     country_code: str,
     submission_round: int,
+    submission_type: str = "CRT",
 ) -> str:
     """
     Find the latest submission version (CRT) for a country
@@ -1398,6 +1439,8 @@ def get_latest_version_for_country(
         3-letter country code
     submission_round: int
         Submission round to find the latest version for
+    submission_type: str, default CRT
+        CRT or CTF (both part of BTR)
 
     Returns
     -------
@@ -1406,10 +1449,11 @@ def get_latest_version_for_country(
     with open(downloaded_data_path_UNFCCC / "folder_mapping.json") as mapping_file:
         folder_mapping = json.load(mapping_file)
 
+    file_filter = {
+        "type": submission_type,
+    }
     if country_code in folder_mapping:
-        file_filter = {
-            "party": country_code,
-        }
+        file_filter["party"] = country_code
 
         country_folders = folder_mapping[country_code]
         if isinstance(country_folders, str):
@@ -1521,10 +1565,10 @@ def get_submission_versions(
     else:
         raise ValueError(f"Folder {folder} does not exist")  # noqa: TRY003
 
-    dates = [get_info_from_crf_filename(file.name)["version"] for file in files]
-    dates = list(set(dates))
+    version = [get_info_from_crf_filename(file.name)["version"] for file in files]
+    version = list(set(version))
 
-    return dates
+    return version
 
 
 def get_submission_parties(
