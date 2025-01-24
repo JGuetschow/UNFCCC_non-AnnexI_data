@@ -10,6 +10,7 @@ geckodriver.log
 
 # Notebooks
 *.ipynb
+!/notebooks/*.ipynb
 
 # Databases
 *.db
