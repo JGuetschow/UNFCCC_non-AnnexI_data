@@ -28,7 +28,11 @@ from .unfccc_crf_reader_core import (
     get_latest_version_for_country,
     read_crf_table,
 )
-from .unfccc_crf_reader_devel import save_last_row_info, save_unknown_categories_info
+from .unfccc_crf_reader_devel import (
+    save_empty_tables_info,
+    save_last_row_info,
+    save_unknown_categories_info,
+)
 from .util import NoCRFFilesError, all_crf_countries
 
 # functions:
@@ -158,6 +162,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
     if read_data or re_read:
         unknown_categories = []
         last_row_info = []
+        empty_tables = []
         for table in tables:
             # read table for all years
             ds_table, new_unknown_categories, new_last_row_info = read_crf_table(
@@ -202,42 +207,51 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
                 submission_type=submission_type,
             )
 
-            # now convert to native PRIMAP2 format
-            ds_table_pm2 = pm2.pm2io.from_interchange_format(ds_table_if)
-
-            # if individual data for emissions and removals / recovery exist combine
-            # them
+            # skip empty tables
             if (
-                ("CO2 removals" in ds_table_pm2.data_vars)
-                and ("CO2 emissions" in ds_table_pm2.data_vars)
-                and "CO2" not in ds_table_pm2.data_vars
+                not ds_table_if.set_index(ds_table_if.attrs["dimensions"]["*"])
+                .isna()
+                .all(axis=None)
             ):
-                # we can just sum to CO2 as we made sure that it doesn't exist.
-                # If we have CO2 and removals but not emissions, CO2 already has
-                # removals subtracted and we do nothing here
-                ds_table_pm2["CO2"] = ds_table_pm2[
-                    ["CO2 emissions", "CO2 removals"]
-                ].pr.sum(dim="entity", skipna=True, min_count=1)
-                ds_table_pm2["CO2"].attrs["entity"] = "CO2"
+                # now convert to native PRIMAP2 format
+                ds_table_pm2 = pm2.pm2io.from_interchange_format(ds_table_if)
 
-            if (
-                ("CH4 removals" in ds_table_pm2.data_vars)
-                and ("CH4 emissions" in ds_table_pm2.data_vars)
-                and "CH4" not in ds_table_pm2.data_vars
-            ):
-                # we can just sum to CH4 as we made sure that it doesn't exist.
-                # If we have CH4 and removals but not emissions, CH4 already has
-                # removals subtracted and we do nothing here
-                ds_table_pm2["CH4"] = ds_table_pm2[
-                    ["CH4 emissions", "CH4 removals"]
-                ].pr.sum(dim="entity", skipna=True, min_count=1)
-                ds_table_pm2["CH4"].attrs["entity"] = "CH4"
+                # if individual data for emissions and removals / recovery exist combine
+                # them
+                if (
+                    ("CO2 removals" in ds_table_pm2.data_vars)
+                    and ("CO2 emissions" in ds_table_pm2.data_vars)
+                    and "CO2" not in ds_table_pm2.data_vars
+                ):
+                    # we can just sum to CO2 as we made sure that it doesn't exist.
+                    # If we have CO2 and removals but not emissions, CO2 already has
+                    # removals subtracted and we do nothing here
+                    ds_table_pm2["CO2"] = ds_table_pm2[
+                        ["CO2 emissions", "CO2 removals"]
+                    ].pr.sum(dim="entity", skipna=True, min_count=1)
+                    ds_table_pm2["CO2"].attrs["entity"] = "CO2"
 
-            # combine per table DS
-            if ds_all is None:
-                ds_all = ds_table_pm2
+                if (
+                    ("CH4 removals" in ds_table_pm2.data_vars)
+                    and ("CH4 emissions" in ds_table_pm2.data_vars)
+                    and "CH4" not in ds_table_pm2.data_vars
+                ):
+                    # we can just sum to CH4 as we made sure that it doesn't exist.
+                    # If we have CH4 and removals but not emissions, CH4 already has
+                    # removals subtracted and we do nothing here
+                    ds_table_pm2["CH4"] = ds_table_pm2[
+                        ["CH4 emissions", "CH4 removals"]
+                    ].pr.sum(dim="entity", skipna=True, min_count=1)
+                    ds_table_pm2["CH4"].attrs["entity"] = "CH4"
+
+                # combine per table DS
+                if ds_all is None:
+                    ds_all = ds_table_pm2
+                else:
+                    ds_all = ds_all.combine_first(ds_table_pm2)
             else:
-                ds_all = ds_all.combine_first(ds_table_pm2)
+                # log that table is empty
+                empty_tables.append(table)
 
         # check if there were log messages.
         save_data = True
@@ -268,6 +282,19 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
                 f"Not saving data. Saving log to {log_location}"
             )
             save_last_row_info(last_row_info, log_location)
+
+        if len(empty_tables) > 0:
+            today = date.today()
+            log_location = (
+                log_path
+                / f"{submission_type}{submission_year}"
+                / f"{country_code}_empty_tables_{today.strftime('%Y-%m-%d')}.csv"
+            )
+            print(
+                f"Empty tables found for {country_code}: "
+                f"{empty_tables}. Save log to {log_location}"
+            )
+            save_empty_tables_info(empty_tables, log_location)
 
         if save_data:
             compression = dict(zlib=True, complevel=9)
