@@ -1603,17 +1603,15 @@ def find_latest_version(
 
     Parameters
     ----------
-    dates: List[str]
-        List of dates
-    date_format: str, default "%d%m%Y"
-        Format for the date_or_version. Unfortunately CRF uses %d%m%Y while CRT uses
-        %Y%m%d with some exceptions for early submissions which use the CRF file namig
-        scheme
+    versions: List[str]
+        List of versions
 
     Returns
     -------
         str: latest date_or_version
     """
+    # TODO: use mayor and minor version numbers. currently 0.11 will be judged as
+    #  lower than 0.2
     if len(versions) > 0:
         versions_float = [[version, float(version[1:])] for version in versions]
         versions_float = sorted(versions_float, key=itemgetter(1))
