@@ -164,7 +164,7 @@ if __name__ == "__main__":
                         # name (updated) as older zip files
                         # as we can't unlock files which have just been added we catch
                         # and discard exceptions
-                        for file in local_filename.parent.glob():
+                        for file in local_filename.parent.glob("*"):
                             try:
                                 dlds.unlock(file)
                             except Exception:  # noqa: S110
