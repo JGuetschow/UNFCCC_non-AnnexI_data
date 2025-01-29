@@ -68,7 +68,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
     submission_type: str default = "CRF"
         read CRF or CRF data
     decimal_sep: str default = '.'
-        decimal seperator to use to interpret the data.
+        decimal separator to use to interpret the data.
 
     Returns
     -------
@@ -176,6 +176,8 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
     if meta_data_input is not None:
         for key in meta_data_input.keys():
             meta_data[key] = meta_data_input[key]
+
+    # fix decimal separator
 
     df_table_if = pm2.pm2io.convert_long_dataframe_if(
         df_table,
