@@ -61,8 +61,9 @@ dataset_path_UNFCCC = dataset_path / "UNFCCC"
 nAI_countries = list(pd.read_csv(code_path / "helper" / "DI_NAI_parties.conf")["code"])
 # AI_countries = list(reader.annex_one_reader.parties["code"])
 AI_countries = list(pd.read_csv(code_path / "helper" / "DI_AI_parties.conf")["code"])
+additional_territories = ["HKG", "MAC"]
 
-all_countries = nAI_countries + AI_countries
+all_countries = nAI_countries + AI_countries + additional_territories
 
 custom_country_mapping = {
     "EUA": "European Union",

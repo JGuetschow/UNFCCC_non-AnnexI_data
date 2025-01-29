@@ -41,6 +41,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
     filter_keep_input: dict[str, dict[str, str | list]] | None = None,
     meta_data_input: dict[str, str] | None = None,
     submission_type: str = "CRF",
+    decimal_sep: str = ".",
 ) -> pd.DataFrame:
     """
     Convert a given pandas long format crf table to PRIMAP2 interchange format
@@ -66,6 +67,8 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
         are given as input the automatic values are overwritten.
     submission_type: str default = "CRF"
         read CRF or CRF data
+    decimal_sep: str default = '.'
+        decimal seperator to use to interpret the data.
 
     Returns
     -------
