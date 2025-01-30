@@ -32,7 +32,7 @@ pd.set_option("future.no_silent_downcasting", True)
 
 
 ### reading functions
-def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
+def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913, PLR0915
     df_table: pd.DataFrame,
     submission_year: int,
     entity_mapping: dict[str, str] | None = None,
@@ -42,6 +42,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
     meta_data_input: dict[str, str] | None = None,
     submission_type: str = "CRF",
     decimal_sep: str = ".",
+    thousands_sep: str = ",",
 ) -> pd.DataFrame:
     """
     Convert a given pandas long format crf table to PRIMAP2 interchange format
@@ -69,6 +70,8 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
         read CRF or CRF data
     decimal_sep: str default = '.'
         decimal separator to use to interpret the data.
+    thousands_sep: str default = ','
+        thousands separator to use to interpret the data.
 
     Returns
     -------
@@ -178,6 +181,25 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913
             meta_data[key] = meta_data_input[key]
 
     # fix decimal separator
+    sep_regexp_special = ["."]
+
+    if decimal_sep != ".":
+        if thousands_sep in sep_regexp_special:
+            regex_thousands = f"([0-9]+)\\{thousands_sep}([0-9,]+)"
+        else:
+            regex_thousands = f"([0-9]+){thousands_sep}([0-9,]+)"
+        if decimal_sep in sep_regexp_special:
+            regex_decimal = f"([0-9]+)\\{decimal_sep}([0-9]+)"
+        else:
+            regex_decimal = f"([0-9]+){decimal_sep}([0-9]+)"
+        # first remove thousand sep
+        df_table = df_table.replace(
+            to_replace=regex_thousands, value=r"\1\2", regex=True
+        )
+        # now replace the decimal sep by a dot
+        df_table = df_table.replace(
+            to_replace=regex_decimal, value=r"\1.\2", regex=True
+        )
 
     df_table_if = pm2.pm2io.convert_long_dataframe_if(
         df_table,
@@ -204,7 +226,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     folder: str | None = None,
     submission_type: str = "CRF",
     debug: bool = False,
-) -> tuple[pd.DataFrame, list[list], list[list]]:
+) -> tuple[pd.DataFrame, list[list], list[list], bool]:
     """
     Read CRF table for given year and country/countries
 
@@ -246,6 +268,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
         * Third return parameter holds information on data found in the last read row.
           This is used as a hint to check if table specifications might have to
           be adapted as country submitted tables are longer than expected.
+        * The fourth return parameter is true if the worksheet to read in the file
 
     """
     # check type
@@ -342,6 +365,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     df_all = None
     unknown_rows = []
     last_row_info = []
+    not_present = False
     for file in input_files:
         file_info = get_info_from_crf_filename(file.name)
         try:
@@ -359,10 +383,17 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
                 df_all = pd.concat([df_this_file, df_all])
                 unknown_rows = unknown_rows + unknown_rows_this_file
                 last_row_info = last_row_info + last_row_info_this_file
+        except ValueError as e:
+            if e.args[0] == f"Worksheet named '{table}' not found":
+                print(f"Table {table} not present")
+                not_present = True
+                pass
+            else:
+                print(f"Error when reading file {file}. Skipping file. Exception: {e}")
         except Exception as e:
             print(f"Error when reading file {file}. Skipping file. Exception: {e}")
 
-    return df_all, unknown_rows, last_row_info
+    return df_all, unknown_rows, last_row_info, not_present
 
 
 def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
