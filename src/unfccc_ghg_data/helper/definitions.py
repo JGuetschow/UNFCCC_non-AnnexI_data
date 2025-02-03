@@ -1,5 +1,6 @@
 """definitions like folders, mappings etc."""
 
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -26,13 +27,17 @@ def get_root_path(root_indicator: str = ".datalad") -> Path:
     ------
         RuntimeError: If the repository root cannot be found.
     """
-    current_dir = Path(__file__).resolve().parent
-    while current_dir != Path(current_dir.root):
-        if (current_dir / root_indicator).exists():
-            return current_dir
-        current_dir = current_dir.parent
-    msg = f"Repository root with indicator '{root_indicator}' not found."
-    raise RuntimeError(msg)
+    root_path_env = os.getenv("UNFCCC_GHG_ROOT_PATH", None)
+    if root_path_env is None:
+        current_dir = Path(__file__).resolve().parent
+        while current_dir != Path(current_dir.root):
+            if (current_dir / root_indicator).exists():
+                return current_dir
+            current_dir = current_dir.parent
+        msg = f"Repository root with indicator '{root_indicator}' not found."
+        raise RuntimeError(msg)
+    else:
+        return Path(root_path_env).resolve()
 
 
 # def get_root_path() -> Path:
