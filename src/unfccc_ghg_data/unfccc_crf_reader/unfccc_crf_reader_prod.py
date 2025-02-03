@@ -521,7 +521,7 @@ def read_new_crf_for_year(  # noqa: PLR0912
                     f"No {submission_type} data for country {country}, "
                     f"{submission_year}"
                 )
-                read_countries[country] = "no data"
+                read_countries[country] = "failed"
         except Exception as ex:
             print(
                 f"{submission_type} data for country {country}, "
