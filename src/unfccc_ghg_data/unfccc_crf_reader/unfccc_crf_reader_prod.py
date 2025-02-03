@@ -298,7 +298,8 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
             save_unknown_categories_info(unknown_categories, log_location)
 
         if len(last_row_info) > 0:
-            save_data = False
+            # save data anyway as in some cases we can't avoid info in the last row
+            # save_data = False
             today = date.today()
             log_location = (
                 log_path
@@ -307,7 +308,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
             )
             print(
                 f"Data found in the last row found for {country_code}. "
-                f"Not saving data. Saving log to {log_location}"
+                f"Saving log to {log_location}"
             )
             save_last_row_info(last_row_info, log_location)
 
