@@ -16,5 +16,5 @@ gwp_to_use = "AR5GWP100"
 CRT1_CHL = deepcopy(CRT1)
 
 CRT1_CHL["Table3.B(b)"]["table"]["cols_to_ignore"][
-    3
+    2
 ] = "ACTIVITY DATA AND OTHER RELATED INFORMATION Typical animal mass (average) (kg/ animal)"
