@@ -510,22 +510,23 @@ def read_new_crf_for_year(  # noqa: PLR0912
             print(f"No {submission_type} data for country {country}, {submission_year}")
             read_countries[country] = "no data"
         except ValueError as ve:
-            if ("does not exists" in repr(ve)) or ("is empty" in repr(ve)):
+            if ("does not exist" in repr(ve)) or ("is empty" in repr(ve)):
                 print(
                     f"No {submission_type} data for country {country}, "
-                    f"{submission_year}"
+                    f"{submission_year}."
                 )
                 read_countries[country] = "no data"
             else:
                 print(
-                    f"No {submission_type} data for country {country}, "
-                    f"{submission_year}"
+                    f"{submission_type} data for country {country}, "
+                    f"{submission_year} could not be read:"
                 )
+                print(f"The following error occurred: {ve}")
                 read_countries[country] = "failed"
         except Exception as ex:
             print(
                 f"{submission_type} data for country {country}, "
-                f"{submission_year} could not be read"
+                f"{submission_year} could not be read:"
             )
             print(f"The following error occurred: {ex}")
             read_countries[country] = "failed"
