@@ -197,6 +197,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     print(message)
                     exceptions.append(f"Error: {country_name}: {message}")
                     ds_table = None
+                    not_present = None
                     pass
 
                 try:
