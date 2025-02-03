@@ -279,59 +279,60 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
         country_codes = [country_codes]
 
     # get file names and locations
-    input_files = get_crf_files(
-        country_codes=country_codes,
-        submission_year=submission_year,
-        data_year=data_year,
-        date_or_version=date_or_version,
-        folder=folder,
-        submission_type=submission_type,
-    )
-    # nasty fix for cases where exporting ran overnight and not all files have
-    # the same date_or_version. This is only applied for CRF as for CRT we use the
-    # version as main identifier
-    if submission_type == "CRF":
-        if (date_or_version is not None) and (len(country_codes) == 1):
-            if isinstance(data_year, list):
-                expected_files = len(data_year)
-            elif isinstance(data_year, int):
-                expected_files = 1
-            else:
-                expected_files = submission_year - 1990 - 1
-            if len(input_files) < expected_files:
-                print(
-                    f"Found only {len(input_files)} input files for {country_codes}. "
-                    f"Expected {expected_files}."
-                )
-                print(
-                    "Possibly exporting run overnight and some files have the previous "
-                    "day as date."
-                )
-                date_datetime = datetime.strptime(date_or_version, "%d%m%Y")
-                date_datetime = date_datetime - timedelta(days=1)
-                prv_date = date_datetime.strftime("%d%m%Y")
-                more_input_files = get_crf_files(
-                    country_codes=country_codes,
-                    submission_year=submission_year,
-                    data_year=data_year,
-                    date_or_version=prv_date,
-                    folder=folder,
-                    submission_type=submission_type,
-                )
-                if len(more_input_files) > 0:
-                    print(f"Found {len(more_input_files)} additional input files.")
-                    input_files = input_files + more_input_files
+    try:
+        input_files = get_crf_files(
+            country_codes=country_codes,
+            submission_year=submission_year,
+            data_year=data_year,
+            date_or_version=date_or_version,
+            folder=folder,
+            submission_type=submission_type,
+        )
+        # nasty fix for cases where exporting ran overnight and not all files have
+        # the same date_or_version. This is only applied for CRF as for CRT we use the
+        # version as main identifier
+        if submission_type == "CRF":
+            if (date_or_version is not None) and (len(country_codes) == 1):
+                if isinstance(data_year, list):
+                    expected_files = len(data_year)
+                elif isinstance(data_year, int):
+                    expected_files = 1
                 else:
-                    print("Found no additional input files")
-
-    if not input_files:
+                    expected_files = submission_year - 1990 - 1
+                if len(input_files) < expected_files:
+                    print(
+                        f"Found only {len(input_files)} input files for "
+                        f"{country_codes}. "
+                        f"Expected {expected_files}."
+                    )
+                    print(
+                        "Possibly exporting run overnight and some files have the "
+                        "previous day as date."
+                    )
+                    date_datetime = datetime.strptime(date_or_version, "%d%m%Y")
+                    date_datetime = date_datetime - timedelta(days=1)
+                    prv_date = date_datetime.strftime("%d%m%Y")
+                    more_input_files = get_crf_files(
+                        country_codes=country_codes,
+                        submission_year=submission_year,
+                        data_year=data_year,
+                        date_or_version=prv_date,
+                        folder=folder,
+                        submission_type=submission_type,
+                    )
+                    if len(more_input_files) > 0:
+                        print(f"Found {len(more_input_files)} additional input files.")
+                        input_files = input_files + more_input_files
+                    else:
+                        print("Found no additional input files")
+    except Exception as ex:
         raise NoCRFFilesError(  # noqa: TRY003
             f"No files found for {country_codes}, "
             f"submission_year={submission_year}, "
             f"data_year={data_year}, "
             f"date/version={date_or_version}, "
             f"folder={folder}."
-        )
+        ) from ex
 
     # get specification
     # if we only have a single country check if we might have a country specific

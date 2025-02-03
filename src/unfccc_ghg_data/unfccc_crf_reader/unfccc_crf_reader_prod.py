@@ -397,12 +397,17 @@ def read_crf_for_country_datalad(
     if type not in ["CRF", "CRT"]:
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
     # get all the info for the country
-    country_info = get_input_and_output_files_for_country(
-        country_code,
-        submission_year=submission_year,
-        verbose=True,
-        submission_type=type,
-    )
+    try:
+        country_info = get_input_and_output_files_for_country(
+            country_code,
+            submission_year=submission_year,
+            verbose=True,
+            submission_type=type,
+        )
+    except Exception as ex:
+        raise NoCRFFilesError(  # noqa: TRY003
+            "Problem determining input and output files."
+        ) from ex
 
     print(f"Attempting to read data for {type}{submission_year} from {country_code}.")
     print("#" * 80)
