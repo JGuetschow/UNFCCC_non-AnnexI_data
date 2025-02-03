@@ -352,7 +352,8 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
 
             # write data in interchange format
             pm2.pm2io.write_interchange_format(
-                output_folder / output_filename, ds_all.pr.to_interchange_format()
+                output_folder / f"{output_filename}.temp",
+                ds_all.pr.to_interchange_format(),
             )
 
             # write data in native PRIMAP2 format
