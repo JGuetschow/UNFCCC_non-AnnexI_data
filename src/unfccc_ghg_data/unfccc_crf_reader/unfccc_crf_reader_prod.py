@@ -50,12 +50,13 @@ from .util import NoCRFFilesError, all_crf_countries
 # merging functions use native pm2 format
 
 
-def read_crf_for_country(  # noqa: PLR0912, PLR0915
+def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
     country_code: str,
     submission_year: int,
     date_or_version: Optional[str] = None,
     re_read: Optional[bool] = True,
     submission_type: str = "CRF",
+    debug: bool = False,
 ) -> xr.Dataset:
     """
     Read for given submission year and country.
@@ -94,6 +95,8 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
         Read the data also if it's already present
     submission_type: str default "CRF"
         Read CRF or CRT
+    debug: bool, default False
+        Debug output
 
     Returns
     -------
@@ -130,10 +133,11 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0915
     tables = [
         table for table in crf_spec.keys() if crf_spec[table]["status"] == "tested"
     ]
-    print(
-        f"The following tables are available in the "
-        f"{submission_type}{submission_year} specification: {tables}"
-    )
+    if debug:
+        print(
+            f"The following tables are available in the "
+            f"{submission_type}{submission_year} specification: {tables}"
+        )
 
     if date_or_version is None:
         if submission_type == "CRF":
@@ -438,7 +442,7 @@ def read_crf_for_country_datalad(
     )
 
 
-def read_new_crf_for_year(
+def read_new_crf_for_year(  # noqa: PLR0912
     submission_year: int,
     countries: list[str] | None = None,
     re_read: bool | None = False,
@@ -505,6 +509,19 @@ def read_new_crf_for_year(
         except NoCRFFilesError:
             print(f"No {submission_type} data for country {country}, {submission_year}")
             read_countries[country] = "no data"
+        except ValueError as ve:
+            if ("does not exists" in repr(ve)) or ("is empty" in repr(ve)):
+                print(
+                    f"No {submission_type} data for country {country}, "
+                    f"{submission_year}"
+                )
+                read_countries[country] = "no data"
+            else:
+                print(
+                    f"No {submission_type} data for country {country}, "
+                    f"{submission_year}"
+                )
+                read_countries[country] = "no data"
         except Exception as ex:
             print(
                 f"{submission_type} data for country {country}, "
