@@ -189,6 +189,17 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     unknown_categories = unknown_categories + new_unknown_categories
                     last_row_info = last_row_info + new_last_row_info
 
+                except Exception as e:
+                    message = (
+                        f"Error occurred when converting table {table} for"
+                        f" {country_name} to PRIMAP2 IF. Exception: {e}"
+                    )
+                    print(message)
+                    exceptions.append(f"Error: {country_name}: {message}")
+                    ds_table = None
+                    pass
+
+                try:
                     if ds_table is not None:
                         # convert to PRIMAP2 IF
                         # first drop the orig_cat_name col as it can have multiple
