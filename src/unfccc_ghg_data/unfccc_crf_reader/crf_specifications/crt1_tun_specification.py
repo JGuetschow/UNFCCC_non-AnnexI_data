@@ -1122,6 +1122,8 @@ CRT1_TUN = {
             "Unspecified mix of PFCs (1)": f"UnspMixOfPFCs ({gwp_to_use})",
             "c-C3F6": "cC3F6",
             "c-C4F8": "cC4F8",
+            "Total HFCs": f"HFCS ({gwp_to_use})",
+            "Total PFCs": f"PFCS ({gwp_to_use})",
         },
         "coords_defaults": {
             "class": "Total",
@@ -1193,7 +1195,7 @@ CRT1_TUN = {
             ["3.J. Other (please specify)", ["3.J"], 1],
             ["nan", ["\\IGNORE"], 2],
         ],
-        "entity_mapping": {"Total GHG emissions (1)": f"KYOTOGHG ({gwp_to_use})"},
+        "entity_mapping": {"Total GHG emissions": f"KYOTOGHG ({gwp_to_use})"},
         "coords_defaults": {
             "class": "Total",
         },
@@ -1848,7 +1850,7 @@ CRT1_TUN = {
             "HFCs (1)": f"HFCS ({gwp_to_use})",
             "PFCs (1)": f"PFCS ({gwp_to_use})",
             "Unspecified mix of HFCs and PFCs (1)": f"UnspMixOfHFCsPFCs ({gwp_to_use})",
-            "Total GHG emissions/removals (2)": f"KYOTOGHG ({gwp_to_use})",
+            "Total": f"KYOTOGHG ({gwp_to_use})",
         },
         "coords_defaults": {
             "class": "Total",

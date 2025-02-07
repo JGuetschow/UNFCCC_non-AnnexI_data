@@ -16,3 +16,5 @@ gwp_to_use = "AR5GWP100"
 CRT1_ECU = deepcopy(CRT1)
 # iognore NMVOC in table 4 as it has comma as decimal sep for 2000
 CRT1_ECU["Table4"]["table"]["cols_to_ignore"].append("NMVOC")
+# iognore Total GHG in table 4 as it has comma as decimal sep for 2012
+CRT1_ECU["Table4"]["table"]["cols_to_ignore"].append("Total GHG emissions/removals (3)")

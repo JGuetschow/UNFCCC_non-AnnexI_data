@@ -102,6 +102,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
     -------
         return value is a Pandas DataFrame with the read data in PRIMAP2 format
     """
+    # TODO: needs error handling and saving of unknown categories etc
     # long name for type
     if submission_type == "CRF":
         type_name = "common reporting format"
@@ -478,6 +479,7 @@ def read_new_crf_for_year(  # noqa: PLR0912
         Read CRF or CRT
 
     TODO: write log with failed countries and what has been read
+    TODO: not all unknown categories are saved
 
     Returns
     -------
@@ -510,7 +512,11 @@ def read_new_crf_for_year(  # noqa: PLR0912
             print(f"No {submission_type} data for country {country}, {submission_year}")
             read_countries[country] = "no data"
         except ValueError as ve:
-            if ("does not exist" in repr(ve)) or ("is empty" in repr(ve)):
+            if (
+                ("does not exist" in repr(ve))
+                or ("is empty" in repr(ve))
+                or ("no data folder" in repr(ve))
+            ):
                 print(
                     f"No {submission_type} data for country {country}, "
                     f"{submission_year}."

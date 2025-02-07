@@ -1023,7 +1023,7 @@ CRT1 = {
                 4,
             ],
             ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
-            ["\\C-AUS\\ Lubricants", ["1.A.3.b.iii", "OFFLubricants"], 4],
+            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.b.iii", "OFFLubricants"], 4],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.b.iii", "OFFBiodieselFC"], 4],
             ["\\C-SVN\\ Fossil part of biofuel", ["1.A.3.b.iii", "OFFBiofuelFC"], 4],
             ["\\C-SVK\\ Fossil part of biofuels", ["1.A.3.b.iii", "OFFBiofuelFC"], 4],
@@ -1100,7 +1100,7 @@ CRT1 = {
                 4,
             ],
             ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
-            ["\\C-AUS\\ Lubricants", ["1.A.3.b.iv", "OFFLubricants"], 4],
+            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.b.iv", "OFFLubricants"], 4],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.b.iv", "OFFBiodieselFC"], 4],
             ["\\C-SVN\\ Fossil part of biofuel", ["1.A.3.b.iv", "OFFBiofuelFC"], 4],
             ["\\C-SVK\\ Fossil part of biofuels", ["1.A.3.b.iv", "OFFBiofuelFC"], 4],
@@ -1369,7 +1369,7 @@ CRT1 = {
                 ["1.A.3.c", "OFFOther"],
                 3,
             ],
-            ["\\C-SGP-CHL\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-SGP-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.c", "OFFLubricants"], 3],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.c", "OFFBiodieselFC"], 3],
             [
@@ -1424,7 +1424,7 @@ CRT1 = {
                 ["1.A.3.d", "OFFOther"],
                 3,
             ],
-            ["\\C-AUS-CHL-NZL\\ Coal", ["1.A.3.d", "OFFCoal"], 3],
+            ["\\C-AUS-CHL-NZL-ECU\\ Coal", ["1.A.3.d", "OFFCoal"], 3],
             ["\\C-AUS\\ Lubricants", ["1.A.3.d", "OFFLubricants"], 3],
             ["\\C-SGP-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.d", "OFFBiodieselFC"], 3],
@@ -1587,9 +1587,9 @@ CRT1 = {
             ["\\C-SGP\\ Other fossil fuels (7)", ["\\IGNORE", "OtherFF"], 4],
             ["\\C-SGP\\ Biomass (3)", ["\\IGNORE", "Biomass"], 4],
             # "Other" and "NA but actually other" (Chile)
-            ["\\C-CHL\\ NA", ["1.A.3.e.ii.3", "total"], 3],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.e.ii.3", "total"], 3],
-            ["\\C-BEL\\ Other non-specified", ["1.A.3.e.ii.3", "total"], 3],
+            ["\\C-CHL\\ NA", ["1.A.3.e.ii.3", "Total"], 3],
+            ["\\C-COL-UKR\\ Other", ["1.A.3.e.ii.3", "Total"], 3],
+            ["\\C-BEL\\ Other non-specified", ["1.A.3.e.ii.3", "Total"], 3],
             ["\\C-CHL-COL-UKR-BEL\\ Gasoline", ["1.A.3.e.ii.3", "Gasoline"], 4],
             ["\\C-CHL\\ Diesel oil", ["1.A.3.e.ii.3", "DieselOil"], 4],
             ["\\C-BEL-COL-UKR\\ Gas/Diesel oil", ["1.A.3.e.ii.3", "DieselOil"], 4],
@@ -1603,7 +1603,7 @@ CRT1 = {
                 ["1.A.3.e.ii.3", "OtherLiquid"],
                 4,
             ],
-            ["\\C-CHL\\ NA", ["1.A.3.e.ii.3", "\\IGNORE"], 5],
+            ["\\C-CHL\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
             ["\\C-COL\\ Other", ["1.A.3.e.ii.3", "OLOther"], 5],
             ["\\C-CHL-COL-UKR-BEL\\ Solid fuels", ["1.A.3.e.ii.3", "Solid"], 4],
             ["\\C-CHL-COL-UKR-BEL\\ Gaseous fuels (6)", ["1.A.3.e.ii.3", "Gaseous"], 4],
@@ -1880,9 +1880,9 @@ CRT1 = {
             ["\\C-AUS-CHL-ECU-SGP\\ Peat (8)", ["\\IGNORE", "Peat"], 2],
             ["\\C-AUS-CHL-ECU-SGP\\ Biomass (3)", ["\\IGNORE", "Biomass"], 2],
             # Military
-            ["\\C-SGP\\ Military activities", ["1.A.5.a.i", "total"], 2],
-            ["\\C-NOR\\ Military", ["1.A.5.a.i", "total"], 2],
-            ["\\C-GBR\\ Military fuel use", ["1.A.5.a.i", "total"], 2],
+            ["\\C-SGP\\ Military activities", ["1.A.5.a.i", "Total"], 2],
+            ["\\C-NOR\\ Military", ["1.A.5.a.i", "Total"], 2],
+            ["\\C-GBR\\ Military fuel use", ["1.A.5.a.i", "Total"], 2],
             ["\\C-SGP-NOR-GBR\\ Liquid fuels", ["1.A.5.a.i", "Liquid"], 3],
             ["\\C-SGP-NOR-GBR\\ Solid fuels", ["1.A.5.a.i", "Solid"], 3],
             ["\\C-SGP-NOR-GBR\\ Gaseous fuels (6)", ["1.A.5.a.i", "Gaseous"], 3],
@@ -1890,18 +1890,18 @@ CRT1 = {
             ["\\C-SGP-NOR-GBR\\ Peat (8)", ["1.A.5.a.i", "Peat"], 3],
             ["\\C-SGP-NOR-GBR\\ Biomass (3)", ["1.A.5.a.i", "Biomass"], 3],
             # other
-            ["\\C-ESP-FIN-SWE\\ Other non-specified", ["1.A.5.a.ii", "total"], 2],
-            ["\\C-ZAF\\ Non specified", ["1.A.5.a.ii", "total"], 2],
-            ["\\C-HKG\\ Non-specified", ["1.A.5.a.ii", "total"], 2],
-            ["\\C-RUS-SVK-UKR-CYP\\ Other", ["1.A.5.a.ii", "total"], 2],
-            ["\\C-BRA-GEO-LUX\\ Stationary", ["1.A.5.a.ii", "total"], 2],
+            ["\\C-ESP-FIN-SWE\\ Other non-specified", ["1.A.5.a.ii", "Total"], 2],
+            ["\\C-ZAF\\ Non specified", ["1.A.5.a.ii", "Total"], 2],
+            ["\\C-HKG\\ Non-specified", ["1.A.5.a.ii", "Total"], 2],
+            ["\\C-RUS-SVK-UKR-CYP\\ Other", ["1.A.5.a.ii", "Total"], 2],
+            ["\\C-BRA-GEO-LUX\\ Stationary", ["1.A.5.a.ii", "Total"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY\\ Stationary [IPCC Software 1.A.5.a]",
-                ["1.A.5.a.ii", "total"],
+                ["1.A.5.a.ii", "Total"],
                 2,
             ],
-            ["\\C-COL\\ 1.A.5.a. Stationary", ["1.A.5.a.ii", "total"], 2],
+            ["\\C-COL\\ 1.A.5.a. Stationary", ["1.A.5.a.ii", "Total"], 2],
             [
                 "\\C-ESP-FIN-SWE-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-COL\\ Liquid fuels",
@@ -1955,8 +1955,8 @@ CRT1 = {
             ["\\C-USA\\ Peat (8)", ["1.A.5.a.v", "Peat"], 3],
             ["\\C-USA\\ Biomass (3)", ["1.A.5.a.v", "Biomass"], 3],
             # non fuel use
-            ["\\C-NOR\\ Non-fuel use", ["1.A.5.a.iii", "total"], 2],
-            ["\\C-USA\\ Non-energy use", ["1.A.5.a.iii", "total"], 2],
+            ["\\C-NOR\\ Non-fuel use", ["1.A.5.a.iii", "Total"], 2],
+            ["\\C-USA\\ Non-energy use", ["1.A.5.a.iii", "Total"], 2],
             ["\\C-NOR-USA\\ Liquid fuels", ["1.A.5.a.iii", "Liquid"], 3],
             ["\\C-NOR-USA\\ Solid fuels", ["1.A.5.a.iii", "Solid"], 3],
             ["\\C-NOR-USA\\ Gaseous fuels (6)", ["1.A.5.a.iii", "Gaseous"], 3],
@@ -1966,13 +1966,13 @@ CRT1 = {
             # b. Mobile (please specify)
             ["1.A.5.b. Mobile (please specify)", ["1.A.5.b", "Total"], 1],
             # Military
-            ["\\C-SGP\\ Military activities", ["1.A.5.b.i", "total"], 2],
-            ["\\C-AUT-NOR-CHE-LTU-USA\\ Military", ["1.A.5.b.i", "total"], 2],
-            ["\\C-NLD-BEL-DNK-SWE-UKR\\ Military use", ["1.A.5.b.i", "total"], 2],
-            ["\\C-SVN\\ Military use of fuel", ["1.A.5.b.i", "total"], 2],
+            ["\\C-SGP\\ Military activities", ["1.A.5.b.i", "Total"], 2],
+            ["\\C-AUT-NOR-CHE-LTU-USA\\ Military", ["1.A.5.b.i", "Total"], 2],
+            ["\\C-NLD-BEL-DNK-SWE-UKR\\ Military use", ["1.A.5.b.i", "Total"], 2],
+            ["\\C-SVN\\ Military use of fuel", ["1.A.5.b.i", "Total"], 2],
             [
                 "\\C-GBR\\ Military aviation and naval shipping",
-                ["1.A.5.b.i", "total"],
+                ["1.A.5.b.i", "Total"],
                 2,
             ],
             [
@@ -2001,9 +2001,9 @@ CRT1 = {
                 3,
             ],
             # Military Aviation
-            ["\\C-PRT\\ Military aviation", ["1.A.5.b.ii", "total"], 2],
-            ["\\C-CAN\\ Domestic Military (Aviation)", ["1.A.5.b.ii", "total"], 2],
-            ["\\C-HRV\\ Military aviation component", ["1.A.5.b.ii", "total"], 2],
+            ["\\C-PRT\\ Military aviation", ["1.A.5.b.ii", "Total"], 2],
+            ["\\C-CAN\\ Domestic Military (Aviation)", ["1.A.5.b.ii", "Total"], 2],
+            ["\\C-HRV\\ Military aviation component", ["1.A.5.b.ii", "Total"], 2],
             ["\\C-PRT-CAN-HRV\\ Liquid fuels", ["1.A.5.b.ii", "Liquid"], 3],
             ["\\C-PRT-CAN-HRV\\ Solid fuels", ["1.A.5.b.ii", "Solid"], 3],
             ["\\C-PRT-CAN-HRV\\ Gaseous fuels (6)", ["1.A.5.b.ii", "Gaseous"], 3],
@@ -2024,14 +2024,14 @@ CRT1 = {
                 ["1.A.5.b.iv", "Total"],
                 2,
             ],
-            ["\\C-ESP-FIN\\ Other non-specified", ["1.A.5.b.iv", "total"], 2],
-            ["\\C-ZAF\\ Non specified", ["1.A.5.b.iv", "total"], 2],
-            ["\\C-MLT\\ Other", ["1.A.5.b.iv", "total"], 2],
-            ["\\C-COL\\ 1.A.5.b. Mobile", ["1.A.5.b.iv", "total"], 2],
-            ["\\C-CZE\\ iii. Mobile (other)", ["1.A.5.b.iv", "total"], 2],
-            ["\\C-GRC\\ mobile", ["1.A.5.b.iv", "total"], 2],
-            ["\\C-LVA\\ Mobile", ["1.A.5.b.iv", "total"], 2],
-            ["\\C-LUX\\ Unspecified mobile", ["1.A.5.b.iv", "total"], 2],
+            ["\\C-ESP-FIN\\ Other non-specified", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-ZAF\\ Non specified", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-MLT\\ Other", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-COL\\ 1.A.5.b. Mobile", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-CZE\\ iii. Mobile (other)", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-GRC\\ mobile", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-LVA\\ Mobile", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-LUX\\ Unspecified mobile", ["1.A.5.b.iv", "Total"], 2],
             [
                 "\\C-ESP-FIN-ZAF-GUY-MDV-MLT-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-COL-CZE-GRC-LVA-LUX\\ Liquid fuels",
@@ -2105,7 +2105,7 @@ CRT1 = {
             # Lubricants used in 2-stroke engines
             [
                 "\\C-NOR\\ Lubricants used in 2-stroke engines",
-                ["1.A.5.b.vii", "total"],
+                ["1.A.5.b.vii", "Total"],
                 2,
             ],
             ["\\C-NOR\\ Liquid fuels", ["1.A.5.b.vii", "Liquid"], 3],
@@ -2121,21 +2121,21 @@ CRT1 = {
             ["\\C-DNK\\ Other fossil fuels (7)", ["1.A.5.b.vii", "OtherFF"], 3],
             ["\\C-DNK\\ Biomass(3)", ["1.A.5.b.vii", "Biomass"], 3],
             # Military Jet Kerosene
-            ["\\C-SVK\\ Military use Jet Kerosene", ["1.A.5.b.ix", "total"], 2],
+            ["\\C-SVK\\ Military use Jet Kerosene", ["1.A.5.b.ix", "Total"], 2],
             ["\\C-SVK\\ Liquid fuels", ["1.A.5.b.ix", "Liquid"], 3],
             ["\\C-SVK\\ Solid fuels", ["1.A.5.b.ix", "Solid"], 3],
             ["\\C-SVK\\ Gaseous fuels (6)", ["1.A.5.b.ix", "Gaseous"], 3],
             ["\\C-SVK\\ Other fossil fuels (7)", ["1.A.5.b.ix", "OtherFF"], 3],
             ["\\C-SVK\\ Biomass(3)", ["1.A.5.b.ix", "Biomass"], 3],
             # Military Gasoline
-            ["\\C-SVK\\ Military Gasoline", ["1.A.5.b.x", "total"], 2],
+            ["\\C-SVK\\ Military Gasoline", ["1.A.5.b.x", "Total"], 2],
             ["\\C-SVK\\ Liquid fuels", ["1.A.5.b.x", "Liquid"], 3],
             ["\\C-SVK\\ Solid fuels", ["1.A.5.b.x", "Solid"], 3],
             ["\\C-SVK\\ Gaseous fuels (6)", ["1.A.5.b.x", "Gaseous"], 3],
             ["\\C-SVK\\ Other fossil fuels (7)", ["1.A.5.b.x", "OtherFF"], 3],
             ["\\C-SVK\\ Biomass(3)", ["1.A.5.b.x", "Biomass"], 3],
             # Military Diesel Oil
-            ["\\C-SVK\\ Military Diesel Oil", ["1.A.5.b.xi", "total"], 2],
+            ["\\C-SVK\\ Military Diesel Oil", ["1.A.5.b.xi", "Total"], 2],
             ["\\C-SVK\\ Liquid fuels", ["1.A.5.b.xi", "Liquid"], 3],
             ["\\C-SVK\\ Solid fuels", ["1.A.5.b.xi", "Solid"], 3],
             ["\\C-SVK\\ Gaseous fuels (6)", ["1.A.5.b.xi", "Gaseous"], 3],
@@ -2186,7 +2186,7 @@ CRT1 = {
                 3,
             ],
             # Other transportation
-            ["\\C-RUS\\ Other transportation", ["1.A.5.a.xv", "total"], 2],
+            ["\\C-RUS\\ Other transportation", ["1.A.5.a.xv", "Total"], 2],
             ["\\C-RUS\\ Liquid fuels", ["1.A.5.a.xv", "Liquid"], 3],
             ["\\C-RUS\\ Solid fuels", ["1.A.5.a.xv", "Solid"], 3],
             ["\\C-RUS\\ Gaseous fuels (6)", ["1.A.5.a.xv", "Gaseous"], 3],
@@ -2423,6 +2423,7 @@ CRT1 = {
                 3,
             ],
             ["\\C-SGP-CHL-ECU-BRA\\ NA", ["\\IGNORE"], 3],
+            ["\\C-ECU\\ NE", ["\\IGNORE"], 3],
             ["\\C-NOR-UKR\\ Other", ["1.B.2.b.vi.3.d"], 3],
             ["\\C-SVK\\ Storage of gas", ["1.B.2.b.vi.3.e"], 3],
             ["\\C-CAN\\ Accidents and equipment failures", ["1.B.2.b.vi.3.f"], 3],
@@ -2468,7 +2469,7 @@ CRT1 = {
             ["\\C-GBR\\ Natural gas exploration - N2O emissions", ["1.B.2.d.x"], 1],
             ["\\C-GBR\\ Flue gas desulphurisation", ["1.B.2.d.xi"], 1],
             # TODO: RUS (also included in 1.B.2.a.vi.2, double counting)
-            ["\\C-RUS\\ Gas condensate transported", ["1.B.2.d.xii"], 1],
+            ["\\C-RUS\\ Gas condensate transported", ["1.B.2.d.xiv"], 1],
         ],
         "entity_mapping": {
             "EMISSIONS CH4 (5)": "CH4",
@@ -3909,7 +3910,6 @@ CRT1 = {
             "class": "Total",
         },
     },  # tested
-    # TODO: tables 3.A and 3.B for livestock details as they are not contained in table3
     "Table3.C": {  # rice cultivation details
         "status": "tested",
         "table": {
