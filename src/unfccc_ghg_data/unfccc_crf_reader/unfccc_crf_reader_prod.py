@@ -616,7 +616,10 @@ def read_new_crf_for_year_datalad(  # noqa: PLR0912
     for country in countries:
         try:
             country_info = get_input_and_output_files_for_country(
-                country, submission_year=submission_year, verbose=False
+                country,
+                submission_year=submission_year,
+                submission_type=type,
+                verbose=False,
             )
             # check if the submission has been read already
             if re_read:
