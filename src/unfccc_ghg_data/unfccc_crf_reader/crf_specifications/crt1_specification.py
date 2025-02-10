@@ -14,7 +14,7 @@ Tables included:
 * **Energy:** 'Table1', 'Table1.A(a)s1', 'Table1.A(a)s2', 'Table1.A(a)s3',
   'Table1.A(a)s4', 'Table1.B.1', 'Table1.B.2', 'Table1.C',
 * **Industrial processes:** 'Table2(I), 'Table2(II)',
-* **Agriculture:** 'Table3', 'Table3.A', 'Table3.B(a)', 'Table3.B(b)', 'Table3.C', 'Table3.D',
+* **Agriculture:** 'Table3', 'Table3.A', 'Table3.B(a)', 'Table3.B(b)', 'Table3.C', 'Table3.D', 'Table3.E',
 * **LULUCF:**  'Table4',
 * **Waste:**  'Table5',
 * **Summary:** 'Summary1'
@@ -23,7 +23,7 @@ Missing tables are:
 
 * **Energy:** 'Table1.A(b)', 'Table1.A(c)', 'Table1.A(d)', 'Table1.D'
 * **Industrial processes:** 'Table2(I).A-H', 'Table2(II)B-Hs1', 'Table2(II)B-Hs2',
-* **Agriculture:** 'Table3.E', 'Table3.F', 'Table3.G-I',
+* **Agriculture:**  'Table3.F', 'Table3.G-I',
 * **LULUCF**: All tables except Table4
 * **Waste**:  'Table5.A', 'Table5.B', 'Table5.C', 'Table5.D'
 * **Summary:** 'Summary2', 'Summary3', 'Flex_summary',
@@ -44,7 +44,6 @@ from .util import unit_info
 gwp_to_use = "AR5GWP100"
 
 CRT1 = {
-    # Table1 instead of 1s1 and 1s2
     "Table1": {
         "status": "tested",
         "table": {
@@ -2898,7 +2897,7 @@ CRT1 = {
                 2,
             ],
             ["\\C-BLR-LTU\\ Other", ["3.J.2"], 2],
-            ["\\C-GBR\\ Other UK emissions", ["3.J.2"]],
+            ["\\C-GBR\\ Other UK emissions", ["3.J.2"], 2],
             ["\\C-DEU\\ Digestate renewable raw material (storage of N)", ["3.J.6"], 2],
             [
                 "\\C-DEU\\ Digestate renewable raw material (atmospheric deposition)",
@@ -2910,9 +2909,9 @@ CRT1 = {
                 ["3.J.8"],
                 2,
             ],
-            ["\\C-GBR\\ OTs and CDs - Livestock", ["3.J.3"]],
-            ["\\C-GBR\\ OTs and CDs - soils", ["3.J.4"]],
-            ["\\C-GBR\\ OTs and CDs - other", ["3.J.5"]],
+            ["\\C-GBR\\ OTs and CDs - Livestock", ["3.J.3"], 2],
+            ["\\C-GBR\\ OTs and CDs - Soils", ["3.J.4"], 2],
+            ["\\C-GBR\\ OTs and CDs - Other", ["3.J.5"], 2],
             ["\\C-PRY\\ Total", ["\\IGNORE"], 2],
         ],
         "entity_mapping": {"Total GHG emissions (1)": f"KYOTOGHG ({gwp_to_use})"},
@@ -4020,7 +4019,7 @@ CRT1 = {
         },
     },  # tested
     "Table3.E": {  # savanna burning details
-        "status": "TODO",  # actually done but empty and crashes
+        "status": "tested",
         "table": {
             "firstrow": 7,
             "lastrow": 13,
@@ -4037,23 +4036,66 @@ CRT1 = {
                 "IMPLIED EMISSION FACTORS CH4",
                 "IMPLIED EMISSION FACTORS N2O",
             ],
-            "stop_cats": ["", ".", "nan"],
+            "stop_cats": [
+                "",
+                ".",
+                "nan",
+                "(1) Parties that wish to do so may report CH4 and N2O "
+                "emissions from burning of organic soils in savannahs here. "
+                "N2O emissions from burning of organic soils may only be "
+                "included if higher-tier methods are used.",
+            ],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
             ["3.E.1. Forest land (specify ecological zone) (2)", ["3.E.1"], 0],
-            ["NA", ["\\IGNORE"], 1],
+            ["\\C-GHA\\ Savanna forest", ["3.E.1.a"], 1],
+            ["\\C-COL\\ 3.E.1. Forest land", ["3.E.1.a"], 1],
+            ["\\C-CHE-ESP-LTU\\ Forest land", ["3.E.1.a"], 1],
+            ["\\C-DNK\\ Forest", ["3.E.1.a"], 1],
+            [
+                "\\C-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-UZB-"
+                "FRA\\ All prescribed burning of savannahs on forest land "
+                "[IPCC Software 3.C.1.a]",
+                ["3.E.1.a"],
+                1,
+            ],
+            ["\\C-BLR\\ not specified", ["3.E.1.d"], 1],
+            ["\\C-EST\\ Other non-specified", ["3.E.1.d"], 1],
+            ["\\C-LVA\\ No zone", ["3.E.1.d"], 1],
+            ["\\C-NLD\\ All", ["3.E.1.d"], 1],
+            ["\\C-NZL\\ XX", ["3.E.1.d"], 1],
+            ["\\C-BRA\\ NE", ["\\IGNORE"], 1],
+            ["\\C-BRA-CHL-ECU-SGP\\ NA", ["\\IGNORE"], 1],
+            ["\\C-AUS\\ IE", ["\\IGNORE"], 1],
             ["3.E.2. Grassland (specify ecological zone) (2)", ["3.E.2"], 0],
-            ["NA", ["\\IGNORE"], 1],
+            ["\\C-GHA\\ Savanna grassland", ["3.E.2.b"], 1],
+            ["\\C-COL\\ 3.E.2. Grassland", ["3.E.2.b"], 1],
+            ["\\C-CHE-ESP-LTU\\ Grassland", ["3.E.2.b"], 1],
+            [
+                "\\C-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-UZB-"
+                "FRA\\ All prescribed burning of savannahs on grassland "
+                "[IPCC Software 3.C.1.c]",
+                ["3.E.2.b"],
+                1,
+            ],
+            ["\\C-PAN\\ Prescribed burning of savannas", ["3.E.2.f"], 1],
+            ["\\C-BLR\\ not specified", ["3.E.2.f"], 1],
+            ["\\C-EST\\ Other non-specified", ["3.E.2.f"], 1],
+            ["\\C-NLD\\ All", ["3.E.2.f"], 1],
+            ["\\C-NZL\\ YY", ["3.E.2.f"], 1],
+            ["\\C-BRA\\ NE", ["\\IGNORE"], 1],
+            ["\\C-BRA-CHL-ECU-SGP\\ NA", ["\\IGNORE"], 1],
+            ["\\C-AUS\\ IE", ["\\IGNORE"], 1],
         ],
         "entity_mapping": {
-            "EMISSIONS (2) CH4": "CH4",
-            "EMISSIONS (2) N2O": "N2O",
+            "EMISSIONS (1) CH4": "CH4",
+            "EMISSIONS (1) N2O": "N2O",
         },
         "coords_defaults": {
             "class": "Total",
         },
-    },  # TODO
+    },  # tested
     "Table3.F": {  # field burning details
         "status": "TODO",
         "table": {
