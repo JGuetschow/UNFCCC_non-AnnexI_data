@@ -31,6 +31,12 @@ get\_crf\_files
 .. autofunction:: get_crf_files
 
 
+get\_country\_folders
+=====================
+
+.. autofunction:: get_country_folders
+
+
 get\_info\_from\_crf\_filename
 ==============================
 
@@ -55,6 +61,18 @@ create\_category\_tree
 .. autofunction:: create_category_tree
 
 
+prep\_specification
+===================
+
+.. autofunction:: prep_specification
+
+
+listify
+=======
+
+.. autofunction:: listify
+
+
 filter\_category
 ================
 
@@ -67,10 +85,22 @@ get\_latest\_date\_for\_country
 .. autofunction:: get_latest_date_for_country
 
 
+get\_latest\_version\_for\_country
+==================================
+
+.. autofunction:: get_latest_version_for_country
+
+
 get\_submission\_dates
 ======================
 
 .. autofunction:: get_submission_dates
+
+
+get\_submission\_versions
+=========================
+
+.. autofunction:: get_submission_versions
 
 
 get\_submission\_parties
@@ -83,3 +113,9 @@ find\_latest\_date
 ==================
 
 .. autofunction:: find_latest_date
+
+
+find\_latest\_version
+=====================
+
+.. autofunction:: find_latest_version
