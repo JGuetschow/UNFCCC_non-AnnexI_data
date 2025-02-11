@@ -2819,7 +2819,9 @@ CRT1 = {
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
-            ["3. Total agriculture", ["3"], 0],
+            ["\\C!-GHA\\ 3. Total agriculture", ["3"], 0],
+            # wrong for 2022 (3.J missing), value in Summary1 is correct
+            ["\\C-GHA\\ 3. Total agriculture", ["\\IGNORE"], 0],
             # A. Enteric fermentation
             ["3.A. Enteric fermentation", ["3.A"], 1],
             ["\\C!-CHL\\ 3.A.1. Cattle(3)", ["3.A.1"], 2],
