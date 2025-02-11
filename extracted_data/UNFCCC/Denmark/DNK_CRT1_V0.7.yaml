@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by Denmark. Submission version: V0.7'
-data_file: DNK_CRT1_V0.csv
+data_file: DNK_CRT1_V0.7.csv
 dimensions:
   '*':
   - area (ISO3)

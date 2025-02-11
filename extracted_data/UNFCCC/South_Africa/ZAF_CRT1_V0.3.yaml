@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by South Africa. Submission version: V0.3'
-data_file: ZAF_CRT1_V0.csv
+data_file: ZAF_CRT1_V0.3.csv
 dimensions:
   '*':
   - area (ISO3)

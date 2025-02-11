@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by Azerbaijan. Submission version: V0.17'
-data_file: AZE_CRT1_V0.csv
+data_file: AZE_CRT1_V0.17.csv
 dimensions:
   '*':
   - area (ISO3)

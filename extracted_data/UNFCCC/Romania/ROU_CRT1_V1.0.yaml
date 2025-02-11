@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by Romania. Submission version: V1.0'
-data_file: ROU_CRT1_V1.csv
+data_file: ROU_CRT1_V1.0.csv
 dimensions:
   '*':
   - area (ISO3)

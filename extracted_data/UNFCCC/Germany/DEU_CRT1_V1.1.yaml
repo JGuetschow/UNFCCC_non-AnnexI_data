@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by Germany. Submission version: V1.1'
-data_file: DEU_CRT1_V1.csv
+data_file: DEU_CRT1_V1.1.csv
 dimensions:
   '*':
   - area (ISO3)

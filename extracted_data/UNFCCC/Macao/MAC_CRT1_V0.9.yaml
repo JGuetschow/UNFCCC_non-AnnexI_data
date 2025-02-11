@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by Macao. Submission version: V0.9'
-data_file: MAC_CRT1_V0.csv
+data_file: MAC_CRT1_V0.9.csv
 dimensions:
   '*':
   - area (ISO3)

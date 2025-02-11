@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by Greece. Submission version: V0.1'
-data_file: GRC_CRT1_V0.csv
+data_file: GRC_CRT1_V0.1.csv
 dimensions:
   '*':
   - area (ISO3)

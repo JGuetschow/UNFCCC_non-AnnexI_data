@@ -9,7 +9,7 @@ attrs:
   scen: scenario (PRIMAP)
   title: "Data submitted for round 1 to the UNFCCC in the common reporting tables
     (CRT) by Côte d'Ivoire. Submission version: V0.2"
-data_file: CIV_CRT1_V0.csv
+data_file: CIV_CRT1_V0.2.csv
 dimensions:
   '*':
   - area (ISO3)
