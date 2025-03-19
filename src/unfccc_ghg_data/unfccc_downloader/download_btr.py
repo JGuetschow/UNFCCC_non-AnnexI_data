@@ -10,8 +10,10 @@ from datetime import date
 from pathlib import Path
 from random import randrange
 
+import datalad as dl
 import pandas as pd
 import requests
+from requests import ConnectionError
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 
@@ -26,9 +28,13 @@ from unfccc_ghg_data.unfccc_downloader import get_BTR_name_and_URL
 # how-to-download-a-file-using-seleniums-webdriver
 # for automatic downloading see https://stackoverflow.com/questions/70740163/
 # python-selenium-firefox-driver-dismiss-open-save-file-popup
+# TODO: use categories like in AnnexI downloading
 ###############
 
+
 if __name__ == "__main__":
+    dlds = dl.api.Dataset(root_path)
+
     descr = (
         "Download and unzip data from UNFCCC Biannial Transparency Reports Submissions."
         " Based on download.py from national-inventory-submissions "
@@ -97,11 +103,22 @@ if __name__ == "__main__":
         if not local_filename.parent.exists():
             local_filename.parent.mkdir()
 
-        if local_filename.exists():
-            # check file size. if 210 or 212 bytes it's the error page
-            if Path(local_filename).stat().st_size in error_file_sizes:
-                # found the error page. delete file
-                os.remove(local_filename)
+        try:
+            if local_filename.exists():
+                # check file size. if 210 or 212 bytes it's the error page
+                if Path(local_filename).stat().st_size in error_file_sizes:
+                    # found the error page. delete file
+                    os.remove(local_filename)
+        except OSError as ex:
+            if ex.errno == 36:  # noqa: PLR2004
+                print(
+                    f"Filename is too long: "
+                    f"{local_filename.relative_to(root_path)}. "
+                    f" Message: {ex}"
+                )
+                continue
+            else:
+                raise
 
         # now we have removed error pages, so a present file should not be overwritten
         if (not local_filename.exists()) and (not local_filename.is_symlink()):
@@ -121,14 +138,17 @@ if __name__ == "__main__":
                     for cookie in cookies_selenium:
                         cookies[cookie["name"]] = cookie["value"]
 
-                r = requests.get(url, stream=True, cookies=cookies)  # noqa: S113
-                with open(str(local_filename), "wb") as f:
-                    shutil.copyfileobj(r.raw, f)
+                try:
+                    r = requests.get(url, stream=True, cookies=cookies)  # noqa: S113
+                    with open(str(local_filename), "wb") as f:
+                        shutil.copyfileobj(r.raw, f)
 
-                # check file size. if 210 or 212 bytes it's the error page
-                if Path(local_filename).stat().st_size in error_file_sizes:
-                    # found the error page. delete file
-                    os.remove(local_filename)
+                    # check file size. if 210 or 212 bytes it's the error page
+                    if Path(local_filename).stat().st_size in error_file_sizes:
+                        # found the error page. delete file
+                        os.remove(local_filename)
+                except ConnectionError as ex:
+                    print(f"ConnectionError occurred: {ex}")
 
                 # sleep a bit to avoid running into captchas
                 time.sleep(randrange(5, 15))  # noqa: S311
@@ -139,6 +159,16 @@ if __name__ == "__main__":
                 # unzip data (only for new downloads)
                 if local_filename.suffix == ".zip":
                     try:
+                        # unlock files in folder as they might be updated by the zip
+                        # file. Sometimes a new zip file contains files with the same
+                        # name (updated) as older zip files
+                        # as we can't unlock files which have just been added we catch
+                        # and discard exceptions
+                        for file in local_filename.parent.glob("*"):
+                            try:
+                                dlds.unlock(file)
+                            except Exception:  # noqa: S110
+                                pass
                         zipped_file = zipfile.ZipFile(str(local_filename), "r")
                         zipped_file.extractall(str(local_filename.parent))
                         print(f"Extracted {len(zipped_file.namelist())} files.")
@@ -154,6 +184,16 @@ if __name__ == "__main__":
                             "Zip format not supported, please unzip on the command "
                             "line."
                         )
+                    except OSError as ex:
+                        if ex.errno == 36:  # noqa: PLR2004
+                            print(
+                                f"A filename is too long in file: "
+                                f"{local_filename.relative_to(root_path)}. "
+                                "Unzip manually if any other files needed."
+                                f" Message: {ex}"
+                            )
+                        else:
+                            raise
                 else:
                     print(
                         f"Not attempting to extract "

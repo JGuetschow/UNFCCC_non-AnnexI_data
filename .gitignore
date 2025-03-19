@@ -7,12 +7,16 @@ geckodriver.log
 
 # private dev code
 /JG_test_code/
+/export/
 
 # Notebooks
 *.ipynb
 
 # Databases
 *.db
+*.db.bak
+*.db.dat
+*.db.dir
 
 # Jupyter cache
 .jupyter_cache

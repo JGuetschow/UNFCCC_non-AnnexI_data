@@ -6,16 +6,50 @@ from pathlib import Path
 import pandas as pd
 
 
-def get_root_path() -> Path:
-    """Get the root_path from an environment variable"""
+def get_root_path(root_indicator: str = ".datalad") -> Path:
+    """
+    Traverse up from the current script location to find the repository root.
+
+    The root is defined by the presence of a root_indicator file or
+    directory (e.g., '.git').
+
+    Parameters
+    ----------
+        root_indicator
+            A filename or directory name that indicates the root of the repository.
+
+    Returns
+    -------
+    Path
+        The path to the root directory of the repository.
+
+    Raises
+    ------
+        RuntimeError: If the repository root cannot be found.
+    """
     root_path_env = os.getenv("UNFCCC_GHG_ROOT_PATH", None)
     if root_path_env is None:
-        raise ValueError(  # noqa: TRY003
-            "UNFCCC_GHG_ROOT_PATH environment variable needs to be set"
-        )
+        current_dir = Path(__file__).resolve().parent
+        while current_dir != Path(current_dir.root):
+            if (current_dir / root_indicator).exists():
+                return current_dir
+            current_dir = current_dir.parent
+        msg = f"Repository root with indicator '{root_indicator}' not found."
+        raise RuntimeError(msg)
     else:
-        root_path = Path(root_path_env).resolve()
-    return root_path
+        return Path(root_path_env).resolve()
+
+
+# def get_root_path() -> Path:
+#     """Get the root_path from an environment variable"""
+#     root_path_env = os.getenv("UNFCCC_GHG_ROOT_PATH", None)
+#     if root_path_env is None:
+#         raise ValueError(
+#             "UNFCCC_GHG_ROOT_PATH environment variable needs to be set"
+#         )
+#     else:
+#         root_path = Path(root_path_env).resolve()
+#     return root_path
 
 
 root_path = get_root_path()
@@ -32,8 +66,9 @@ dataset_path_UNFCCC = dataset_path / "UNFCCC"
 nAI_countries = list(pd.read_csv(code_path / "helper" / "DI_NAI_parties.conf")["code"])
 # AI_countries = list(reader.annex_one_reader.parties["code"])
 AI_countries = list(pd.read_csv(code_path / "helper" / "DI_AI_parties.conf")["code"])
+additional_territories = ["HKG", "MAC", "VAT"]
 
-all_countries = nAI_countries + AI_countries
+all_countries = nAI_countries + AI_countries + additional_territories
 
 custom_country_mapping = {
     "EUA": "European Union",

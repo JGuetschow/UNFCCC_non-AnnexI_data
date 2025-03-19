@@ -17,6 +17,8 @@ from unfccc_ghg_data.unfccc_downloader import (
     get_unfccc_submission_info,
 )
 
+# TODO: use categories like in AnnexI downloading (for round 2)
+
 if __name__ == "__main__":
     max_tries = 10
 
@@ -40,7 +42,7 @@ if __name__ == "__main__":
     # set options for headless mode
     profile_path = ".firefox"
     options = Options()
-    options.add_argument("-headless")
+    # options.add_argument("-headless")
 
     # create profile for headless mode and automatic downloading
     options.set_preference("profile", profile_path)
@@ -72,14 +74,21 @@ if __name__ == "__main__":
         if "href" not in link.attrs:
             continue
         href = link.attrs["href"]
-        if "/documents/" in href:
+        if ("documents/" in href) or ("node/" in href) or ("NODE/" in href):
             if "title" in link.attrs.keys():
                 title = link.attrs["title"]
             else:
                 title = link.contents[0]
             if href.startswith("/documents"):
                 href = "https://unfccc.int" + href
+            elif href.startswith("documents"):
+                href = "https://unfccc.int/" + href
+            if href.startswith("/node"):
+                href = "https://unfccc.int" + href
+            if href.startswith("/NODE"):
+                href = "https://unfccc.int" + href
             # Only add pages in the format https://unfccc.int/documents/65587
+            # or https://unfccc.int/[node/NODE]/65587
             # to further downloads
             if str(Path(href).parent).endswith("documents"):
                 targets.append({"title": title, "url": href})

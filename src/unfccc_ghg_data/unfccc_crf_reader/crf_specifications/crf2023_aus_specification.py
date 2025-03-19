@@ -39,7 +39,6 @@ TODO:
 
 """
 
-import numpy as np
 
 from .util import unit_info
 
@@ -56,7 +55,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -141,7 +140,7 @@ CRF2023_AUS = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "AMOUNT CAPTURED (4) CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -269,7 +268,7 @@ CRF2023_AUS = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "AMOUNT CAPTURED (4) CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -436,7 +435,7 @@ CRF2023_AUS = {
                 "IMPLIED EMISSION FACTORS CH4",
                 "IMPLIED EMISSION FACTORS N2O",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -589,7 +588,7 @@ CRF2023_AUS = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "AMOUNT CAPTURED (4) CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -753,7 +752,7 @@ CRF2023_AUS = {
                 "IMPLIED EMISSION FACTORS CH4 (3)",
                 "IMPLIED EMISSION FACTORS CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -814,7 +813,7 @@ CRF2023_AUS = {
                 "IMPLIED EMISSION FACTORS CH4",
                 "IMPLIED EMISSION FACTORS N2O",
             ],
-            "stop_cats": [".", np.nan],
+            "stop_cats": [".", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -877,7 +876,7 @@ CRF2023_AUS = {
                 "ACTIVITY DATA CO2 transported or injected (1)",
                 "IMPLIED EMISSION FACTORS CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -922,7 +921,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category", "class"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -940,7 +939,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -1013,7 +1012,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": [".", np.nan],
+            "stop_cats": [".", "nan"],
             "unit_info": unit_info["fgases"],
         },
         "sector_mapping": [
@@ -1093,7 +1092,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -1164,7 +1163,7 @@ CRF2023_AUS = {
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION Average CH4 conversion rate (Ym) (2)",
                 "IMPLIED EMISSION FACTORS CH4",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1228,7 +1227,7 @@ CRF2023_AUS = {
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION CH4 producing potential (Bo) (2) (average) Warm",
                 "IMPLIED EMISSION FACTORS CH4 producing potential (Bo) (2) (average) CH4",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1328,7 +1327,7 @@ CRF2023_AUS = {
                 "EMISSIONS N2O Indirect Atmospheric deposition",
                 "EMISSIONS N2O Indirect Nitrogen leaching and run-off",
             ],
-            "stop_cats": ["", np.nan, "3.B.5. Indirect N2O emissions"],
+            "stop_cats": ["", "nan", "3.B.5. Indirect N2O emissions"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1390,7 +1389,7 @@ CRF2023_AUS = {
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION Organic amendments added (3)",
                 "IMPLIED EMISSION FACTOR (1) CH4",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1434,7 +1433,7 @@ CRF2023_AUS = {
                 # "volatilises as NH3 and NOX",
                 # "Value 0.11",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1482,7 +1481,7 @@ CRF2023_AUS = {
                 "IMPLIED EMISSION FACTORS CH4",
                 "IMPLIED EMISSION FACTORS N2O",
             ],
-            "stop_cats": ["", ".", np.nan],
+            "stop_cats": ["", ".", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1508,7 +1507,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -1526,7 +1525,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -1544,7 +1543,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", ".", np.nan],
+            "stop_cats": ["", ".", "nan"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -1594,7 +1593,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -1641,7 +1640,7 @@ CRF2023_AUS = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": [],  # "", np.nan],
+            "stop_cats": [],  # "", "nan"],
             "unit_info": unit_info["summary"],
         },
         "sector_mapping": [
@@ -1698,7 +1697,7 @@ CRF2023_AUS = {
             ["6. Other (please specify) (7)", ["6"]],
             ["NA", ["\\IGNORE"]],
             ["", ["\\IGNORE"]],
-            [np.nan, ["\\IGNORE"]],
+            ["nan", ["\\IGNORE"]],
             ["Memo items: (8)", ["\\IGNORE"]],
             ["1.D.1. International bunkers", ["M.Memo.Int"]],
             ["1.D.1.a. Aviation", ["M.Memo.Int.Avi"]],
