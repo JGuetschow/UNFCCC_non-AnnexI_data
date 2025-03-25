@@ -12,7 +12,7 @@ def test_crf_for_year_original_version(tmp_path):
     n_countries = 3
     crf_raw_for_year_original_version(
         submission_year=2023,
-        type="CRF",
+        submission_type="CRF",
         n_countries=n_countries,
         output_folder=tmp_path,
     )
@@ -26,10 +26,10 @@ def test_crf_for_year_original_version(tmp_path):
 
 def test_crf_for_year_sparse_arrays(tmp_path):
     start = timer()
-    n_countries = 3
+    n_countries = 10
     crf_raw_for_year_sparse_arrays(
-        submission_year=2023,
-        type="CRF",
+        submission_year=1,
+        submission_type="CRT",
         n_countries=n_countries,
         output_folder=tmp_path,
     )

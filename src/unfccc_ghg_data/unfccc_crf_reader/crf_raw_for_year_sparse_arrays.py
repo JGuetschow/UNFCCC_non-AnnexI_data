@@ -32,15 +32,15 @@ from unfccc_ghg_data.unfccc_crf_reader.util import all_crf_countries
 def crf_raw_for_year_original_version(
     submission_year: int,
     output_folder: Path,
-    type: str = "CRF",
+    submission_type: str = "CRF",
     n_countries: int = 5,
 ):
     """
     Collect all latest CRF submissions for a given year
     """
-    if type == "CRF":
+    if submission_type == "CRF":
         countries = all_crf_countries
-    elif type == "CRT":
+    elif submission_type == "CRT":
         countries = all_countries
     else:
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
@@ -54,17 +54,24 @@ def crf_raw_for_year_original_version(
         # determine folder
         try:
             country_info = get_input_and_output_files_for_country(
-                country, submission_year=submission_year, type=type, verbose=False
+                country,
+                submission_year=submission_year,
+                submission_type=submission_type,
+                verbose=False,
             )
 
+            if submission_type == "CRF":
+                date_or_version = country_info["date"]
+            else:
+                date_or_version = country_info["version"]
             # check if the latest submission has been read already
 
             data_read = submission_has_been_read(
                 country_info["code"],
                 country_info["name"],
                 submission_year=submission_year,
-                submission_date=country_info["date"],
-                type=type,
+                date_or_version=date_or_version,
+                submission_type=submission_type,
                 verbose=False,
             )
             if not data_read:
@@ -124,18 +131,18 @@ def crf_raw_for_year_original_version(
     )
 
 
-def crf_raw_for_year_sparse_arrays(
+def crf_raw_for_year_sparse_arrays(  # noqa: PLR0912
     submission_year: int,
     output_folder: Path,
-    type: str = "CRF",
+    submission_type: str = "CRF",
     n_countries: int = 5,
 ):
     """
     Collect all latest CRF submissions for a given year using sparse arrays
     """
-    if type == "CRF":
+    if submission_type == "CRF":
         countries = all_crf_countries
-    elif type == "CRT":
+    elif submission_type == "CRT":
         countries = all_countries
     else:
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
@@ -149,17 +156,24 @@ def crf_raw_for_year_sparse_arrays(
         # determine folder
         try:
             country_info = get_input_and_output_files_for_country(
-                country, submission_year=submission_year, type=type, verbose=False
+                country,
+                submission_year=submission_year,
+                submission_type=submission_type,
+                verbose=False,
             )
 
+            if submission_type == "CRF":
+                date_or_version = country_info["date"]
+            else:
+                date_or_version = country_info["version"]
             # check if the latest submission has been read already
 
             data_read = submission_has_been_read(
                 country_info["code"],
                 country_info["name"],
                 submission_year=submission_year,
-                submission_date=country_info["date"],
-                type=type,
+                date_or_version=date_or_version,
+                submission_type=submission_type,
                 verbose=False,
             )
             if not data_read:
