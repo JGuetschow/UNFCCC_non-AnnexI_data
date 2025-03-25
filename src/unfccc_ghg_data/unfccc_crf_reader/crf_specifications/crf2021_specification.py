@@ -35,7 +35,6 @@ Missing tables are:
 
 """
 
-import numpy as np
 
 from .util import unit_info
 
@@ -49,7 +48,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -90,7 +89,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -154,7 +153,7 @@ CRF2021 = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "EMISSIONS CO2 Amount captured",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -361,7 +360,7 @@ CRF2021 = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "EMISSIONS CO2 Amount captured",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -724,7 +723,7 @@ CRF2021 = {
             ],
             "stop_cats": [
                 "Note: All footnotes for this table are given at the end of the table on sheet 4.",
-                np.nan,
+                "nan",
             ],
             "unit_info": unit_info["default"],
         },
@@ -1181,7 +1180,7 @@ CRF2021 = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "EMISSIONS CO2 Amount captured",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1607,7 +1606,7 @@ CRF2021 = {
                 "IMPLIED EMISSION FACTORS CO2",
                 "EMISSIONS CH4 Recovery/Flaring(2)",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1653,7 +1652,7 @@ CRF2021 = {
                 "IMPLIED EMISSION FACTORS N2O",
                 "EMISSIONS CO2 Amount captured",
             ],
-            "stop_cats": [".", np.nan],
+            "stop_cats": [".", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1717,7 +1716,7 @@ CRF2021 = {
                 "ACTIVITY DATA CO2 transported or injected(1)",
                 "IMPLIED EMISSION FACTORS CO2",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1755,7 +1754,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category", "class"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -1773,7 +1772,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -1821,7 +1820,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -1867,7 +1866,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -1885,7 +1884,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -1903,7 +1902,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": [".", np.nan],
+            "stop_cats": [".", "nan"],
             "unit_info": unit_info["fgases"],
         },
         "sector_mapping": [
@@ -1980,7 +1979,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2163,7 +2162,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": [".", np.nan],
+            "stop_cats": [".", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2209,7 +2208,7 @@ CRF2021 = {
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION Organic amendments added(3)",
                 "IMPLIED EMISSION FACTOR (1) CH4",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2251,7 +2250,7 @@ CRF2021 = {
                 "ACTIVITY DATA AND OTHER RELATED INFORMATION Value",
                 "IMPLIED EMISSION FACTORS Value",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2297,7 +2296,7 @@ CRF2021 = {
                 "IMPLIED EMISSION FACTORS CH4",
                 "IMPLIED EMISSION FACTORS N2O",
             ],
-            "stop_cats": ["", ".", np.nan],
+            "stop_cats": ["", ".", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2341,7 +2340,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -2359,7 +2358,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -2377,7 +2376,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", ".", np.nan],
+            "stop_cats": ["", ".", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2434,7 +2433,7 @@ CRF2021 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2496,7 +2495,7 @@ CRF2021 = {
                 "EMISSIONS SINK CATEGORIES CH4 Amount of CH4 flared",
                 "EMISSIONS SINK CATEGORIES CH4 Amount of CH4 for energy recovery(3)",
             ],
-            "stop_cats": ["", np.nan],
+            "stop_cats": ["", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2529,7 +2528,7 @@ CRF2021 = {
                 "EMISSIONS CH4 Amount of CH4 flared",
                 "EMISSIONS CH4 Amount of CH4 for energy recovery(3)",
             ],
-            "stop_cats": [".", "", np.nan],
+            "stop_cats": [".", "", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2609,7 +2608,7 @@ CRF2021 = {
                 "IMPLIED EMISSION FACTOR Amount of wastes (incinerated/open burned) CH4",
                 "IMPLIED EMISSION FACTOR Amount of wastes (incinerated/open burned) N2O",
             ],
-            "stop_cats": [".", "", np.nan],
+            "stop_cats": [".", "", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -2700,7 +2699,7 @@ CRF2021 = {
                 "EMISSIONS CH4 Amount of CH4 flared",
                 "EMISSIONS CH4 Amount of CH4 for Energy Recovery(5)",
             ],
-            "stop_cats": [".", "", np.nan],
+            "stop_cats": [".", "", "nan"],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [

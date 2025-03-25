@@ -11,7 +11,6 @@ TODO: sort importing and move to datasets folder
 TODO: add datalad get to obtain the input files
 """
 
-
 import argparse
 from datetime import date
 from pathlib import Path
@@ -32,11 +31,11 @@ if __name__ == "__main__":
     parser.add_argument("--type", help="CRF or CRT tables", default="CRF")
     args = parser.parse_args()
     submission_year = args.submission_year
-    type = args.type
+    submission_type = args.type
 
-    if type == "CRF":
+    if submission_type == "CRF":
         countries = all_crf_countries
-    elif type == "CRT":
+    elif submission_type == "CRT":
         countries = all_countries
     else:
         raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
@@ -49,17 +48,23 @@ if __name__ == "__main__":
         # determine folder
         try:
             country_info = get_input_and_output_files_for_country(
-                country, submission_year=submission_year, type=type, verbose=False
+                country,
+                submission_year=submission_year,
+                submission_type=submission_type,
+                verbose=False,
             )
 
+            if submission_type == "CRF":
+                date_or_version = country_info["date"]
+            else:
+                date_or_version = country_info["version"]
             # check if the latest submission has been read already
-
             data_read = submission_has_been_read(
                 country_info["code"],
                 country_info["name"],
                 submission_year=submission_year,
-                submission_date=country_info["date"],
-                type=type,
+                date_or_version=date_or_version,
+                submission_type=submission_type,
                 verbose=False,
             )
             if not data_read:
@@ -96,8 +101,10 @@ if __name__ == "__main__":
     today = date.today()
 
     compression = dict(zlib=True, complevel=9)
-    output_folder = dataset_path_UNFCCC / f"{type}{submission_year}"
-    output_filename = f"{type}{submission_year}_raw_{today.strftime('%Y-%m-%d')}"
+    output_folder = dataset_path_UNFCCC / f"{submission_type}{submission_year}"
+    output_filename = (
+        f"{submission_type}{submission_year}_raw_{today.strftime('%Y-%m-%d')}"
+    )
 
     if not output_folder.exists():
         output_folder.mkdir()

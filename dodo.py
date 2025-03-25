@@ -405,6 +405,7 @@ def task_read_unfccc_submission():
 read_config_crf = {
     "country": get_var("country", None),
     "submission_year": get_var("submission_year", None),
+    "submission_version": get_var("version", None),
     "submission_date": get_var("submission_date", None),
     "re_read": get_var("re_read", False),
     "countries": get_var("countries", None),
@@ -422,10 +423,14 @@ def task_read_unfccc_crf_submission():
             re_read = True
         else:
             re_read = False
+        if read_config_crf["type"] == "CRF":
+            date_or_version = read_config_crf["submission_date"]
+        else:
+            date_or_version = read_config_crf["submission_version"]
         read_crf_for_country_datalad(
             read_config_crf["country"],
             submission_year=int(read_config_crf["submission_year"]),
-            submission_date=read_config_crf["submission_date"],
+            date_or_version=date_or_version,
             re_read=re_read,
             type=read_config_crf["type"],
         )
@@ -492,13 +497,13 @@ def task_test_read_unfccc_crf_for_year():
             data_year=data_year,
             totest=totest,
             country_code=read_config_crf["country"],
-            type=read_config_crf["type"],
+            submission_type=read_config_crf["type"],
         )
 
     return {
         "actions": [
             (read_CRF,),
-            (map_folders, ["extracted_data/UNFCCC"]),
+            # (map_folders, ["extracted_data/UNFCCC"]),
         ],
         "verbosity": 2,
         "setup": ["in_venv"],

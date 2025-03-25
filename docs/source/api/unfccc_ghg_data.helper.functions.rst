@@ -67,6 +67,12 @@ make\_wide\_table
 .. autofunction:: make_wide_table
 
 
+make\_long\_table
+=================
+
+.. autofunction:: make_long_table
+
+
 find\_and\_replace\_values
 ==========================
 

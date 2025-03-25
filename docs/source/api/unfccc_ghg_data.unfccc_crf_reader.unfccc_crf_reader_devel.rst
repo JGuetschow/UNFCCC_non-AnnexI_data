@@ -23,3 +23,9 @@ save\_last\_row\_info
 =====================
 
 .. autofunction:: save_last_row_info
+
+
+save\_empty\_tables\_info
+=========================
+
+.. autofunction:: save_empty_tables_info

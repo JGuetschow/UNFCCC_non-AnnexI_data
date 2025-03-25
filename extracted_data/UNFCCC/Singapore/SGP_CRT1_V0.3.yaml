@@ -1,0 +1,24 @@
+attrs:
+  area: area (ISO3)
+  cat: category (CRT1)
+  comment: Read fom xlsx file by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
+  references: https://unfccc.int/first-biennial-transparency-reports
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: 'Data submitted for round 1 to the UNFCCC in the common reporting tables
+    (CRT) by Singapore. Submission version: V0.3'
+data_file: SGP_CRT1_V0.3.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (CRT1)
+  - class
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

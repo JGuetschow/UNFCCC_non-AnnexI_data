@@ -16,6 +16,7 @@ from random import randrange
 
 import pandas as pd
 import requests
+from requests import ConnectionError
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 
@@ -133,11 +134,22 @@ if __name__ == "__main__":
         if not local_filename.parent.exists():
             local_filename.parent.mkdir()
 
-        if local_filename.exists():
-            # check file size. if 210 or 212 bytes it's the error page
-            if Path(local_filename).stat().st_size in error_file_sizes:
-                # found the error page. delete file
-                os.remove(local_filename)
+        try:
+            if local_filename.exists():
+                # check file size. if 210 or 212 bytes it's the error page
+                if Path(local_filename).stat().st_size in error_file_sizes:
+                    # found the error page. delete file
+                    os.remove(local_filename)
+        except OSError as ex:
+            if ex.errno == 36:  # noqa: PLR2004
+                print(
+                    f"Filename is too long: "
+                    f"{local_filename.relative_to(root_path)}. "
+                    f" Message: {ex}"
+                )
+                continue
+            else:
+                raise
 
         # now we have removed error pages, so a present file should not be overwritten
         if (not local_filename.exists()) and (not local_filename.is_symlink()):
@@ -157,14 +169,17 @@ if __name__ == "__main__":
                     for cookie in cookies_selenium:
                         cookies[cookie["name"]] = cookie["value"]
 
-                r = requests.get(url, stream=True, cookies=cookies, timeout=120)
-                with open(str(local_filename), "wb") as f:
-                    shutil.copyfileobj(r.raw, f)
+                try:
+                    r = requests.get(url, stream=True, cookies=cookies, timeout=120)
+                    with open(str(local_filename), "wb") as f:
+                        shutil.copyfileobj(r.raw, f)
 
-                # check file size. if 210 or 212 bytes it's the error page
-                if Path(local_filename).stat().st_size in error_file_sizes:
-                    # found the error page. delete file
-                    os.remove(local_filename)
+                    # check file size. if 210 or 212 bytes it's the error page
+                    if Path(local_filename).stat().st_size in error_file_sizes:
+                        # found the error page. delete file
+                        os.remove(local_filename)
+                except ConnectionError as ex:
+                    print(f"ConnectionError occurred: {ex}")
 
                 # sleep a bit to avoid running into captchas
                 time.sleep(randrange(5, 15))  # noqa: S311
@@ -190,6 +205,16 @@ if __name__ == "__main__":
                             "Zip format not supported, "
                             "please unzip on the command line."
                         )
+                    except OSError as ex:
+                        if ex.errno == 36:  # noqa: PLR2004
+                            print(
+                                f"A filename is too long in file: "
+                                f"{local_filename.relative_to(root_path)}. "
+                                "Unzip manually if any other files needed."
+                                f" Message: {ex}"
+                            )
+                        else:
+                            raise
                 else:
                     print(
                         f"Not attempting to extract "

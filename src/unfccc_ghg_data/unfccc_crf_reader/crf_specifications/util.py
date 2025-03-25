@@ -16,6 +16,7 @@ unit_info = {
         "regexp_unit": r"\((.*)\)",
         "manual_repl_unit": {
             "CO2 equivalent (kt)": "kt CO2eq",
+            "CO2 equivalent (kt) (2)": "kt CO2eq",  # TUN Table2(II)
             "CO2 equivalents (kt) (2)": "kt CO2eq",  # for AUS Table2(II)
         },
         "default_unit": "t",
@@ -27,6 +28,10 @@ unit_info = {
         "regexp_unit": r"\((.*)\)",
         "manual_repl_unit": {
             "CO2 equivalent (kt)": "kt CO2eq",
+            "CO2 equivalents (kt) (1) ": "kt CO2eq",  # for TUN table1
+            "CO2 equivalents (kt)(1)": "kt CO2eq",  # for TUN table3
+            "CO2 equivalents (kt) (1)": "kt CO2eq",  # for TUN table5
+            "CO2 equivalent (kt) (2)": "kt CO2eq",  # for TUN table2(I)
             "CO2 equivalents (kt) (2) ": "kt CO2eq",  # for AUS Table1
             "CO2 equivalent (kt) (3)": "kt CO2eq",  # for AUS, Table2(I)
             "CO2 equivalents (kt) (3)": "kt CO2eq",  # for AUS, Table2(I)
@@ -43,6 +48,8 @@ unit_info = {
         "manual_repl_unit": {
             "(kt CO2 equivalent)": "kt CO2eq",
             "CO2 equivalents (kt) (3)": "kt CO2eq",  # for AUS
+            "CO2 equivalents (kt) (2)": "kt CO2eq",  # for TUN
+            "CO2 equivalent (kt) (2)": "kt CO2eq",  # for TUN
         },
         "default_unit": "kt",
     },

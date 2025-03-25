@@ -64,8 +64,8 @@
     "FJI": "Fiji",
     "FRA": "France",
     "FSM": [
-        "Micronesia_(Federated_States_of)",
-        "Micronesia_(Federated_State_of)"
+        "Micronesia_(Federated_State_of)",
+        "Micronesia_(Federated_States_of)"
     ],
     "GAB": "Gabon",
     "GBR": "United_Kingdom_of_Great_Britain_and_Northern_Ireland",
@@ -79,6 +79,7 @@
     "GRD": "Grenada",
     "GTM": "Guatemala",
     "GUY": "Guyana",
+    "HKG": "Hong_Kong",
     "HND": "Honduras",
     "HRV": "Croatia",
     "HTI": "Haiti",
@@ -112,6 +113,7 @@
     "LTU": "Lithuania",
     "LUX": "Luxembourg",
     "LVA": "Latvia",
+    "MAC": "Macao",
     "MAR": "Morocco",
     "MCO": "Monaco",
     "MDA": "Republic_of_Moldova",
@@ -188,8 +190,8 @@
     "TTO": "Trinidad_and_Tobago",
     "TUN": "Tunisia",
     "TUR": [
-        "T\u00fcrkiye",
-        "Turkey"
+        "Turkey",
+        "T\u00fcrkiye"
     ],
     "TUV": "Tuvalu",
     "TZA": "United_Republic_of_Tanzania",
@@ -198,10 +200,11 @@
     "URY": "Uruguay",
     "USA": "United_States_of_America",
     "UZB": "Uzbekistan",
+    "VAT": "Holy_See",
     "VCT": "Saint_Vincent_and_the_Grenadines",
     "VEN": [
-        "Venezeula_(Bolivarian_Republic_of)",
-        "Venezuela_(Bolivarian_Republic_of)"
+        "Venezuela_(Bolivarian_Republic_of)",
+        "Venezeula_(Bolivarian_Republic_of)"
     ],
     "VNM": "Viet_Nam",
     "VUT": "Vanuatu",
