@@ -1,6 +1,6 @@
 # temporary
 src/unfccc_ghg_data/datasets
-
+data
 # logging
 log/*
 geckodriver.log

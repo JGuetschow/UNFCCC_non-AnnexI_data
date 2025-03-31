@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 import primap2 as pm2
 import sparse
+import xarray as xr
 
 from unfccc_ghg_data.helper import all_countries
 from unfccc_ghg_data.unfccc_crf_reader.unfccc_crf_reader_prod import (
@@ -356,3 +357,94 @@ def crf_raw_for_year_pandas(
         f"The following countries have updated submission not yet read "
         f"and not included in the dataset: {outdated_countries}"
     )
+
+
+# source primap hist noch dazu, und select nach Land, Gas
+# data tree aus allen Ländern
+# prototyp für data tree merge, welche dimensionen in tree und welche in sets
+# sum und category aggregation ausprobieren
+# gas baskets
+# künstliches beispiel, category im data tree
+# wie würde man über Länder summieren wenn die Länder im dt sind
+
+
+def crf_raw_for_year_datatree(  # noqa: PLR0912
+    submission_year: int,
+    output_folder: Path,
+    submission_type: str = "CRF",
+    n_countries: int = 5,
+):
+    """
+    Collect all latest CRF submissions for a given year using sparse arrays
+    """
+    if submission_type == "CRF":
+        countries = all_crf_countries
+    elif submission_type == "CRT":
+        countries = all_countries
+    else:
+        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+
+    countries = countries[:n_countries]
+    ds_all_CRF = {}
+    outdated_countries = []
+    included_countries = []
+
+    for country in countries:
+        # determine folder
+        try:
+            country_info = get_input_and_output_files_for_country(
+                country,
+                submission_year=submission_year,
+                submission_type=submission_type,
+                verbose=False,
+            )
+
+            if submission_type == "CRF":
+                date_or_version = country_info["date"]
+            else:
+                date_or_version = country_info["version"]
+            # check if the latest submission has been read already
+
+            data_read = submission_has_been_read(
+                country_info["code"],
+                country_info["name"],
+                submission_year=submission_year,
+                date_or_version=date_or_version,
+                submission_type=submission_type,
+                verbose=False,
+            )
+            if not data_read:
+                print(f"Latest submission for {country} has not been read yet.")
+                # TODO: make sure an older submission is read if present.
+                #  currently none is included at all
+                outdated_countries.append(country)
+
+            # read the native format file
+            # print(country_info["output"])
+            input_files = [
+                file for file in country_info["output"] if Path(file).suffix == ".nc"
+            ]
+
+            datalad.api.get(input_files)
+
+            ds_country = pm2.open_dataset(input_files[0])
+
+            ds_all_CRF[country] = ds_country
+
+            included_countries.append(country)
+
+        except Exception as ex:
+            print(f"Exception {ex} occurred for {country}")
+
+    # show info
+    print(f"The following countries are included in the dataset: {included_countries}")
+    print(
+        f"The following countries have updated submission not yet read "
+        f"and not included in the dataset: {outdated_countries}"
+    )
+
+    countries = xr.DataTree.from_dict(ds_all_CRF)
+    dt = xr.DataTree(name="All", children=countries)
+
+    return dt
+

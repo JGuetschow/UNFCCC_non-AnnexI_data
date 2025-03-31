@@ -26,7 +26,7 @@ def test_crf_for_year_original_version(tmp_path):
 
 def test_crf_for_year_sparse_arrays(tmp_path):
     start = timer()
-    n_countries = 10
+    n_countries = 20 # 100 will find 26 countries
     crf_raw_for_year_sparse_arrays(
         submission_year=1,
         submission_type="CRT",
@@ -53,6 +53,3 @@ def test_crf_for_year_pandas(tmp_path):
 
     end = timer()
     print(f"Processing time: {end - start} seconds for {n_countries} countries")
-
-
-#
