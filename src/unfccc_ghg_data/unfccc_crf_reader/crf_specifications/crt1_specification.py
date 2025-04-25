@@ -1,10 +1,9 @@
 """
 
-CRT1 specification So far based on Australia only.
+CRT1 specification.
 
-Since 2023 Australia reports in the CRT (common reporting tables) format which is
-similar but not identical to CRF. Some tables are different and it is more
-consistent in using sector titles etc. Thus it needs a special specification.
+Specifications for the Common Reporting Tables (CRT) submitted with
+Biannial Transparency Reports (BTR). Extended with every submission round.
 
 Currently not all tables are included. Extend if you need all country
 specific items in categories XXXXX

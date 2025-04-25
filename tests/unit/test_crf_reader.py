@@ -27,6 +27,13 @@ def test_get_latest_date_for_country():
     date = get_latest_date_for_country("RUS", 1, submission_type="CRT")
     assert date == expected
 
+    # AUT CRTAI
+    expected = "20250414"
+    date = get_latest_date_for_country(
+        "AUT", submission_year=2025, submission_type="CRTAI"
+    )
+    assert date == expected
+
 
 def test_get_latest_version_for_country():
     # AUS CRT
@@ -38,6 +45,20 @@ def test_get_latest_version_for_country():
     expected = "V1.0"
     date = get_latest_version_for_country("RUS", 1)
     assert date == expected
+
+    # AUT CRTAI
+    expected = "V1.0"
+    version = get_latest_version_for_country(
+        "AUT", submission_round=2025, submission_type="CRTAI"
+    )
+    assert version == expected
+
+    # TUR CRTAI
+    expected = "V0.2"
+    version = get_latest_version_for_country(
+        "TUR", submission_round=2025, submission_type="CRTAI"
+    )
+    assert version == expected
 
 
 def test_find_latest():
@@ -57,6 +78,7 @@ def test_get_info_from_crf_filename():
         "data_year": 1990,
         "date": "30032021",
         "extra": "192048",
+        "version": "V0.0",
     }
     assert expected == get_info_from_crf_filename(filename)
 
@@ -166,6 +188,20 @@ def test_get_country_folders():
         country_codes=["RUS", "AUS", "DEU"],
         submission_year=2023,
         submission_type="CRF",
+    )
+    folders = [folder.relative_to(downloaded_data_path_UNFCCC) for folder in folders]
+    assert expected == folders
+
+    # CRTAI 2025
+    expected = [
+        Path("Russian_Federation/CRT2025"),
+        Path("Australia/CRT2025"),
+        Path("Germany/CRT2025"),
+    ]
+    folders = get_country_folders(
+        country_codes=["RUS", "AUS", "DEU"],
+        submission_year=2025,
+        submission_type="CRTAI",
     )
     folders = [folder.relative_to(downloaded_data_path_UNFCCC) for folder in folders]
     assert expected == folders

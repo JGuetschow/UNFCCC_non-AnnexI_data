@@ -60,10 +60,10 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     # long name for type
     if submission_type == "CRF":
         type_name = "common reporting format"
-    elif submission_type == "CRT":
+    elif submission_type in ["CRT", "CRTAI"]:
         type_name = "common reporting tables"
     else:
-        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+        raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
 
     if data_year is None:
         data_year = 2000
@@ -88,12 +88,12 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     if country_code is not None:
         countries_to_read = [country_code]
     else:  # noqa: PLR5501
-        if submission_type == "CRF":
+        if submission_type in ["CRF", "CRTAI"]:
             countries_to_read = all_crf_countries
         elif submission_type == "CRT":
             countries_to_read = all_countries
         else:
-            raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+            raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
     for current_country_code in countries_to_read:
         # get country name
         country_name = get_country_name(current_country_code)
@@ -154,15 +154,19 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                 )
             else:
                 date_or_version = get_latest_version_for_country(
-                    current_country_code, submission_year
+                    current_country_code,
+                    submission_round=submission_year,
+                    submission_type=submission_type,
                 )
         except Exception:
             message = (
-                f"No submissions for country {country_name}, "
+                f"No submissions for country {country_name} ({current_country_code}), "
                 f"{submission_type}{submission_year}"
             )
             print(message)
-            exceptions.append(f"No_sub: {country_name}: {message}")
+            exceptions.append(
+                f"No_sub: {country_name} ({current_country_code}): " f"{message}"
+            )
             date_or_version = None
             pass
 
