@@ -7,10 +7,14 @@ Contains category name translations and information on category mapping and aggr
 import numpy as np
 import pandas as pd
 
+from unfccc_ghg_data.helper import code_path
+
 terminology_proc = "IPCC2006_PRIMAP"
 gwp_to_use = "AR5GWP100"
 
-filename_sectors = "sector_mapping_INV2024.csv"
+filename_sectors = (
+    code_path / "unfccc_reader" / "Republic_of_Korea" / "sector_mapping_INV2024.csv"
+)
 
 sector_mapping = pd.read_csv(filename_sectors)
 # read from csv
