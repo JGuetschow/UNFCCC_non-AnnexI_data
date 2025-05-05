@@ -80,6 +80,9 @@ gwp_to_use = "AR5GWP100"
 #     "Emisiones Netas PCG AR5": "GgCO2eq",
 # }
 
+# special header as category code and name in one column
+header_long = ["orig_cat_name", "entity", "unit", "time", "data"]
+
 # manual category codes
 cat_codes_manual = {
     "Todas las emisiones y las absorciones nacionales": "0",

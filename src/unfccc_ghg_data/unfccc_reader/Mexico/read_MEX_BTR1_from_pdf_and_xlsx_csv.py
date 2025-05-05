@@ -31,6 +31,7 @@ from unfccc_ghg_data.unfccc_reader.Mexico.config_mex_btr1 import (
     coords_terminologies,
     coords_value_mapping,
     filter_remove,
+    header_long,
     meta_data,
     page_defs,
 )
@@ -55,8 +56,6 @@ if __name__ == "__main__":
     manual_repl_unit = {"Kt CO₂e": default_unit}
 
     index_cols = ("Categorías de fuentes y sumideros de GEI", default_unit)
-    # special header as category code and name in one column
-    header_long = ["orig_cat_name", "entity", "unit", "time", "data"]
 
     # ###
     # read the data from pdf into one long format dataframe
