@@ -12,6 +12,10 @@ de-gases-y-compuestos-de-efecto-invernadero-inegycei
 TODO: code currently just a copy of BUR3 code
 """
 
+# TODO: download all fies using datalad download-url (only two xlsx files needed)
+# read from pdf: pages 79-81 from BTR_libro_24DIC2024.pdf
+# read from xls: 2020-2021, 1990-2019 That covers all years. csv files not needed
+
 
 import camelot
 import pandas as pd
@@ -24,7 +28,7 @@ if __name__ == "__main__":
     # ###
     # configuration
     # ###
-    input_folder = downloaded_data_path / "UNFCCC" / "Mexico" / "BUR3"
+    input_folder = downloaded_data_path / "UNFCCC" / "Mexico" / "BTR1"
     output_folder = extracted_data_path / "UNFCCC" / "Mexico"
     if not output_folder.exists():
         output_folder.mkdir()
