@@ -1,10 +1,17 @@
 """
 Read Mexico's BUR3 from pdf
 
-This script reads data from Mexico's BUR3
-Data are read from pdf using camelot
+This script reads data from Mexico's BTR1 and national inventory
+Data are read from pdf using camelot for 2022 and from inventory
+xlsx and csv files for 1990-2021 where consistent witht the BTR1
 
+Source for the inventory:
+https://www.datos.gob.mx/busca/dataset/inventario-nacional-de-emisiones-
+de-gases-y-compuestos-de-efecto-invernadero-inegycei
+
+TODO: code currently just a copy of BUR3 code
 """
+
 
 import camelot
 import pandas as pd

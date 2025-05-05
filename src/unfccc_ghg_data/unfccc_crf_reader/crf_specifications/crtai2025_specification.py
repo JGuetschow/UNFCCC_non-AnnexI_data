@@ -4030,7 +4030,7 @@ CRTAI2025 = {
             ["\\C-AUS-BRA-CHL-SGP\\ NA", ["\\IGNORE"]],
             ["\\C-COL\\ 3.C.4. Other", ["3.C.4.a"]],
             ["\\C-EST\\ Other non-specified", ["3.C.4.a"]],
-            ["\\C-LTU\\ Other", ["3.C.4.a"]],
+            ["\\C-LTU-BLR\\ Other", ["3.C.4.a"]],
             ["\\C-GHA\\ Upland", ["3.C.4.b"]],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
