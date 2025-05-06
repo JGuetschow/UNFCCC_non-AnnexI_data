@@ -1,27 +1,22 @@
 """
-Read Mexico's BUR3 from pdf
+Read Mexico's BTR1 from pdf
 
-This script reads data from Mexico's BTR1 and national inventory
-Data are read from pdf using camelot for 2022 and from inventory
-xlsx and csv files for 1990-2021 where consistent witht the BTR1
-
-Source for the inventory:
-https://www.datos.gob.mx/busca/dataset/inventario-nacional-de-emisiones-
-de-gases-y-compuestos-de-efecto-invernadero-inegycei
-
-TODO: code currently just a copy of BUR3 code
+This script reads data from Mexico's BTR1
+Data are read from pdf using camelot for 2022
+pages 79-81 from BTR_libro_24DIC2024.pdf
 """
-
-# TODO: download all fies using datalad download-url (only two xlsx files needed)
-# read from pdf: pages 79-81 from BTR_libro_24DIC2024.pdf
-# read from xls: 2020-2021, 1990-2019 That covers all years. csv files not needed
-
 
 import camelot
 import pandas as pd
 import primap2 as pm2
 
-from unfccc_ghg_data.helper import downloaded_data_path, extracted_data_path, fix_rows
+from unfccc_ghg_data.helper import (
+    downloaded_data_path,
+    extracted_data_path,
+    fix_rows,
+    gas_baskets,
+    process_data_for_country,
+)
 from unfccc_ghg_data.unfccc_reader.Mexico.config_mex_btr1 import (
     add_coords_cols,
     cat_code_regexp,
@@ -34,6 +29,7 @@ from unfccc_ghg_data.unfccc_reader.Mexico.config_mex_btr1 import (
     header_long,
     meta_data,
     page_defs,
+    processing_info_country,
 )
 
 if __name__ == "__main__":
@@ -67,7 +63,7 @@ if __name__ == "__main__":
         tables = camelot.read_pdf(
             str(input_folder / inventory_file_pdf), pages=page, **page_def["camelot"]
         )
-        df_this_table = tables[0].df
+        df_this_table = tables[0].df_pdf
 
         # fix rows
         for n_rows in page_def["rows_to_fix"].keys():
@@ -137,7 +133,7 @@ if __name__ == "__main__":
     # ###
     # convert to PRIMAP2 interchange format
     # ###
-    data_pdf_if = pm2.pm2io.convert_long_dataframe_if(
+    data_if = pm2.pm2io.convert_long_dataframe_if(
         df_pdf,
         coords_cols=coords_cols,
         add_coords_cols=add_coords_cols,
@@ -154,28 +150,65 @@ if __name__ == "__main__":
 
     cat_label = f"category ({coords_terminologies['category']})"
     # fix error cats
-    data_pdf_if[cat_label] = data_pdf_if[cat_label].str.replace("error_", "")
+    data_if[cat_label] = data_if[cat_label].str.replace("error_", "")
 
-    data_pdf_pm2 = pm2.pm2io.from_interchange_format(data_pdf_if)
+    data_pm2 = pm2.pm2io.from_interchange_format(data_if)
 
-    ###########
-    ### data from xlsx files
-    ###########
+    # convert back to IF to have units in the fixed format
+    data_if = data_pm2.pr.to_interchange_format()
 
-    # # convert back to IF to have units in the fixed format
-    # data_if = data_pm2.pr.to_interchange_format()
-    #
-    # # ###
-    # # save data to IF and native format
-    # # ###
-    # if not output_folder.exists():
-    #     output_folder.mkdir()
-    # pm2.pm2io.write_interchange_format(
-    #     output_folder / (output_filename + coords_terminologies["category"]), data_if
-    # )
-    #
-    # encoding = {var: compression for var in data_pm2.data_vars}
-    # data_pm2.pr.to_netcdf(
-    #     output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
-    #     encoding=encoding,
-    # )
+    # ###
+    # save data to IF and native format
+    # ###
+    if not output_folder.exists():
+        output_folder.mkdir()
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+        data_if,
+    )
+
+    encoding = {var: compression for var in data_pm2.data_vars}
+    data_pm2.pr.to_netcdf(
+        output_folder
+        / (output_filename + coords_terminologies["category"] + "_raw" + ".nc"),
+        encoding=encoding,
+    )
+
+    # ###
+    # process data (add sectors and gas baskets)
+    # ###
+
+    ### processing
+    terminology_proc = coords_terminologies["category"]
+    # aggregate gas baskets
+    # this also checks for inconsistencies
+    data_proc_pm2 = process_data_for_country(
+        data_pm2,
+        entities_to_ignore=[],
+        gas_baskets=gas_baskets,
+        processing_info_country=processing_info_country,
+        cat_terminology_out=terminology_proc,
+    )
+
+    # adapt source and metadata
+    current_source = data_proc_pm2.coords["source"].to_numpy()[0]
+    data_temp = data_proc_pm2.pr.loc[{"source": current_source}]
+    data_proc_pm2 = data_proc_pm2.pr.set("source", "BUR_NIR", data_temp)
+    data_proc_pm2 = data_proc_pm2.pr.loc[{"source": ["BUR_NIR"]}]
+
+    # ###
+    # save data to IF and native format
+    # ###
+    data_proc_if = data_proc_pm2.pr.to_interchange_format()
+    if not output_folder.exists():
+        output_folder.mkdir()
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + terminology_proc),
+        data_proc_if,
+    )
+
+    encoding = {var: compression for var in data_proc_pm2.data_vars}
+    data_proc_pm2.pr.to_netcdf(
+        output_folder / (output_filename + terminology_proc + ".nc"),
+        encoding=encoding,
+    )

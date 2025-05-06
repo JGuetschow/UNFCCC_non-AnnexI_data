@@ -1,4 +1,4 @@
-"""Config for Mexico's BUR3
+"""Config for Mexico's BTR1
 
 Full configuration including PRIMAP2 conversion config and metadata
 
@@ -89,7 +89,7 @@ cat_codes_manual = {
     re.compile(r"Todas las emisiones \(sin USCUSS\).*"): "M0EL",
 }
 
-cat_code_regexp = r"^\[(?P<code>[a-zA-Z0-9]{1,3})\].*"
+cat_code_regexp = r"^\[(?P<code>[a-zA-Z0-9]{1,6})\].*"
 
 coords_cols = {
     "category": "category",
@@ -134,10 +134,86 @@ filter_remove = {}
 filter_keep = {}
 
 meta_data = {
-    "references": "",
+    "references": "https://unfccc.int/documents/645206",
     "rights": "",
     "contact": "mail@johannes-guetschow.de",
-    "title": "Mexico. Biennial update report (BUR). BUR3",
+    "title": "Mexico. Biennial transparency report (BTR). BTR1",
     "comment": "Read fom pdf by Johannes Gütschow",
     "institution": "UNFCCC",
+}
+
+processing_info_country = {
+    "tolerance": 0.171,  # for 2.E.1, 2.E.2
+    "basket_copy": {
+        "GWPs_to_add": ["SARGWP100", "AR4GWP100", "AR6GWP100"],
+        "entities": ["HFCS", "PFCS"],
+        "source_GWP": gwp_to_use,
+    },
+    "subtract_cats": {
+        "M.LULUCF": {
+            "parent": "0",
+            "subtract": ["M.0.EL"],
+            "orig_cat_name": "Emissions from Biomass Burning - LULUCF",
+            "entities": ["CH4", "N2O", "CO2", f"KYOTOGHG ({gwp_to_use})"],
+        },
+        "M.3.C.1.LU": {
+            "parent": "M.LULUCF",
+            "subtract": ["3.B", "3.D"],
+            "orig_cat_name": "Emissions from Biomass Burning - LULUCF",
+            "entities": ["CH4", "N2O", f"KYOTOGHG ({gwp_to_use})"],
+        },
+        "M.3.C.1.AG": {
+            "parent": "3.C.1",
+            "subtract": ["M.3.C.1.LU"],
+            "orig_cat_name": "Emissions from Biomass Burning - Agriculture",
+            "entities": ["CH4", "N2O"],
+        },
+    },
+    "aggregate_coords": {
+        "category": {
+            "M.3.C.AG": {
+                "sources": [
+                    "M.3.C.1.AG",
+                    "3.C.2",
+                    "3.C.3",
+                    "3.C.4",
+                    "3.C.5",
+                    "3.C.6",
+                    "3.C.7",
+                ],
+                "orig_cat_name": "Aggregate Sources and Non-CO2 Emissions Sources on Land "
+                "- Agriculture",
+            },
+            "M.3.C.LU": {
+                "sources": ["M.3.C.1.LU"],
+                "orig_cat_name": "Aggregate Sources and Non-CO2 Emissions Sources on Land "
+                "- LULUCF",
+            },
+            "M.AG.ELV": {
+                "sources": ["M.3.C.AG"],
+                "orig_cat_name": "Agriculture excluding livestock",
+            },
+            "M.AG": {
+                "sources": ["3.A", "M.AG.ELV"],
+                "orig_cat_name": "Agriculture",
+            },
+            "M.LULUCF": {
+                "sources": ["M.3.C.LU", "3.B", "3.D"],
+                "orig_cat_name": "Land Use, Land Use Change, and Forestry",
+            },
+            "1.B": {
+                "sources": ["1.B.1", "1.B.2"],
+                "orig_cat_name": "Fugitive emissions from fuels",
+            },
+            # for consistency checks
+            "3": {
+                "sources": ["M.AG", "M.LULUCF"],
+                "orig_cat_name": "[3] Agricultura, silvicultura y otros usos de la tierra",
+            },
+            "0": {
+                "sources": ["M.LULUCF", "M.0.EL"],
+                "orig_cat_name": "Todas las emisiones y las absorciones nacionales",
+            },
+        }
+    },
 }

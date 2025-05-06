@@ -288,6 +288,7 @@ for gwp in gwps_for_basket_aggregation:
                 "HFC404a",
                 "HFC407c",
                 "HFC410a",
+                "HFC507a",
                 "HFC4310mee",
                 f"UnspMixOfHFCs ({gwp})",
             ],
