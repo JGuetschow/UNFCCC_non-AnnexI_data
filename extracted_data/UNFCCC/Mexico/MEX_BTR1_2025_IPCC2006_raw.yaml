@@ -1,0 +1,24 @@
+additional_coordinates:
+  orig_cat_name: category (IPCC2006)
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006)
+  comment: Read fom pdf by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: UNFCCC
+  references: https://unfccc.int/documents/645206
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Mexico. Biennial transparency report (BTR). BTR1
+data_file: MEX_BTR1_2025_IPCC2006_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

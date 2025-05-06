@@ -63,7 +63,7 @@ if __name__ == "__main__":
         tables = camelot.read_pdf(
             str(input_folder / inventory_file_pdf), pages=page, **page_def["camelot"]
         )
-        df_this_table = tables[0].df_pdf
+        df_this_table = tables[0].df
 
         # fix rows
         for n_rows in page_def["rows_to_fix"].keys():
