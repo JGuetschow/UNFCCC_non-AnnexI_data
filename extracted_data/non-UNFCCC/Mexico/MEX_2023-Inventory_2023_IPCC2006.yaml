@@ -3,14 +3,15 @@ additional_coordinates:
 attrs:
   area: area (ISO3)
   cat: category (IPCC2006)
-  comment: Read fom pdf by Johannes Gütschow Processed on 2025-05-06
+  comment: Read fom pdf by Johannes Gütschow Processed on 2025-05-07
   contact: mail@johannes-guetschow.de
   gwp_context: AR5GWP100
   institution: UNFCCC
-  references: https://unfccc.int/documents/645206
+  references: 
+    https://www.datos.gob.mx/busca/dataset/inventario-nacional-de-emisiones-de-gases-y-compuestos-de-efecto-invernadero-inegycei
   rights: ''
   scen: scenario (PRIMAP)
-  title: Mexico. Biennial transparency report (BTR). BTR1 Processed on 2025-05-06
+  title: Mexico. Biennial transparency report (BTR). BTR1 Processed on 2025-05-07
 data_file: MEX_2023-Inventory_2023_IPCC2006.csv
 dimensions:
   '*':
