@@ -113,7 +113,9 @@ filter_remove = {
 filter_keep = {}
 
 meta_data = {
-    "references": "https://unfccc.int/documents/645206",
+    "references": "https://www.datos.gob.mx/busca/dataset/inventario-nacional-"
+    "de-emisiones-de-gases-y-compuestos-de-efecto-invernadero-"
+    "inegycei",
     "rights": "",
     "contact": "mail@johannes-guetschow.de",
     "title": "Mexico. Biennial transparency report (BTR). BTR1",
