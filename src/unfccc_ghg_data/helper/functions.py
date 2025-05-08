@@ -921,6 +921,8 @@ def fix_rows(
 
     This is the version used for Malaysia BUR3,4. adapt for other BURs if needed
 
+    TODO: add feature to fix multiple instances of a row from Taiwan NIR reading
+
     Parameters
     ----------
     data
