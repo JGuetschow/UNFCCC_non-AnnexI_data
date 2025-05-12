@@ -3,5 +3,6 @@
 * annex.largefiles=((mimeencoding=binary)and(largerthan=0))
 *.csv annex.largefiles=anything
 *.xml annex.largefiles=anything
+*.pdf annex.largefiles=anything
 *.json annex.largefiles=(largerthan=100kb)
 **/.git* annex.largefiles=nothing
