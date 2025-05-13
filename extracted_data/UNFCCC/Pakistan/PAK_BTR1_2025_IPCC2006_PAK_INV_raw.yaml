@@ -1,0 +1,24 @@
+additional_coordinates:
+  orig_cat_name: category (IPCC2006_PAK_INV)
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PAK_INV)
+  comment: Read fom pdf by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: UNFCCC
+  references: https://unfccc.int/documents/645241
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Pakistan. 2024 Biennial Transparency Report (BTR). BTR1
+data_file: PAK_BTR1_2025_IPCC2006_PAK_INV_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PAK_INV)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
