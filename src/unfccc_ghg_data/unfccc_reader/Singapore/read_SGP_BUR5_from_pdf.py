@@ -5,6 +5,7 @@ This script reads data from Singapore's BUR5
 Data are read from pdf using camelot
 
 """
+
 import locale
 
 # import numpy as np

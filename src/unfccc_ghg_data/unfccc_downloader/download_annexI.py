@@ -5,6 +5,7 @@ Download and unzip data from UNFCCC National Inventory Submissions.
 Based on download.py from national-inventory-submissions
 (https://github.com/openclimatedata/national-inventory-submisions)
 """
+
 import argparse
 import os
 import shutil
@@ -66,12 +67,7 @@ if __name__ == "__main__":
     elif int(year) in range(2020, 2025):
         url = f"https://unfccc.int/ghg-inventories-annex-i-parties/{year}"
     elif int(year) >= 2025:  # noqa: PLR2004
-        url = (
-            "https://unfccc.int/process-and-meetings/transparency-and-reporting/"
-            "reporting-and-review-under-the-convention/"
-            "greenhouse-gas-inventories-annex-i-parties/"
-            f"national-inventory-submissions-{year}"
-        )
+        url = f"https://unfccc.int/ghg-inventories-annex-i-parties/{year}"
     else:
         url = (
             "https://unfccc.int/process/transparency-and-reporting/"

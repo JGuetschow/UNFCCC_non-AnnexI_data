@@ -173,15 +173,15 @@ if __name__ == "__main__":
                 if lastrow == "A.  장내발효":
                     df_current.iloc[i][
                         "분야·부문/연도"
-                    ] = f'A.{df_current.iloc[i]["분야·부문/연도"]}'
+                    ] = f"A.{df_current.iloc[i]['분야·부문/연도']}"
                 elif lastrow == "B.  가축분뇨처리":
                     df_current.iloc[i][
                         "분야·부문/연도"
-                    ] = f'B.{df_current.iloc[i]["분야·부문/연도"]}'
+                    ] = f"B.{df_current.iloc[i]['분야·부문/연도']}"
                 else:
                     raise ValueError(  # noqa: TRY003
-                        f'Row to fix, but no fix defined {lastrow}, '
-                        f'{row["분야·부문/연도"]}'
+                        f"Row to fix, but no fix defined {lastrow}, "
+                        f"{row['분야·부문/연도']}"
                     )
             else:
                 lastrow = row["분야·부문/연도"]

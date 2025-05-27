@@ -1,0 +1,23 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_1996_Taiwan_Inv)
+  comment: Read fom pdf file and converted to PRIMAP2 format by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: Republic of China - Environmental Protection Administration
+  references: 
+    https://www.cca.gov.tw/en/information-service/publications/national-ghg-inventory-report/12003.html
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: 2024 Republic of China - National Greenhouse Gas Report
+data_file: TWN_inventory_2024_IPCC2006_1996_Taiwan_Inv.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_1996_Taiwan_Inv)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

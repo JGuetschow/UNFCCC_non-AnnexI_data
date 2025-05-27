@@ -1,6 +1,7 @@
 """
 Functions for the processing of DI data
 """
+
 import re
 from copy import deepcopy
 from datetime import date
@@ -23,7 +24,7 @@ def process_and_save_UNFCCC_DI_for_country(
     no_save: bool = False,
 ) -> xr.Dataset:
     """
-    process data and save them to disk using default parameters
+    Process data and save them to disk using default parameters
     """
     # get latest dataset if no date given
     if date_str is None:
@@ -40,8 +41,7 @@ def process_and_save_UNFCCC_DI_for_country(
 
         if not raw_data_file.exists():
             raise ValueError(  # noqa: TRY003
-                f"File {raw_data_file.name} does not exist. Check if it "
-                "has been read."
+                f"File {raw_data_file.name} does not exist. Check if it has been read."
             )
 
     print(f"process {raw_data_file.name}")

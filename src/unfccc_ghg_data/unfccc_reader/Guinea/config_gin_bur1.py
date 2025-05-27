@@ -1,6 +1,7 @@
 """
 configuration to read Guinea's BUR1 from pdf
 """
+
 # primap2 format conversion
 coords_cols = {
     "category": "category",

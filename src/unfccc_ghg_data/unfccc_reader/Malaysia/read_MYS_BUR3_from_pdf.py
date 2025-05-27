@@ -6,7 +6,6 @@ Data are read from pdf using camelot
 
 """
 
-
 import camelot
 import primap2 as pm2
 from primap2.pm2io._conversion import convert_ipcc_code_primap_to_primap2

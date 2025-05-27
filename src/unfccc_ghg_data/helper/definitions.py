@@ -67,6 +67,8 @@ nAI_countries = list(pd.read_csv(code_path / "helper" / "DI_NAI_parties.conf")["
 # AI_countries = list(reader.annex_one_reader.parties["code"])
 AI_countries = list(pd.read_csv(code_path / "helper" / "DI_AI_parties.conf")["code"])
 additional_territories = ["HKG", "MAC", "VAT"]
+# TODO: check if CRTAI countries are the same as CRF countries. It seems that Kazakhstan
+#  has been eremoved
 
 all_countries = nAI_countries + AI_countries + additional_territories
 
@@ -286,6 +288,7 @@ for gwp in gwps_for_basket_aggregation:
                 "HFC404a",
                 "HFC407c",
                 "HFC410a",
+                "HFC507a",
                 "HFC4310mee",
                 f"UnspMixOfHFCs ({gwp})",
             ],

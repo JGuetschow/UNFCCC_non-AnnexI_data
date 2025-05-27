@@ -80,8 +80,8 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913, PLR0915
         Metadata is stored as attrs in the DataFrame
     """
     # check type
-    if submission_type not in ["CRF", "CRT"]:
-        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+    if submission_type not in ["CRF", "CRT", "CRTAI"]:
+        raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
 
     coords_cols = {
         "category": "category",
@@ -160,7 +160,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913, PLR0915
         "institution": "United Nations Framework Convention on Climate Change "
         "(www.unfccc.int)",
     }
-    if submission_type == "CRF":
+    if submission_type in ["CRF", "CRTAI"]:
         meta_data[
             "references"
         ] = f"https://unfccc.int/ghg-inventories-annex-i-parties/{submission_year}"
@@ -272,8 +272,8 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
 
     """
     # check type
-    if submission_type not in ["CRF", "CRT"]:
-        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+    if submission_type not in ["CRF", "CRT", "CRTAI"]:
+        raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
 
     if isinstance(country_codes, str):
         country_codes = [country_codes]
@@ -352,14 +352,14 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
                 crf_spec = getattr(crf, f"{submission_type}{submission_year}")
             except Exception as ex:
                 raise ValueError(  # noqa: TRY003
-                    f"No terminology exists for submission year " f"{submission_year}"
+                    f"No terminology exists for submission year {submission_year}"
                 ) from ex
     else:
         try:
             crf_spec = getattr(crf, f"{submission_type}{submission_year}")
         except Exception as ex:
             raise ValueError(  # noqa: TRY003
-                f"No terminology exists for submission year " f"{submission_year}"
+                f"No terminology exists for submission year {submission_year}"
             ) from ex
 
     # now loop over files and read them
@@ -797,7 +797,7 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
         Folder that contains the xls files. If not given folders are determined by the
         submissions_year and country_code variables
     submission_type: str default = "CRF"
-        read CRF or CRF data
+        read CRF, CRT, or CRTAI data
 
     Returns
     -------
@@ -821,9 +821,9 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
         country_folders = [folder]
 
     file_filter_template = {}
-    if submission_type == "CRF":
+    if submission_type in ["CRF", "CRTAI"]:
         file_filter_template["submission_year"] = submission_year
-    # don't filter for submission year in BTR as it's  the actual year and
+    # don't filter for submission year in BTR as it's the actual year and
     # not the submissions round (and we don't know yet if it will be the same
     # for all submission in one submission round)
     file_filter_template["party"] = country_codes
@@ -852,7 +852,7 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
                     input_files = input_files + filter_filenames(
                         input_folder_path.glob("*.xlsx"), **file_filter
                     )
-            elif submission_type == "CRT":
+            elif submission_type in ["CRT", "CRTAI"]:
                 if date_or_version == "latest":
                     for country in country_codes:
                         file_filter = file_filter_template.copy()
@@ -895,7 +895,7 @@ def get_country_folders(
     submission_type: str = "CRF",
 ) -> list[Path]:
     """
-    get folders which contain CRF or BTR/CRT submissions for given countries
+    Get folders which contain CRF or BTR/CRT submissions for given countries
 
     Parameters
     ----------
@@ -904,7 +904,7 @@ def get_country_folders(
     submission_year :
         Year of the submission of the data for CRF and submission round for CRT/BTR
     submission_type :
-        read CRF or CRF data
+        read CRF, CRT, or CRTAI data
 
     Returns
     -------
@@ -913,8 +913,12 @@ def get_country_folders(
     """
     if submission_type == "CRT":
         type_folder = "BTR"
-    else:
+    elif submission_type == "CRTAI":
+        type_folder = "CRT"
+    elif submission_type == "CRF":
         type_folder = submission_type
+    else:
+        raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
     data_folder = downloaded_data_path_UNFCCC
     submission_folder = f"{type_folder}{submission_year}"
 
@@ -988,7 +992,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
     else:
         # not enough parts, we probably have a CRT file with different separator
         name_parts = filename.split("-")
-        if len(name_parts) >= 5 and "DataEntry" not in name_parts:  # noqa: PLR2004
+        if len(name_parts) >= 6 and "DataEntry" not in name_parts:  # noqa: PLR2004
             if name_parts[1] == "CRT":
                 file_info["party"] = name_parts[0]
                 file_info["submission_year"] = int(name_parts[2])
@@ -1363,7 +1367,7 @@ def get_latest_date_for_country(
     submission_year: int
         Year of the submission to find the l;atest date_or_version for
     submission_type: str, default CRF
-        Check for CRF or CRT tables
+        Check for CRF, CRT, or CRTAI tables
 
     Returns
     -------
@@ -1380,7 +1384,7 @@ def get_latest_date_for_country(
             type_folder = submission_type
             date_format = "%d%m%Y"
             file_filter["submission_year"] = submission_year
-        else:
+        elif submission_type == "CRT":
             type_folder = "BTR"
             if country_code == "AUS" and submission_year == 1:
                 date_format = "%d%m%Y"
@@ -1389,6 +1393,12 @@ def get_latest_date_for_country(
             # don't filter for submission year in BTR as it's the actual year and
             # not the submissions round (and we don't know yet if it will be the same
             # for all submission in one submission round)
+        elif submission_type == "CRTAI":
+            type_folder = "CRT"
+            date_format = "%Y%m%d"
+            file_filter["submission_year"] = submission_year
+        else:
+            raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
 
         country_folders = folder_mapping[country_code]
         if isinstance(country_folders, str):
@@ -1425,6 +1435,7 @@ def get_latest_date_for_country(
 def get_latest_version_for_country(
     country_code: str,
     submission_round: int,
+    submission_type: str = "CRT",
 ) -> str:
     """
     Find the latest submission version (CRT) for a country
@@ -1435,6 +1446,9 @@ def get_latest_version_for_country(
         3-letter country code
     submission_round: int
         Submission round to find the latest version for
+    submission_type: str, default CRT
+        Type of submission: CRT (from BRT) or CRTAI (from AnnexI National
+        Inventory Submission)
 
     Returns
     -------
@@ -1449,22 +1463,24 @@ def get_latest_version_for_country(
         }
 
         country_folders = folder_mapping[country_code]
+        if submission_type == "CRT":
+            subfolder = f"BTR{submission_round}"
+        elif submission_type == "CRTAI":
+            subfolder = f"CRT{submission_round}"
+        else:
+            raise ValueError("Type must be CRT or CRTAI")  # noqa: TRY003
         if isinstance(country_folders, str):
             # only one folder
             submission_version = find_latest_version(
                 get_submission_versions(
-                    downloaded_data_path_UNFCCC
-                    / country_folders
-                    / f"BTR{submission_round}",
+                    downloaded_data_path_UNFCCC / country_folders / subfolder,
                     file_filter,
                 ),
             )
         else:
             versions = []
             for folder in country_folders:
-                folder_submission = (
-                    downloaded_data_path_UNFCCC / folder / f"BTR{submission_round}"
-                )
+                folder_submission = downloaded_data_path_UNFCCC / folder / subfolder
                 if folder_submission.exists():
                     versions = versions + get_submission_versions(
                         folder_submission, file_filter

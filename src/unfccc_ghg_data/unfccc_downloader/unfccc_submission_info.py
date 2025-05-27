@@ -1,6 +1,7 @@
 """
 helper functions to gather submission info from UNFCCC website
 """
+
 import re
 import time
 from random import randrange
@@ -174,7 +175,7 @@ def get_BTR_name_and_URL(submission_round: int) -> (str, str):
         URL = "https://unfccc.int/first-biennial-transparency-reports"
     else:
         raise ValueError(  # noqa: TRY003
-            f"Submission round " f"{submission_round} is not defined"
+            f"Submission round {submission_round} is not defined"
         )
 
     return name, URL

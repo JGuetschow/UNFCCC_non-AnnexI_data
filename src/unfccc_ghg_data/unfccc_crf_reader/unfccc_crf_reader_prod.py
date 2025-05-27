@@ -94,7 +94,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
     re_read: Optional(bool) default: True
         Read the data also if it's already present
     submission_type: str default "CRF"
-        Read CRF or CRT
+        Read CRF, CRT, or CRTAI
     debug: bool, default False
         Debug output
 
@@ -106,10 +106,10 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
     # long name for type
     if submission_type == "CRF":
         type_name = "common reporting format"
-    elif submission_type == "CRT":
+    elif submission_type in ["CRT", "CRTAI"]:
         type_name = "common reporting tables"
     else:
-        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+        raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
     # get country name
     country_name = get_country_name(country_code)
 
@@ -128,7 +128,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
             crf_spec = getattr(crf, f"{submission_type}{submission_year}")
         except Exception as ex:
             raise ValueError(  # noqa: TRY003
-                f"No terminology exists for submission year/round " f"{submission_year}"
+                f"No terminology exists for submission year/round {submission_year}"
             ) from ex
 
     tables = [
@@ -151,6 +151,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
             date_or_version = get_latest_version_for_country(
                 country_code,
                 submission_round=submission_year,
+                submission_type=submission_type,
             )
 
     # check if data has been read already
@@ -206,13 +207,19 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
                         f"{country_name}. "
                         f"Submission date: {date_or_version}"
                     }
-                else:
+                elif submission_type == "CRT":
                     meta_data_input = {
                         "title": f"Data submitted for round {submission_year} "
                         f"to the UNFCCC in the {type_name} ({submission_type}) by "
                         f"{country_name}. Submission version: {date_or_version}"
                     }
-
+                else:
+                    meta_data_input = {
+                        "title": f"National Invetory data submitted in "
+                        f"{submission_year} to the UNFCCC in the {type_name} "
+                        f"({submission_type}) by {country_name}. "
+                        f"Submission version: {date_or_version}"
+                    }
                 if "decimal_sep" in crf_spec[table]["table"]:
                     decimal_sep = crf_spec[table]["table"]["decimal_sep"]
                 else:
@@ -349,8 +356,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
             # TODO: function that creates the filename so if we modify something it's
             #  modified everywhere (but will break old data, so better keep file name)
             output_filename = (
-                f"{country_code}_{submission_type}{submission_year}_"
-                f"{date_or_version}"
+                f"{country_code}_{submission_type}{submission_year}_{date_or_version}"
             )
 
             if not output_folder.exists():
@@ -399,8 +405,8 @@ def read_crf_for_country_datalad(
 
     """
     # check type
-    if type not in ["CRF", "CRT"]:
-        raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+    if type not in ["CRF", "CRT", "CRTAI"]:
+        raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
     # get all the info for the country
     try:
         country_info = get_input_and_output_files_for_country(
@@ -486,7 +492,7 @@ def read_new_crf_for_year(  # noqa: PLR0912
         list[str]: list with country codes for which the data has been read
 
     """
-    if submission_type == "CRF":
+    if submission_type in ["CRF", "CRTAI"]:
         if countries is None:
             countries = all_crf_countries
     elif submission_type == "CRT":
@@ -593,14 +599,14 @@ def read_new_crf_for_year_datalad(  # noqa: PLR0912
             f"Reading {type}{submission_year} for all countries "
             f"using unfccc_crf_reader."
         )
-        if type == "CRF":
+        if type in ["CRF", "CRTAI"]:
             if countries is None:
                 countries = all_crf_countries
         elif type == "CRT":
             if countries is None:
                 countries = all_countries
         else:
-            raise ValueError("Type must be CRF or CRT")  # noqa: TRY003
+            raise ValueError("Type must be CRF, CRT, or CRTAI")  # noqa: TRY003
 
     print("#" * 80)
     print("")
@@ -648,9 +654,7 @@ def read_new_crf_for_year_datalad(  # noqa: PLR0912
     # cmd = f"python3 {script.as_posix()} --countries={countries} "\
     #      f"--submission_year={submission_year}"
     cmd = (
-        f"python3 {script.as_posix()} "
-        f"--submission_year={submission_year} "
-        f"--type={type}"
+        f"python3 {script.as_posix()} --submission_year={submission_year} --type={type}"
     )
 
     if re_read:
@@ -717,7 +721,9 @@ def get_input_and_output_files_for_country(  # noqa: PLR0912
             )
         else:
             date_or_version = get_latest_version_for_country(
-                country_code, submission_year
+                country_code,
+                submission_year,
+                submission_type=submission_type,
             )
     elif verbose:
         print(f"Using given submissions date / version {date_or_version}")

@@ -1,6 +1,7 @@
 """
 Read Saint Kitts and Nevis' BUR1 from pdf
 """
+
 import camelot
 import pandas as pd
 import primap2 as pm2

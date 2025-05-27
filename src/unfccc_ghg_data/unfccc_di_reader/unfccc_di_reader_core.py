@@ -1,6 +1,7 @@
 """
 Core functions for the UNFCCC DI reader
 """
+
 import copy
 import itertools
 from copy import deepcopy
@@ -137,7 +138,7 @@ def read_UNFCCC_DI_for_country_df(  # noqa: PLR0912, PLR0915
     debug: Optional[bool] = False,
 ) -> pd.DataFrame:
     """
-    read UNFCCC DI data for a given country.
+    Read UNFCCC DI data for a given country.
 
     All data will be read including all categories, gases, measures,
     and classifications. Filtering is done later on conversion to PRIMAP2 format
@@ -364,7 +365,7 @@ def read_UNFCCC_DI_for_country_df_zenodo(
     """
     if read_subsectors:
         raise ValueError(  # noqa: TRY003
-            "Subsector reading is not possible with the Zenodo reader " "yet"
+            "Subsector reading is not possible with the Zenodo reader yet"
         )
 
     reader = unfccc_di_api.ZenodoReader()

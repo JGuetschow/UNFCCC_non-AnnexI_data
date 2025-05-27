@@ -6,7 +6,6 @@ Data are read from pdf using camelot
 
 """
 
-
 # ###
 # imports
 # ###

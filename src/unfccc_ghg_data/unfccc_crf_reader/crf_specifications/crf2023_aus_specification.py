@@ -39,7 +39,6 @@ TODO:
 
 """
 
-
 from .util import unit_info
 
 gwp_to_use = "AR5GWP100"

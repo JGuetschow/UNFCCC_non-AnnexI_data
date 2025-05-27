@@ -27,7 +27,9 @@ sphinx-exec-code = "^0.10"
 ghostscript = "^0.7"
 sphinx-markdown-tables = "^0.0.17"
 xarray = ">=2024.6.0"
-jinja2 = "3.1.5"
+jinja2 = ">=3.1.6"
+numpy = "<2.2"
+h11 = ">=0.16.0"
 
 [tool.poetry.extras]
 plots = ["matplotlib"]
@@ -42,6 +44,7 @@ sphinx-autodoc-typehints = "^1.23.0"
 sphinx-autodocgen = "^1.3"
 jupytext = "^1.14.5"
 sphinx-copybutton = "^0.5.2"
+tornado = ">=6.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest-cov = "^4.0.0"
@@ -54,6 +57,8 @@ liccheck = "^0.9.1"
 notebook = "^7.2.2"
 ipywidgets = "^8.1.2"
 ipympl = "^0.9.4"
+setuptools = ">=78.1.1"
+
 
 [build-system]
 requires = ["poetry-core"]
@@ -96,7 +101,7 @@ addopts = [
 [tool.ruff]
 src = ["src"]
 target-version = "py39"
-select = [
+lint.select = [
     "E",  # pycodestyle error
     "W",  # pycodestyle warning
     "F",  # pyflakes
@@ -112,19 +117,21 @@ select = [
     # this because it can lead to too many false positives.
     "PD",
 ]
-unfixable = [
+lint.unfixable = [
     "PD002",  # Disable autofix for inplace as this often introduces bugs
 ]
-ignore = [
+lint.ignore = [
     "D200",  # One-line docstring should fit on one line with quotes
     "D400",  # First line should end with a period
+    #"PLC0206",  # Extracting value from dictionary without calling `.items()`
+    # switched off here because it seems to flag issues
 ]
 line-length = 88
 
 [tool.ruff.format]
 docstring-code-format = true
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "test*.py" = [
     "D",  # Documentation not needed in tests
     "S101",  # S101 Use of `assert` detected
@@ -153,10 +160,10 @@ docstring-code-format = true
 ]
 
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["src"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
 [tool.towncrier]

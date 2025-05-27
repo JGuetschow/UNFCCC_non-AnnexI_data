@@ -1,0 +1,24 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read by Johannes Gütschow Processed on 2025-05-12
+  contact: mail@johannes-guetschow.de
+  entity: HFCS
+  institution: Philippines National Integrated Climate Change Database and Information
+    Exchange System
+  references: https://niccdies.climate.gov.ph/ghg-inventory/national
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: 'Philippines: National Greenhouse Gas Inventory Processed on 2025-05-12'
+data_file: PHL_2025-NICCDIES_2025_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

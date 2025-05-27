@@ -36,7 +36,6 @@ Missing tables are:
 
 """
 
-
 from .util import unit_info
 
 CRF2022 = {

@@ -147,7 +147,7 @@ country_processing_step1 = {
             "skipna": True,
             "min_count": 1,
             "sel": {
-                f'category ({coords_terminologies["category"]})': [
+                f"category ({coords_terminologies['category']})": [
                     "0",
                     "1",
                     "1.A",
@@ -212,31 +212,31 @@ country_processing_step2 = {
                 "basket": "1",
                 "basket_contents": ["1.A", "1.B", "1.C"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "1.A": {
                 "basket": "1.A",
                 "basket_contents": ["1.A.1", "1.A.2", "1.A.3", "1.A.4", "1.A.5"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "1.B": {
                 "basket": "1.B",
                 "basket_contents": ["1.B.1", "1.B.2", "1.B.3"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "2": {
                 "basket": "2",
                 "basket_contents": ["2.A", "2.B", "2.C", "2.D", "2.F", "2.G", "2.H"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "2.A": {
                 "basket": "2.A",
                 "basket_contents": ["2.A.1", "2.A.2", "2.A.3", "2.A.4"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "3": {
                 "basket": "3",
@@ -252,25 +252,25 @@ country_processing_step2 = {
                     "3.I",
                 ],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "4": {
                 "basket": "4",
                 "basket_contents": ["4.A", "4.B", "4.C", "4.D", "4.E"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "4.E": {
                 "basket": "4.E",
                 "basket_contents": ["4.E.1", "4.E.2", "4.E.3"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "5": {
                 "basket": "5",
                 "basket_contents": ["5.A", "5.B", "5.C", "5.D"],
                 "entities": ["KYOTOGHG (AR4GWP100)"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
         },
         "entities": {
@@ -285,7 +285,7 @@ country_processing_step2 = {
                     "SF6",
                 ],
                 "sel": {
-                    f'category ({coords_terminologies["category"]})': [
+                    f"category ({coords_terminologies['category']})": [
                         "1",
                         "1.A",
                         "1.A.1",

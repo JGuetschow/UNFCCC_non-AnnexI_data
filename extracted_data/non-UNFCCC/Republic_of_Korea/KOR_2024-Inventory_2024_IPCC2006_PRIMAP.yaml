@@ -1,0 +1,27 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom xlsx file by Johannes Gütschow Processed on 2025-04-30
+  contact: mail@johannes-guetschow.de
+  entity: PFCS
+  gwp_context: AR6GWP100
+  institution: Republic of Korea, Ministry of Environment, Greenhouse Gas Inventory
+    and Research Center
+  references: 
+    https://www.gir.go.kr/home/board/read.do?pagerOffset=0&maxPageItems=10&maxIndexPages=10&searchKey=&searchValue=&menuId=36&boardId=79&boardMasterId=2&boardCategoryId=
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: 'Republic of Korea: National Greenhouse Gas Inventory Report 2024 Processed
+    on 2025-04-30'
+data_file: KOR_2024-Inventory_2024_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

@@ -6,7 +6,6 @@ Data are read from the xlsx file
 
 """
 
-
 import os
 import sys
 

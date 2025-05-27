@@ -1,0 +1,22 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_THA_Inv)
+  comment: Read fom pdf by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: UNFCCC
+  references: https://unfccc.int/documents/645098
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Thailand. 2024 Biennial Transparency Report (BTR). BTR1.
+data_file: THA_BTR1_2024_IPCC2006_THA_Inv_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_THA_Inv)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

@@ -1,6 +1,7 @@
 """
 Configuration for Burundi BUR1 (read from pdf)
 """
+
 coords_terminologies = {
     "area": "ISO3",
     "category": "IPCC2006_PRIMAP",

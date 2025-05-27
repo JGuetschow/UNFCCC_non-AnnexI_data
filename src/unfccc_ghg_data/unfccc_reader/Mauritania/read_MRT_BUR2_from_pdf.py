@@ -6,7 +6,6 @@ Data are read from pdf. The file contains a detailed inventory for
 
 """
 
-
 import camelot
 import numpy as np
 import pandas as pd

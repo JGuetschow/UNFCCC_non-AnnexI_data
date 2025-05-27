@@ -7,7 +7,6 @@ The `fix_rows` function will be combined with the `fix_rows` function available
 in the helper module
 """
 
-
 import pandas as pd
 
 gwp_to_use = "AR4GWP100"

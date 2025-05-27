@@ -327,7 +327,7 @@ category_conversion = {
             "M.1.A": "M.BK.A",
             "M.1.B": "M.BK.M",
             "M.BIO": "M.BIO",
-            "M.DEF": "M.DEF",  #
+            "M.DEF": "M.DEF",
             "M.SR.A": "M.SR.A",
             "M.SR.M": "M.SR.M",
         },

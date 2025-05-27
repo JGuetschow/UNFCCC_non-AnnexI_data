@@ -503,8 +503,7 @@ aggregate_after_mapping = {
     },
     "M.3.C.AG": {
         "sources": ["3.C.4", "3.C.5", "3.C.7"],
-        "name": "Aggregate sources and non-CO2 emissions sources on land ("
-        "Agriculture)",
+        "name": "Aggregate sources and non-CO2 emissions sources on land (Agriculture)",
     },
     "M.AG.ELV": {"sources": ["M.3.C.AG"], "name": "Agriculture excluding livestock"},
     "4.C": {"sources": ["4.C.1"], "name": "Incineration and Open Burning of Waste"},

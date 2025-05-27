@@ -7,7 +7,6 @@ Inventories for mainland China (CHN), Hong Kong (HKG) and Macau (MAC) are report
 individual inventories.
 """
 
-
 from copy import deepcopy
 
 import camelot
