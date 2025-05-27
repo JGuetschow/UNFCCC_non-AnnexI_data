@@ -4,6 +4,7 @@ Configuration file for the Sphinx documentation builder.
 For the full list of built-in configuration values, see the documentation:
 https://www.sphinx-doc.org/en/master/usage/configuration.html
 """
+
 import os
 from functools import wraps
 from pathlib import Path
@@ -11,8 +12,7 @@ from pathlib import Path
 from sphinxcontrib_autodocgen import AutoDocGen
 
 os.environ["UNFCCC_GHG_ROOT_PATH"] = str(Path("..") / "..")
-import unfccc_ghg_data  # noqa: E402, I001
-
+import unfccc_ghg_data  # noqa: E402
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information

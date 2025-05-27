@@ -6,7 +6,6 @@ run the appropriate script to extract the submission data
 
 """
 
-
 import argparse
 
 import datalad.api

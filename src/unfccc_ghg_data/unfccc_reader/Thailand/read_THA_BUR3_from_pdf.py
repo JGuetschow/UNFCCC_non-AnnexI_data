@@ -5,6 +5,7 @@ This script reads data from Thailand's BUR3
 Data are read from pdf using camelot
 
 """
+
 import camelot
 import pandas as pd
 import primap2 as pm2

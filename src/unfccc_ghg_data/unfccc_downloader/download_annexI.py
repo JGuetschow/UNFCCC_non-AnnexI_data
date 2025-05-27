@@ -5,6 +5,7 @@ Download and unzip data from UNFCCC National Inventory Submissions.
 Based on download.py from national-inventory-submissions
 (https://github.com/openclimatedata/national-inventory-submisions)
 """
+
 import argparse
 import os
 import shutil

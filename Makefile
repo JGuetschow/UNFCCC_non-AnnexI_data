@@ -37,7 +37,7 @@ ruff-fixes:  ## fix the code using ruff
     # format before and after checking so that the formatted stuff is checked and
     # the fixed stuff is formatted
 	poetry run ruff format src tests scripts docs/source/conf.py
-	poetry run ruff src tests scripts docs/source/conf.py  --fix
+	poetry run ruff check src tests scripts docs/source/conf.py  --fix
 	poetry run ruff format src tests scripts docs/source/conf.py
 
 .PHONY: ruff-fixes-current

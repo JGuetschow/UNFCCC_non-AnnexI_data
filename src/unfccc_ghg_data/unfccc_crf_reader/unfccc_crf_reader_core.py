@@ -352,14 +352,14 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
                 crf_spec = getattr(crf, f"{submission_type}{submission_year}")
             except Exception as ex:
                 raise ValueError(  # noqa: TRY003
-                    f"No terminology exists for submission year " f"{submission_year}"
+                    f"No terminology exists for submission year {submission_year}"
                 ) from ex
     else:
         try:
             crf_spec = getattr(crf, f"{submission_type}{submission_year}")
         except Exception as ex:
             raise ValueError(  # noqa: TRY003
-                f"No terminology exists for submission year " f"{submission_year}"
+                f"No terminology exists for submission year {submission_year}"
             ) from ex
 
     # now loop over files and read them
@@ -895,7 +895,7 @@ def get_country_folders(
     submission_type: str = "CRF",
 ) -> list[Path]:
     """
-    get folders which contain CRF or BTR/CRT submissions for given countries
+    Get folders which contain CRF or BTR/CRT submissions for given countries
 
     Parameters
     ----------

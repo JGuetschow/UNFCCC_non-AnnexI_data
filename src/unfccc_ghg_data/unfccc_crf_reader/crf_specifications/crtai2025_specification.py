@@ -15,7 +15,7 @@ specific items in categories XXXXX
 Tables included:
 
 * **Energy:** 'Table1', 'Table1.A(a)s1', 'Table1.A(a)s2', 'Table1.A(a)s3',
-'Table1.A(a)s4', 'Table1.B.1', 'Table1.B.2', 'Table1.C',
+    'Table1.A(a)s4', 'Table1.B.1', 'Table1.B.2', 'Table1.C',
 * **Industrial processes:** 'Table2(I), 'Table2(II)',
 * **Agriculture:** 'Table3', 'Table3.A', 'Table3.B(a)', 'Table3.B(b)', 'Table3.C', 'Table3.D', 'Table3.E',
 * **LULUCF:**  'Table4',
@@ -31,8 +31,8 @@ Missing tables are:
 * **Waste**:  'Table5.A', 'Table5.B', 'Table5.C', 'Table5.D'
 * **Summary:** 'Summary2', 'Summary3', 'Flex_summary',
 * **other:** 'Table6', 'Table7', 'Table8s1', 'Table8s2',
-'Table9', 'Table10s1', 'Table10s2', 'Table10s3', 'Table10s4', 'Table10s5',
-'Table10s6'
+    'Table9', 'Table10s1', 'Table10s2', 'Table10s3', 'Table10s4', 'Table10s5',
+    'Table10s6'
 
 
 
@@ -59,7 +59,7 @@ CRTAI2025 = {
             "stop_cats": [
                 "",
                 "nan",
-                '(1) "Total GHG emissions" does not include NOX, ' "CO, NMVOC and SOX.",
+                '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],
         },

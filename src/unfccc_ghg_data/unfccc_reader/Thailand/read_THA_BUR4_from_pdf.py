@@ -18,7 +18,6 @@ tables
 
 """
 
-
 import pandas as pd
 import primap2 as pm2
 

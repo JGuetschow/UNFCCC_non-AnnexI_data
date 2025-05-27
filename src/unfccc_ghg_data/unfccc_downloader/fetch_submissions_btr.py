@@ -1,6 +1,7 @@
 """
 Fetch list of BTR submissions from UNFCCC website
 """
+
 import argparse
 import time
 from pathlib import Path

@@ -4,7 +4,6 @@ configuration for South Korea's 2023 inventory
 Contains category name translations and information on category mapping and aggregation
 """
 
-
 terminology_proc = "IPCC2006_PRIMAP"
 gwp_to_use = "AR5GWP100"
 

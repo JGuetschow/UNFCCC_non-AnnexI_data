@@ -4,6 +4,7 @@ Helper functions for the DI reader
 The helper functions find the latest read data, determine the filename from country
 code and other parameters of a dataset, find present data based on hashes etc.
 """
+
 import json
 import re
 from datetime import date

@@ -8,6 +8,7 @@ in some cases. For animal species this leads to wrong attribution of emissions
 from several species to one.
 
 """
+
 import pandas as pd
 import primap2 as pm2
 
@@ -75,7 +76,7 @@ if __name__ == "__main__":
     for entity in entity_unit_filter:
         unit = entity_unit_filter[entity]["from"]
         data_current = data_pd.query(
-            f"Pollutant == '{entity}' " f"& ConvertTo == '{unit}'"
+            f"Pollutant == '{entity}' & ConvertTo == '{unit}'"
         ).copy()
         data_current["ConvertTo"] = data_current["ConvertTo"].replace(
             {unit: entity_unit_filter[entity]["to"]}

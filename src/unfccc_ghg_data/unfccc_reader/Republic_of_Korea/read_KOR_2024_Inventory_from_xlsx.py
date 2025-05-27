@@ -170,8 +170,8 @@ if __name__ == "__main__":
                     df_current.iloc[i] = row
                 else:
                     raise ValueError(  # noqa: TRY003
-                        f'Row to fix, but no fix defined {lastrow}, '
-                        f'{row["분야·부문/연도"]}'
+                        f"Row to fix, but no fix defined {lastrow}, "
+                        f"{row['분야·부문/연도']}"
                     )
             else:
                 lastrow = row["분야·부문/연도"]

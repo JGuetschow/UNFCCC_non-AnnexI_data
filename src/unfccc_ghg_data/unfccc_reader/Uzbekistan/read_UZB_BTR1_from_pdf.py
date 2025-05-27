@@ -6,6 +6,7 @@ Some tables are ignored due to inconsistencies (precursors)
 
 
 """
+
 import camelot
 import numpy as np
 import pandas as pd

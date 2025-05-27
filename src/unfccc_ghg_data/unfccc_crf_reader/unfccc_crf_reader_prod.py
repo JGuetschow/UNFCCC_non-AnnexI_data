@@ -128,7 +128,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
             crf_spec = getattr(crf, f"{submission_type}{submission_year}")
         except Exception as ex:
             raise ValueError(  # noqa: TRY003
-                f"No terminology exists for submission year/round " f"{submission_year}"
+                f"No terminology exists for submission year/round {submission_year}"
             ) from ex
 
     tables = [
@@ -356,8 +356,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
             # TODO: function that creates the filename so if we modify something it's
             #  modified everywhere (but will break old data, so better keep file name)
             output_filename = (
-                f"{country_code}_{submission_type}{submission_year}_"
-                f"{date_or_version}"
+                f"{country_code}_{submission_type}{submission_year}_{date_or_version}"
             )
 
             if not output_folder.exists():
@@ -655,9 +654,7 @@ def read_new_crf_for_year_datalad(  # noqa: PLR0912
     # cmd = f"python3 {script.as_posix()} --countries={countries} "\
     #      f"--submission_year={submission_year}"
     cmd = (
-        f"python3 {script.as_posix()} "
-        f"--submission_year={submission_year} "
-        f"--type={type}"
+        f"python3 {script.as_posix()} --submission_year={submission_year} --type={type}"
     )
 
     if re_read:

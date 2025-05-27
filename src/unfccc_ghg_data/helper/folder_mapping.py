@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # read the data using datalad run.
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--folder", help="folder name, relative to " "repository root folder"
+        "--folder", help="folder name, relative to repository root folder"
     )
     args = parser.parse_args()
     folder = args.folder

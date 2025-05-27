@@ -5,7 +5,6 @@ inventory from xlsx
 
 """
 
-
 gwp_to_use = "AR5GWP100"
 
 sheets_to_read = {

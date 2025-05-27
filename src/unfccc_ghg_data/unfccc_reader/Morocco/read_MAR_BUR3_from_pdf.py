@@ -5,6 +5,7 @@ This script reads data from Morocco's BUR3
 Data are read from pdf using camelot
 
 """
+
 import copy
 
 import camelot

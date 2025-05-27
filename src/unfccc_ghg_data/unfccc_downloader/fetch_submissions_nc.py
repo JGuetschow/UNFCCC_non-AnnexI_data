@@ -8,7 +8,6 @@ Based on `process_bur` from national-inventory-submissions
 (https://github.com/openclimatedata/national-inventory-submisions)
 """
 
-
 import re
 import time
 from pathlib import Path

@@ -2,6 +2,7 @@
 
 Functions used by the different readers and downloaders in the unfccc_ghg_data package
 """
+
 from __future__ import annotations
 
 import copy
@@ -229,7 +230,7 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                 if len(data_agg.data_vars) > 0:
                     print(f"Generating {cat_to_generate} through subtraction")
                     data_agg = data_agg.expand_dims(
-                        [f"category (" f"{cat_terminology_in})"]
+                        [f"category ({cat_terminology_in})"]
                     )
 
                     data_agg = data_agg.assign_coords(
@@ -375,13 +376,13 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
     # amend title and comment
     if "comment" in data_country.attrs.keys():
         data_country.attrs["comment"] = (
-            data_country.attrs["comment"] + f" Processed on " f"{date.today()}"
+            data_country.attrs["comment"] + f" Processed on {date.today()}"
         )
     else:
-        data_country.attrs["comment"] = f"Processed on " f"{date.today()}"
+        data_country.attrs["comment"] = f"Processed on {date.today()}"
 
     data_country.attrs["title"] = (
-        data_country.attrs["title"] + f" Processed on " f"{date.today()}"
+        data_country.attrs["title"] + f" Processed on {date.today()}"
     )
 
     return data_country
@@ -396,7 +397,7 @@ def convert_categories(
     tolerance: float = 0.01,
 ) -> xr.Dataset:
     """
-    convert data from one category terminology to another
+    Convert data from one category terminology to another
 
     """
     print(f"converting categories to {terminology_to}")
@@ -450,10 +451,10 @@ def get_country_name(
         try:
             country = pycountry.countries.get(alpha_3=country_code)
             country_name = country.name
-        except:  # noqa: E722
-            raise ValueError(  # noqa: TRY003, TRY200
-                f"Country code {country_code} can not be mapped to " f"any country"
-            )
+        except Exception as ex:
+            raise ValueError(  # noqa: TRY003
+                f"Country code {country_code} can not be mapped to any country"
+            ) from ex
 
     return country_name
 
@@ -485,26 +486,26 @@ def get_country_code(
             # check if it's a 3 letter code
             country = pycountry.countries.get(alpha_3=country_name)
             country_code = country.alpha_3
-        except:  # noqa: E722
+        except Exception as ex:
             try:
                 country = pycountry.countries.search_fuzzy(
                     country_name.replace("_", " ")
                 )
-            except:  # noqa: E722
-                raise ValueError(  # noqa: TRY200, TRY003
+            except Exception as ex_inner:
+                raise ValueError(  # noqa: TRY003
                     f"Country name {country_name} can not be mapped to "
                     f"any country code. Try using the ISO3 code directly."
-                )
+                ) from ex_inner
             if len(country) > 1:
                 country_code = None
                 for current_country in country:
                     if current_country.name == country_name:
                         country_code = current_country.alpha_3
                 if country_code is None:
-                    raise ValueError(  # noqa: TRY200, TRY003
+                    raise ValueError(  # noqa: TRY003
                         f"Country name {country_name} has {len(country)} "
                         f"possible results for country codes."
-                    )
+                    ) from ex
 
             country_code = country[0].alpha_3
 
@@ -914,7 +915,7 @@ def get_code_file(
 
 
 def fix_rows(
-    data: pd.DataFrame, rows_to_fix: list, col_to_use: str, n_rows: int
+    data: pd.DataFrame, rows_to_fix: list, col_to_use: str | int, n_rows: int
 ) -> pd.DataFrame:
     """
     Fix rows that have been split during reading from pdf

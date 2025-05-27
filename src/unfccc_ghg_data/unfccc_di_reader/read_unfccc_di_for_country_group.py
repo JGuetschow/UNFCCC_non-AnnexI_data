@@ -13,7 +13,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--annexI",
-        help="read for AnnexI countries (default is for " "non-AnnexI)",
+        help="read for AnnexI countries (default is for non-AnnexI)",
         action="store_true",
     )
     args = parser.parse_args()

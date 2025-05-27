@@ -99,7 +99,7 @@ aggregate_cats = {
     },
     "M.3.C.1.AG": {
         "sources": ["3.C.1.c", "3.C.1.b"],
-        "name": "Emissions from Biomass " "Burning (Agriculture)",
+        "name": "Emissions from Biomass Burning (Agriculture)",
     },
     "3.C.1": {
         "sources": ["3.C.1.c", "3.C.1.b"],

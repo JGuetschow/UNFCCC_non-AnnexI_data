@@ -4,7 +4,6 @@ Full configuration including PRIMAP2 conversion config and metadata
 
 """
 
-
 gwp_to_use = "AR5GWP100"
 
 

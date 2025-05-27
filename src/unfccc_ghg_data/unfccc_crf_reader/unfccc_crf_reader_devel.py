@@ -116,8 +116,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     crf_spec = getattr(crf, f"{submission_type}{submission_year}")
                 except Exception as ex:
                     raise ValueError(  # noqa: TRY003
-                        f"No terminology exists for submission year "
-                        f"{submission_year}"
+                        f"No terminology exists for submission year {submission_year}"
                     ) from ex
         else:
             try:
@@ -165,7 +164,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
             )
             print(message)
             exceptions.append(
-                f"No_sub: {country_name} ({current_country_code}): " f"{message}"
+                f"No_sub: {country_name} ({current_country_code}): {message}"
             )
             date_or_version = None
             pass
@@ -346,7 +345,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                 output_folder / f"{data_year}_last_row_info_"
                 f"{today.strftime('%Y-%m-%d')}.csv"
             )
-        print(f"Data found in the last row. Saving log to " f"{log_location}")
+        print(f"Data found in the last row. Saving log to {log_location}")
         save_last_row_info(last_row_info, log_location)
 
     if len(empty_tables) > 0:
@@ -462,8 +461,7 @@ def save_unknown_categories_info(
                     countries_cat = f"{countries_cat}; {country} ({idx_country})"
                 else:
                     countries_cat = (
-                        f"{countries_cat}; {country} ({years_country}) "
-                        f"({idx_country})"
+                        f"{countries_cat}; {country} ({years_country}) ({idx_country})"
                     )
             processed_cats.append([table, cat, countries_cat])
 

@@ -56,7 +56,7 @@ CRT1_TUN = {
             "stop_cats": [
                 "",
                 "nan",
-                '(1) "Total GHG emissions" does not include NOX, ' "CO, NMVOC and SOX.",
+                '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],
         },

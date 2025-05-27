@@ -1,6 +1,7 @@
 """
 Get UNFCCC submissons for AnnexI countries (National Inventory Submissions)
 """
+
 import argparse
 import sys
 import time

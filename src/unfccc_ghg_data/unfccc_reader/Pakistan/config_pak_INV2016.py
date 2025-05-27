@@ -298,7 +298,7 @@ category_conversion = {
         "0": {
             "sources": ["1", "2", "3", "4", "5"],
         },
-        "M.AG": {  #
+        "M.AG": {
             "sources": ["3.A", "M.AG.ELV"],
             # "orig_cat_name": "Agriculture",
         },

@@ -42,7 +42,7 @@ if __name__ == "__main__":
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = "PAK_2026-Invetory_2016_"
+    output_filename = "PAK_2026-Inventory_2016_"
     compression = dict(zlib=True, complevel=9)
     inventory_file_pdf = "GHGINVENTORY2011-2012_FINAL_GCISCRR19.pdf"
 

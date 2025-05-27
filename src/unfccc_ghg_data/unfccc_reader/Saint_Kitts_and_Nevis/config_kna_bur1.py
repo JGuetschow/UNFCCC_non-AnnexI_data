@@ -612,7 +612,7 @@ country_processing_step2 = {
                     "SF6",
                 ],
                 "sel": {
-                    f'category ({coords_terminologies["category"]})': [
+                    f"category ({coords_terminologies['category']})": [
                         "1",
                         "1.A",
                         "1.B",

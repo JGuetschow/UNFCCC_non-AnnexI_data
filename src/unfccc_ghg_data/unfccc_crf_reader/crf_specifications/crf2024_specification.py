@@ -35,7 +35,6 @@ Missing tables are:
 * Add activity data
 """
 
-
 from .util import unit_info
 
 # TODO: GWPs now differ by country. This has to be implemented (maybe giving

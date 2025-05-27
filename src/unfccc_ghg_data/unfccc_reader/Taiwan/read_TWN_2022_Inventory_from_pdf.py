@@ -75,7 +75,6 @@ if __name__ == "__main__":
 
     coords_value_filling = {}
 
-    #
     filter_remove = {}
 
     filter_keep = {}

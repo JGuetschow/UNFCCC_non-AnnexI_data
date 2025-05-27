@@ -1,6 +1,7 @@
 """
 Functions for the datalad interface of the UNFCCC DI reader.
 """
+
 from datetime import date
 from typing import Optional, Union
 

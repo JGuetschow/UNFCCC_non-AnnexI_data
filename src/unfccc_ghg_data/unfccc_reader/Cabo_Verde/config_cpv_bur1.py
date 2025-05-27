@@ -263,14 +263,14 @@ country_processing_step2 = {
                 "basket": "1",
                 "basket_contents": ["1.A"],
                 "entities": ["CO2", "CH4", "N2O"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             # Values for 1995/2000/2005/2010/2015/2019 are only available for CO2 and F-gases (table 6)
             "2_CO2": {
                 "basket": "2",
                 "basket_contents": ["2.A", "2.B", "2.C", "2.D", "2.H"],
                 "entities": ["CO2"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             # "2_KYOTO": {  # commented as KYOTOGHG only present for bunkers, so aggregate later
             #     # error of 3.5% for KYOTOGHG (AR6GWP100)
@@ -322,19 +322,19 @@ country_processing_step2 = {
                 "basket": "3",
                 "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
                 "entities": ["CH4"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "3_CO2": {
                 "basket": "3",
                 "basket_contents": ["3.B", "3.C", "3.D"],
                 "entities": ["CO2"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             "3_N2O": {
                 "basket": "3",
                 "basket_contents": ["3.A", "3.B", "3.C", "3.D"],
                 "entities": ["N2O"],
-                "dim": f'category ({coords_terminologies["category"]})',
+                "dim": f"category ({coords_terminologies['category']})",
             },
             # "3_KYOTO": {  # no original data here. aggregate basket later
             #     "basket": "3",

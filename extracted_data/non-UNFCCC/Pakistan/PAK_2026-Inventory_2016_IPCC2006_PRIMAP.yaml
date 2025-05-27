@@ -1,0 +1,25 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom pdf by Johannes Gütschow Processed on 2025-05-27
+  contact: mail@johannes-guetschow.de
+  entity: CO2
+  institution: Global Change Impact Studies Centre, Ministry of Climate Change, Islamabad,
+    Pakistan
+  references: https://gcisc.org.pk/GHGINVENTORY2011-2012_FINAL_GCISCRR19.pdf
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Greenhouse Gas Emission Inventory of Pakistan for the Year 2011-2012 Processed
+    on 2025-05-27
+data_file: PAK_2026-Inventory_2016_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

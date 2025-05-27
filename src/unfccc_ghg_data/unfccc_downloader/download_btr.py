@@ -1,6 +1,7 @@
 """
 Download BTR submissions from UNFCCC website.
 """
+
 import argparse
 import os
 import shutil
@@ -42,7 +43,7 @@ if __name__ == "__main__":
     )
     parser = argparse.ArgumentParser(description=descr)
 
-    parser.add_argument("--round", help="Submission round to download, " "e.g. 1")
+    parser.add_argument("--round", help="Submission round to download, e.g. 1")
 
     args = parser.parse_args()
     submission_round = int(args.round)

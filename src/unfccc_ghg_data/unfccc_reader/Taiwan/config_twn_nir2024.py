@@ -336,7 +336,6 @@ coords_value_mapping = {
 
 coords_value_filling = {}
 
-#
 filter_remove = {}
 
 filter_keep = {}

@@ -27,7 +27,9 @@ unfccc\_ghg\_data.unfccc\_reader
   unfccc_ghg_data.unfccc_reader.Montenegro
   unfccc_ghg_data.unfccc_reader.Morocco
   unfccc_ghg_data.unfccc_reader.Nigeria
+  unfccc_ghg_data.unfccc_reader.Pakistan
   unfccc_ghg_data.unfccc_reader.Peru
+  unfccc_ghg_data.unfccc_reader.Philippines
   unfccc_ghg_data.unfccc_reader.Republic_of_Korea
   unfccc_ghg_data.unfccc_reader.Saint_Kitts_and_Nevis
   unfccc_ghg_data.unfccc_reader.Singapore
