@@ -4269,7 +4269,7 @@ CRTAI2025 = {
                 ["4.H.9"],
                 2,
             ],
-            ["\\C-SGP-NZL-LTU-ECU-ROU-ESP\\ Other", ["4.H.9"], 2],
+            ["\\C-SGP-NZL-LTU-ECU-ROU-ESP-CYP\\ Other", ["4.H.9"], 2],
             ["\\C-COL-HRV\\ 4.H. Other", ["4.H.9"], 2],
             ["\\C-BRA\\ Total", ["4.H.9"], 2],
             ["\\C-HUN\\ All other", ["4.H.9"], 2],
