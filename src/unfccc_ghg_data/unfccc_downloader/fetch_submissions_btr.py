@@ -75,7 +75,12 @@ if __name__ == "__main__":
         if "href" not in link.attrs:
             continue
         href = link.attrs["href"]
-        if ("documents/" in href) or ("node/" in href) or ("NODE/" in href):
+        if (
+            ("documents/" in href)
+            or ("node/" in href)
+            or ("NODE/" in href)
+            or ("files/" in href)
+        ):
             if "title" in link.attrs.keys():
                 title = link.attrs["title"]
             else:

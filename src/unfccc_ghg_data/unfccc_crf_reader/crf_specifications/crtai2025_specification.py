@@ -2709,12 +2709,12 @@ CRTAI2025 = {
             ["2.G.2. SF6 and PFCs from other product use", ["2.G.2"], 2],
             ["2.G.3. N2O from product uses", ["2.G.3"], 2],
             ["2.G.4. Other", ["2.G.4"], 2],
-            ["\\C!-AUS-ECU\\ 2.H. Other (5)", ["2.H"], 1],
-            ["\\C-AUS-ECU\\ 2.H. Other (please specify) (5)", ["2.H"], 1],
-            ["\\C!-AUS-ECU\\ 2.H.1. Pulp and paper", ["2.H.1"], 2],
-            ["\\C!-AUS-ECU\\ 2.H.2. Food and beverages industry", ["2.H.2"], 2],
-            ["\\C-AUS-ECU\\ 2.H.2. Food and Beverages Industry", ["2.H.2"], 2],
-            ["\\C!-AUS-ECU\\ 2.H.3. Other (please specify)", ["2.H.3"], 2],
+            ["\\C!-ECU\\ 2.H. Other (5)", ["2.H"], 1],
+            ["\\C-ECU\\ 2.H. Other (please specify) (5)", ["2.H"], 1],
+            ["\\C!-ECU\\ 2.H.1. Pulp and paper", ["2.H.1"], 2],
+            ["\\C!-ECU\\ 2.H.2. Food and beverages industry", ["2.H.2"], 2],
+            ["\\C-ECU\\ 2.H.2. Food and Beverages Industry", ["2.H.2"], 2],
+            ["\\C!-ECU\\ 2.H.3. Other (please specify)", ["2.H.3"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-URY-"
                 "UZB-FRA-VEN-CIV-CUB-SAU\\ Other industrial processes and product use [IPCC Software]",
@@ -3246,8 +3246,7 @@ CRTAI2025 = {
             ["\\C-LUX\\ Breeding pigs", ["3.A.3.a.LUX-ii"], 2],
             ["\\C-LUX\\ Weaners", ["3.A.3.a.LUX-iii"], 2],
             # other livestock
-            ["\\C!-AUS-CHL\\ 3.A.4. Other livestock(4)", ["3.A.4"], 0],
-            ["\\C-AUS\\ 3.A.4. Other livestock (4)", ["3.A.4"], 0],
+            ["\\C!-CHL\\ 3.A.4. Other livestock(4)", ["3.A.4"], 0],
             ["\\C-CHL\\ 3.A.4. Other livestock (please specify) (4)", ["3.A.4"], 0],
             ["\\C-AUS-CHL\\ Drop down list:", ["\\IGNORE"], 1],
             ["3.A.4.a. Buffalo", ["3.A.4.a"], 1],
@@ -4254,8 +4253,10 @@ CRTAI2025 = {
             ["\\C-GBR\\ 4.C. Grassland", ["4.H.3"], 2],
             ["\\C-FRA\\ Biogenic NMVOCs from managed forest", ["4.H.4"], 2],
             ["\\C-FRA\\ Reservoir of Petit-Saut in French Guiana", ["4.H.5"], 2],
-            ["\\C-AUS-ECU\\ Aquaculture", ["4.H.10"], 2],
-            ["\\C-AUS-ECU\\ Seagrass", ["4.H.11"], 2],
+            ["\\C-ECU\\ Aquaculture", ["4.H.10"], 2],
+            ["\\C-ECU\\ Seagrass", ["4.H.11"], 2],
+            ["\\C-AUS\\ N2O Emissions from aquaculture", ["4.H.10"], 2],
+            ["\\C-AUS\\ CO2 Emissions from seagrass removal", ["4.H.11"], 2],
             ["\\C-ECU\\ Biomass burning", ["4.H.12"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
@@ -4322,7 +4323,8 @@ CRTAI2025 = {
             ["5.D.2. Industrial wastewater", ["5.D.2"]],
             ["5.D.3. Other", ["5.D.3"]],
             ["5.E. Other (please specify)", ["5.E"]],
-            ["Accidential fires at Solid Waste Disposal Sites", ["5.E.9"]],
+            ["\\C!-AUS\\ Accidential fires at Solid Waste Disposal Sites", ["5.E.9"]],
+            ["\\C-AUS\\ Accidental fires at Solid Waste Disposal Sites", ["5.E.9"]],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-UZB-VEN-CIV-CUB-SAU\\ CH₄ and N₂O emissions from methane flaring at waste facilities "
