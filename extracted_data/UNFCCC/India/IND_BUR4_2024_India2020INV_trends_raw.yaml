@@ -1,0 +1,22 @@
+attrs:
+  area: area (ISO3)
+  cat: category (India2020INV)
+  comment: Read from pdf by Johannes Gütschow.
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change (UNFCCC)
+  references: https://https://unfccc.int/documents/645149
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: India. Biennial update report (BUR). BUR 4.
+data_file: IND_BUR4_2024_India2020INV_trends_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (India2020INV)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
