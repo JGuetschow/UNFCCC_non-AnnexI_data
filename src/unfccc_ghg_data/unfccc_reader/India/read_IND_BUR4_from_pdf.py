@@ -18,10 +18,13 @@ from unfccc_ghg_data.helper import (
     downloaded_data_path,
     extracted_data_path,
     fix_rows,
+    process_data_for_country,
 )
 
 # configuration import
 from unfccc_ghg_data.unfccc_reader.India.config_ind_bur4 import (
+    cat_conversion_inventory,
+    cat_conversion_trends,
     coords_cols,
     coords_cols_trends,
     coords_defaults,
@@ -31,9 +34,11 @@ from unfccc_ghg_data.unfccc_reader.India.config_ind_bur4 import (
     coords_value_mapping_trends,
     filter_remove,
     filter_remove_trends,
+    gas_baskets,
     index_cols,
     meta_data,
     page_def_trends,
+    terminology_proc,
     unit_info,
 )
 
@@ -185,4 +190,93 @@ if __name__ == "__main__":
         encoding=encoding,
     )
 
-    print("bla")
+    # #########################################
+    # convert 2020 inventory to 2006 categories
+    # #########################################
+
+    #### processing
+    data_inventory_proc_pm2 = data_inventory_pm2
+
+    # combine CO2 emissions and removals
+    temp_CO2 = data_inventory_proc_pm2["CO2 emission"].copy()
+    # data_proc_pm2["CO2"] = data_proc_pm2[["CO2 emissions", "CO2 removals"]].to_array()
+    # .pr.sum(dim="variable", skipna=True, min_count=1)
+    data_inventory_proc_pm2["CO2 removal"] = data_inventory_proc_pm2["CO2 removal"] * -1
+    data_inventory_proc_pm2["CO2"] = data_inventory_proc_pm2[
+        ["CO2 emission", "CO2 removal"]
+    ].pr.sum(dim="entity", skipna=True, min_count=1)
+    data_inventory_proc_pm2["CO2"].attrs = temp_CO2.attrs
+    data_inventory_proc_pm2["CO2"].attrs["entity"] = "CO2"
+    data_inventory_proc_pm2["CO2"] = data_inventory_proc_pm2["CO2"].fillna(temp_CO2)
+
+    # actual processing
+
+    # processing_info_country = {
+    #     'remove_ts': remove_ts2019,
+    # }
+
+    data_inventory_proc_pm2 = process_data_for_country(
+        data_inventory_proc_pm2,
+        entities_to_ignore=["CO2 emission", "CO2 removal"],
+        gas_baskets=gas_baskets,
+        processing_info_country=None,
+        cat_terminology_out=terminology_proc,
+        category_conversion=cat_conversion_inventory,
+        # sectors_out = sectors_to_save,
+    )
+
+    # adapt source and metadata
+    current_source = data_inventory_proc_pm2.coords["source"].to_numpy()[0]
+    data_temp = data_inventory_proc_pm2.pr.loc[{"source": current_source}]
+    data_inventory_proc_pm2 = data_inventory_proc_pm2.pr.set(
+        "source", "BUR_NIR", data_temp
+    )
+    data_inventory_proc_pm2 = data_inventory_proc_pm2.pr.loc[{"source": ["BUR_NIR"]}]
+
+    # ######################################
+    # convert trends data to 2006 categories
+    # ######################################
+
+    #### processing
+    data_trends_proc_pm2 = data_trends_pm2
+
+    # actual processing
+
+    terminology_proc = "IPCC2006_PRIMAP"
+
+    data_trends_proc_pm2 = process_data_for_country(
+        data_trends_proc_pm2,
+        entities_to_ignore=[],
+        gas_baskets={},
+        cat_terminology_out=terminology_proc,
+        category_conversion=cat_conversion_trends,
+    )
+
+    # adapt source and metadata
+    # TODO: processing info is present twice
+    current_source = data_trends_proc_pm2.coords["source"].to_numpy()[0]
+    data_temp = data_trends_proc_pm2.pr.loc[{"source": current_source}]
+    data_trends_proc_pm2 = data_trends_proc_pm2.pr.set("source", "BUR_NIR", data_temp)
+    data_trends_proc_pm2 = data_trends_proc_pm2.pr.loc[{"source": ["BUR_NIR"]}]
+
+    # combine two datasets and save data
+    data_pm2 = data_inventory_proc_pm2.pr.merge(data_trends_proc_pm2)
+
+    # convert back to IF to have units in the fixed format
+    data_if = data_pm2.pr.to_interchange_format()
+
+    # ###
+    # save processed data to IF and native format
+    # ###
+    if not output_folder.exists():
+        output_folder.mkdir()
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + terminology_proc),
+        data_if,
+    )
+
+    encoding = {var: compression for var in data_pm2.data_vars}
+    data_pm2.pr.to_netcdf(
+        output_folder / (output_filename + terminology_proc),
+        encoding=encoding,
+    )

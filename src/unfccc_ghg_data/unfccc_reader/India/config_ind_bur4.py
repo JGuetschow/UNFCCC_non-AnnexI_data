@@ -293,8 +293,10 @@ meta_data = {
 
 
 # processing
+terminology_proc = "IPCC2006_PRIMAP"
+
 # conversion has to be done individually for inventory and trends as they use different categories
-cat_conversion_2019 = {
+cat_conversion_inventory = {
     "mapping": {
         "0": "0",
         "1": "1",
@@ -398,34 +400,38 @@ cat_conversion_2019 = {
         "M.BIO": "M.BIO",
     },
     "aggregate": {
+        "1.A.1.a": {
+            "sources": ["1.A.1.a.1"],
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
+        },
         "1.A.2.f": {
             "sources": ["M.1.A.2.f.1", "M.1.A.2.f.2", "M.1.A.2.f.3", "M.1.A.2.f.4"],
-            "filter": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
         },
         "1.A.2.m": {
             "sources": ["M.1.A.2.m.1", "M.1.A.2.m.2"],
-            "filter": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
         },
         "1.A.3.a": {
             "sources": ["1.A.3.a.2"],
-            "filter": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
         },
         "1.A.3.d": {
             "sources": ["1.A.3.d.2"],
-            "filter": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
         },
         # '1.A.4': {'sources': ['1.A.4.a', '1.A.4.b', '1.A.4.c'],
-        #             'filter': {
+        #             'sel': {
         #                 'entity': ['CO2', 'CH4', 'N2O', f'KYOTOGHG']
         #             },
         #             },  # not possible as trend tables lack resolution
         "1.B.1.a": {
             "sources": ["1.B.1.a.1", "1.B.1.a.2"],
-            "filter": {"entity": ["CH4", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "KYOTOGHG"]},
         },
         "2.A.4": {
             "sources": ["2.A.4.a", "2.A.4.d"],
-            "filter": {"entity": ["CO2", "KYOTOGHG"]},
+            "sel": {"entity": ["CO2", "KYOTOGHG"]},
         },
         "2.B.8": {
             "sources": [
@@ -436,64 +442,64 @@ cat_conversion_2019 = {
                 "2.B.8.e",
                 "2.B.8.f",
             ],
-            "filter": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
         },
         "2.B": {
             "sources": ["M.2.B.1-8", "2.B.9"],
-            "filter": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG", "HFC23"]},
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG", "HFC23"]},
         },
         "2.H": {
             "sources": ["2.H.1"],
-            # 'filter': {
+            # 'sel': {
             #     'entity': ['CO2', 'CH4', 'N2O', 'KYOTOGHG', 'HFC23']
             # },
         },
         "2": {
             "sources": ["2.A", "2.B", "2.C", "2.D", "2.F", "2.H"],
-            # 'filter': {
+            # 'sel': {
             #     'entity': ['CO2', 'CH4', 'N2O', 'KYOTOGHG', 'HFC23']
             # },
         },
         "3.A": {
             "sources": ["3.A.1", "3.A.2"],
             #'name': 'Livestock'
-            "filter": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
         },
         "3.C.1": {
             "sources": ["3.C.1.b"],
             #'name': 'Emissions from biomass burning'
-            "filter": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
         },
         "M.3.C.1.AG": {
             "sources": ["3.C.1.b"],
             #'name': 'Emissions from biomass burning (Agriculture)'
-            "filter": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
         },
         "3.C": {
             "sources": ["3.C.1", "M.3.C.45.AG", "3.C.7"],
             #'name': 'Aggregate sources and non-CO2 emissions sources on land'
-            "filter": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
         },
         "M.3.C.AG": {
             "sources": ["M.3.C.1.AG", "M.3.C.45.AG", "3.C.7"],
             #'name': 'Aggregate sources and non-CO2 emissions sources on land ('
             #        'Agriculture)'
-            "filter": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
         },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG"],
             #'name': 'Agriculture excluding livestock'
-            "filter": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
         },
         # consistency check for Agriculture
         "M.AG": {
             "sources": ["M.AG.ELV", "3.A"],
-            "filter": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CH4", "N2O", "KYOTOGHG"]},
         },
         "3": {
             "sources": ["M.AG", "M.LULUCF"],
             #'name': 'AFOLU'
-            "filter": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
+            "sel": {"entity": ["CO2", "CH4", "N2O", "KYOTOGHG"]},
         },
         # consistency check on top level categories
         "M.0.EL": {"sources": ["1", "2", "M.AG", "4"]},
