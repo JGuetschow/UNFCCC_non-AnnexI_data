@@ -583,7 +583,7 @@ cat_conversion_trends = {
             #'name': 'Agriculture excluding livestock'
         },
         # AFOLU consistency check
-        "M.AG": {"sources": ["M.AG.ELV", "3.A"]},  #
+        "M.AG": {"sources": ["M.AG.ELV", "3.A"]},
         "M.LULUCF": {"sources": ["3.B", "3.D"]},
         "3": {
             "sources": ["M.AG", "M.LULUCF"],

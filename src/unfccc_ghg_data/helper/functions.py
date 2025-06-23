@@ -512,9 +512,7 @@ def get_country_code(
     return country_code
 
 
-def create_folder_mapping(  # noqa: PLR0912
-    folder: str, extracted: bool = False
-) -> None:
+def create_folder_mapping(folder: str, extracted: bool = False) -> None:  # noqa: PLR0912
     """
     Create a mapping of iso codes to folder names
 

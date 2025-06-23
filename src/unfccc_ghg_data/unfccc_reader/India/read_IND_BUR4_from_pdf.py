@@ -9,7 +9,6 @@ read using camelot as some values were mixed with text and needed manual correct
 
 """
 
-
 import camelot
 import pandas as pd
 import primap2 as pm2
