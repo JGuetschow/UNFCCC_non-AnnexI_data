@@ -1,16 +1,16 @@
 attrs:
   area: area (ISO3)
   cat: category (IPCC2006_PRIMAP)
-  comment: Read fom pdf by Johannes Gütschow Processed on 2025-05-27 Processed on
-    2025-05-27
+  comment: Read fom pdf by Johannes Gütschow Processed on 2025-06-23 Processed on
+    2025-06-23
   contact: mail@johannes-guetschow.de
   gwp_context: AR5GWP100
   institution: UNFCCC
   references: https://unfccc.int/documents/645098
   rights: ''
   scen: scenario (PRIMAP)
-  title: Thailand. 2024 Biennial Transparency Report (BTR). BTR1. Processed on 2025-05-27
-    Processed on 2025-05-27
+  title: Thailand. 2024 Biennial Transparency Report (BTR). BTR1. Processed on 2025-06-23
+    Processed on 2025-06-23
 data_file: THA_BTR1_2024_IPCC2006_PRIMAP.csv
 dimensions:
   '*':
