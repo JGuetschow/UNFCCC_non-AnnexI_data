@@ -99,13 +99,21 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913, PLR0915
         scenario = f"CRF{submission_year}"
         title = f"Data submitted in {submission_year} to the UNFCCC in the common "
         "reporting format (CRF)"
+    elif submission_type == "CRTAI":
+        category_terminology = f"CRTAI{submission_year}"
+        class_terminology = f"CRTAI{submission_year}"
+        scenario = f"CRTAI{submission_year}"
+        title = (
+            f"Data submitted in {submission_year} to the UNFCCC using the "
+            f"common reporting tables (CRT)"
+        )
     else:
         category_terminology = f"CRT{submission_year}"
         class_terminology = f"CRT{submission_year}"
         scenario = f"CRT{submission_year}"
         title = (
-            f"Data submitted in {submission_year} to the UNFCCC using the "
-            f"common reporting tables (CRT)"
+            f"Data submitted for BTR round {submission_year} to the UNFCCC "
+            f"using the common reporting tables (CRT)"
         )
 
     add_coords_cols = {
