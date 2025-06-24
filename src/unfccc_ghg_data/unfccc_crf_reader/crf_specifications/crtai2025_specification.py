@@ -829,7 +829,7 @@ CRTAI2025 = {
                 ["1.A.3.b", "OtherLiquid"],
                 2,
             ],
-            ["\\C-AUS-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             ["Gaseous fuels (6)", ["1.A.3.b", "Gaseous"], 2],
             ["Biomass (3)", ["1.A.3.b", "Biomass"], 2],
             ["\\C!-CHL-ECU\\ Other fossil fuels (7)", ["1.A.3.b", "OtherFF"], 2],
@@ -838,7 +838,7 @@ CRTAI2025 = {
                 ["1.A.3.b", "OtherFF"],
                 2,
             ],
-            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.b", "OFFLubricants"], 3],
+            ["\\C-ECU\\ Lubricants", ["1.A.3.b", "OFFLubricants"], 3],
             ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             # i. Cars
             ["1.A.3.b.i. Cars", ["1.A.3.b.i", "Total"], 2],
@@ -846,7 +846,7 @@ CRTAI2025 = {
             ["Diesel oil", ["1.A.3.b.i", "DieselOil"], 3],
             ["Liquefied petroleum gases (LPG)", ["1.A.3.b.i", "LPG"], 3],
             ["Other liquid fuels (please specify)", ["1.A.3.b.i", "OtherLiquid"], 3],
-            ["\\C-AUS-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
+            ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU\\ Other liquid fuels "
@@ -866,7 +866,7 @@ CRTAI2025 = {
             ["\\C-ZAF\\ Other Kerosene", ["1.A.3.b.i", "Kerosene"], 4],
             ["\\C-ZAF\\ Residual Fuel", ["1.A.3.b.i", "ResidualFuel"], 4],
             ["\\C-UKR\\ Other", ["1.A.3.b.i", "OLOther"], 4],
-            ["\\C-ROU\\ Other liquid fuels", ["1.A.3.b.i", "OLOther"], 4],
+            ["\\C-ROU-CYP\\ Other liquid fuels", ["1.A.3.b.i", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
                 ["1.A.3.b.i", "OLBiodieselFC"],
@@ -888,7 +888,7 @@ CRTAI2025 = {
                 4,
             ],
             ["\\C-CHL-SGP-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
-            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.b.i", "OFFLubricants"], 4],
+            ["\\C-ECU\\ Lubricants", ["1.A.3.b.i", "OFFLubricants"], 4],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.b.i", "OFFBiodieselFC"], 4],
             ["\\C-SVN\\ Fossil part of biofuel", ["1.A.3.b.i", "OFFBiofuelFC"], 4],
             ["\\C-SVK\\ Fossil part of biofuels", ["1.A.3.b.i", "OFFBiofuelFC"], 4],
@@ -916,7 +916,8 @@ CRTAI2025 = {
                 ["1.A.3.b.i", "OFFBiodieselFC"],
                 4,
             ],
-            ["\\C-POL-CYP-ROU\\ Other fossil fuels", ["1.A.3.b.i", "OFFOther"], 4],
+            ["\\C-POL-ROU\\ Other fossil fuels", ["1.A.3.b.i", "OFFOther"], 4],
+            ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.b.i", "OFFOther"], 4],
             ["\\C-COL-UKR\\ Other", ["1.A.3.b.i", "OFFOther"], 4],
             ["\\C-GRC\\ Other fossil fuel", ["1.A.3.b.i", "OFFOther"], 4],
             [
@@ -931,7 +932,7 @@ CRTAI2025 = {
             ["Diesel oil", ["1.A.3.b.ii", "DieselOil"], 3],
             ["Liquefied petroleum gases (LPG)", ["1.A.3.b.ii", "LPG"], 3],
             ["Other liquid fuels (please specify)", ["1.A.3.b.ii", "OtherLiquid"], 3],
-            ["\\C-AUS-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
+            ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU\\ Other liquid fuels "
@@ -944,7 +945,7 @@ CRTAI2025 = {
             ["\\C-UKR\\ Lubricants", ["1.A.3.b.ii", "Lubricants"], 4],
             ["\\C-UKR\\ Kerosene", ["1.A.3.b.ii", "Kerosene"], 4],
             ["\\C-COL-UKR\\ Other", ["1.A.3.b.ii", "OLOther"], 4],
-            ["\\C-ROU\\ Other liquid fuels", ["1.A.3.b.ii", "OLOther"], 4],
+            ["\\C-ROU-CYP\\ Other liquid fuels", ["1.A.3.b.ii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
                 ["1.A.3.b.ii", "OLBiodieselFC"],
@@ -965,7 +966,7 @@ CRTAI2025 = {
                 4,
             ],
             ["\\C-CHL-SGP-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
-            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.b.ii", "OFFLubricants"], 4],
+            ["\\C-ECU\\ Lubricants", ["1.A.3.b.ii", "OFFLubricants"], 4],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.b.ii", "OFFBiodieselFC"], 4],
             ["\\C-SVN\\ Fossil part of biofuel", ["1.A.3.b.ii", "OFFBiofuelFC"], 4],
             ["\\C-SVK\\ Fossil part of biofuels", ["1.A.3.b.ii", "OFFBiofuelFC"], 4],
@@ -997,7 +998,8 @@ CRTAI2025 = {
                 ["1.A.3.b.ii", "OFFBiodieselFC"],
                 4,
             ],
-            ["\\C-POL-CYP-ROU\\ Other fossil fuels", ["1.A.3.b.ii", "OFFOther"], 4],
+            ["\\C-POL-ROU\\ Other fossil fuels", ["1.A.3.b.ii", "OFFOther"], 4],
+            ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.b.ii", "OFFOther"], 4],
             ["\\C-COL-UKR\\ Other", ["1.A.3.b.ii", "OFFOther"], 4],
             ["\\C-GRC\\ other fossil fuel", ["1.A.3.b.ii", "OFFOther"], 4],
             [
@@ -1011,7 +1013,7 @@ CRTAI2025 = {
             ["Diesel oil", ["1.A.3.b.iii", "DieselOil"], 3],
             ["Liquefied petroleum gases (LPG)", ["1.A.3.b.iii", "LPG"], 3],
             ["Other liquid fuels (please specify)", ["1.A.3.b.iii", "OtherLiquid"], 3],
-            ["\\C-AUS-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
+            ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU\\ Other liquid fuels "
@@ -1025,7 +1027,7 @@ CRTAI2025 = {
             ["\\C-UKR\\ Lubricants", ["1.A.3.b.iii", "Lubricants"], 4],
             ["\\C-UKR\\ Keresone", ["1.A.3.b.iii", "Kerosene"], 4],
             ["\\C-COL-UKR\\ Other", ["1.A.3.b.iii", "OLOther"], 4],
-            ["\\C-ROU\\ Other liquid fuels", ["1.A.3.b.iii", "OLOther"], 4],
+            ["\\C-ROU-CYP\\ Other liquid fuels", ["1.A.3.b.iii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
                 ["1.A.3.b.iii", "OLBiodieselFC"],
@@ -1045,7 +1047,7 @@ CRTAI2025 = {
                 4,
             ],
             ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
-            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.b.iii", "OFFLubricants"], 4],
+            ["\\C-ECU\\ Lubricants", ["1.A.3.b.iii", "OFFLubricants"], 4],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.b.iii", "OFFBiodieselFC"], 4],
             ["\\C-SVN\\ Fossil part of biofuel", ["1.A.3.b.iii", "OFFBiofuelFC"], 4],
             ["\\C-SVK\\ Fossil part of biofuels", ["1.A.3.b.iii", "OFFBiofuelFC"], 4],
@@ -1077,7 +1079,8 @@ CRTAI2025 = {
                 ["1.A.3.b.iii", "OFFBiodieselFC"],
                 4,
             ],
-            ["\\C-POL-CYP-ROU\\ Other fossil fuels", ["1.A.3.b.iii", "OFFOther"], 4],
+            ["\\C-POL-ROU\\ Other fossil fuels", ["1.A.3.b.iii", "OFFOther"], 4],
+            ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.b.iii", "OFFOther"], 4],
             ["\\C-COL-UKR\\ Other", ["1.A.3.b.iii", "OFFOther"], 4],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
@@ -1090,7 +1093,7 @@ CRTAI2025 = {
             ["Diesel oil", ["1.A.3.b.iv", "DieselOil"], 3],
             ["Liquefied petroleum gases (LPG)", ["1.A.3.b.iv", "LPG"], 3],
             ["Other liquid fuels (please specify)", ["1.A.3.b.iv", "OtherLiquid"], 3],
-            ["\\C-CHL-ECU-AUS-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
+            ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU\\ Other liquid fuels [IPCC Software 1.A.3.b.iv]",
@@ -1103,7 +1106,7 @@ CRTAI2025 = {
                 4,
             ],
             ["\\C-MCO\\ Lube", ["1.A.3.b.iv", "Lubricants"], 4],
-            ["\\C-MLT-SVN-HRV-LIE\\ Lubricants", ["1.A.3.b.iv", "Lubricants"], 4],
+            ["\\C-AUS-MLT-SVN-HRV-LIE\\ Lubricants", ["1.A.3.b.iv", "Lubricants"], 4],
             ["\\C-PRT\\ Lubricant Oil", ["1.A.3.b.iv", "Lubricants"], 4],
             ["\\C-LVA\\ Lubricant", ["1.A.3.b.iv", "Lubricants"], 4],
             [
@@ -1116,7 +1119,7 @@ CRTAI2025 = {
             ["\\C-RUS\\ Other motor fuels", ["1.A.3.b.iv", "OMotorFuel"], 4],
             ["\\C-COL\\ Other", ["1.A.3.b.iv", "OLOther"], 4],
             ["\\C-UKR\\ Other/", ["1.A.3.b.iv", "OLOther"], 4],
-            ["\\C-ROU\\ Other liquid fuels", ["1.A.3.b.iv", "OLOther"], 4],
+            ["\\C-ROU-CYP\\ Other liquid fuels", ["1.A.3.b.iv", "OLOther"], 4],
             ["\\C-ZAF\\ Biofuels", ["1.A.3.b.iv", "OLBiofuelFC"], 4],
             ["\\C-USA\\ LNG", ["1.A.3.b.iv", "LNG"], 4],
             ["Gaseous fuels (6)", ["1.A.3.b.iv", "Gaseous"], 3],
@@ -1129,7 +1132,7 @@ CRTAI2025 = {
                 4,
             ],
             ["\\C-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 4],
-            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.b.iv", "OFFLubricants"], 4],
+            ["\\C-ECU\\ Lubricants", ["1.A.3.b.iv", "OFFLubricants"], 4],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.b.iv", "OFFBiodieselFC"], 4],
             ["\\C-SVN\\ Fossil part of biofuel", ["1.A.3.b.iv", "OFFBiofuelFC"], 4],
             ["\\C-SVK\\ Fossil part of biofuels", ["1.A.3.b.iv", "OFFBiofuelFC"], 4],
@@ -1152,7 +1155,7 @@ CRTAI2025 = {
             # v. Other
             ["1.A.3.b.v. Other (please specify)", ["1.A.3.b.v", "Total"], 2],
             # NA
-            ["\\C-AUS-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU\\ Not occurring [IPCC Software]",
@@ -1160,30 +1163,30 @@ CRTAI2025 = {
                 3,
             ],
             [
-                "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
+                "\\C-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU\\ Gasoline",
                 ["\\IGNORE", "Gasoline"],
                 4,
             ],
             [
-                "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
+                "\\C-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU\\ Diesel oil",
                 ["\\IGNORE", "DieselOil"],
                 4,
             ],
             [
-                "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
+                "\\C-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU\\ Liquefied petroleum gases (LPG)",
                 ["\\IGNORE", "LPG"],
                 4,
             ],
             [
-                "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
+                "\\C-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU\\ Other liquid fuels (please specify)",
                 ["\\IGNORE", "OtherLiquid"],
                 4,
             ],
-            ["\\C-AUS-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
+            ["\\C-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU\\ Not occurring [IPCC Software]",
@@ -1192,24 +1195,24 @@ CRTAI2025 = {
             ],
             ["\\C-GUY-MDV\\ nan", ["\\IGNORE", "\\IGNORE"], 5],
             [
-                "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
+                "\\C-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU\\ Gaseous fuels (6)",
                 ["\\IGNORE", "Gaseous"],
                 4,
             ],
             [
-                "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
+                "\\C-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU\\ Biomass (3)",
                 ["\\IGNORE", "Biomass"],
                 4,
             ],
             [
-                "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
+                "\\C-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU\\ Other fossil fuels (please specify)(7)",
                 ["\\IGNORE", "OtherFF"],
                 4,
             ],
-            ["\\C-AUS-ECU\\ Lubricants", ["\\IGNORE", "OFFLubricants"], 5],
+            ["\\C-ECU\\ Lubricants", ["\\IGNORE", "OFFLubricants"], 5],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU\\ Not occurring [IPCC Software]",
@@ -1228,7 +1231,7 @@ CRTAI2025 = {
                 ["1.A.3.b.v.2", "OtherLiquid"],
                 4,
             ],
-            ["\\C-CYP\\ nan", ["\\IGNORE", "\\IGNORE"], 5],
+            ["\\C-CYP\\ Other liquid fuels", ["1.A.3.b.v.2", "OLOther"], 5],
             ["\\C-CYP\\ Gaseous fuels (6)", ["1.A.3.b.v.2", "Gaseous"], 4],
             ["\\C-CYP\\ Biomass (3)", ["1.A.3.b.v.2", "Biomass"], 4],
             [
@@ -1236,8 +1239,7 @@ CRTAI2025 = {
                 ["1.A.3.b.v.2", "OtherFF"],
                 4,
             ],
-            ["\\C-CYP\\ Other fossil fuels", ["1.A.3.b.v.2", "OFFOther"], 5],
-            ["\\C-CYP\\ nan", ["\\IGNORE", "\\IGNORE"], 5],
+            ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.b.v.2", "OFFOther"], 5],
             # All vehicles - biofuel use
             ["\\C-GBR\\ All vehicles - biofuel use", ["1.A.3.b.v.3", "Total"], 3],
             ["\\C-GBR\\ Gasoline", ["1.A.3.b.v.3", "Gasoline"], 4],
@@ -1411,7 +1413,7 @@ CRTAI2025 = {
                 3,
             ],
             ["\\C-SGP-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
-            ["\\C-AUS-ECU\\ Lubricants", ["1.A.3.c", "OFFLubricants"], 3],
+            ["\\C-ECU\\ Lubricants", ["1.A.3.c", "OFFLubricants"], 3],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.c", "OFFBiodieselFC"], 3],
             [
                 "\\C-LTU-LVA\\ Fossil part of biodiesel",
@@ -1436,7 +1438,7 @@ CRTAI2025 = {
             ["Gas/diesel oil", ["1.A.3.d", "GasDieselOil"], 2],
             ["Gasoline", ["1.A.3.d", "Gasoline"], 2],
             ["Other liquid fuels (please specify)", ["1.A.3.d", "OtherLiquid"], 2],
-            ["\\C-AUS-SGP-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-SGP-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-MCO\\ Other liquid fuels [IPCC Software 1.A.3.d.ii]",
@@ -1444,7 +1446,7 @@ CRTAI2025 = {
                 3,
             ],
             ["\\C-RUS\\ Other motor fuels", ["1.A.3.d", "OMotorFuel"], 3],
-            ["\\C-HRV-UKR\\ Lubricants", ["1.A.3.d", "Lubricants"], 3],
+            ["\\C-AUS-HRV-UKR\\ Lubricants", ["1.A.3.d", "Lubricants"], 3],
             ["\\C-CHL\\ Kerosene", ["1.A.3.d", "Kerosene"], 3],
             ["\\C-CHL\\ Liquefied petroleum gases (LPG)", ["1.A.3.d", "LPG"], 3],
             ["\\C-COL\\ Crude Oil", ["1.A.3.d", "CrudeOil"], 3],
@@ -1473,7 +1475,6 @@ CRTAI2025 = {
                 3,
             ],
             ["\\C-AUS-CHL-NZL-ECU\\ Coal", ["1.A.3.d", "OFFCoal"], 3],
-            ["\\C-AUS\\ Lubricants", ["1.A.3.d", "OFFLubricants"], 3],
             ["\\C-SGP-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-AUT\\ FAME fossil part", ["1.A.3.d", "OFFBiodieselFC"], 3],
             ["\\C-LTU\\ Fossil part of biodiesel", ["1.A.3.d", "OFFBiodieselFC"], 3],
