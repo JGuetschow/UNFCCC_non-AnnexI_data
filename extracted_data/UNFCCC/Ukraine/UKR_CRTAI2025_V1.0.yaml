@@ -1,6 +1,6 @@
 attrs:
   area: area (ISO3)
-  cat: category (CRT2025)
+  cat: category (CRTAI2025)
   comment: Read fom xlsx file by Johannes Gütschow
   contact: mail@johannes-guetschow.de
   institution: United Nations Framework Convention on Climate Change (www.unfccc.int)
@@ -13,7 +13,7 @@ data_file: UKR_CRTAI2025_V1.0.csv
 dimensions:
   '*':
   - area (ISO3)
-  - category (CRT2025)
+  - category (CRTAI2025)
   - class
   - entity
   - provenance
