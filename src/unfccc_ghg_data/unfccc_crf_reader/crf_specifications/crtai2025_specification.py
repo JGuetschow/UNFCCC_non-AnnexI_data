@@ -2543,8 +2543,11 @@ CRTAI2025 = {
             ["\\C-UKR-ROU\\ Other", ["1.B.2.d.iv"], 1],
             ["\\C-GBR\\ Natural gas exploration - N2O emissions", ["1.B.2.d.x"], 1],
             ["\\C-GBR\\ Flue gas desulphurisation", ["1.B.2.d.xi"], 1],
-            # TODO: RUS (also included in 1.B.2.a.vi.2, double counting)
-            ["\\C-RUS\\ Gas condensate transported", ["1.B.2.d.xiv"], 1],
+            [
+                "\\C-RUS\\ Gas condensate transported",
+                ["1.B.2.d.xiv"],
+                1,
+            ],  # TODO: RUS (also included in 1.B.2.a.vi.2, double counting)
             ["\\C-ESP\\ Gathering N2O emissions", ["1.B.2.d.xii"], 1],
         ],
         "entity_mapping": {
