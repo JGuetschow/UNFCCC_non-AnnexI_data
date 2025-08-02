@@ -1,0 +1,26 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom csv files by Johannes Gütschow Processed on 2025-07-28
+  contact: mail@johannes-guetschow.de
+  entity: PFCS
+  gwp_context: AR6GWP100
+  institution: United States Environmental Protection Agency
+  references: 
+    https://www.edf.org/freedom-information-act-documents-epas-greenhouse-gas-inventory
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: 'Inventory of U.S. Greenhouse Gas Emissions and Sinks: 1990-2023 Processed
+    on 2025-07-28'
+data_file: USA_2025-Inventory_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

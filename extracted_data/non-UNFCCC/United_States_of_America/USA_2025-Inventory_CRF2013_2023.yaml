@@ -1,0 +1,23 @@
+attrs:
+  area: area (ISO3)
+  cat: category (CRF2013_2023)
+  comment: Read fom csv files by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: United States Environmental Protection Agency
+  references: 
+    https://www.edf.org/freedom-information-act-documents-epas-greenhouse-gas-inventory
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: 'Inventory of U.S. Greenhouse Gas Emissions and Sinks: 1990-2023'
+data_file: USA_2025-Inventory_CRF2013_2023.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (CRF2013_2023)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
