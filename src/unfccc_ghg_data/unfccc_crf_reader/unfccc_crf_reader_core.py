@@ -511,6 +511,9 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         keep_default_na=False,
     )
 
+    # first drop empty rows
+    df_raw = df_raw.dropna(axis=0, how="all")
+
     cols_to_drop = []
     # remove empty first column (because CRTables start with an empty column)
     # df_raw = df_raw.dropna(how="all", axis=1)

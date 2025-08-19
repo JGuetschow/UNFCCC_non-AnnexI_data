@@ -57,8 +57,6 @@ CRTAI2025 = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
                 '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],
@@ -146,8 +144,6 @@ CRTAI2025 = {
                 "AMOUNT CAPTURED (4) CO2",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "Note: Minimum level of aggregation is needed to protect "
                 "confidential business and military information, where it "
                 "would identify particular entity's/entities' "
@@ -281,8 +277,6 @@ CRTAI2025 = {
                 "AMOUNT CAPTURED (4) CO2",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "Note: Minimum level of aggregation is needed to protect "
                 "confidential business and military information, where it "
                 "would identify particular entity's/entities' confidential "
@@ -1733,8 +1727,6 @@ CRTAI2025 = {
                 "AMOUNT CAPTURED (4) CO2",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) The IEFs for CO2 are estimated on the basis of gross "
                 "emissions, i.e. CO2 emissions plus the absolute amount "
                 "captured.",
@@ -2292,8 +2284,6 @@ CRTAI2025 = {
                 "IMPLIED EMISSION FACTORS CO2",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Final CH4 and CO2 emissions after subtracting the amounts of CH4 "
                 "and CO2 utilized or recovered.",
             ],
@@ -2435,7 +2425,6 @@ CRTAI2025 = {
             ],
             "stop_cats": [
                 ".",
-                "nan",
                 "(1) Specify the AD used. Specify the unit of the AD in energy or "
                 "volume units (e.g. PJ, 106 m3 and 106 bbl/year).",
             ],
@@ -2573,8 +2562,6 @@ CRTAI2025 = {
                 "IMPLIED EMISSION FACTORS CO2",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Excluding recycled CO2 for enhanced recovery.",
             ],
             "unit_info": unit_info["default"],
@@ -2610,6 +2597,7 @@ CRTAI2025 = {
             ["\\C-CHL-ECU\\ Information item (4, 5, 6)", ["\\IGNORE"], 0],
             ["Total amount captured for storage (7)", ["M.Info.A.TACS"], 1],
             ["Total amount of imports for storage (7)", ["M.Info.A.TAIS"], 1],
+            ["nan", ["\\IGNORE"], 1],
             ["Total A", ["M.Info.A"], 1],
             ["Total amount of exports for storage", ["M.Info.B.TAES"], 1],
             ["Total amount of CO2 injected at storage sites", ["M.Info.B.TAI"], 1],
@@ -2619,6 +2607,8 @@ CRTAI2025 = {
                 ["M.Info.B.TLTIS"],
                 1,
             ],
+            ["nan", ["\\IGNORE"], 1],
+            ["nan", ["\\IGNORE"], 2],
             ["Total B", ["M.Info.B"], 1],
             ["Difference (A-B)(6)", ["\\IGNORE"], 1],
         ],
@@ -2657,8 +2647,6 @@ CRTAI2025 = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Emissions of HFCs, PFCs, unspecified mix of HFCs and PFCs, and "
                 "other F-gases are to be expressed in CO2 eq. Data on disaggregated "
                 "emissions of HFCs and PFCs are to be provided in table 2(II).",
@@ -2811,7 +2799,7 @@ CRTAI2025 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": [".", "nan", "", "Total emissions (3)"],
+            "stop_cats": [".", "Total emissions (3)"],
             "unit_info": unit_info["fgases"],
         },
         "sector_mapping": [
@@ -2849,6 +2837,7 @@ CRTAI2025 = {
             ["2.H.1 Pulp and paper", ["2.H.1"]],
             ["2.H.2 Food and beverages industry", ["2.H.2"]],
             ["2.H.3 Other (please specify)", ["2.H.3"]],
+            ["nan", ["\\IGNORE"]],
         ],
         "entity_mapping": {
             #'C3F8': 'C3F8',
@@ -2894,8 +2883,6 @@ CRTAI2025 = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
                 '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],
@@ -3019,8 +3006,6 @@ CRTAI2025 = {
                 "IMPLIED EMISSION FACTORS CH4",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Parties are encouraged to provide detailed livestock population "
                 "data by animal type and region, if available, in NID, and provide in "
                 "the documentation box below a reference to the relevant section. Parties "
@@ -3326,8 +3311,6 @@ CRTAI2025 = {
                 "IMPLIED EMISSION FACTORS CH4 producing potential (Bo) (2) (average) CH4",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Climate regions are defined in terms of annual average temperature as "
                 "follows: cool = less than 15 °C; temperate = 15–25 °C inclusive; and warm "  # noqa: RUF001
                 "= higher than 25 °C (see table 10.17, chap. 10, vol. 4 of the 2006 IPCC "
@@ -3686,8 +3669,6 @@ CRTAI2025 = {
                 "EMISSIONS N2O Indirect Nitrogen leaching and run-off",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Direct and indirect N2O emissions associated with the manure "
                 "deposited on agricultural soils or pasture, range and paddock systems "
                 "are included under N2O emissions from managed soils (see table "
@@ -4008,8 +3989,6 @@ CRTAI2025 = {
                 "IMPLIED EMISSION FACTOR (1) CH4",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) The IEF implicitly takes account of all relevant corrections for "
                 "continuously flooded fields without organic amendments, the correction"
                 " for organic amendments and the effect of different soil "
@@ -4042,8 +4021,8 @@ CRTAI2025 = {
             ],
             ["\\C-CHN\\ 3.C.4.a. Water-logged in fallow season", ["3.C.4.c"]],
             # ignore as just for comparison
-            ["Upland rice(4)", ["\\IGNORE"]],
-            ["Total(4)", ["\\IGNORE"]],
+            ["Upland rice (4)", ["\\IGNORE"]],
+            ["Total (4)", ["\\IGNORE"]],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",
@@ -4070,8 +4049,6 @@ CRTAI2025 = {
                 # "Value 0.11",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) To convert from N2O–N to N2O emissions, multiply by 44/28.",  # noqa: RUF001
             ],
             "unit_info": unit_info["default"],
@@ -4122,9 +4099,7 @@ CRTAI2025 = {
                 "IMPLIED EMISSION FACTORS N2O",
             ],
             "stop_cats": [
-                "",
                 ".",
-                "nan",
                 "(1) Parties that wish to do so may report CH4 and N2O "
                 "emissions from burning of organic soils in savannahs here. "
                 "N2O emissions from burning of organic soils may only be "
@@ -4191,7 +4166,7 @@ CRTAI2025 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", "nan"],
+            "stop_cats": [],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -4209,7 +4184,7 @@ CRTAI2025 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", "nan"],
+            "stop_cats": [],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [],
@@ -4227,7 +4202,7 @@ CRTAI2025 = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", ".", "nan"],
+            "stop_cats": [".", "Memo item:"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -4304,8 +4279,6 @@ CRTAI2025 = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
                 '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],

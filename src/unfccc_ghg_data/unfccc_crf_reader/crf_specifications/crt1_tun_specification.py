@@ -1,6 +1,6 @@
 """
 
-CRT1 specification for tunisia.
+CRT1 specification for Tunisia.
 
 The tables differ from the template and
 need an individual specification
@@ -54,8 +54,6 @@ CRT1_TUN = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
                 '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],
@@ -143,8 +141,6 @@ CRT1_TUN = {
                 "EMISSIONS CO2 Amount captured (4)",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "Note: Minimum level of aggregation is needed to protect "
                 "confidential business and military information, where it "
                 "would identify particular entity's/entities' "
@@ -278,8 +274,6 @@ CRT1_TUN = {
                 "EMISSIONS CO2 Amount captured (4)",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "Note: Minimum level of aggregation is needed to protect "
                 "confidential business and military information, where it "
                 "would identify particular entity's/entities' confidential "
@@ -608,8 +602,6 @@ CRT1_TUN = {
                 "EMISSIONS CO2 Amount captured (4)",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) The IEFs for CO2 are estimated on the basis of gross "
                 "emissions, i.e. CO2 emissions plus the absolute amount "
                 "captured.",
@@ -707,20 +699,18 @@ CRT1_TUN = {
             ["Diesel oil", ["1.A.4.c.ii", "DieselOil"], 3],
             ["Liquefied petroleum gases (LPG)", ["1.A.4.c.ii", "LPG"], 3],
             ["Other liquid fuels (please specify)", ["1.A.4.c.ii", "OtherLiquid"], 3],
-            ["nan", ["\\IGNORE", "\\IGNORE"], 4],
+            ["Gaseous fuels (6)", ["1.A.4.c.ii", "Gaseous"], 3],
+            ["Biomass(3)", ["1.A.4.c.ii", "Biomass"], 3],
             ["Other fossil fuels (please specify)(7)", ["1.A.4.c.ii", "OtherFF"], 3],
-            ["nan", ["\\IGNORE", "\\IGNORE"], 4],
             # iii. Fishing
             ["1.A.4.c.iii. Fishing", ["1.A.4.c.iii", "Total"], 2],
             ["Residual fuel oil", ["1.A.4.c.iii", "ResFuelOil"], 3],
             ["Gas/diesel oil", ["1.A.4.c.iii", "GasDieselOil"], 3],
             ["Gasoline", ["1.A.4.c.iii", "Gasoline"], 3],
             ["Other liquid fuels (please specify)", ["1.A.4.c.iii", "OtherLiquid"], 3],
-            ["nan", ["\\IGNORE", "\\IGNORE"], 4],
             ["Gaseous fuels (6)", ["1.A.4.c.iii", "Gaseous"], 3],
             ["Biomass(3)", ["1.A.4.c.iii", "Biomass"], 3],
             ["Other fossil fuels (please specify)(7)", ["1.A.4.c.iii", "OtherFF"], 3],
-            ["nan", ["\\IGNORE", "\\IGNORE"], 4],
             # 1.A.5 Other (Not specified elsewhere)(14)
             ["1.A.5 Other (Not specified elsewhere)(15)", ["1.A.5", "Total"], 0],
             ["Liquid fuels", ["1.A.5", "Liquid"], 1],
@@ -731,7 +721,6 @@ CRT1_TUN = {
             ["Biomass(3)", ["1.A.5", "Biomass"], 1],
             # a. Stationary (please specify)
             ["1.A.5.a. Stationary (please specify)", ["1.A.5.a", "Total"], 1],
-            ["nan", ["\\IGNORE", "\\IGNORE"], 2],
             ["Liquid fuels", ["1.A.5.a", "Liquid"], 2],
             ["Solid fuels", ["1.A.5.a", "Solid"], 2],
             ["Gaseous fuels (6)", ["1.A.5.a", "Gaseous"], 2],
@@ -740,7 +729,6 @@ CRT1_TUN = {
             ["Biomass(3)", ["1.A.5.a", "Biomass"], 2],
             # b. Mobile (please specify)
             ["1.A.5.b. Mobile (please specify)", ["1.A.5.b", "Total"], 1],
-            ["nan", ["\\IGNORE", "\\IGNORE"], 2],
             ["Liquid fuels", ["1.A.5.b", "Liquid"], 3],
             ["Solid fuels", ["1.A.5.b", "Solid"], 3],
             ["Gaseous fuels (6)", ["1.A.5.b", "Gaseous"], 3],
@@ -776,8 +764,6 @@ CRT1_TUN = {
                 "IMPLIED EMISSION FACTORS CO2",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Final CH4 and CO2 emissions after subtracting the amounts of CH4 "
                 "and CO2 utilized or recovered.",
             ],
@@ -846,7 +832,7 @@ CRT1_TUN = {
             ],
             "stop_cats": [
                 ".",
-                "nan",
+                "Documentation box:",
                 "(1) Specify the AD used. Specify the unit of the AD in energy or "
                 "volume units (e.g. PJ, 106 m3 and 106 bbl/year).",
             ],
@@ -911,8 +897,6 @@ CRT1_TUN = {
                 "IMPLIED EMISSION FACTORS CO2",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Excluding recycled CO2 for enhanced recovery.",
             ],
             "unit_info": unit_info["default"],
@@ -922,15 +906,14 @@ CRT1_TUN = {
             ["1.C.1.a. Pipelines", ["1.C.1.a"], 1],
             ["1.C.1.b. Ships", ["1.C.1.b"], 1],
             ["1.C.1.c. Other (please specify)", ["1.C.1.c"], 1],
-            ["nan", ["\\IGNORE"], 2],
             ["1.C.2. Injection and storage (3)", ["1.C.2"], 0],
             ["1.C.2.a. Injection", ["1.C.2.a"], 1],
             ["1.C.2.b. Storage", ["1.C.2.b"], 1],
             ["1.C.3. Other (please specify)", ["1.C.3"], 0],
-            ["nan", ["\\IGNORE"], 1],
-            ["Information item (kt CO2) (4, 5, 6)", ["\\IGNORE"], 0],
+            ["Information item (4, 5, 6)", ["\\IGNORE"], 0],
             ["Total amount captured for storage (7)", ["M.Info.A.TACS"], 1],
             ["Total amount of imports for storage (7)", ["M.Info.A.TAIS"], 1],
+            ["nan", ["\\IGNORE"], 1],
             ["Total A", ["M.Info.A"], 1],
             ["Total amount of exports for storage", ["M.Info.B.TAES"], 1],
             ["Total amount of CO2 injected at storage sites", ["M.Info.B.TAI"], 1],
@@ -940,6 +923,8 @@ CRT1_TUN = {
                 ["M.Info.B.TLTIS"],
                 1,
             ],
+            ["nan", ["\\IGNORE"], 1],
+            ["nan", ["\\IGNORE"], 2],
             ["Total B", ["M.Info.B"], 1],
             ["Difference (A-B)(6)", ["\\IGNORE"], 1],
         ],
@@ -978,8 +963,6 @@ CRT1_TUN = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Emissions of HFCs, PFCs, unspecified mix of HFCs and PFCs, and "
                 "other F-gases are to be expressed in CO2 eq. Data on disaggregated "
                 "emissions of HFCs and PFCs are to be provided in table 2(II).",
@@ -1059,7 +1042,7 @@ CRT1_TUN = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": [".", "nan", "", "Total emissions (3)"],
+            "stop_cats": [".", "Total emissions (3)"],
             "unit_info": unit_info["fgases"],
         },
         "sector_mapping": [
@@ -1094,6 +1077,7 @@ CRT1_TUN = {
             ["2.G.2. SF6 and PFCs from other product use", ["2.G.2"]],
             ["2.G.4. Other", ["2.G.4"]],
             ["2.H. Other (please specify)", ["2.H"]],
+            ["nan", ["\\IGNORE"]],
         ],
         "entity_mapping": {
             #'C3F8': 'C3F8',
@@ -1139,8 +1123,7 @@ CRT1_TUN = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
+                "Documentation box:",
                 '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],
@@ -1245,7 +1228,7 @@ CRT1_TUN = {
             ["Other cattle category 3", ["\\IGNORE"], 4],
             ["Other cattle category 4", ["\\IGNORE"], 4],
             ["Other cattle category 5", ["\\IGNORE"], 4],
-            ["nan", ["\\IGNORE"], 4],
+            # ["nan", ["\\IGNORE"], 4],
             ["3.A.2. Sheep", ["3.A.2"], 0],
             ["3.A.2.a. Other (please specify)", ["3.A.2.a"], 1],
             ["Sheep category 1", ["\\IGNORE"], 2],
@@ -1253,7 +1236,7 @@ CRT1_TUN = {
             ["Sheep category 3", ["\\IGNORE"], 2],
             ["Sheep category 4", ["\\IGNORE"], 2],
             ["Sheep category 5", ["\\IGNORE"], 2],
-            ["nan", ["\\IGNORE"], 2],
+            # ["nan", ["\\IGNORE"], 2],
             ["3.A.3. Swine", ["3.A.3"], 0],
             ["3.A.3.a. Other (please specify)", ["3.A.3.a"], 1],
             ["Swine category 1", ["\\IGNORE"], 2],
@@ -1261,8 +1244,8 @@ CRT1_TUN = {
             ["Swine category 3", ["\\IGNORE"], 2],
             ["Swine category 4", ["\\IGNORE"], 2],
             ["Swine category 5", ["\\IGNORE"], 2],
-            ["nan", ["\\IGNORE"], 2],
-            ["3.A.4. Other livestock (4)", ["3.A.4"], 0],
+            # ["nan", ["\\IGNORE"], 2],
+            ["3.A.4. Other livestock (please specify) (4)", ["3.A.4"], 0],
             ["Drop down list:", ["\\IGNORE"], 1],
             ["3.A.4.a. Buffalo", ["3.A.4.a"], 1],
             ["3.A.4.b. Camels", ["3.A.4.b"], 1],
@@ -1302,8 +1285,7 @@ CRT1_TUN = {
                 "IMPLIED EMISSION FACTORS CH4 producing potential (Bo)(2) (average) CH4",
             ],
             "stop_cats": [
-                "",
-                "nan",
+                "Documentation box:",
                 "(1) Climate regions are defined in terms of annual average temperature as "
                 "follows: cool = less than 15 °C; temperate = 15–25 °C inclusive; and warm "  # noqa: RUF001
                 "= higher than 25 °C (see table 10.17, chap. 10, vol. 4 of the 2006 IPCC "
@@ -1345,14 +1327,14 @@ CRT1_TUN = {
             ["Swine category 4", ["\\IGNORE"], 2],
             ["Swine category 5", ["\\IGNORE"], 2],
             ["nan", ["\\IGNORE"], 2],
-            ["3.B.4. Other livestock (please specify) (4)", ["3.B.4"], 0],
-            ["Drop down list:", ["\\IGNORE"], 1],
+            ["3.B.4. Other livestock (4)", ["3.B.4"], 0],
+            ["Drop-down list:", ["\\IGNORE"], 1],
             ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
             ["3.B.4.b. Camels", ["3.B.4.b"], 1],
             ["3.B.4.c. Deer", ["3.B.4.c"], 1],
             ["3.B.4.d. Goats", ["3.B.4.d"], 1],
             ["3.B.4.e. Horses", ["3.B.4.e"], 1],
-            ["3.B.4.f. Mules and asses", ["3.B.4.f"], 1],
+            ["3.B.4.f. Mules and Asses", ["3.B.4.f"], 1],
             ["3.B.4.g. Poultry", ["3.B.4.g"], 1],
             ["3.B.4.h. Other (please specify)", ["3.B.4.h"], 1],
             ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 2],
@@ -1421,8 +1403,6 @@ CRT1_TUN = {
                 "EMISSIONS N2O Indirect Nitrogen leaching and run-off",
             ],
             "stop_cats": [
-                "",
-                "nan",
                 "(1) Direct and indirect N2O emissions associated with the manure "
                 "deposited on agricultural soils or pasture, range and paddock systems "
                 "are included under N2O emissions from managed soils (see table "
@@ -1467,7 +1447,7 @@ CRT1_TUN = {
             ["Swine category 5", ["\\IGNORE"], 2],
             ["nan", ["\\IGNORE"], 2],
             ["3.B.4. Other livestock (6)", ["3.B.4"], 0],
-            ["Drop down list:", ["\\IGNORE"], 1],
+            ["Drop-down list", ["\\IGNORE"], 1],
             ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
             ["3.B.4.b. Camels", ["3.B.4.b"], 1],
             ["3.B.4.c. Deer", ["3.B.4.c"], 1],
@@ -1475,12 +1455,12 @@ CRT1_TUN = {
             ["3.B.4.e. Horses", ["3.B.4.e"], 1],
             ["3.B.4.f. Mules and asses", ["3.B.4.f"], 1],
             ["3.B.4.g. Poultry", ["3.B.4.g"], 1],
-            ["3.B.4.h. Other (please specify)", ["3.B.4.h"], 1],
-            ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 2],
-            ["3.B.4.h.ii. Reindeer", ["3.B.4.h.ii"], 2],
-            ["3.B.4.h.iii. Ostrich", ["3.B.4.h.iii"], 2],
-            ["3.B.4.h.iv. Fur-bearing animals (5)", ["3.B.4.h.iv"], 2],
-            ["3.B.4.h.v. Other", ["3.B.4.h.v"], 2],
+            ["3.B.4.i. Other (please specify)", ["3.B.4.h"], 1],
+            ["3.B.4.i.i. Rabbit", ["3.B.4.h.i"], 2],
+            ["3.B.4.i.ii. Reindeer", ["3.B.4.h.ii"], 2],
+            ["3.B.4.i.iii. Ostrich", ["3.B.4.h.iii"], 2],
+            ["3.B.4.i.iv Fur-bearing animals (7)", ["3.B.4.h.iv"], 2],
+            ["3.B.4.i.v. Other", ["3.B.4.h.v"], 2],
         ],
         "entity_mapping": {
             "EMISSIONS N2O Direct Nitrogen leaching and run-off": "N2O",
@@ -1526,11 +1506,11 @@ CRT1_TUN = {
             ["3.C.3.a. Water depth 50–100 cm", ["3.C.3.a"], 1],  # noqa: RUF001
             ["3.C.3.b. Water depth > 100 cm", ["3.C.3.b"], 1],
             ["3.C.4. Other (please specify)", ["3.C.4"], 0],
-            ["nan", ["\\IGNORE"], 1],
-            ["nan", ["\\IGNORE"], 1],
+            # ["nan", ["\\IGNORE"], 1],
+            # ["nan", ["\\IGNORE"], 1],
             # ignore as just for comparison
-            ["Upland rice(4)", ["\\IGNORE"], 0],
-            ["Total(4)", ["\\IGNORE"], 0],
+            ["Upland rice (4)", ["\\IGNORE"], 0],
+            ["Total (4)", ["\\IGNORE"], 0],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",
@@ -1608,7 +1588,7 @@ CRT1_TUN = {
                 "IMPLIED EMISSION FACTORS CH4",
                 "IMPLIED EMISSION FACTORS N2O",
             ],
-            "stop_cats": ["", ".", "nan"],
+            "stop_cats": ["."],
             "unit_info": unit_info["default"],
         },
         "sector_mapping": [
@@ -1670,7 +1650,7 @@ CRT1_TUN = {
             "col_for_categories": "GREENHOUSE GAS SOURCE AND SINK CATEGORIES",
             "categories": ["category"],
             "cols_to_ignore": [],
-            "stop_cats": ["", ".", "nan"],
+            "stop_cats": [".", "Memo item:"],
             "unit_info": unit_info["industry"],
         },
         "sector_mapping": [
@@ -1695,6 +1675,8 @@ CRT1_TUN = {
             ["4.F.2. Land converted to other land", ["4.F.2"]],
             ["4.G. Harvested wood products (6)", ["4.G"]],
             ["4.H. Other (please specify)", ["4.H"]],
+            ["nan", ["\\IGNORE"], 2],
+            # currently ignoring memo item
         ],
         "entity_mapping": {
             "CH4(2)": "CH4",
@@ -1741,11 +1723,11 @@ CRT1_TUN = {
             ["5.D.3. Other (as specified in table 5.D)", ["5.D.3"]],
             ["5.E. Other (please specify)", ["5.E"]],
             ["nan", ["\\IGNORE"]],
-            ["Memo item: (3)", ["\\IGNORE"]],
-            ["5.F.1. Long-term storage of C in waste disposal sites", ["M.Memo.LTSW"]],
-            ["5.F.2. Annual change in total long-term C storage", ["M.Memo.ACLT"]],
+            ["Memo item: (2)", ["\\IGNORE"]],
+            ["Long-term storage of C in waste disposal sites", ["M.Memo.LTSW"]],
+            ["Annual change in total long-term C storage", ["M.Memo.ACLT"]],
             [
-                "5.F.3. Annual change in total long-term C storage in HWP waste (4)",
+                "Annual change in total long-term C storage in HWP waste (3)",
                 ["M.Memo.ACLTHWP"],
             ],
         ],

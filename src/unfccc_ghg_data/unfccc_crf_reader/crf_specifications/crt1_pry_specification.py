@@ -81,8 +81,7 @@ CRT1_PRY = {
             "categories": ["category"],
             "cols_to_ignore": [],
             "stop_cats": [
-                "",
-                "nan",
+                "Documentation box:",
                 '(1) "Total GHG emissions" does not include NOX, CO, NMVOC and SOX.',
             ],
             "unit_info": unit_info["industry"],
