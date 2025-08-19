@@ -2369,7 +2369,7 @@ CRT1 = {
             ["1.B.1.b.iv. Gas to liquids", ["1.B.1.b.iv"], 1],
             ["1.B.1.b.v. Other (please specify)", ["1.B.1.b.v"], 1],
             ["\\C-AUS-CHL-ECU\\ NA", ["\\IGNORE"], 2],
-            ["\\C-SLB\\ nan", ["\\IGNORE"], 2],
+            ["\\C-SLB-ECU\\ nan", ["\\IGNORE"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
                 "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL\\ GHG emissions from other gasification [IPCC Software 1.B.1.c.iv]",
@@ -2391,7 +2391,7 @@ CRT1 = {
             ],
             ["1. B. 1. c. Other (please specify) (8)", ["1.B.1.c"], 0],
             ["\\C-AUS-SGP-BRA-CHL-ECU\\ NA", ["\\IGNORE"], 1],
-            ["\\C-SLB\\ nan", ["\\IGNORE"], 1],
+            ["\\C-SLB-ECU\\ nan", ["\\IGNORE"], 1],
             ["\\C-SWE\\ Flaring of gas", ["1.B.1.c.i"], 1],
             ["\\C-UKR\\ Flaring", ["1.B.1.c.i"], 1],
             [
@@ -2473,7 +2473,7 @@ CRT1 = {
                 ["1.B.2.a.vi.2.a"],
                 3,
             ],
-            ["\\C-SLB\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-SLB-ECU\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-JPN\\ Accidents", ["1.B.2.a.vi.2.b"], 3],
             ["\\C-CAN\\ Accidents and equipment failures", ["1.B.2.a.vi.2.b"], 3],
             ["\\C-RUS\\ Gas condensate transported", ["1.B.2.a.vi.2.c"], 3],
@@ -2507,7 +2507,7 @@ CRT1 = {
                 3,
             ],
             ["\\C-SGP-CHL-ECU-BRA\\ NA", ["\\IGNORE"], 3],
-            ["\\C-SLB\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-SLB-ECU\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-ECU\\ NE", ["\\IGNORE"], 3],
             ["\\C-NOR-UKR\\ Other", ["1.B.2.b.vi.3.d"], 3],
             ["\\C-SVK\\ Storage of gas", ["1.B.2.b.vi.3.e"], 3],
