@@ -7,7 +7,7 @@ xlsx files for 1990-2021 2020-2021, 1990-2019 That covers all years.
 csv files not needed
 
 Source for the inventory:
-https://www.datos.gob.mx/busca/dataset/inventario-nacional-de-emisiones-
+https://historico.datos.gob.mx/busca/dataset/inventario-nacional-de-emisiones-
 de-gases-y-compuestos-de-efecto-invernadero-inegycei
 """
 

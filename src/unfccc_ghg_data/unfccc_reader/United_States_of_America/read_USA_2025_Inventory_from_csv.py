@@ -1,8 +1,8 @@
 """
-Read USA's 2024 inventory from xlsx
+Read USA's 2025 inventory from xlsx
 
-Files available here: https://www.epa.gov/ghgemissions/
-inventory-us-greenhouse-gas-emissions-and-sinks-1990-2022
+Files available here:
+https://www.edf.org/freedom-information-act-documents-epas-greenhouse-gas-inventory
 
 Only the overview tables are read as details are in several individual tables and
 overview is sufficient for PRIMAP-hist

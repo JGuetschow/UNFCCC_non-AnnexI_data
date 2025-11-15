@@ -1,9 +1,7 @@
 """
-Read Mexico's BTR1 from pdf
+Read Pakistan's 2016 Invetory from pdf
 
-This script reads data from Mexico's BTR1
-Data are read from pdf using camelot for 2022
-pages 79-81 from BTR_libro_24DIC2024.pdf
+
 """
 
 import camelot
