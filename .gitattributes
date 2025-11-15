@@ -4,5 +4,9 @@
 *.csv annex.largefiles=anything
 *.xml annex.largefiles=anything
 *.pdf annex.largefiles=anything
+*.docx annex.largefiles=anything
+*.doc annex.largefiles=anything
+*.xlsx annex.largefiles=anything
+*.xls annex.largefiles=anything
 *.json annex.largefiles=(largerthan=100kb)
 **/.git* annex.largefiles=nothing
