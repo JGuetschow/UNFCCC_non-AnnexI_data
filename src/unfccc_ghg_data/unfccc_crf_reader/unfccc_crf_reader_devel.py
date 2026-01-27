@@ -433,7 +433,8 @@ def save_unknown_categories_info(
     """
     # process unknown categories
     df_unknown_cats = pd.DataFrame(
-        unknown_categories, columns=["Table", "Country", "Category", "Year", "index"]
+        unknown_categories,
+        columns=["Table", "Country", "Category", "Year", "index", "Parent"],
     )
 
     processed_cats = []
@@ -443,34 +444,42 @@ def save_unknown_categories_info(
     all_years = set([year for year in all_years if int(year) > 1989])  # noqa: PLR2004
     for table in all_tables:
         df_cats_current_table = df_unknown_cats[df_unknown_cats["Table"] == table]
-        cats_current_table = list(df_cats_current_table["Category"].unique())
-        for cat in cats_current_table:
-            df_current_cat_table = df_cats_current_table[
-                df_cats_current_table["Category"] == cat
+        parents_current_table = list(df_cats_current_table["Parent"].unique())
+        for parent in parents_current_table:
+            df_cats_current_table_parent = df_cats_current_table[
+                df_cats_current_table["Parent"] == parent
             ]
-            all_countries = df_current_cat_table["Country"].unique()
-            countries_cat = ""
-            for country in all_countries:
-                years_country = df_current_cat_table[
-                    df_current_cat_table["Country"] == country
-                ]["Year"].unique()
-                idx_country = df_current_cat_table[
-                    df_current_cat_table["Country"] == country
-                ]["index"].unique()
-                if set(years_country) == all_years:
-                    countries_cat = f"{countries_cat}; {country} ({idx_country})"
-                else:
-                    countries_cat = (
-                        f"{countries_cat}; {country} ({years_country}) ({idx_country})"
-                    )
-            processed_cats.append([table, cat, countries_cat])
+            cats_current_table_parent = list(
+                df_cats_current_table_parent["Category"].unique()
+            )
+            for cat in cats_current_table_parent:
+                df_current_cat_table_parent = df_cats_current_table_parent[
+                    df_cats_current_table_parent["Category"] == cat
+                ]
+                all_countries = df_current_cat_table_parent["Country"].unique()
+                countries_cat = ""
+                for country in all_countries:
+                    years_country = df_current_cat_table_parent[
+                        df_current_cat_table_parent["Country"] == country
+                    ]["Year"].unique()
+                    idx_country = df_current_cat_table_parent[
+                        df_current_cat_table_parent["Country"] == country
+                    ]["index"].unique()
+                    if set(years_country) == all_years:
+                        countries_cat = f"{countries_cat}; {country} ({idx_country})"
+                    else:
+                        countries_cat = (
+                            f"{countries_cat}; {country} "
+                            f"({years_country}) ({idx_country})"
+                        )
+                processed_cats.append([table, parent, cat, countries_cat])
 
     if not file.parents[1].exists():
         file.parents[1].mkdir()
     if not file.parents[0].exists():
         file.parents[0].mkdir()
     df_processed_cats = pd.DataFrame(
-        processed_cats, columns=["Table", "Category", "Countries"]
+        processed_cats, columns=["Table", "Parent", "Category", "Countries"]
     )
     df_processed_cats.to_csv(file, index=False)
 

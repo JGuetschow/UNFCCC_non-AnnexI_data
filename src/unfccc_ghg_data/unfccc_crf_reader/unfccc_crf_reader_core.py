@@ -615,6 +615,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     # and also need to consider the order of elements for the mapping
     unknown_categories = []
     info_last_row = []
+    used_ids = []
     if non_unique_cats:
         # need to initialize the tree parsing.
         last_parent = category_tree.get_node("root")
@@ -640,13 +641,33 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
             )
             if current_cat in children.keys():
                 # the current category is a child of the current parent
-                # do the mapping
                 node = category_tree.get_node(children[current_cat])
-                new_cats[idx] = node.data[1]
-                # check if the node has children
-                new_children = category_tree.children(node.identifier)
-                if new_children:
-                    last_parent = node
+                # check if it has been used already
+                if node.identifier in used_ids:
+                    # save as unknown
+                    print(
+                        f"Unknown category '{current_cat}' found in {table} for "
+                        f"{file_info['party']}, {file_info['data_year']} "
+                        f"(last parent: {last_parent.tag})."
+                    )
+                    unknown_categories.append(
+                        [
+                            table,
+                            file_info["party"],
+                            current_cat,
+                            file_info["data_year"],
+                            idx,
+                            last_parent.tag,
+                        ]
+                    )
+                else:
+                    # do the mapping
+                    new_cats[idx] = node.data[1]
+                    used_ids.append(node.identifier)
+                    # check if the node has children
+                    new_children = category_tree.children(node.identifier)
+                    if new_children:
+                        last_parent = node
 
             # two other possibilities
             # 1. The category is at a higher point in the hierarchy
@@ -687,6 +708,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                             current_cat,
                             file_info["data_year"],
                             idx,
+                            last_parent.identifier,
                         ]
                     )
                     # copy back the parent info to continue with next category
@@ -711,6 +733,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                         current_cat,
                         file_info["data_year"],
                         idx,
+                        last_parent.identifier,
                     ]
                 )
     else:
@@ -746,6 +769,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                             current_cat,
                             file_info["data_year"],
                             idx,
+                            "root",
                         ]
                     )
 
