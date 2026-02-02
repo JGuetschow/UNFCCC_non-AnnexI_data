@@ -25,6 +25,7 @@ from treelib import Tree
 
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, root_path
 
+from ..helper.definitions import nan_values_crf_crt, str_value_mapping
 from . import crf_specifications as crf
 from .util import BTR_urls, NoCRFFilesError
 
@@ -221,6 +222,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913, PLR0915
         filter_keep=filter_keep,
         meta_data=meta_data,
         time_format="%Y",
+        convert_str=str_value_mapping,
     )
     return df_table_if
 
@@ -496,18 +498,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         skiprows=skiprows,
         nrows=nrows,
         engine="openpyxl",
-        na_values=[
-            "-1.#IND",
-            "-1.#QNAN",
-            "-NaN",
-            "-nan",
-            "1.#IND",
-            "1.#QNAN",
-            "NULL",
-            "NaN",
-            "",
-            " ",
-        ],
+        na_values=nan_values_crf_crt,
         keep_default_na=False,
     )
 
