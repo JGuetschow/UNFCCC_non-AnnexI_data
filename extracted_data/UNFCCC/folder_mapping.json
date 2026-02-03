@@ -93,7 +93,10 @@
     "KHM": "Cambodia",
     "KIR": "Kiribati",
     "KNA": "Saint_Kitts_and_Nevis",
-    "KOR": "Republic_of_Korea",
+    "KOR": [
+        "Republic_of_Korea",
+        "Korea,_Republic_of"
+    ],
     "KWT": "Kuwait",
     "LAO": "Lao_People's_Democratic_Republic",
     "LBN": "Lebanon",
