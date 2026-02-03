@@ -1,5 +1,5 @@
 """
-Read Korea's 2021 inventory from xlsx
+Read Korea's 2022 inventory from xlsx
 
 This script reads data from Korea's 2022 national inventory
 Data are read from the xlsx file
