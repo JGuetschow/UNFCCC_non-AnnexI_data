@@ -331,6 +331,9 @@ str_value_mapping = {
     "NO;NE": 0,
     "NA;NO": 0,
     "NO; NE": 0,
+    'NO"': np.nan,
+    "CH4": np.nan,
+    "N/A": np.nan,
 }
 
 nan_values_crf_crt = [

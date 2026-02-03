@@ -236,7 +236,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     folder: str | None = None,
     submission_type: str = "CRF",
     debug: bool = False,
-) -> tuple[pd.DataFrame, list[list], list[list], bool]:
+) -> tuple[pd.DataFrame, list[list], list[list], bool, list[list]]:
     """
     Read CRF table for given year and country/countries
 
@@ -279,6 +279,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
           This is used as a hint to check if table specifications might have to
           be adapted as country submitted tables are longer than expected.
         * The fourth return parameter is true if the worksheet to read in the file
+        * the fifth return parameter is a list of skipped files
 
     """
     # check type
@@ -377,6 +378,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     unknown_rows = []
     last_row_info = []
     not_present = False
+    skipped_files = []
     for file in input_files:
         file_info = get_info_from_crf_filename(file.name)
         try:
@@ -394,17 +396,33 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
                 df_all = pd.concat([df_this_file, df_all])
                 unknown_rows = unknown_rows + unknown_rows_this_file
                 last_row_info = last_row_info + last_row_info_this_file
-        except ValueError as e:
-            if e.args[0] == f"Worksheet named '{table}' not found":
+        except ValueError as ex:
+            if ex.args[0] == f"Worksheet named '{table}' not found":
                 print(f"Table {table} not present")
                 not_present = True
                 pass
             else:
-                print(f"Error when reading file {file}. Skipping file. Exception: {e}")
-        except Exception as e:
-            print(f"Error when reading file {file}. Skipping file. Exception: {e}")
+                print(f"Error when reading file {file}. Skipping file. Exception: {ex}")
+                skipped_files.append(
+                    [
+                        table,
+                        file_info["party"],
+                        file_info["data_year"],
+                        f"{ex}",
+                    ]
+                )
+        except Exception as ex:
+            print(f"Error when reading file {file}. Skipping file. Exception: {ex}")
+            skipped_files.append(
+                [
+                    table,
+                    file_info["party"],
+                    file_info["data_year"],
+                    f"{ex}",
+                ]
+            )
 
-    return df_all, unknown_rows, last_row_info, not_present
+    return df_all, unknown_rows, last_row_info, not_present, skipped_files
 
 
 def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
@@ -571,7 +589,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         )
 
     # remove double spaces
-    entities = [entity.strip() for entity in entities]
+    entities = [str(entity).strip() for entity in entities]
     entities = [re.sub("\\s+", " ", entity) for entity in entities]
     entities = [re.sub("_x000d_", "", entity) for entity in entities]
     entities = [re.sub("_x000D_", "", entity) for entity in entities]
@@ -587,8 +605,14 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     df_current.columns = entities
     if debug:
         print(f"Columns present: {entities}")
-    # remove all columns to ignore
-    df_current = df_current.drop(columns=table_properties["cols_to_ignore"])
+    # remove all present columns to ignore
+    present_cols_to_ignore = [
+        col for col in entities if col in table_properties["cols_to_ignore"]
+    ]
+    df_current = df_current.drop(columns=present_cols_to_ignore)
+
+    # we might now have new empty rows. drop them
+    df_current = df_current.dropna(axis=0, how="all")
 
     # remove double spaces
     for col in cols_for_space_stripping:
