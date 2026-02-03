@@ -729,11 +729,11 @@ CRT1_TUN = {
             ["Biomass(3)", ["1.A.5.a", "Biomass"], 2],
             # b. Mobile (please specify)
             ["1.A.5.b. Mobile (please specify)", ["1.A.5.b", "Total"], 1],
-            ["Liquid fuels", ["1.A.5.b", "Liquid"], 3],
-            ["Solid fuels", ["1.A.5.b", "Solid"], 3],
-            ["Gaseous fuels (6)", ["1.A.5.b", "Gaseous"], 3],
-            ["Other fossil fuels(7)", ["1.A.5.b", "OtherFF"], 3],
-            ["Biomass(3)", ["1.A.5.b", "Biomass"], 3],
+            ["Liquid fuels", ["1.A.5.b", "Liquid"], 2],
+            ["Solid fuels", ["1.A.5.b", "Solid"], 2],
+            ["Gaseous fuels (6)", ["1.A.5.b", "Gaseous"], 2],
+            ["Other fossil fuels(7)", ["1.A.5.b", "OtherFF"], 2],
+            ["Biomass(3)", ["1.A.5.b", "Biomass"], 2],
             # Information Item
             ["Information item:(16)", ["\\IGNORE", "\\IGNORE"], 0],
             [
@@ -741,8 +741,8 @@ CRT1_TUN = {
                 ["\\IGNORE", "\\IGNORE"],
                 1,
             ],
-            ["Biomass (3)", ["\\IGNORE", "\\IGNORE"], 1],
-            ["Fossil fuels (7)", ["\\IGNORE", "\\IGNORE"], 1],
+            ["Biomass(3)", ["\\IGNORE", "\\IGNORE"], 1],
+            ["Fossil fuels(7)", ["\\IGNORE", "\\IGNORE"], 1],
         ],
         "entity_mapping": {
             "EMISSIONS CH4": "CH4",
@@ -923,8 +923,12 @@ CRT1_TUN = {
                 ["M.Info.B.TLTIS"],
                 1,
             ],
-            ["nan", ["\\IGNORE"], 1],
-            ["nan", ["\\IGNORE"], 2],
+            [
+                "nan",
+                ["\\IGNORE"],
+                2,
+            ],  #  necessary because else we have several nans on the same branch and level
+            ["nan", ["\\IGNORE"], 3],
             ["Total B", ["M.Info.B"], 1],
             ["Difference (A-B)(6)", ["\\IGNORE"], 1],
         ],
