@@ -523,6 +523,28 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     # first drop empty rows
     df_raw = df_raw.dropna(axis=0, how="all")
 
+    # if the header of the first proper column is empty and firstrow_fallback is set we
+    # read again with adjusted row configurations (this is a fix for Peru,
+    # Table 1.A(a)3, where for some files the table starts in row 6 and for others in
+    # row 7
+    if ("Unnamed" in df_raw.columns[1]) and ("firstrow_fallback" in table_properties):
+        skiprows = table_properties["firstrow_fallback"] - 1
+        nrows = (
+            table_properties["lastrow"] - skiprows + 1
+        )  # read one row more to check if we reached the end
+
+        df_raw = pd.read_excel(
+            file,
+            sheet_name=table,
+            skiprows=skiprows,
+            nrows=nrows,
+            engine="openpyxl",
+            na_values=nan_values_crf_crt,
+            keep_default_na=False,
+        )
+
+        df_raw = df_raw.dropna(axis=0, how="all")
+
     cols_to_drop = []
     # remove empty first column (because CRTables start with an empty column)
     # df_raw = df_raw.dropna(how="all", axis=1)

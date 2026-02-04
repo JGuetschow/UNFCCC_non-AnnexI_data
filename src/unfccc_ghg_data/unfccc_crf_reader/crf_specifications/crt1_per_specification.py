@@ -40,6 +40,7 @@ tables_identical = [  # some might have
 
 CRT1_PER = {"Table 1.A(a)3": deepcopy(CRT1["Table1.A(a)s3"])}
 CRT1_PER["Table 1.A(a)3"]["table"]["firstrow"] = 5
+CRT1_PER["Table 1.A(a)3"]["table"]["firstrow_fallback"] = 6
 
 for table in tables_identical:
     CRT1_PER[table] = CRT1[table]

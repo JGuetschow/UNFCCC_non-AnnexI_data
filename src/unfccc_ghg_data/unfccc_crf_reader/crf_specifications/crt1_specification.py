@@ -2819,7 +2819,7 @@ CRT1 = {
             ["1.B.2.d. Other (please specify) (10)", ["1.B.2.d"], 0],
             ["\\C-AUS-SGP-CHL-ECU\\ NA", ["\\IGNORE"], 1],
             ["\\C-PER\\ NO", ["\\IGNORE"], 1],
-            ["\\C-SLB-ISR\\ nan", ["\\IGNORE", "\\IGNORE"], 1],
+            ["\\C-SLB-ISR-PER\\ nan", ["\\IGNORE", "\\IGNORE"], 1],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI\\ "
@@ -4952,6 +4952,7 @@ CRT1 = {
             ["\\C-GHA\\ Aquaculture", ["6.B"]],
             ["", ["\\IGNORE"]],
             ["\\C-PER\\ NA", ["\\IGNORE"]],
+            ["\\C-PER\\ NO", ["\\IGNORE"]],
             ["nan", ["\\IGNORE"]],
             ["Memo items: (8)", ["\\IGNORE"]],
             ["1.D.1. International bunkers", ["M.Memo.Int"]],
