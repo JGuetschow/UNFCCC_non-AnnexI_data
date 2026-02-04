@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 
@@ -323,3 +324,27 @@ for gwp in gwps_for_basket_aggregation:
 
 
 compression = dict(zlib=True, complevel=9)
+
+str_value_mapping = {
+    "MO": np.nan,
+    "IE/NE": 0,
+    "NO;NE": 0,
+    "NA;NO": 0,
+    "NO; NE": 0,
+    'NO"': np.nan,
+    "CH4": np.nan,
+    "N/A": np.nan,
+}
+
+nan_values_crf_crt = [
+    "-1.#IND",
+    "-1.#QNAN",
+    "-NaN",
+    "-nan",
+    "1.#IND",
+    "1.#QNAN",
+    "NULL",
+    "NaN",
+    "",
+    " ",
+]

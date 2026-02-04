@@ -76,6 +76,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
     last_row_info = []
     empty_tables = []
     missing_worksheets = []
+    skipped_files = []
     ds_all = None
     print(
         f"{submission_type} test reading for {submission_type}{submission_year}. "
@@ -178,6 +179,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                         new_unknown_categories,
                         new_last_row_info,
                         not_present,
+                        new_skipped_files,
                     ) = read_crf_table(
                         current_country_code,
                         table,
@@ -191,6 +193,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
                     # collect messages on unknown rows etc
                     unknown_categories = unknown_categories + new_unknown_categories
                     last_row_info = last_row_info + new_last_row_info
+                    skipped_files = skipped_files + new_skipped_files
 
                 except Exception as e:
                     message = (
@@ -334,6 +337,7 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
         print(f"Unknown rows found. Savin log to {log_location}")
         save_unknown_categories_info(unknown_categories, log_location)
 
+    # TODO function for the next four blocks as they are very similar
     if len(last_row_info) > 0:
         if country_code is not None:
             log_location = (
@@ -377,6 +381,21 @@ def read_year_to_test_specs(  # noqa: PLR0912, PLR0915
             )
         print(f"Missing worksheets. Save log to {log_location}")
         save_empty_tables_info(missing_worksheets, log_location)
+
+    if len(skipped_files) > 0:
+        today = date.today()
+        if country_code is not None:
+            log_location = (
+                output_folder / f"{data_year}_skipped_files_{country_code}_"
+                f"{today.strftime('%Y-%m-%d')}.csv"
+            )
+        else:
+            log_location = (
+                output_folder / f"{data_year}_skipped_files_"
+                f"{today.strftime('%Y-%m-%d')}.csv"
+            )
+        print(f"Missing worksheets. Save log to {log_location}")
+        save_skipped_files_info(skipped_files, log_location)
 
     # write exceptions
     f_ex = open(
@@ -433,7 +452,8 @@ def save_unknown_categories_info(
     """
     # process unknown categories
     df_unknown_cats = pd.DataFrame(
-        unknown_categories, columns=["Table", "Country", "Category", "Year", "index"]
+        unknown_categories,
+        columns=["Table", "Country", "Category", "Year", "index", "Parent"],
     )
 
     processed_cats = []
@@ -443,34 +463,42 @@ def save_unknown_categories_info(
     all_years = set([year for year in all_years if int(year) > 1989])  # noqa: PLR2004
     for table in all_tables:
         df_cats_current_table = df_unknown_cats[df_unknown_cats["Table"] == table]
-        cats_current_table = list(df_cats_current_table["Category"].unique())
-        for cat in cats_current_table:
-            df_current_cat_table = df_cats_current_table[
-                df_cats_current_table["Category"] == cat
+        parents_current_table = list(df_cats_current_table["Parent"].unique())
+        for parent in parents_current_table:
+            df_cats_current_table_parent = df_cats_current_table[
+                df_cats_current_table["Parent"] == parent
             ]
-            all_countries = df_current_cat_table["Country"].unique()
-            countries_cat = ""
-            for country in all_countries:
-                years_country = df_current_cat_table[
-                    df_current_cat_table["Country"] == country
-                ]["Year"].unique()
-                idx_country = df_current_cat_table[
-                    df_current_cat_table["Country"] == country
-                ]["index"].unique()
-                if set(years_country) == all_years:
-                    countries_cat = f"{countries_cat}; {country} ({idx_country})"
-                else:
-                    countries_cat = (
-                        f"{countries_cat}; {country} ({years_country}) ({idx_country})"
-                    )
-            processed_cats.append([table, cat, countries_cat])
+            cats_current_table_parent = list(
+                df_cats_current_table_parent["Category"].unique()
+            )
+            for cat in cats_current_table_parent:
+                df_current_cat_table_parent = df_cats_current_table_parent[
+                    df_cats_current_table_parent["Category"] == cat
+                ]
+                all_countries = df_current_cat_table_parent["Country"].unique()
+                countries_cat = ""
+                for country in all_countries:
+                    years_country = df_current_cat_table_parent[
+                        df_current_cat_table_parent["Country"] == country
+                    ]["Year"].unique()
+                    idx_country = df_current_cat_table_parent[
+                        df_current_cat_table_parent["Country"] == country
+                    ]["index"].unique()
+                    if set(years_country) == all_years:
+                        countries_cat = f"{countries_cat}; {country} ({idx_country})"
+                    else:
+                        countries_cat = (
+                            f"{countries_cat}; {country} "
+                            f"({years_country}) ({idx_country})"
+                        )
+                processed_cats.append([table, parent, cat, countries_cat])
 
     if not file.parents[1].exists():
         file.parents[1].mkdir()
     if not file.parents[0].exists():
         file.parents[0].mkdir()
     df_processed_cats = pd.DataFrame(
-        processed_cats, columns=["Table", "Category", "Countries"]
+        processed_cats, columns=["Table", "Parent", "Category", "Countries"]
     )
     df_processed_cats.to_csv(file, index=False)
 
@@ -508,29 +536,29 @@ def save_last_row_info(
     all_years = set([year for year in all_years if year > 1989])  # noqa: PLR2004
     for table in all_tables:
         df_last_row_current_table = df_last_row_info[df_last_row_info["Table"] == table]
-        all_countries = df_last_row_current_table["Country"].unique()
-        for country in all_countries:
-            df_current_country_table = df_last_row_current_table[
-                df_last_row_current_table["Country"] == country
+        all_categories = df_last_row_current_table["Category"].unique()
+        for category in all_categories:
+            df_last_row_current_table_category = (df_last_row_current_table)[
+                df_last_row_current_table["Category"] == category
             ]
-            all_categories = df_current_country_table["Category"].unique()
-            cats_country = ""
-            for cat in all_categories:
-                years_category = df_current_country_table[
-                    df_current_country_table["Category"] == cat
+            all_countries = df_last_row_current_table_category["Country"].unique()
+            countries_cat = ""
+            for country in all_countries:
+                years_country = df_last_row_current_table_category[
+                    df_last_row_current_table_category["Country"] == country
                 ]["Year"].unique()
-                if set(years_category) == all_years:
-                    cats_country = f"{cats_country}; {cat}"
+                if set(years_country) == all_years:
+                    countries_cat = f"{countries_cat}; {country}"
                 else:
-                    cats_country = f"{cats_country}; {cat} ({years_category})"
-            processed_last_row_info.append([table, country, cats_country])
+                    countries_cat = f"{countries_cat}; {country} ({years_country})"
+            processed_last_row_info.append([table, category, countries_cat])
 
     if not file.parents[1].exists():
         file.parents[1].mkdir()
     if not file.parents[0].exists():
         file.parents[0].mkdir()
     df_processed_lost_row_info = pd.DataFrame(
-        processed_last_row_info, columns=["Table", "Country", "Categories"]
+        processed_last_row_info, columns=["Table", "Category", "Countries"]
     )
     df_processed_lost_row_info.to_csv(file, index=False)
 
@@ -579,4 +607,60 @@ def save_empty_tables_info(
     if not file.parents[0].exists():
         file.parents[0].mkdir()
     df_processed_tables = pd.DataFrame(processed_tables, columns=["Table", "Countries"])
+    df_processed_tables.to_csv(file, index=False)
+
+
+def save_skipped_files_info(
+    skipped_files: list[list],
+    file: Path,
+) -> None:
+    """
+    Save information on skipped files to a csv file.
+
+    Parameters
+    ----------
+    skipped_files: List[List]
+        List of lists with information on the skipped files.
+        (which table, country, year, and exception raised)
+
+    file: pathlib.Path
+        File including path where the data should be stored
+
+    """
+    # process unknown categories
+    df_skipped_files = pd.DataFrame(
+        skipped_files, columns=["Table", "Country", "Year", "Exception"]
+    )
+
+    processed_tables = []
+    all_tables = df_skipped_files["Table"].unique()
+    all_years = set(df_skipped_files["Year"].unique())
+    all_years = set([year for year in all_years if isinstance(year, int)])
+    all_years = set([year for year in all_years if int(year) > 1989])  # noqa: PLR2004
+    for table in all_tables:
+        df_current_table = df_skipped_files[df_skipped_files["Table"] == table]
+        all_exceptions = df_current_table["Exception"].unique()
+        for exception in all_exceptions:
+            df_current_table_ex = df_current_table[
+                df_current_table["Exception"] == exception
+            ]
+            all_countries = df_current_table_ex["Country"].unique()
+            countries_table = ""
+            for country in all_countries:
+                years_country = df_current_table_ex[
+                    df_current_table_ex["Country"] == country
+                ]["Year"].unique()
+                if set(years_country) == all_years:
+                    countries_table = f"{countries_table}; {country}"
+                else:
+                    countries_table = f"{countries_table}; {country} ({years_country})"
+            processed_tables.append([table, exception, countries_table])
+
+    if not file.parents[1].exists():
+        file.parents[1].mkdir()
+    if not file.parents[0].exists():
+        file.parents[0].mkdir()
+    df_processed_tables = pd.DataFrame(
+        processed_tables, columns=["Table", "Exception", "Countries"]
+    )
     df_processed_tables.to_csv(file, index=False)

@@ -31,6 +31,7 @@ from .unfccc_crf_reader_core import (
 from .unfccc_crf_reader_devel import (
     save_empty_tables_info,
     save_last_row_info,
+    save_skipped_files_info,
     save_unknown_categories_info,
 )
 from .util import NoCRFFilesError, all_crf_countries
@@ -170,6 +171,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
         last_row_info = []
         empty_tables = []
         missing_worksheets = []
+        skipped_files = []
         for table in tables:
             # read table for all years
             (
@@ -177,6 +179,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
                 new_unknown_categories,
                 new_last_row_info,
                 not_present,
+                new_skipped_files,
             ) = read_crf_table(
                 country_code,
                 table,
@@ -188,6 +191,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
             # collect messages on unknown rows etc
             unknown_categories = unknown_categories + new_unknown_categories
             last_row_info = last_row_info + new_last_row_info
+            skipped_files = skipped_files + new_skipped_files
 
             if ds_table is not None:
                 # convert to PRIMAP2 IF
@@ -349,6 +353,18 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
                 f"{empty_tables}. Save log to {log_location}"
             )
             save_empty_tables_info(missing_worksheets, log_location)
+
+        if len(skipped_files) > 0:
+            log_location = (
+                log_path
+                / f"{submission_type}{submission_year}"
+                / f"{country_code}_skipped_files_{today.strftime('%Y-%m-%d')}.csv"
+            )
+            print(
+                f"Skipped files for {country_code}: "
+                f"{empty_tables}. Save log to {log_location}"
+            )
+            save_skipped_files_info(skipped_files, log_location)
 
         if save_data:
             compression = dict(zlib=True, complevel=9)

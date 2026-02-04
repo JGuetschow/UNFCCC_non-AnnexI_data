@@ -25,6 +25,7 @@ from treelib import Tree
 
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, root_path
 
+from ..helper.definitions import nan_values_crf_crt, str_value_mapping
 from . import crf_specifications as crf
 from .util import BTR_urls, NoCRFFilesError
 
@@ -221,6 +222,7 @@ def convert_crf_table_to_pm2if(  # noqa: PLR0912, PLR0913, PLR0915
         filter_keep=filter_keep,
         meta_data=meta_data,
         time_format="%Y",
+        convert_str=str_value_mapping,
     )
     return df_table_if
 
@@ -234,7 +236,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     folder: str | None = None,
     submission_type: str = "CRF",
     debug: bool = False,
-) -> tuple[pd.DataFrame, list[list], list[list], bool]:
+) -> tuple[pd.DataFrame, list[list], list[list], bool, list[list]]:
     """
     Read CRF table for given year and country/countries
 
@@ -277,6 +279,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
           This is used as a hint to check if table specifications might have to
           be adapted as country submitted tables are longer than expected.
         * The fourth return parameter is true if the worksheet to read in the file
+        * the fifth return parameter is a list of skipped files
 
     """
     # check type
@@ -375,6 +378,7 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
     unknown_rows = []
     last_row_info = []
     not_present = False
+    skipped_files = []
     for file in input_files:
         file_info = get_info_from_crf_filename(file.name)
         try:
@@ -392,17 +396,33 @@ def read_crf_table(  # noqa: PLR0913, PLR0912, PLR0915
                 df_all = pd.concat([df_this_file, df_all])
                 unknown_rows = unknown_rows + unknown_rows_this_file
                 last_row_info = last_row_info + last_row_info_this_file
-        except ValueError as e:
-            if e.args[0] == f"Worksheet named '{table}' not found":
+        except ValueError as ex:
+            if ex.args[0] == f"Worksheet named '{table}' not found":
                 print(f"Table {table} not present")
                 not_present = True
                 pass
             else:
-                print(f"Error when reading file {file}. Skipping file. Exception: {e}")
-        except Exception as e:
-            print(f"Error when reading file {file}. Skipping file. Exception: {e}")
+                print(f"Error when reading file {file}. Skipping file. Exception: {ex}")
+                skipped_files.append(
+                    [
+                        table,
+                        file_info["party"],
+                        file_info["data_year"],
+                        f"{ex}",
+                    ]
+                )
+        except Exception as ex:
+            print(f"Error when reading file {file}. Skipping file. Exception: {ex}")
+            skipped_files.append(
+                [
+                    table,
+                    file_info["party"],
+                    file_info["data_year"],
+                    f"{ex}",
+                ]
+            )
 
-    return df_all, unknown_rows, last_row_info, not_present
+    return df_all, unknown_rows, last_row_info, not_present, skipped_files
 
 
 def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
@@ -496,23 +516,34 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         skiprows=skiprows,
         nrows=nrows,
         engine="openpyxl",
-        na_values=[
-            "-1.#IND",
-            "-1.#QNAN",
-            "-NaN",
-            "-nan",
-            "1.#IND",
-            "1.#QNAN",
-            "NULL",
-            "NaN",
-            "",
-            " ",
-        ],
+        na_values=nan_values_crf_crt,
         keep_default_na=False,
     )
 
     # first drop empty rows
     df_raw = df_raw.dropna(axis=0, how="all")
+
+    # if the header of the first proper column is empty and firstrow_fallback is set we
+    # read again with adjusted row configurations (this is a fix for Peru,
+    # Table 1.A(a)3, where for some files the table starts in row 6 and for others in
+    # row 7
+    if ("Unnamed" in df_raw.columns[1]) and ("firstrow_fallback" in table_properties):
+        skiprows = table_properties["firstrow_fallback"] - 1
+        nrows = (
+            table_properties["lastrow"] - skiprows + 1
+        )  # read one row more to check if we reached the end
+
+        df_raw = pd.read_excel(
+            file,
+            sheet_name=table,
+            skiprows=skiprows,
+            nrows=nrows,
+            engine="openpyxl",
+            na_values=nan_values_crf_crt,
+            keep_default_na=False,
+        )
+
+        df_raw = df_raw.dropna(axis=0, how="all")
 
     cols_to_drop = []
     # remove empty first column (because CRTables start with an empty column)
@@ -580,7 +611,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
         )
 
     # remove double spaces
-    entities = [entity.strip() for entity in entities]
+    entities = [str(entity).strip() for entity in entities]
     entities = [re.sub("\\s+", " ", entity) for entity in entities]
     entities = [re.sub("_x000d_", "", entity) for entity in entities]
     entities = [re.sub("_x000D_", "", entity) for entity in entities]
@@ -596,8 +627,14 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     df_current.columns = entities
     if debug:
         print(f"Columns present: {entities}")
-    # remove all columns to ignore
-    df_current = df_current.drop(columns=table_properties["cols_to_ignore"])
+    # remove all present columns to ignore
+    present_cols_to_ignore = [
+        col for col in entities if col in table_properties["cols_to_ignore"]
+    ]
+    df_current = df_current.drop(columns=present_cols_to_ignore)
+
+    # we might now have new empty rows. drop them
+    df_current = df_current.dropna(axis=0, how="all")
 
     # remove double spaces
     for col in cols_for_space_stripping:
@@ -615,6 +652,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     # and also need to consider the order of elements for the mapping
     unknown_categories = []
     info_last_row = []
+    used_ids = []
     if non_unique_cats:
         # need to initialize the tree parsing.
         last_parent = category_tree.get_node("root")
@@ -640,13 +678,33 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
             )
             if current_cat in children.keys():
                 # the current category is a child of the current parent
-                # do the mapping
                 node = category_tree.get_node(children[current_cat])
-                new_cats[idx] = node.data[1]
-                # check if the node has children
-                new_children = category_tree.children(node.identifier)
-                if new_children:
-                    last_parent = node
+                # check if it has been used already
+                if node.identifier in used_ids:
+                    # save as unknown
+                    print(
+                        f"Unknown category '{current_cat}' found in {table} for "
+                        f"{file_info['party']}, {file_info['data_year']} "
+                        f"(last parent: {last_parent.tag})."
+                    )
+                    unknown_categories.append(
+                        [
+                            table,
+                            file_info["party"],
+                            current_cat,
+                            file_info["data_year"],
+                            idx,
+                            last_parent.tag,
+                        ]
+                    )
+                else:
+                    # do the mapping
+                    new_cats[idx] = node.data[1]
+                    used_ids.append(node.identifier)
+                    # check if the node has children
+                    new_children = category_tree.children(node.identifier)
+                    if new_children:
+                        last_parent = node
 
             # two other possibilities
             # 1. The category is at a higher point in the hierarchy
@@ -687,6 +745,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                             current_cat,
                             file_info["data_year"],
                             idx,
+                            last_parent.identifier,
                         ]
                     )
                     # copy back the parent info to continue with next category
@@ -711,6 +770,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                         current_cat,
                         file_info["data_year"],
                         idx,
+                        last_parent.identifier,
                     ]
                 )
     else:
@@ -746,6 +806,7 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
                             current_cat,
                             file_info["data_year"],
                             idx,
+                            "root",
                         ]
                     )
 
