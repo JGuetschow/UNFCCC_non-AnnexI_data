@@ -9,8 +9,8 @@ API Reference
 .. autosummary::
   :toctree: ./
 
-  unfccc_ghg_data.helper
-  unfccc_ghg_data.unfccc_crf_reader
-  unfccc_ghg_data.unfccc_di_reader
-  unfccc_ghg_data.unfccc_downloader
-  unfccc_ghg_data.unfccc_reader
+  helper
+  unfccc_crf_reader
+  unfccc_di_reader
+  unfccc_downloader
+  unfccc_reader

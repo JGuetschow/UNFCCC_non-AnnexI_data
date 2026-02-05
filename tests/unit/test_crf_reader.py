@@ -54,7 +54,7 @@ def test_get_latest_version_for_country():
     assert version == expected
 
     # TUR CRTAI
-    expected = "V0.2"
+    expected = "V2.0"
     version = get_latest_version_for_country(
         "TUR", submission_round=2025, submission_type="CRTAI"
     )

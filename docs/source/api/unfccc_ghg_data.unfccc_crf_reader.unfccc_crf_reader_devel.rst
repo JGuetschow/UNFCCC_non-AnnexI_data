@@ -29,3 +29,9 @@ save\_empty\_tables\_info
 =========================
 
 .. autofunction:: save_empty_tables_info
+
+
+save\_skipped\_files\_info
+==========================
+
+.. autofunction:: save_skipped_files_info

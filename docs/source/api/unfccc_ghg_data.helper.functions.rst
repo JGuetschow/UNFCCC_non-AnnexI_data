@@ -49,6 +49,12 @@ get\_country\_datasets
 .. autofunction:: get_country_datasets
 
 
+gather\_datasets
+================
+
+.. autofunction:: gather_datasets
+
+
 get\_code\_file
 ===============
 

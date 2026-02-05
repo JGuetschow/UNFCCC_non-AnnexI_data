@@ -9,4 +9,4 @@ unfccc\_ghg\_data.unfccc\_reader.Indonesia
 .. autosummary::
   :toctree: ./
 
-  unfccc_ghg_data.unfccc_reader.Indonesia.read_IDN_BUR3_from_pdf
+  read_IDN_BUR3_from_pdf

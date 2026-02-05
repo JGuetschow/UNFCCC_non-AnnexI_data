@@ -9,7 +9,7 @@ unfccc\_ghg\_data.unfccc\_reader.Pakistan
 .. autosummary::
   :toctree: ./
 
-  unfccc_ghg_data.unfccc_reader.Pakistan.config_pak_INV2016
-  unfccc_ghg_data.unfccc_reader.Pakistan.config_pak_btr1
-  unfccc_ghg_data.unfccc_reader.Pakistan.read_PAK_2016_Inventory_from_pdf
-  unfccc_ghg_data.unfccc_reader.Pakistan.read_PAK_BTR1_from_pdf
+  config_pak_INV2016
+  config_pak_btr1
+  read_PAK_2016_Inventory_from_pdf
+  read_PAK_BTR1_from_pdf

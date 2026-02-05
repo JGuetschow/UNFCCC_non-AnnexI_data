@@ -92,9 +92,9 @@ autodocgen_config = [
         "modules": [unfccc_ghg_data],
         "generated_source_dir": "docs/source/api",
         # choose a different title for specific modules, e.g. the toplevel one
-        "module_title_decider": lambda modulename: "API Reference"
-        if modulename == "unfccc_ghg_data"
-        else modulename,
+        "module_title_decider": lambda modulename: (
+            "API Reference" if modulename == "unfccc_ghg_data" else modulename
+        ),
     }
 ]
 
