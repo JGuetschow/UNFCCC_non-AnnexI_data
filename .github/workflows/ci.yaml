@@ -27,14 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: ./.github/actions/setup-git-annex
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
         with:
           os: "ubuntu-latest"
           python-version: "3.12"
           venv-id: "docs"
           poetry-dependency-install-flags: "--all-extras --only 'main,docs'"
-      - uses: ./.github/actions/setup-git-annex
       - uses: ./.github/actions/get-files-datalad
       - name: docs
         run: poetry run sphinx-build -W --keep-going -T -b html docs/source docs/build
