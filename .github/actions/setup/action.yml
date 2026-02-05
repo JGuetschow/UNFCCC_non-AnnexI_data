@@ -66,5 +66,5 @@ runs:
     - name: get files
       shell: bash
       run: |
-        poetry run datalad siblings
+        git annex enableremote public-r2
         poetry run datalad get src/unfccc_ghg_data/unfccc_reader/Republic_of_Korea/sector_mapping_INV2024.csv
