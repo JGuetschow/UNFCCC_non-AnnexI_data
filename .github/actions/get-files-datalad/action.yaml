@@ -1,0 +1,13 @@
+name: "get files with datalad"
+description: "get some necessary files using datalad"
+
+
+runs:
+  using: "composite"
+  steps:
+    # get all csv files in the code directory uing datalad
+    - name: get files
+      shell: bash
+      run: |
+        git annex enableremote public-r2
+        poetry run datalad get src/unfccc_ghg_data/unfccc_reader/Republic_of_Korea/sector_mapping_INV2024.csv

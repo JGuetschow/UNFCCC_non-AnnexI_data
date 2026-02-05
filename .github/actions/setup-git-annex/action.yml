@@ -1,0 +1,51 @@
+name: 'Setup git-annex'
+description: 'Installs git-annex on Linux, macOS, or Windows'
+branding:
+  icon: 'package'
+  color: 'purple'
+
+runs:
+  using: 'composite'
+  steps:
+
+    - name: Linux
+      if: runner.os == 'Linux'
+      run: |
+        echo Downloading git-annex
+        curl --max-time 120 --silent --output git-annex-standalone-amd64.tar.gz https://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz
+
+        echo Installing git-annex
+        mkdir -p "$(systemd-path user-binaries)"
+        tar --extract --gzip --strip-components 1 --file=git-annex-standalone-amd64.tar.gz --directory "$(systemd-path user-binaries)"
+
+        echo Removing download
+        rm git-annex-standalone-amd64.tar.gz
+
+        echo Success
+        git version
+        git annex version
+      shell: bash
+
+    - name: macOS
+      if: runner.os == 'macOS'
+      run: |
+        brew update
+        brew install git-annex
+        git annex version
+      shell: bash
+
+    - name: Windows
+      if: runner.os == 'Windows'
+      run: |
+        echo 'Downloading git-annex'
+        Invoke-WebRequest -TimeoutSec 120 -OutFile git-annex-installer.exe -Uri https://downloads.kitenet.net/git-annex/windows/current/git-annex-installer.exe
+
+        echo 'Installing git-annex'
+        Start-Process -Wait -Verb RunAs -FilePath git-annex-installer.exe -ArgumentList /S
+
+        echo 'Removing download'
+        Remove-Item -Path git-annex-installer.exe
+
+        echo 'Success'
+        git annex version
+      shell: powershell

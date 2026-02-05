@@ -34,6 +34,8 @@ jobs:
           python-version: "3.12"
           venv-id: "docs"
           poetry-dependency-install-flags: "--all-extras --only 'main,docs'"
+      - uses: ./.github/actions/setup-git-annex
+      - uses: ./.github/actions/get-files-datalad
       - name: docs
         run: poetry run sphinx-build -W --keep-going -T -b html docs/source docs/build
 
@@ -59,6 +61,8 @@ jobs:
           python-version: "${{ matrix.python-version }}"
           venv-id: "tests-${{ runner.os }}"
           poetry-dependency-install-flags: "--all-extras"
+      - uses: ./.github/actions/setup-git-annex
+      - uses: ./.github/actions/get-files-datalad
       - name: Run tests
         run: |
           poetry run pytest -r a -v src tests --doctest-modules --cov=src --cov-report=term-missing --cov-report=xml
