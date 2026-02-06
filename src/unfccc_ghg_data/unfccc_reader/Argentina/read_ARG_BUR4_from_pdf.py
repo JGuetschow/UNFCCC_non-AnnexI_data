@@ -332,19 +332,17 @@ if __name__ == "__main__":
         # df_current = df_current.set_index(index_cols)
         # add columns
         inserted = 0
-        for col in metadata_fgases.keys():
+        for col_key, col_info in metadata_fgases.items():
             # print(f"coordinates: {metadata[col][0]}, {metadata[col][1]}")
-            if isinstance(metadata_fgases[col], str):
-                value = metadata_fgases[col]
+            if isinstance(col_info, str):
+                value = col_info
             else:
-                value = df_current.iloc[
-                    metadata_fgases[col][0], metadata_fgases[col][1] + inserted
-                ]
-                if col in metadata_mapping.keys():
-                    if value in metadata_mapping[col].keys():
-                        value = metadata_mapping[col][value]
+                value = df_current.iloc[col_info[0], col_info[1] + inserted]
+                if col_key in metadata_mapping.keys():
+                    if value in metadata_mapping[col_key].keys():
+                        value = metadata_mapping[col_key][value]
             # print(f"Inserting column {col} with value {value}")
-            df_current.insert(2, col, value)
+            df_current.insert(2, col_key, value)
             inserted += 1
 
         # remove unnecessary columns
