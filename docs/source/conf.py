@@ -28,6 +28,8 @@ copyright = f"{copyright_year}, {authors}"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+suppress_warnings = ["config.cache"]
+
 extensions = [
     # create documentation automatically from source code
     # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html

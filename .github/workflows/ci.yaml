@@ -38,7 +38,6 @@ jobs:
       - uses: ./.github/actions/get-files-datalad
       - name: docs
         run: |
-          poetry run echo "CI=false" >> $GITHUB_ENV
           poetry run sphinx-build -W --keep-going -T -b html docs/source docs/build
 
 
