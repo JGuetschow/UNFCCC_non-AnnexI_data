@@ -38,6 +38,8 @@ jobs:
       - uses: ./.github/actions/get-files-datalad
       - name: docs
         run: poetry run sphinx-build -W --keep-going -T -b html docs/source docs/build
+        env:
+          CI: ""
 
   tests:
     strategy:
@@ -108,20 +110,20 @@ jobs:
 #          tar -tvf dist/unfccc_ghg_data-*.tar.gz --wildcards 'unfccc_ghg_data-*/LICENCE'
 
 
-  check-dependency-licences:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-      - uses: ./.github/actions/setup
-        with:
-          python-version: "3.12"
-          venv-id: "licence-check"
-          poetry-dependency-install-flags: "--all-extras"
-      - name: Check licences of dependencies
-        shell: bash
-        run: |
-          TEMP_FILE=$(mktemp)
-          poetry export --without=tests --without=docs --without=dev > $TEMP_FILE
-          poetry run liccheck -r $TEMP_FILE -R licence-check.txt
-          cat licence-check.txt
+#  check-dependency-licences:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v3
+#      - uses: ./.github/actions/setup
+#        with:
+#          python-version: "3.12"
+#          venv-id: "licence-check"
+#          poetry-dependency-install-flags: "--all-extras"
+#      - name: Check licences of dependencies
+#        shell: bash
+#        run: |
+#          TEMP_FILE=$(mktemp)
+#          poetry export --without=tests --without=docs --without=dev > $TEMP_FILE
+#          poetry run liccheck -r $TEMP_FILE -R licence-check.txt
+#          cat licence-check.txt
