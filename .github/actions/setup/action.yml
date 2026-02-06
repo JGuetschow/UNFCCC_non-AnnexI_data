@@ -61,3 +61,4 @@ runs:
       run: |
         poetry install --no-interaction ${{ inputs.poetry-dependency-install-flags }}
         poetry run python --version  # Check python version just in case
+        # Now run same command but let the package install too

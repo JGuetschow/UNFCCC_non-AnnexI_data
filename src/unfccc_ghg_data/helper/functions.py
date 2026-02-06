@@ -643,10 +643,10 @@ def get_country_submissions(  # noqa: PLR0912
     return country_submissions
 
 
-def get_country_datasets(  # noqa: PLR0915, PLR0912
+def get_country_datasets(
     country_name: str,
     print_ds: bool = True,
-) -> dict[str, list[str]]:
+) -> dict[str, dict[str, list[str]]]:
     """
     Get all datasets for a country
 
@@ -677,11 +677,70 @@ def get_country_datasets(  # noqa: PLR0915, PLR0912
     if print_ds:
         print(f"Country name {country_name} maps to ISO code {country_code}")
 
-    rep_data = {}
     # data
+    rep_data = gather_datasets(
+        country_code=country_code,
+        country_name=country_name,
+        data_folder=data_folder,
+        legacy=False,
+        print_ds=print_ds,
+    )
+
+    # legacy data
+    legacy_data = gather_datasets(
+        country_code=country_code,
+        country_name=country_name,
+        data_folder=data_folder_legacy,
+        legacy=True,
+        print_ds=print_ds,
+    )
+
+    all_data = {
+        "rep_data": rep_data,
+        "legacy_data": legacy_data,
+    }
+
+    return all_data
+
+
+def gather_datasets(  # noqa: PLR0912, PLR0915
+    country_code: str,
+    country_name: str,
+    data_folder: Path,
+    legacy: bool,
+    print_ds: bool = True,
+) -> dict[str, list[str]]:
+    """
+    Collect information on available datasets for a given country
+
+    The function works with leacy datasets (no code) and all types of new datasets
+
+    Parameters
+    ----------
+    country_code
+        Three letter ISO code for the country
+    country_name
+        Name of the country
+    data_folder
+        Folder where the dataset are located
+    legacy
+        If True check for legacy datasets, else for new datsets
+    print_ds
+        Print information to stdout
+
+    Returns
+    -------
+        Returns a dict with keys for the subfolders. The values are lists of datasets
+        available in the folders
+
+    """
+    dataset_info = {}
     if print_ds:
         print("#" * 80)
-        print(f"The following datasets are available for {country_name}")
+        if legacy:
+            print(f"The following legacy datasets are available for {country_name}")
+        else:
+            print(f"The following datasets are available for {country_name}")
     for item in data_folder.iterdir():
         if item.is_dir():
             cleaned_datasets_current_folder = {}
@@ -696,147 +755,78 @@ def get_country_datasets(  # noqa: PLR0915, PLR0912
                     print("No data available")
                     print("")
             else:
-                country_folder = folder_mapping[country_code]
-                if not isinstance(country_folder, str):
-                    raise ValueError(  # noqa: TRY003
-                        "Wrong data type in folder mapping json file. Should be str."
-                    )
+                country_folders = folder_mapping[country_code]
+                if not isinstance(country_folders, str):
+                    if not isinstance(country_folders, list):
+                        raise TypeError(  # noqa: TRY003
+                            "Wrong data type in folder mapping json file. "
+                            "Should be str."
+                        )
+                else:
+                    country_folders = [country_folders]
 
                 datasets_current_folder = {}
-                current_folder = item / country_folder
 
-                for data_file in current_folder.iterdir():
-                    if data_file.suffix in [".nc", ".yaml", ".csv"]:
-                        if data_file.stem in datasets_current_folder:
-                            datasets_current_folder[data_file.stem].append(
-                                data_file.suffix
-                            )
-                        else:
-                            datasets_current_folder[data_file.stem] = [data_file.suffix]
+                for folder in country_folders:
+                    current_country_folder = item / folder
 
-                for dataset in datasets_current_folder:
+                    for data_file in current_country_folder.iterdir():
+                        if data_file.suffix in [".nc", ".yaml", ".csv"]:
+                            if data_file.stem in datasets_current_folder:
+                                datasets_current_folder[data_file.stem].append(
+                                    data_file.suffix
+                                )
+                            else:
+                                datasets_current_folder[data_file.stem] = [
+                                    data_file.suffix
+                                ]
+
+                for ds_key, ds_val in datasets_current_folder.items():
                     # process filename to get submission
-                    parts = dataset.split("_")
+                    parts = ds_key.split("_")
                     if parts[0] != country_code:
                         cleaned_datasets_current_folder[
                             f"Wrong code: {parts[0]}"
-                        ] = dataset
+                        ] = ds_key
                     else:
                         terminology = "_".join(parts[3:])
-                        key = f"{parts[1]} ({parts[2]}, {terminology})"
+                        if legacy:
+                            key = f"{parts[1]} ({parts[2]}, {terminology}, legacy)"
+                        else:
+                            key = f"{parts[1]} ({parts[2]}, {terminology})"
                         data_info = ""
-                        if ".nc" in datasets_current_folder[dataset]:
+                        if ".nc" in ds_val:
                             data_info = data_info + "NF (.nc), "
-                        if (".csv" in datasets_current_folder[dataset]) and (
-                            ".yaml" in datasets_current_folder[dataset]
-                        ):
+                        if (".csv" in ds_val) and (".yaml" in ds_val):
                             data_info = data_info + "IF (.yaml + .csv), "
-                        elif ".csv" in datasets_current_folder[dataset]:
+                        elif ".csv" in ds_val:
                             data_info = data_info + "incomplete IF? (.csv), "
-                        elif ".yaml" in datasets_current_folder[dataset]:
+                        elif ".yaml" in ds_val:
                             data_info = data_info + "incomplete IF (.yaml), "
 
-                        code_file = get_code_file(country_code, parts[1])
-                        if code_file:
-                            data_info = data_info + f"code: {code_file.name}"
-                        else:
-                            data_info = data_info + "code: not found"
+                        if not legacy:
+                            code_file = get_code_file(country_code, parts[1])
+                            if code_file:
+                                data_info = data_info + f"code: {code_file.name}"
+                            else:
+                                data_info = data_info + "code: not found"
 
                         cleaned_datasets_current_folder[key] = data_info
 
                 if print_ds:
                     if cleaned_datasets_current_folder:
-                        for country_ds in cleaned_datasets_current_folder:
-                            print(
-                                f"{country_ds}: "
-                                f"{cleaned_datasets_current_folder[country_ds]}"
-                            )
+                        for (
+                            country_ds_key,
+                            country_ds_val,
+                        ) in cleaned_datasets_current_folder.items():
+                            print(f"{country_ds_key}: {country_ds_val}")
                     else:
                         print("No data available")
                     print("")
 
-            rep_data[item.name] = cleaned_datasets_current_folder
+            dataset_info[item.name] = cleaned_datasets_current_folder
 
-    # legacy data
-    if print_ds:
-        print("#" * 80)
-        print(f"The following legacy datasets are available for {country_name}")
-    legacy_data = {}
-    for item in data_folder_legacy.iterdir():
-        if item.is_dir():
-            cleaned_datasets_current_folder = {}
-            if print_ds:
-                print("-" * 80)
-                print(f"Data folder {item.name}")
-                print("-" * 80)
-            with open(item / "folder_mapping.json") as mapping_file:
-                folder_mapping = json.load(mapping_file)
-            if country_code not in folder_mapping:
-                if print_ds:
-                    print("No data available")
-                    print("")
-            else:
-                country_folder = folder_mapping[country_code]
-                if not isinstance(country_folder, str):
-                    raise ValueError(  # noqa: TRY003
-                        "Wrong data type in folder mapping json file. Should be str."
-                    )
-
-                datasets_current_folder = {}
-                current_folder = item / country_folder
-
-                for data_file in current_folder.iterdir():
-                    if data_file.suffix in [".nc", ".yaml", ".csv"]:
-                        if data_file.stem in datasets_current_folder:
-                            datasets_current_folder[data_file.stem].append(
-                                data_file.suffix
-                            )
-                        else:
-                            datasets_current_folder[data_file.stem] = [data_file.suffix]
-
-                for dataset in datasets_current_folder:
-                    # process filename to get submission
-                    parts = dataset.split("_")
-                    if parts[0] != country_code:
-                        cleaned_datasets_current_folder[
-                            f"Wrong code: {parts[0]}"
-                        ] = dataset
-                    else:
-                        terminology = "_".join(parts[3:])
-                        key = f"{parts[1]} ({parts[2]}, {terminology}, legacy)"
-                        data_info = ""
-                        if ".nc" in datasets_current_folder[dataset]:
-                            data_info = data_info + "NF (.nc), "
-                        if (".csv" in datasets_current_folder[dataset]) and (
-                            ".yaml" in datasets_current_folder[dataset]
-                        ):
-                            data_info = data_info + "IF (.yaml + .csv), "
-                        elif ".csv" in datasets_current_folder[dataset]:
-                            data_info = data_info + "incomplete IF? (.csv), "
-                        elif ".yaml" in datasets_current_folder[dataset]:
-                            data_info = data_info + "incomplete IF (.yaml), "
-
-                        cleaned_datasets_current_folder[key] = data_info
-
-                if print_ds:
-                    if cleaned_datasets_current_folder:
-                        for country_ds in cleaned_datasets_current_folder:
-                            print(
-                                f"{country_ds}: "
-                                f"{cleaned_datasets_current_folder[country_ds]}"
-                            )
-                    else:
-                        print("No data available")
-                    print("")
-
-                legacy_data[item.name] = cleaned_datasets_current_folder
-
-    all_data = {
-        "rep_data": rep_data,
-        "legacy_data": legacy_data,
-    }
-
-    return all_data
+    return dataset_info
 
 
 def get_code_file(

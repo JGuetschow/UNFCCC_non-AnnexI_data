@@ -17,19 +17,21 @@ from unfccc_ghg_data.helper import (
     extracted_data_path,
     process_data_for_country,
 )
-from unfccc_ghg_data.unfccc_reader.United_States_of_America.config_usa_inv2025 import (
+from unfccc_ghg_data.unfccc_reader.United_States_of_America.config_usa_inv2024 import (
     basket_copy,
-    cat_conversion,
     category_col,
     coords_cols_template,
-    coords_defaults_template,
-    coords_terminologies,
     filter_remove,
     gas_baskets,
-    inventory_files,
-    meta_data,
     terminology_proc,
     time_format,
+)
+from unfccc_ghg_data.unfccc_reader.United_States_of_America.config_usa_inv2025 import (
+    cat_conversion,
+    coords_defaults_template,
+    coords_terminologies,
+    inventory_files,
+    meta_data,
 )
 
 if __name__ == "__main__":

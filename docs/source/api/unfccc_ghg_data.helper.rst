@@ -9,6 +9,6 @@ unfccc\_ghg\_data.helper
 .. autosummary::
   :toctree: ./
 
-  unfccc_ghg_data.helper.definitions
-  unfccc_ghg_data.helper.folder_mapping
-  unfccc_ghg_data.helper.functions
+  definitions
+  folder_mapping
+  functions

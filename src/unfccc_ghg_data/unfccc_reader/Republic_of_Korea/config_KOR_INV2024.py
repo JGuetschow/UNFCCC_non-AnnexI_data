@@ -4,7 +4,6 @@ configuration for South Korea's 2023 inventory
 Contains category name translations and information on category mapping and aggregation
 """
 
-import numpy as np
 import pandas as pd
 
 from unfccc_ghg_data.helper import code_path
@@ -28,7 +27,7 @@ mapping_to_IPCC2006 = dict(
 mapping_to_IPCC2006 = {
     source: target
     for source, target in mapping_to_IPCC2006.items()
-    if target is not np.nan
+    if isinstance(target, str)
 }
 
 

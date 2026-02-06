@@ -28,6 +28,8 @@ copyright = f"{copyright_year}, {authors}"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+suppress_warnings = ["config.cache"]
+
 extensions = [
     # create documentation automatically from source code
     # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
@@ -92,9 +94,9 @@ autodocgen_config = [
         "modules": [unfccc_ghg_data],
         "generated_source_dir": "docs/source/api",
         # choose a different title for specific modules, e.g. the toplevel one
-        "module_title_decider": lambda modulename: "API Reference"
-        if modulename == "unfccc_ghg_data"
-        else modulename,
+        "module_title_decider": lambda modulename: (
+            "API Reference" if modulename == "unfccc_ghg_data" else modulename
+        ),
     }
 ]
 

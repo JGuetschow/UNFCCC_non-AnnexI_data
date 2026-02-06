@@ -5,7 +5,7 @@ Currently, the following submissions and datasets are available (all datasets
 including DI (read using the DI-reader) and legacy BUR/NIR (no code)):
 
 .. exec_code::
-    :hide_code:
+    :hide:
 
     from unfccc_ghg_data.helper.functions import (get_country_datasets,
                                                   get_country_submissions)

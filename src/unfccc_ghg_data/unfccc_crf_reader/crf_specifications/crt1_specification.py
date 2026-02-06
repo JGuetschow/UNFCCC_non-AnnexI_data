@@ -468,7 +468,7 @@ CRT1 = {
                 3,
             ],
             [
-                "\\C-LAO\\" " Non specified industry (IPCC software 1.A.2.m)",
+                "\\C-LAO\\ Non specified industry (IPCC software 1.A.2.m)",
                 ["1.A.2.g.viii.1", "Total"],
                 3,
             ],
@@ -1774,7 +1774,7 @@ CRT1 = {
                 4,
             ],
             [  # different order and name for CRI
-                "\\C-CRI" "\\ Other fossil fuels (please specify)(7)",
+                "\\C-CRI\\ Other fossil fuels (please specify)(7)",
                 ["1.A.3.e.ii.1", "OtherFF"],
                 4,
             ],
@@ -4791,8 +4791,7 @@ CRT1 = {
                 2,
             ],
             [  # appears twice for Eswatini. ignore second one by assuming a hierarchy
-                "\\C-SWZ\\ "
-                "Other waste emissions [IPCC Software 4.E, SO₂ from 4.A-4.D]",
+                "\\C-SWZ\\ Other waste emissions [IPCC Software 4.E, SO₂ from 4.A-4.D]",
                 ["\\IGNORE"],
                 3,
             ],

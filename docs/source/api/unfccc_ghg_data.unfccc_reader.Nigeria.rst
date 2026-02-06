@@ -9,5 +9,5 @@ unfccc\_ghg\_data.unfccc\_reader.Nigeria
 .. autosummary::
   :toctree: ./
 
-  unfccc_ghg_data.unfccc_reader.Nigeria.config_nga_bur2
-  unfccc_ghg_data.unfccc_reader.Nigeria.read_NGA_BUR2_from_pdf
+  config_nga_bur2
+  read_NGA_BUR2_from_pdf

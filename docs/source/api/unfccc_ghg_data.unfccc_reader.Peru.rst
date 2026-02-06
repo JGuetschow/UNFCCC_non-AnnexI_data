@@ -9,5 +9,5 @@ unfccc\_ghg\_data.unfccc\_reader.Peru
 .. autosummary::
   :toctree: ./
 
-  unfccc_ghg_data.unfccc_reader.Peru.config_per_bur3
-  unfccc_ghg_data.unfccc_reader.Peru.read_PER_BUR3_from_pdf
+  config_per_bur3
+  read_PER_BUR3_from_pdf

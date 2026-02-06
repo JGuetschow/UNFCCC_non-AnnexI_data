@@ -9,7 +9,8 @@ draft inventory under the Freedom of Information Act
 https://www.edf.org/freedom-information-act-documents-epas-greenhouse-gas-inventory
 
 """
-from config_usa_inv2024 import gwp_to_use
+
+from .config_usa_inv2024 import gwp_to_use
 
 category_mapping = {
     "Abandoned Oil and Gas Wells": "M.1.B.2.ab.6",

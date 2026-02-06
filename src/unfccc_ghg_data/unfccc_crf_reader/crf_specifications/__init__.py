@@ -22,8 +22,8 @@ __all__ = [
     "CRF2024",
     "CRT1",
     "CRT1_ECU",
-    "CRT1_PRY",
     "CRT1_PER",
+    "CRT1_PRY",
     "CRT1_TUN",
     "CRTAI2025",
 ]
