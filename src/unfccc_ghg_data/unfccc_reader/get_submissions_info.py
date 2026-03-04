@@ -116,18 +116,18 @@ def get_possible_outputs(
                 folder_mapping = json.load(mapping_file)
 
             if country_code in folder_mapping:
-                country_folder = folder_mapping[country_code]
-                if not isinstance(country_folder, str):
-                    raise ValueError(  # noqa: TRY003
-                        "Wrong data type in folder mapping json file. Should be str."
-                    )
+                country_folders = folder_mapping[country_code]
+                if isinstance(country_folders, str):
+                    # only one folder
+                    country_folders = [country_folders]
 
-                output_folder = item / country_folder
-                if output_folder.exists():
-                    for filepath in output_folder.glob(
-                        country_code + "_" + submission + "*"
-                    ):
-                        output_files.append(filepath.relative_to(root_path))
+                for country_folder in country_folders:
+                    output_folder = item / country_folder
+                    if output_folder.exists():
+                        for filepath in output_folder.glob(
+                            country_code + "_" + submission + "*"
+                        ):
+                            output_files.append(filepath.relative_to(root_path))
 
     if print_info:
         if output_files:
