@@ -10,6 +10,7 @@ Based on `process_bur` from national-inventory-submissions
 # import requests
 import re
 import time
+from datetime import date
 from pathlib import Path
 from random import randrange
 
@@ -18,7 +19,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 
-from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
+from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, log_path
 from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
 
 if __name__ == "__main__":
@@ -27,6 +28,14 @@ if __name__ == "__main__":
     url = "https://unfccc.int/BURs"
 
     # print(url)
+
+    # set up logging
+    today = date.today()
+    output_folder = log_path / "update_bur"
+    if not output_folder.exists():
+        output_folder.mkdir()
+    log_location = output_folder / f"bur_errors_{today.strftime('%Y-%m-%d')}.txt"
+    log_file = open(log_location, "w")
 
     # set options for headless mode
     profile_path = ".firefox"
@@ -74,7 +83,16 @@ if __name__ == "__main__":
         time.sleep(randrange(5, 15))  # noqa: S311
         url = target["url"]
 
-        submission_info = get_unfccc_submission_info(url, driver, 10)
+        try:
+            submission_info = get_unfccc_submission_info(url, driver, 10)
+        except ConnectionError as ex:
+            message = f"ConnectionError occurred for {url}: {ex}"
+            print(message)
+            log_file.write(message)
+        except TimeoutError as ex:
+            message = f"TimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
 
         if submission_info:
             downloads = downloads + submission_info
@@ -83,6 +101,8 @@ if __name__ == "__main__":
 
     if len(no_downloads) > 0:
         print("No downloads for ", no_downloads)
+        for dwn in no_downloads:
+            log_file.write(f"{dwn}\n")
 
     driver.close()
     df_downloads = pd.DataFrame(downloads)
@@ -90,3 +110,4 @@ if __name__ == "__main__":
     df_downloads.to_csv(
         downloaded_data_path_UNFCCC / "submissions-bur.csv", index=False
     )
+    log_file.close()
