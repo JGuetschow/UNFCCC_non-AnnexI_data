@@ -1,7 +1,7 @@
 """
-Get list of UNFCCC Biennial Update Report submissions
+Get list of UNFCCC National Communication submissions
 
-Collect BUR submissions from Non-Annex I Parties and create list of submissions
+Collect NC submissions from Non-Annex I Parties and create list of submissions
 as CSV file.
 
 Based on `process_bur` from national-inventory-submissions
@@ -10,6 +10,7 @@ Based on `process_bur` from national-inventory-submissions
 
 import re
 import time
+from datetime import date
 from pathlib import Path
 from random import randrange
 
@@ -18,7 +19,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 
-from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
+from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, log_path
 from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
 
 if __name__ == "__main__":
@@ -28,10 +29,18 @@ if __name__ == "__main__":
 
     # print(url)
 
+    # set up logging
+    today = date.today()
+    output_folder = log_path / "update_nc"
+    if not output_folder.exists():
+        output_folder.mkdir()
+    log_location = output_folder / f"nc_errors_{today.strftime('%Y-%m-%d')}.txt"
+    log_file = open(log_location, "w")
+
     # set options for headless mode
     profile_path = ".firefox"
     options = Options()
-    options.add_argument("-headless")
+    # options.add_argument("-headless")
 
     # create profile for headless mode and automatic downloading
     options.set_preference("profile", profile_path)
@@ -74,7 +83,16 @@ if __name__ == "__main__":
         time.sleep(randrange(5, 15))  # noqa: S311
         url = target["url"]
 
-        submission_info = get_unfccc_submission_info(url, driver, 10)
+        try:
+            submission_info = get_unfccc_submission_info(url, driver, 10)
+        except ConnectionError as ex:
+            message = f"ConnectionError occurred for {url}: {ex}"
+            print(message)
+            log_file.write(message)
+        except TimeoutError as ex:
+            message = f"TimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
 
         if submission_info:
             downloads = downloads + submission_info
@@ -83,8 +101,11 @@ if __name__ == "__main__":
 
     if len(no_downloads) > 0:
         print("No downloads for ", no_downloads)
+        for dwn in no_downloads:
+            log_file.write(f"{dwn}\n")
 
     driver.close()
     df_downloads = pd.DataFrame(downloads)
     df_downloads = df_downloads[["Kind", "Country", "Title", "URL"]]
     df_downloads.to_csv(downloaded_data_path_UNFCCC / "submissions-nc.csv", index=False)
+    log_file.close()
