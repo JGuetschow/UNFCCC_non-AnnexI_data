@@ -355,6 +355,7 @@ def read_crf_for_country(  # noqa: PLR0912, PLR0913, PLR0915
             save_empty_tables_info(missing_worksheets, log_location)
 
         if len(skipped_files) > 0:
+            today = date.today()
             log_location = (
                 log_path
                 / f"{submission_type}{submission_year}"

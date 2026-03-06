@@ -623,6 +623,10 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
     else:
         df_current = df_raw
 
+    # make sure cols are not numerical before inserting the units
+    for col in df_current.columns:
+        if df_current[col].dtype in ["float64", "float", "int64", "int"]:
+            df_current[col] = df_current[col].astype("object")
     df_current.iloc[0] = units
     df_current.columns = entities
     if debug:
