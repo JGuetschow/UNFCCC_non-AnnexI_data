@@ -19,6 +19,7 @@ unfccc\_ghg\_data.unfccc\_reader
   Guinea
   India
   Indonesia
+  Iraq
   Israel
   Japan
   Malaysia
