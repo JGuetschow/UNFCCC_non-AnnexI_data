@@ -280,6 +280,7 @@ def task_download_annexi():
 # downloading is per submission round
 update_btr_config = {
     "round": get_var("round", None),
+    "only_new": get_var("only_new", "False"),
 }
 
 
@@ -287,11 +288,15 @@ def task_update_btr():
     """Update list of BTR submissions"""
 
     def fetch_btr():
+        if update_btr_config["only_new"] == "True":
+            only_new_str = " --only_new"
+        else:
+            only_new_str = ""
         (
             datalad.api.run(
                 cmd="python src/unfccc_ghg_data/unfccc_downloader/"
                 "fetch_submissions_btr.py "
-                f"--round={update_btr_config['round']}",
+                f"--round={update_btr_config['round']}{only_new_str}",
                 dataset=root_path,
                 message=f"Fetch Biannial Transparency Report submissions for "
                 f"BTR{update_btr_config['round']}",

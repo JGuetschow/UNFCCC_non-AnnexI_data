@@ -31,14 +31,24 @@ if __name__ == "__main__":
     )
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument("--round", help="1 for first BTRs, 2 for second BTRs etc.")
+    parser.add_argument("--only_new", help="Read only new targets", action="store_true")
 
     args = parser.parse_args()
     submission_round = int(args.round)
+    only_new = args.only_new
 
     round_name, url = get_BTR_name_and_URL(submission_round)
 
     print(f"Fetching submissions for {round_name} BTRs")
     print(f"Using {url} to get submissions list")
+    if only_new:
+        print("Only visiting new subpages")
+        old_submissions = pd.read_csv(
+            downloaded_data_path_UNFCCC / f"submissions-BTR{submission_round}.csv"
+        )
+        known_targets = old_submissions["parent_URL"].unique().tolist()
+    else:
+        print("(re)visiting all subpages")
 
     # set options for headless mode
     profile_path = ".firefox"
@@ -100,6 +110,10 @@ if __name__ == "__main__":
                 targets.append({"title": title, "url": href})
         else:
             print(f"Ignored link: {href}: not in the right format.")
+
+    # check for known targets
+    if only_new:
+        targets = [target for target in targets if target["url"] not in known_targets]
 
     # Go through sub-pages.
     for target in targets:

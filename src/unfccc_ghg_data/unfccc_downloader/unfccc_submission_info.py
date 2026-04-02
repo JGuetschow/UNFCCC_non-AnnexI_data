@@ -145,10 +145,11 @@ def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
                         "Country": country,
                         "Title": title,
                         "URL": file,
+                        "parent_URL": url,
                     }
                 )
 
-                print("\t".join([kind, country, title, file]))
+                print("\t".join([kind, country, title, file, url]))
         else:
             print(f"No files found for {url}")
 
