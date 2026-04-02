@@ -1,4 +1,4 @@
-"""Config for Thailand's BUR4
+"""Config for Iraq's BUR1
 
 Full configuration including PRIMAP2 conversion config and metadata
 
@@ -11,7 +11,6 @@ Full configuration including PRIMAP2 conversion config and metadata
 
 # general
 gwp_to_use = "SARGWP100"
-terminology_proc = "IPCC2006_PRIMAP"
 
 # inventory
 def_inv_config = {
@@ -115,12 +114,10 @@ meta_data = {
     "institution": "UNFCCC",
 }
 
-################################### OLD ##############################
 
 # ###
 # for processing
 # ###
-# aggregate categories
 country_processing_step1 = {
     "basket_copy": {
         "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],

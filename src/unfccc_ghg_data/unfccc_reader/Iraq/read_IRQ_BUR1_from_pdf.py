@@ -1,7 +1,7 @@
 """
 Read Iraq's BUR1 from pdf
 
-This script reads data from Iraq's BUR3
+This script reads data from Iraq's BUR1
 Data are read from pdf using camelot
 
 """
