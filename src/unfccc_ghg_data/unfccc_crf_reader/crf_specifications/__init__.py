@@ -13,6 +13,7 @@ from .crt1_pry_specification import CRT1_PRY
 from .crt1_specification import CRT1
 from .crt1_tun_specification import CRT1_TUN
 from .crtai2025_specification import CRTAI2025
+from .crtai2026_specification import CRTAI2026
 
 __all__ = [
     "CRF2021",
@@ -26,4 +27,5 @@ __all__ = [
     "CRT1_PRY",
     "CRT1_TUN",
     "CRTAI2025",
+    "CRTAI2026",
 ]
