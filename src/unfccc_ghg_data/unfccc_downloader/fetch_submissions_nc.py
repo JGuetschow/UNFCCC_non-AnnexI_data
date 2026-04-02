@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     html = BeautifulSoup(driver.page_source, "html.parser")
     table = html.find_all("table")[1]
-    links = table.findAll("a")
+    links = table.find_all("a")
 
     targets = []  # sub-pages
     downloads = []

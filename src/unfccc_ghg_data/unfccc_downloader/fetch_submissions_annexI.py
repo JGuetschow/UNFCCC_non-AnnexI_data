@@ -88,7 +88,7 @@ if __name__ == "__main__":
             )
             sys.exit()
 
-    links = table.findAll("a")
+    links = table.find_all("a")
 
     targets = []  # sub-pages
     downloads = []

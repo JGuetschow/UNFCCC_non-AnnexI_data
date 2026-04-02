@@ -64,7 +64,7 @@ if __name__ == "__main__":
             "No table found on URL. Possibly due to a captcha."
         )
 
-    links = table.findAll("a")
+    links = table.find_all("a")
 
     targets = []  # sub-pages
     downloads = []
