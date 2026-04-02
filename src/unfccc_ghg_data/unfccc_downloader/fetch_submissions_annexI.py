@@ -5,6 +5,7 @@ Get UNFCCC submissons for AnnexI countries (National Inventory Submissions)
 import argparse
 import sys
 import time
+from datetime import date
 from pathlib import Path
 from random import randrange
 
@@ -12,12 +13,13 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+from urllib3.exceptions import ReadTimeoutError
 
-from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
+from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, log_path
 from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
 
 if __name__ == "__main__":
-    max_tries = 10
+    max_tries = 15
 
     descr = (
         "Download UNFCCC National Inventory Submissions lists "
@@ -27,9 +29,11 @@ if __name__ == "__main__":
     )
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument("--year", help="Year to download")
+    parser.add_argument("--only_new", help="Read only new targets", action="store_true")
 
     args = parser.parse_args()
     year = args.year
+    only_new = args.only_new
 
     print(f"Fetching submissions for {year}")
     # TODO: move to utils as used in two places
@@ -53,6 +57,22 @@ if __name__ == "__main__":
         )
 
     print(f"Using {url} to get submissions list")
+    if only_new:
+        print("Only visiting new subpages")
+        old_submissions = pd.read_csv(
+            downloaded_data_path_UNFCCC / f"submissions-annexI_{year}.csv"
+        )
+        known_targets = old_submissions["parent_URL"].unique().tolist()
+    else:
+        print("(re)visiting all subpages")
+
+    # set up logging
+    today = date.today()
+    output_folder = log_path / "update_annexI"
+    if not output_folder.exists():
+        output_folder.mkdir()
+    log_location = output_folder / f"annexI_errors_{today.strftime('%Y-%m-%d')}.txt"
+    log_file = open(log_location, "w")
 
     # set options for headless mode
     profile_path = ".firefox"
@@ -124,17 +144,45 @@ if __name__ == "__main__":
             else:
                 kind = None
 
-            print("\t".join([kind, country, title, href]))
+            print("\t".join([kind, country, title, href, href]))
             downloads.append(
-                {"Kind": kind, "Country": country, "Title": title, "URL": href}
+                {
+                    "Kind": kind,
+                    "Country": country,
+                    "Title": title,
+                    "URL": href,
+                    "parent_URL": href,
+                }
             )
+
+    # check for known targets
+    if only_new:
+        targets = [target for target in targets if target["url"] not in known_targets]
 
     # Go through sub-pages.
     for target in targets:
         time.sleep(randrange(5, 15))  # noqa: S311
         url = target["url"]
 
-        submission_info = get_unfccc_submission_info(url, driver, max_tries=max_tries)
+        try:
+            submission_info = get_unfccc_submission_info(
+                url, driver, max_tries=max_tries
+            )
+        except ConnectionError as ex:
+            message = f"ConnectionError occurred for {url}: {ex}"
+            print(message)
+            log_file.write(message)
+            submission_info = None
+        except TimeoutError as ex:
+            message = f"TimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
+            submission_info = None
+        except ReadTimeoutError as ex:
+            message = f"ReadTimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
+            submission_info = None
 
         if submission_info:
             downloads = downloads + submission_info
@@ -143,6 +191,8 @@ if __name__ == "__main__":
 
     if len(no_downloads) > 0:
         print("No downloads for ", no_downloads)
+        for dwn in no_downloads:
+            log_file.write(f"{dwn}\n")
 
     driver.close()
     df_downloads = pd.DataFrame(downloads)

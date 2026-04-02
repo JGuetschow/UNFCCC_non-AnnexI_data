@@ -96,13 +96,22 @@ def task_map_folders():
 
 
 # Tasks for getting submissions and downloading them
+update_bur_config = {
+    "only_new": get_var("only_new", "False"),
+}
+
+
 def task_update_bur():
     """Update list of BUR submissions"""
+    if update_bur_config["only_new"] == "True":
+        only_new_str = " --only_new"
+    else:
+        only_new_str = ""
 
     def fetch_bur():
         datalad.api.run(
             cmd="python3 src/unfccc_ghg_data/unfccc_downloader/"
-            "fetch_submissions_bur.py",
+            f"fetch_submissions_bur.py {only_new_str}",
             dataset=root_path,
             message="Fetch BUR submissions",
             outputs="downloaded_data/UNFCCC/submissions-bur.csv",
@@ -149,13 +158,22 @@ def task_download_bur():
     }
 
 
+update_nc_config = {
+    "only_new": get_var("only_new", "False"),
+}
+
+
 def task_update_nc():
     """Update list of NC submissions"""
+    if update_nc_config["only_new"] == "True":
+        only_new_str = " --only_new"
+    else:
+        only_new_str = ""
 
     def fetch_nc():
         datalad.api.run(
             cmd="python3 src/unfccc_ghg_data/unfccc_downloader/"
-            "fetch_submissions_nc.py",
+            f"fetch_submissions_nc.py {only_new_str}",
             dataset=root_path,
             message="Fetch NC submissions",
             outputs="downloaded_data/UNFCCC/submissions-nc.csv",
@@ -208,6 +226,7 @@ def task_download_nc():
 update_aI_config = {
     "year": get_var("year", None),
     "category": get_var("category", None),
+    "only_new": get_var("only_new", "False"),
 }
 
 
@@ -215,11 +234,15 @@ def task_update_annexi():
     """Update list of AnnexI submissions"""
 
     def fetch_annexi():
+        if update_aI_config["only_new"] == "True":
+            only_new_str = " --only_new"
+        else:
+            only_new_str = ""
         (
             datalad.api.run(
                 cmd="python src/unfccc_ghg_data/unfccc_downloader/"
                 "fetch_submissions_annexI.py "
-                f"--year={update_aI_config['year']}",
+                f"--year={update_aI_config['year']}{only_new_str}",
                 dataset=root_path,
                 message=f"Fetch AnnexI submissions for {update_aI_config['year']}",
                 outputs=f"downloaded_data/UNFCCC/submissions-annexI_"

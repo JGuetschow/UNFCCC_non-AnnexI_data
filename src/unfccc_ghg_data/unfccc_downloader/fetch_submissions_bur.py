@@ -19,6 +19,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+from urllib3.exceptions import ReadTimeoutError
 
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, log_path
 from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
@@ -127,6 +128,11 @@ if __name__ == "__main__":
             print(message)
             log_file.write(message)
             submission_info = None
+        except ReadTimeoutError as ex:
+            message = f"ReadTimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
+            submission_info = None
 
         if submission_info:
             downloads = downloads + submission_info
@@ -140,7 +146,6 @@ if __name__ == "__main__":
 
     driver.close()
     df_downloads = pd.DataFrame(downloads)
-    # df_downloads = df_downloads[["Kind", "Country", "Title", "URL"]]
     df_downloads.to_csv(
         downloaded_data_path_UNFCCC / "submissions-bur.csv", index=False
     )

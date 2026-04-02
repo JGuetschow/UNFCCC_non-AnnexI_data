@@ -12,6 +12,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+from urllib3.exceptions import ReadTimeoutError
 
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, log_path
 from unfccc_ghg_data.unfccc_downloader import (
@@ -22,7 +23,7 @@ from unfccc_ghg_data.unfccc_downloader import (
 # TODO: use categories like in AnnexI downloading (for round 2)
 
 if __name__ == "__main__":
-    max_tries = 10
+    max_tries = 15
 
     descr = (
         "Download UNFCCC Biannial Transparency Reports Submissions lists "
@@ -53,7 +54,7 @@ if __name__ == "__main__":
 
     # set up logging
     today = date.today()
-    output_folder = log_path / "update_bur"
+    output_folder = log_path / "update_btr"
     if not output_folder.exists():
         output_folder.mkdir()
     log_location = output_folder / f"btr_errors_{today.strftime('%Y-%m-%d')}.txt"
@@ -142,6 +143,11 @@ if __name__ == "__main__":
             submission_info = None
         except TimeoutError as ex:
             message = f"TimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
+            submission_info = None
+        except ReadTimeoutError as ex:
+            message = f"ReadTimeoutError occurred {url}: {ex}\n"
             print(message)
             log_file.write(message)
             submission_info = None
