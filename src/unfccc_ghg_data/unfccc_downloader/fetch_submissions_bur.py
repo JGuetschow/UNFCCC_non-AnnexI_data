@@ -8,6 +8,7 @@ Based on `process_bur` from national-inventory-submissions
 """
 
 # import requests
+import argparse
 import re
 import time
 from datetime import date
@@ -18,16 +19,38 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+from urllib3.exceptions import ReadTimeoutError
 
 from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, log_path
 from unfccc_ghg_data.unfccc_downloader import get_unfccc_submission_info
 
 if __name__ == "__main__":
-    print("Fetching BUR submissions ...")
+    max_tries = 10
+
+    descr = (
+        "Download UNFCCC Biannial Update Reports Submissions lists "
+        "and create list of submissions as CSV file. Based on "
+        "process.py from national-inventory-submissions "
+        "(https://github.com/openclimatedata/national-inventory-submisions)"
+    )
+    parser = argparse.ArgumentParser(description=descr)
+    parser.add_argument("--only_new", help="Read only new targets", action="store_true")
+
+    args = parser.parse_args()
+    only_new = args.only_new
 
     url = "https://unfccc.int/BURs"
 
-    # print(url)
+    print("Fetching BUR submissions")
+    print(f"Using {url} to get submissions list")
+    if only_new:
+        print("Only visiting new subpages")
+        old_submissions = pd.read_csv(
+            downloaded_data_path_UNFCCC / "submissions-bur.csv"
+        )
+        known_targets = old_submissions["parent_URL"].unique().tolist()
+    else:
+        print("(re)visiting all subpages")
 
     # set up logging
     today = date.today()
@@ -51,7 +74,7 @@ if __name__ == "__main__":
 
     html = BeautifulSoup(driver.page_source, "html.parser")
     table = html.find_all("table")[1]
-    links = table.findAll("a")
+    links = table.find_all("a")
 
     targets = []  # sub-pages
     downloads = []
@@ -75,8 +98,16 @@ if __name__ == "__main__":
             # to further downloads
             if str(Path(href).parent).endswith("documents"):
                 targets.append({"title": title, "url": href})
+        else:
+            message = f"Ignored link: {href}: not in the right format."
+            print(message)
+            log_file.write(message)
 
     pattern = re.compile(r"BUR ?\d")
+
+    # check for known targets
+    if only_new:
+        targets = [target for target in targets if target["url"] not in known_targets]
 
     # Go through sub-pages.
     for target in targets:
@@ -84,15 +115,24 @@ if __name__ == "__main__":
         url = target["url"]
 
         try:
-            submission_info = get_unfccc_submission_info(url, driver, 10)
+            submission_info = get_unfccc_submission_info(
+                url, driver, max_tries=max_tries
+            )
         except ConnectionError as ex:
             message = f"ConnectionError occurred for {url}: {ex}"
             print(message)
             log_file.write(message)
+            submission_info = None
         except TimeoutError as ex:
             message = f"TimeoutError occurred {url}: {ex}\n"
             print(message)
             log_file.write(message)
+            submission_info = None
+        except ReadTimeoutError as ex:
+            message = f"ReadTimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
+            submission_info = None
 
         if submission_info:
             downloads = downloads + submission_info
@@ -106,7 +146,6 @@ if __name__ == "__main__":
 
     driver.close()
     df_downloads = pd.DataFrame(downloads)
-    df_downloads = df_downloads[["Kind", "Country", "Title", "URL"]]
     df_downloads.to_csv(
         downloaded_data_path_UNFCCC / "submissions-bur.csv", index=False
     )
