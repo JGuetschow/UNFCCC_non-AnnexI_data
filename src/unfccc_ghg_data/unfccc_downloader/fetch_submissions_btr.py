@@ -4,6 +4,7 @@ Fetch list of BTR submissions from UNFCCC website
 
 import argparse
 import time
+from datetime import date
 from pathlib import Path
 from random import randrange
 
@@ -11,8 +12,9 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+from urllib3.exceptions import ReadTimeoutError
 
-from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC
+from unfccc_ghg_data.helper import downloaded_data_path_UNFCCC, log_path
 from unfccc_ghg_data.unfccc_downloader import (
     get_BTR_name_and_URL,
     get_unfccc_submission_info,
@@ -21,7 +23,7 @@ from unfccc_ghg_data.unfccc_downloader import (
 # TODO: use categories like in AnnexI downloading (for round 2)
 
 if __name__ == "__main__":
-    max_tries = 10
+    max_tries = 15
 
     descr = (
         "Download UNFCCC Biannial Transparency Reports Submissions lists "
@@ -31,14 +33,32 @@ if __name__ == "__main__":
     )
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument("--round", help="1 for first BTRs, 2 for second BTRs etc.")
+    parser.add_argument("--only_new", help="Read only new targets", action="store_true")
 
     args = parser.parse_args()
     submission_round = int(args.round)
+    only_new = args.only_new
 
     round_name, url = get_BTR_name_and_URL(submission_round)
 
     print(f"Fetching submissions for {round_name} BTRs")
     print(f"Using {url} to get submissions list")
+    if only_new:
+        print("Only visiting new subpages")
+        old_submissions = pd.read_csv(
+            downloaded_data_path_UNFCCC / f"submissions-BTR{submission_round}.csv"
+        )
+        known_targets = old_submissions["parent_URL"].unique().tolist()
+    else:
+        print("(re)visiting all subpages")
+
+    # set up logging
+    today = date.today()
+    output_folder = log_path / "update_btr"
+    if not output_folder.exists():
+        output_folder.mkdir()
+    log_location = output_folder / f"btr_errors_{today.strftime('%Y-%m-%d')}.txt"
+    log_file = open(log_location, "w")
 
     # set options for headless mode
     profile_path = ".firefox"
@@ -64,7 +84,7 @@ if __name__ == "__main__":
             "No table found on URL. Possibly due to a captcha."
         )
 
-    links = table.findAll("a")
+    links = table.find_all("a")
 
     targets = []  # sub-pages
     downloads = []
@@ -99,14 +119,38 @@ if __name__ == "__main__":
             if str(Path(href).parent).endswith("documents"):
                 targets.append({"title": title, "url": href})
         else:
-            print(f"Ignored link: {href}: not in the right format.")
+            message = f"Ignored link: {href}: not in the right format."
+            print(message)
+            log_file.write(message)
+
+    # check for known targets
+    if only_new:
+        targets = [target for target in targets if target["url"] not in known_targets]
 
     # Go through sub-pages.
     for target in targets:
         time.sleep(randrange(5, 15))  # noqa: S311
         url = target["url"]
 
-        submission_info = get_unfccc_submission_info(url, driver, max_tries=max_tries)
+        try:
+            submission_info = get_unfccc_submission_info(
+                url, driver, max_tries=max_tries
+            )
+        except ConnectionError as ex:
+            message = f"ConnectionError occurred for {url}: {ex}"
+            print(message)
+            log_file.write(message)
+            submission_info = None
+        except TimeoutError as ex:
+            message = f"TimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
+            submission_info = None
+        except ReadTimeoutError as ex:
+            message = f"ReadTimeoutError occurred {url}: {ex}\n"
+            print(message)
+            log_file.write(message)
+            submission_info = None
 
         if submission_info:
             downloads = downloads + submission_info
@@ -115,6 +159,8 @@ if __name__ == "__main__":
 
     if len(no_downloads) > 0:
         print("No downloads for ", no_downloads)
+        for dwn in no_downloads:
+            log_file.write(f"{dwn}\n")
 
     driver.close()
     df_downloads = pd.DataFrame(downloads)
