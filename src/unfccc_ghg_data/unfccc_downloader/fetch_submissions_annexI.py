@@ -196,6 +196,8 @@ if __name__ == "__main__":
 
     driver.close()
     df_downloads = pd.DataFrame(downloads)
+    if only_new:
+        df_downloads = pd.concat([old_submissions, df_downloads])
     df_downloads.to_csv(
         downloaded_data_path_UNFCCC / f"submissions-annexI_{year}.csv", index=False
     )
