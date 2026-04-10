@@ -1,0 +1,22 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006)
+  comment: Read fom pdf by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: UNFCCC
+  references: https://unfccc.int/documents/650065
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Traq. Biennial update report (BUR). BUR1
+data_file: IRQ_BUR1_2024_IPCC2006_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

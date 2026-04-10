@@ -16,9 +16,11 @@ unfccc\_ghg\_data.unfccc\_reader
   Chile
   China
   Colombia
+  Democratic_Republic_of_the_Congo
   Guinea
   India
   Indonesia
+  Iraq
   Israel
   Japan
   Malaysia
