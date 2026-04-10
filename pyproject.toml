@@ -215,6 +215,11 @@ issue_format = "[#{issue}](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/
   name = "Trivial/Internal Changes"
   showcontent = false
 
+  [[tool.towncrier.type]]
+  directory = "data"
+  name = "Data Update"
+  showcontent = true
+
 [tool.liccheck]
 authorized_licenses = [
     "bsd",
