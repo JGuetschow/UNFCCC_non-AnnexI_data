@@ -1459,7 +1459,7 @@ CRTAI2026 = {
                 ["1.A.3.d", "OLBiodieselFC"],
                 3,
             ],
-            ["\\C-CHE\\ Biodiesel fossil", ["1.A.3.d", "OLBiodieselFC"], 4],
+            ["\\C-CHE\\ Biodiesel fossil", ["1.A.3.d", "OLBiodieselFC"], 3],
             ["\\C-CAN\\ Light Fuel Oil", ["1.A.3.d", "LightFuelOil"], 3],
             ["\\C-CAN\\ Kerosene and stove oil", ["1.A.3.d", "KeroseneStoveOil"], 3],
             ["\\C-FIN\\ Diesel oil", ["1.A.3.d", "OLDiesel"], 3],
