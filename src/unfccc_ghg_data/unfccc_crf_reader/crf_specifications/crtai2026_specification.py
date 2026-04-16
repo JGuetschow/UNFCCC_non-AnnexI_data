@@ -1517,7 +1517,8 @@ CRTAI2026 = {
             # ii other
             ["1.A.3.e.ii. Other (please specify)", ["1.A.3.e.ii", "Total"], 2],
             # Off-road vehicles
-            ["\\C-AUS-ECU\\ Off-road vehicles", ["1.A.3.e.ii.1", "Total"], 3],
+            ["\\C-ECU\\ Off-road vehicles", ["1.A.3.e.ii.1", "Total"], 3],
+            ["\\C-AUS\\ Off-Road Vehicles", ["1.A.3.e.ii.1", "Total"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU\\ Other off-road transportation [IPCC Software 1.A.3.e.ii]",
@@ -1562,7 +1563,7 @@ CRTAI2026 = {
                 ["1.A.3.e.ii.1", "OtherLiquid"],
                 4,
             ],
-            ["\\C-AUS-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
+            ["\\C-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU\\ Other liquid fuels [IPCC Software 1.A.3.e.ii]",
@@ -1574,6 +1575,7 @@ CRTAI2026 = {
                 ["1.A.3.e.ii.1", "Lubricants"],
                 5,
             ],
+            ["\\C-AUS\\ Lubricants", ["1.A.3.e.ii.1", "Lubricants"], 5],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
                 ["1.A.3.e.ii.1", "OLBiodieselFC"],
@@ -1953,6 +1955,7 @@ CRTAI2026 = {
             # other
             ["\\C-ESP-FIN-SWE\\ Other non-specified", ["1.A.5.a.ii", "Total"], 2],
             ["\\C-ROU\\ Other (Non specified)", ["1.A.5.a.ii", "Total"], 2],
+            ["\\C-ISL\\ Other", ["1.A.5.a.ii", "Total"], 2],
             ["\\C-ZAF\\ Non specified", ["1.A.5.a.ii", "Total"], 2],
             ["\\C-HKG\\ Non-specified", ["1.A.5.a.ii", "Total"], 2],
             ["\\C-RUS-SVK-UKR-CYP\\ Other", ["1.A.5.a.ii", "Total"], 2],
@@ -1965,7 +1968,7 @@ CRTAI2026 = {
             ],
             ["\\C-COL\\ 1.A.5.a. Stationary", ["1.A.5.a.ii", "Total"], 2],
             [
-                "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS"
+                "\\C-ESP-FIN-SWE-ROU-ISL-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS"
                 "-MUS"
                 "-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU-COL\\ Liquid fuels",
@@ -1973,35 +1976,35 @@ CRTAI2026 = {
                 3,
             ],
             [
-                "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
+                "\\C-ESP-FIN-SWE-ROU-ISL-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
                 "-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU-COL\\ Solid fuels",
                 ["1.A.5.a.ii", "Solid"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
+                "\\C-ESP-FIN-SWE-ROU-ISL-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
                 "-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU-COL\\ Gaseous fuels (6)",
                 ["1.A.5.a.ii", "Gaseous"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
+                "\\C-ESP-FIN-SWE-ROU-ISL-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
                 "-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU-COL\\ Other fossil fuels(7)",
                 ["1.A.5.a.ii", "OtherFF"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
+                "\\C-ESP-FIN-SWE-ROU-ISL-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
                 "-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU-COL\\ Peat (8)",
                 ["1.A.5.a.ii", "Peat"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
+                "\\C-ESP-FIN-SWE-ROU-ISL-ZAF-HKG-RUS-SVK-UKR-CYP-BRA-GEO-LUX-MDA-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS"
                 "-MAR-NAM-NGA-PAN-PRY-"
                 "URY-ZWE-VEN-CIV-CUB-SAU-COL\\ Biomass (3)",
                 ["1.A.5.a.ii", "Biomass"],
@@ -2334,7 +2337,7 @@ CRTAI2026 = {
             ["1.B.1.a.ii.1. Mining activities", ["1.B.1.a.ii.1"], 2],
             ["1.B.1.a.ii.2. Post-mining activities", ["1.B.1.a.ii.2"], 2],
             ["1.B.1.a.ii.3. Other (please specify)", ["1.B.1.a.ii.3"], 2],
-            ["\\C-AUS-SGP-CHL-ECU\\ NA", ["\\IGNORE"], 3],
+            ["\\C-SGP-CHL-ECU\\ NA", ["\\IGNORE"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-FRA-ZWE-VEN-CIV-CUB-SAU\\ Other Surface Coal Mines [IPCC Software 1.B.3]",
@@ -2348,6 +2351,11 @@ CRTAI2026 = {
                 3,
             ],
             ["\\C-ROU\\ Other", ["1.B.1.a.ii.3.c"], 3],
+            [
+                "\\C-AUS\\ Flaring of drained methane or conversion of methane to CO₂",
+                ["1.B.1.a.ii.3.d"],
+                3,
+            ],
             ["1. B. 1. b. Fuel transformation (6)", ["1.B.1.b"], 0],
             ["\\C-AUS-CHL-ECU\\ Drop down list:", ["\\IGNORE"], 1],
             # some of the following items are missing for some countries but as they are
@@ -2749,7 +2757,7 @@ CRTAI2026 = {
                 3,
             ],
             [
-                "\\C-ESP\\ Titanium dioxide production (NOX and SO2 emissions)",
+                "\\C-ESP\\ Titanium dioxide production (NOx and SO2 emissions)",
                 ["2.H.3.f"],
                 3,
             ],
@@ -2993,7 +3001,7 @@ CRTAI2026 = {
             ["\\C-COL\\ 3.B. NOx_Manure management", ["3.J.1"], 2],
             ["\\C-SVN\\ Emissions of NOx from 3.B Manure management", ["3.J.1"], 2],
             [
-                "\\C-GUY-MDV-AZE-BTN-BRN-GNB-KEN-LBN-MYS-MUS-URY-UZB-FRA-CIV-CUB-SAU\\ "
+                "\\C-GUY-MDV-AZE-BTN-BRN-GNB-KEN-LBN-MYS-MUS-URY-UZB-FRA-CIV-CUB-SAU-MCO\\ "
                 "Other sources from agriculture (non-carbon pools) "
                 "[IPCC Software 3.C.2 and 3.C.14]",
                 ["3.J.2"],
@@ -4282,6 +4290,7 @@ CRTAI2026 = {
             ["\\C-COL-HRV\\ 4.H. Other", ["4.H.9"], 2],
             ["\\C-BRA\\ Total", ["4.H.9"], 2],
             ["\\C-HUN\\ All other", ["4.H.9"], 2],
+            ["\\C-UKR\\ Other", ["4.H.9"], 2],
             ["\\C-JPN\\ Concrete using Biochar", ["4.H.10"], 2],
             ["\\C-CHN\\ Trees outside forests", ["4.H.11"], 2],
             ["\\C-CHL\\ NA", ["\\IGNORE"], 2],
