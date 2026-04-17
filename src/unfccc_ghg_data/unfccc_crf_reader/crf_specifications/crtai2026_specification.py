@@ -476,6 +476,7 @@ CRTAI2026 = {
                 3,
             ],
             ["\\C-MCO\\ industry", ["1.A.2.g.viii.1", "Total"], 3],
+            ["\\C-DEU\\ Non-disaggregated industries", ["1.A.2.g.viii.1", "Total"], 3],
             ["\\C-SVK-GEO\\ Non-specified Industry", ["1.A.2.g.viii.1", "Total"], 3],
             ["\\C-LTU-SRB\\ Non-specified industry", ["1.A.2.g.viii.1", "Total"], 3],
             ["\\C-ARG\\ Unspecified industries", ["1.A.2.g.viii.1", "Total"], 3],
@@ -484,37 +485,37 @@ CRTAI2026 = {
             ["\\C-NLD\\ Other Industrial Sectors", ["1.A.2.g.viii.1", "Total"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Liquid fuels",
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-DEU-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Liquid fuels",
                 ["1.A.2.g.viii.1", "Liquid"],
                 4,
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Solid fuels",
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-DEU-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Solid fuels",
                 ["1.A.2.g.viii.1", "Solid"],
                 4,
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Gaseous fuels (6)",
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-DEU-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Gaseous fuels (6)",
                 ["1.A.2.g.viii.1", "Gaseous"],
                 4,
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Other fossil fuels (7)",
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-DEU-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Other fossil fuels (7)",
                 ["1.A.2.g.viii.1", "OtherFF"],
                 4,
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Peat (8)",
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-DEU-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Peat (8)",
                 ["1.A.2.g.viii.1", "Peat"],
                 4,
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Biomass (3)",
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-SVN-MCO-DEU-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD\\ Biomass (3)",
                 ["1.A.2.g.viii.1", "Biomass"],
                 4,
             ],
@@ -1145,7 +1146,11 @@ CRTAI2026 = {
                 ["1.A.3.b.iv", "OFFBiogasolineFC"],
                 4,
             ],
-            ["\\C-BEL\\ Fossil part of biodiesel", ["1.A.3.b.iv", "OFFBiodieselFC"], 4],
+            [
+                "\\C-BEL-LTU\\ Fossil part of biodiesel",
+                ["1.A.3.b.iv", "OFFBiodieselFC"],
+                4,
+            ],
             ["\\C-HRV\\ Fosil part of biodiesel", ["1.A.3.b.iv", "OFFBiodieselFC"], 4],
             ["\\C-COL-UKR\\ Other", ["1.A.3.b.iv", "OFFOther"], 4],
             ["\\C-CYP-ROU\\ Other fossil fuels", ["1.A.3.b.iv", "OFFOther"], 4],
@@ -1284,19 +1289,28 @@ CRTAI2026 = {
             ],
             # Lubricant two-stroke
             ["\\C-BEL\\ Lubricant two-stroke", ["1.A.3.b.v.7", "total"], 3],
-            ["\\C-BEL\\ Gasoline", ["1.A.3.b.v.7", "Gasoline"], 4],
-            ["\\C-BEL\\ Diesel oil", ["1.A.3.b.v.7", "DieselOil"], 4],
-            ["\\C-BEL\\ Liquefied petroleum gases (LPG)", ["1.A.3.b.v.7", "LPG"], 4],
             [
-                "\\C-BEL\\ Other liquid fuels (please specify)",
+                "\\C-DEU\\ Lubricant co-incineration in 2-stroke vehicles",
+                ["1.A.3.b.v.7", "total"],
+                3,
+            ],
+            ["\\C-BEL-DEU\\ Gasoline", ["1.A.3.b.v.7", "Gasoline"], 4],
+            ["\\C-BEL-DEU\\ Diesel oil", ["1.A.3.b.v.7", "DieselOil"], 4],
+            [
+                "\\C-BEL-DEU\\ Liquefied petroleum gases (LPG)",
+                ["1.A.3.b.v.7", "LPG"],
+                4,
+            ],
+            [
+                "\\C-BEL-DEU\\ Other liquid fuels (please specify)",
                 ["1.A.3.b.v.7", "OtherLiquid"],
                 4,
             ],
             ["\\C-BEL\\ Lubricant", ["1.A.3.b.v.7", "Lubricants"], 5],
-            ["\\C-BEL\\ Gaseous fuels (6)", ["1.A.3.b.v.7", "Gaseous"], 4],
-            ["\\C-BEL\\ Biomass (3)", ["1.A.3.b.v.7", "Biomass"], 4],
+            ["\\C-BEL-DEU\\ Gaseous fuels (6)", ["1.A.3.b.v.7", "Gaseous"], 4],
+            ["\\C-BEL-DEU\\ Biomass (3)", ["1.A.3.b.v.7", "Biomass"], 4],
             [
-                "\\C-BEL\\ Other fossil fuels (please specify)(7)",
+                "\\C-BEL-DEU\\ Other fossil fuels (please specify)(7)",
                 ["1.A.3.b.v.7", "OtherFF"],
                 4,
             ],
@@ -1450,7 +1464,7 @@ CRTAI2026 = {
             ],
             ["\\C-RUS\\ Other motor fuels", ["1.A.3.d", "OMotorFuel"], 3],
             ["\\C-AUS-HRV-UKR\\ Lubricants", ["1.A.3.d", "Lubricants"], 3],
-            ["\\C-CHL\\ Kerosene", ["1.A.3.d", "Kerosene"], 3],
+            ["\\C-CHL-DNK\\ Kerosene", ["1.A.3.d", "Kerosene"], 3],
             ["\\C-CHL\\ Liquefied petroleum gases (LPG)", ["1.A.3.d", "LPG"], 3],
             ["\\C-COL\\ Crude Oil", ["1.A.3.d", "CrudeOil"], 3],
             ["\\C-COL\\ Other", ["1.A.3.d", "OLOther"], 3],
@@ -1940,18 +1954,22 @@ CRTAI2026 = {
             ["\\C-AUS-CHL-ECU-SGP\\ Biomass (3)", ["\\IGNORE", "Biomass"], 2],
             # Military
             ["\\C-SGP\\ Military activities", ["1.A.5.a.i", "Total"], 2],
-            ["\\C-NOR-HUN\\ Military", ["1.A.5.a.i", "Total"], 2],
+            ["\\C-NOR-HUN-DEU\\ Military", ["1.A.5.a.i", "Total"], 2],
             ["\\C-GBR\\ Military fuel use", ["1.A.5.a.i", "Total"], 2],
-            ["\\C-SGP-NOR-HUN-GBR\\ Liquid fuels", ["1.A.5.a.i", "Liquid"], 3],
-            ["\\C-SGP-NOR-HUN-GBR\\ Solid fuels", ["1.A.5.a.i", "Solid"], 3],
-            ["\\C-SGP-NOR-HUN-GBR\\ Gaseous fuels (6)", ["1.A.5.a.i", "Gaseous"], 3],
+            ["\\C-SGP-NOR-HUN-DEU-GBR\\ Liquid fuels", ["1.A.5.a.i", "Liquid"], 3],
+            ["\\C-SGP-NOR-HUN-DEU-GBR\\ Solid fuels", ["1.A.5.a.i", "Solid"], 3],
             [
-                "\\C-SGP-NOR-HUN-GBR\\ Other fossil fuels(7)",
+                "\\C-SGP-NOR-HUN-DEU-GBR\\ Gaseous fuels (6)",
+                ["1.A.5.a.i", "Gaseous"],
+                3,
+            ],
+            [
+                "\\C-SGP-NOR-HUN-DEU-GBR\\ Other fossil fuels(7)",
                 ["1.A.5.a.i", "OtherFF"],
                 3,
             ],
-            ["\\C-SGP-NOR-HUN-GBR\\ Peat (8)", ["1.A.5.a.i", "Peat"], 3],
-            ["\\C-SGP-NOR-HUN-GBR\\ Biomass (3)", ["1.A.5.a.i", "Biomass"], 3],
+            ["\\C-SGP-NOR-HUN-DEU-GBR\\ Peat (8)", ["1.A.5.a.i", "Peat"], 3],
+            ["\\C-SGP-NOR-HUN-DEU-GBR\\ Biomass (3)", ["1.A.5.a.i", "Biomass"], 3],
             # other
             ["\\C-ESP-FIN-SWE\\ Other non-specified", ["1.A.5.a.ii", "Total"], 2],
             ["\\C-ROU\\ Other (Non specified)", ["1.A.5.a.ii", "Total"], 2],
@@ -2072,23 +2090,39 @@ CRTAI2026 = {
                 ["1.A.5.b.i", "Biomass"],
                 3,
             ],
+            # Land-based military transport and machinery
+            [
+                "\\C-DEU\\ Land-based military transport and machinery",
+                ["1.A.5.b.xvi", "Total"],
+                2,
+            ],
+            ["\\C-DEU\\ Liquid fuels", ["1.A.5.b.xvi", "Liquid"], 3],
+            ["\\C-DEU\\ Solid fuels", ["1.A.5.b.xvi", "Solid"], 3],
+            ["\\C-DEU\\ Gaseous fuels (6)", ["1.A.5.b.xvi", "Gaseous"], 3],
+            ["\\C-DEU\\ Other fossil fuels (7)", ["1.A.5.b.xvi", "OtherFF"], 3],
+            ["\\C-DEU\\ Biomass(3)", ["1.A.5.b.xvi", "Biomass"], 3],
             # Military Aviation
-            ["\\C-PRT\\ Military aviation", ["1.A.5.b.ii", "Total"], 2],
+            ["\\C-PRT-DEU\\ Military aviation", ["1.A.5.b.ii", "Total"], 2],
             ["\\C-CAN\\ Domestic Military (Aviation)", ["1.A.5.b.ii", "Total"], 2],
             ["\\C-HRV\\ Military aviation component", ["1.A.5.b.ii", "Total"], 2],
-            ["\\C-PRT-CAN-HRV\\ Liquid fuels", ["1.A.5.b.ii", "Liquid"], 3],
-            ["\\C-PRT-CAN-HRV\\ Solid fuels", ["1.A.5.b.ii", "Solid"], 3],
-            ["\\C-PRT-CAN-HRV\\ Gaseous fuels (6)", ["1.A.5.b.ii", "Gaseous"], 3],
-            ["\\C-PRT-CAN-HRV\\ Other fossil fuels (7)", ["1.A.5.b.ii", "OtherFF"], 3],
-            ["\\C-PRT-CAN-HRV\\ Biomass(3)", ["1.A.5.b.ii", "Biomass"], 3],
+            ["\\C-PRT-DEU-CAN-HRV\\ Liquid fuels", ["1.A.5.b.ii", "Liquid"], 3],
+            ["\\C-PRT-DEU-CAN-HRV\\ Solid fuels", ["1.A.5.b.ii", "Solid"], 3],
+            ["\\C-PRT-DEU-CAN-HRV\\ Gaseous fuels (6)", ["1.A.5.b.ii", "Gaseous"], 3],
+            [
+                "\\C-PRT-DEU-CAN-HRV\\ Other fossil fuels (7)",
+                ["1.A.5.b.ii", "OtherFF"],
+                3,
+            ],
+            ["\\C-PRT-DEU-CAN-HRV\\ Biomass(3)", ["1.A.5.b.ii", "Biomass"], 3],
             # military water-borne
             ["\\C-HRV\\ Military water-borne component", ["1.A.5.b.iii", "Total"], 2],
             ["\\C-CAN\\ Military Water-borne Navigation", ["1.A.5.b.iii", "Total"], 2],
-            ["\\C-HRV-CAN\\ Liquid fuels", ["1.A.5.b.iii", "Liquid"], 3],
-            ["\\C-HRV-CAN\\ Solid fuels", ["1.A.5.b.iii", "Solid"], 3],
-            ["\\C-HRV-CAN\\ Gaseous fuels (6)", ["1.A.5.b.iii", "Gaseous"], 3],
-            ["\\C-HRV-CAN\\ Other fossil fuels (7)", ["1.A.5.b.iii", "OtherFF"], 3],
-            ["\\C-HRV-CAN\\ Biomass(3)", ["1.A.5.b.iii", "Biomass"], 3],
+            ["\\C-DEU\\ Military navigation", ["1.A.5.b.iii", "Total"], 2],
+            ["\\C-HRV-CAN-DEU\\ Liquid fuels", ["1.A.5.b.iii", "Liquid"], 3],
+            ["\\C-HRV-CAN-DEU\\ Solid fuels", ["1.A.5.b.iii", "Solid"], 3],
+            ["\\C-HRV-CAN-DEU\\ Gaseous fuels (6)", ["1.A.5.b.iii", "Gaseous"], 3],
+            ["\\C-HRV-CAN-DEU\\ Other fossil fuels (7)", ["1.A.5.b.iii", "OtherFF"], 3],
+            ["\\C-HRV-CAN-DEU\\ Biomass(3)", ["1.A.5.b.iii", "Biomass"], 3],
             # Other
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
@@ -2818,6 +2852,8 @@ CRTAI2026 = {
                 ["2.H.3.za"],
                 3,
             ],
+            ["\\C-DEU\\ Confidential emissions of f-gases", ["2.H.3.zb"], 3],
+            ["\\C-DEU\\ Wood processing", ["2.H.3.zc"], 3],
         ],
         "entity_mapping": {
             "HFCs (1)": f"HFCS ({gwp_to_use})",
@@ -2994,7 +3030,7 @@ CRTAI2026 = {
             ["\\C-GHA\\ 3.J. Other (N2O from aquaculture)", ["3.J"], 1],  # 2022 only
             ["\\C-AUS-BRA-CHL-SGP\\ NA", ["\\IGNORE"], 2],
             ["\\C-DEU\\ 3.B NOx Emissions", ["3.J.1"], 2],
-            ["\\C-AUT\\ NOx emissions from manure management", ["3.J.1"], 2],
+            ["\\C-AUT-DEU\\ NOx emissions from manure management", ["3.J.1"], 2],
             ["\\C-ESP\\ NOx 3B", ["3.J.1"], 2],
             ["\\C-NOR-DNK-SWE\\ NOx from manure management", ["3.J.1"], 2],
             ["\\C-IRL\\ NOx from Manure Management", ["3.J.1"], 2],
@@ -3152,7 +3188,7 @@ CRTAI2026 = {
             ["3.A.2.a. Other (please specify)", ["3.A.2.a"], 1],
             [
                 "\\C-AUS-AUT-ITA-CHL-SRB-AUT-BLR-BGR-CHE-CHL-CYP-CZE-DNK-ESP-EST-FIN-GRC-HRV-JPN-KAZ-"
-                "LIE-LTU-LVA-NOR-NZL-PRT-SVN-SWE-UKR-BGR-NLD-ROU-POL\\ Sheep",
+                "LIE-LTU-LVA-NOR-NZL-PRT-SVN-SWE-UKR-BGR-NLD-ROU-POL-DEU\\ Sheep",
                 ["\\IGNORE"],
                 2,
             ],
@@ -3210,7 +3246,7 @@ CRTAI2026 = {
             ["\\C-ARG\\ All swine", ["\\IGNORE"], 2],
             [
                 "\\C-GHA-SRB-AUT-BLR-CHE-CZE-EST-FIN-GRC-JPN-KAZ-LIE-LTU-LVA-NOR-PRT-"
-                "SVN-SWE-TUR-UKR-CHN-BGR-NLD-ROU\\ Swine",
+                "SVN-SWE-TUR-UKR-CHN-BGR-NLD-ROU-DEU\\ Swine",
                 ["\\IGNORE"],
                 2,
             ],
@@ -3467,7 +3503,7 @@ CRTAI2026 = {
             ["\\C-GHA-CHN\\ sheep", ["\\IGNORE"], 2],
             [
                 "\\C-AUS-ITA-CHL-COL-PAN-SRB-AUT-BLR-CHE-CZE-DNK-ESP-EST-FIN-GRC-HRV-JPN-KAZ-"
-                "LIE-LTU-LVA-NLD-NOR-NZL-PRT-SVN-SWE-UKR-CYP-BGR-ROU-POL\\ Sheep",
+                "LIE-LTU-LVA-NLD-NOR-NZL-PRT-SVN-SWE-UKR-CYP-BGR-ROU-POL-DEU\\ Sheep",
                 ["\\IGNORE"],
                 2,
             ],
@@ -3526,7 +3562,7 @@ CRTAI2026 = {
             ["\\C-ARG\\ All swine", ["\\IGNORE"], 2],
             [
                 "\\C-GHA-PAN-SRB-AUT-BLR-CHE-CZE-EST-FIN-GRC-JPN-KAZ-LIE-LTU-LVA-NLD-"
-                "NOR-PRT-SVN-SWE-TUR-UKR-CHN-BGR-ROU-POL\\ Swine",
+                "NOR-PRT-SVN-SWE-TUR-UKR-CHN-BGR-ROU-POL-DEU\\ Swine",
                 ["\\IGNORE"],
                 2,
             ],
@@ -3826,7 +3862,7 @@ CRTAI2026 = {
             ["\\C-GHA-CHN\\ sheep", ["\\IGNORE"], 2],
             [
                 "\\C-AUS-ITA-CHL-COL-PAN-SRB-AUT-BLR-CHE-CZE-DNK-ESP-EST-FIN-GRC-HRV-JPN-KAZ-"
-                "LIE-LTU-LVA-NLD-NOR-NZL-PRT-SVN-SWE-UKR-CYP-BGR-ROU-POL\\ Sheep",
+                "LIE-LTU-LVA-NLD-NOR-NZL-PRT-SVN-SWE-UKR-CYP-BGR-ROU-POL-DEU\\ Sheep",
                 ["\\IGNORE"],
                 2,
             ],
@@ -3884,7 +3920,7 @@ CRTAI2026 = {
             ["\\C-ARG\\ All swine", ["\\IGNORE"], 2],
             [
                 "\\C-GHA-PAN-SRB-AUT-BLR-CHE-CZE-EST-FIN-GRC-JPN-KAZ-LIE-LTU-LVA-NLD-"
-                "NOR-PRT-SVN-SWE-TUR-UKR-CHN-BGR-ROU-POL\\ Swine",
+                "NOR-PRT-SVN-SWE-TUR-UKR-CHN-BGR-ROU-POL-DEU\\ Swine",
                 ["\\IGNORE"],
                 2,
             ],
@@ -4049,7 +4085,7 @@ CRTAI2026 = {
             ["\\C-AUS-BRA-CHL-SGP\\ NA", ["\\IGNORE"]],
             ["\\C-COL\\ 3.C.4. Other", ["3.C.4.a"]],
             ["\\C-EST\\ Other non-specified", ["3.C.4.a"]],
-            ["\\C-LTU-BLR\\ Other", ["3.C.4.a"]],
+            ["\\C-LTU-BLR-ROU\\ Other", ["3.C.4.a"]],
             ["\\C-GHA\\ Upland", ["3.C.4.b"]],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
@@ -4353,7 +4389,7 @@ CRTAI2026 = {
                 ["5.E.5"],
             ],
             ["\\C-CZE\\ Other waste", ["5.E.5"]],
-            ["\\C-FIN-LTU\\ Other", ["5.E.5"]],
+            ["\\C-FIN-LTU-ROU\\ Other", ["5.E.5"]],
             ["\\C-COL\\ 5.E. Other", ["5.E.5"]],
             ["\\C-ROU\\ Other please specify", ["5.E.5"]],
             ["\\C-SGP-BRA-CHL\\ NA", ["\\IGNORE"]],
@@ -4365,6 +4401,7 @@ CRTAI2026 = {
             ["\\C-JPN\\ Decomposition of fossil-fuel derived surfactants", ["5.E.4"]],
             ["\\C-PRT\\ Biogas burning without energy recovery", ["5.E.6"]],
             ["\\C-CAN\\ Fossil CO2 from Industrial wastewater", ["5.E.8"]],
+            ["\\C-DEU\\ Mechanical-Biological Treatment (MBT)", ["5.E.11"]],
             ["Memo item: (3)", ["\\IGNORE"]],
             ["5.F.1. Long-term storage of C in waste disposal sites", ["M.Memo.LTSW"]],
             [
