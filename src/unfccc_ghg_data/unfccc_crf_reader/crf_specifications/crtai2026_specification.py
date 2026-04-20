@@ -1440,7 +1440,7 @@ CRTAI2026 = {
             [
                 "\\C-LUX\\ Diesel (fossil component)",
                 ["1.A.3.c", "OFFBiodieselFC"],
-                4,
+                3,
             ],
             ["\\C-COL-UKR\\ Other", ["1.A.3.c", "OFFOther"], 3],
             ["\\C-ROU\\ Other fossil fuels", ["1.A.3.c", "OFFOther"], 3],
@@ -1499,7 +1499,7 @@ CRTAI2026 = {
             [
                 "\\C-LUX\\ Diesel (fossil component)",
                 ["1.A.3.d", "OFFBiodieselFC"],
-                4,
+                3,
             ],
             ["\\C-COL-UKR\\ Other", ["1.A.3.d", "OFFOther"], 3],
             ["\\C-ROU\\ Other fossil fuels", ["1.A.3.d", "OFFOther"], 3],
@@ -4300,7 +4300,7 @@ CRTAI2026 = {
             ["4.F.2. Land converted to other land", ["4.F.2"], 2],
             ["4.G. Harvested wood products (7)", ["4.G"], 1],
             ["4.H. Other (please specify)", ["4.H"], 1],
-            # coomented to find out where they come from
+            # commented to find out where they come from
             # ["Land converted to Settlement", ["4.H.1"]],
             ["\\C-GBR\\ 4.C. Grassland", ["4.H.3"], 2],
             ["\\C-FRA\\ Biogenic NMVOCs from managed forest", ["4.H.4"], 2],
@@ -4326,7 +4326,7 @@ CRTAI2026 = {
             ["\\C-COL-HRV\\ 4.H. Other", ["4.H.9"], 2],
             ["\\C-BRA\\ Total", ["4.H.9"], 2],
             ["\\C-HUN\\ All other", ["4.H.9"], 2],
-            ["\\C-UKR\\ Other", ["4.H.9"], 2],
+            ["\\C-UKR-GBR\\ Other", ["4.H.9"], 2],
             ["\\C-JPN\\ Concrete using Biochar", ["4.H.10"], 2],
             ["\\C-CHN\\ Trees outside forests", ["4.H.11"], 2],
             ["\\C-CHL\\ NA", ["\\IGNORE"], 2],
@@ -4402,6 +4402,7 @@ CRTAI2026 = {
             ["\\C-PRT\\ Biogas burning without energy recovery", ["5.E.6"]],
             ["\\C-CAN\\ Fossil CO2 from Industrial wastewater", ["5.E.8"]],
             ["\\C-DEU\\ Mechanical-Biological Treatment (MBT)", ["5.E.11"]],
+            ["\\C-GBR\\ CO2 from Municipal wastewater", ["5.E.12"]],
             ["Memo item: (3)", ["\\IGNORE"]],
             ["5.F.1. Long-term storage of C in waste disposal sites", ["M.Memo.LTSW"]],
             [
