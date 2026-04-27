@@ -1415,9 +1415,7 @@ CRTAI2026 = {
             ["\\C-ROU\\ Other fossil fuels", ["1.A.3.b.v.13", "OFFOther"], 5],
             ###
             # c. Railways
-            # present twice for Cyprus, we have to ignore it completely (NO anyway)
-            ["\\C-CYP\\ 1.A.3.c. Railways", ["\\IGNORE", "Total"], 1],
-            ["\\C!-CYP\\ 1.A.3.c. Railways", ["1.A.3.c", "Total"], 1],
+            ["1.A.3.c. Railways", ["1.A.3.c", "Total"], 1],
             ["Liquid fuels", ["1.A.3.c", "Liquid"], 2],
             ["Solid fuels", ["1.A.3.c", "Solid"], 2],
             ["Gaseous fuels (6)", ["1.A.3.c", "Gaseous"], 2],
@@ -1468,6 +1466,7 @@ CRTAI2026 = {
             ["\\C-CHL\\ Liquefied petroleum gases (LPG)", ["1.A.3.d", "LPG"], 3],
             ["\\C-COL\\ Crude Oil", ["1.A.3.d", "CrudeOil"], 3],
             ["\\C-COL\\ Other", ["1.A.3.d", "OLOther"], 3],
+            ["\\C-CYP\\ Other liquid fuels", ["1.A.3.d", "OLOther"], 3],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
                 ["1.A.3.d", "OLBiodieselFC"],
@@ -1503,6 +1502,7 @@ CRTAI2026 = {
             ],
             ["\\C-COL-UKR\\ Other", ["1.A.3.d", "OFFOther"], 3],
             ["\\C-ROU\\ Other fossil fuels", ["1.A.3.d", "OFFOther"], 3],
+            ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.d", "OFFOther"], 3],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
                 ["1.A.3.d", "OFFBiofuelFC"],
@@ -1863,6 +1863,7 @@ CRTAI2026 = {
             ["\\C-HRV\\ Lubricants", ["1.A.4.c.ii", "Lubricants"], 4],
             ["\\C-HRV\\ Other Kerosene", ["1.A.4.c.ii", "Kerosene"], 4],
             ["\\C-COL-UKR-ROU\\ Other", ["1.A.4.c.ii", "OLOther"], 4],
+            ["\\C-CYP\\ Other liquid fuels", ["1.A.4.c.ii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
                 ["1.A.4.c.ii", "OLBiodieselFC"],
@@ -1892,6 +1893,7 @@ CRTAI2026 = {
                 4,
             ],
             ["\\C-COL-UKR-ROU\\ Other", ["1.A.4.c.ii", "OFFOther"], 4],
+            ["\\C-CYP\\ Other Fossil Fuels", ["1.A.4.c.ii", "OFFOther"], 4],
             ["\\C-LIE\\ Alkylate Gasoline", ["1.A.4.c.ii", "OFFAlkylateGasoline"], 4],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
@@ -1912,6 +1914,7 @@ CRTAI2026 = {
                 4,
             ],
             ["\\C-RUS\\ Other motor fuels", ["1.A.4.c.iii", "OMotorFuel"], 4],
+            ["\\C-CYP\\ Other liquid fuels", ["1.A.4.c.iii", "OLOther"], 4],
             ["\\C-COL-UKR-ROU\\ Other", ["1.A.4.c.iii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
@@ -1929,6 +1932,7 @@ CRTAI2026 = {
                 4,
             ],
             ["\\C-COL-UKR-ROU\\ Other", ["1.A.4.c.iii", "OFFOther"], 4],
+            ["\\C-CYP\\ Other Fossil Fuels", ["1.A.4.c.iii", "OFFOther"], 4],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
                 ["1.A.4.c.iii", "OFFBiofuelFC"],
@@ -2504,7 +2508,7 @@ CRTAI2026 = {
                 ["1.B.2.a.vi.2.a"],
                 3,
             ],
-            ["\\C-UKR\\ Other", ["1.B.2.a.vi.2.b"], 3],
+            ["\\C-UKR-CYP\\ Other", ["1.B.2.a.vi.2.b"], 3],
             ["\\C-JPN\\ Accidents", ["1.B.2.a.vi.2.b"], 3],
             ["\\C-CAN\\ Accidents and equipment failures", ["1.B.2.a.vi.2.b"], 3],
             ["\\C-RUS\\ Gas condensate transported", ["1.B.2.a.vi.2.c"], 3],
@@ -2540,7 +2544,7 @@ CRTAI2026 = {
             ],
             ["\\C-SGP-CHL-ECU-BRA\\ NA", ["\\IGNORE"], 3],
             ["\\C-ECU\\ NE", ["\\IGNORE"], 3],
-            ["\\C-NOR-UKR-ROU\\ Other", ["1.B.2.b.vi.3.d"], 3],
+            ["\\C-NOR-UKR-ROU-CYP\\ Other", ["1.B.2.b.vi.3.d"], 3],
             ["\\C-SVK\\ Storage of gas", ["1.B.2.b.vi.3.e"], 3],
             ["\\C-CAN\\ Accidents and equipment failures", ["1.B.2.b.vi.3.f"], 3],
             [
@@ -3192,7 +3196,7 @@ CRTAI2026 = {
                 ["\\IGNORE"],
                 2,
             ],
-            ["\\C-ARG\\ All sheep", ["\\IGNORE"], 2],
+            ["\\C-ARG-HUN\\ All sheep", ["\\IGNORE"], 2],
             ["\\C-GHA-CHN\\ sheep", ["\\IGNORE"], 2],
             ["\\C-BEL\\ Sheep unspecified", ["\\IGNORE"], 2],
             ["\\C-CAN\\ Sheep and Lamb", ["\\IGNORE"], 2],
@@ -3309,6 +3313,13 @@ CRTAI2026 = {
             ["\\C-LUX\\ Fattening pigs", ["3.A.3.a.LUX-i"], 2],
             ["\\C-LUX\\ Breeding pigs", ["3.A.3.a.LUX-ii"], 2],
             ["\\C-LUX\\ Weaners", ["3.A.3.a.LUX-iii"], 2],
+            ["\\C-HUN\\ i. Piglets <20kg", ["3.A.3.a.HUN-i"], 2],
+            ["\\C-HUN\\ ii. Young Pigs 20-50 kg", ["3.A.3.a.HUN-ii"], 2],
+            ["\\C-HUN\\ iii. Pigs >50 kg", ["3.A.3.a.HUN-iii"], 2],
+            ["\\C-HUN\\ iv. Breeding Boars", ["3.A.3.a.HUN-iv"], 2],
+            ["\\C-HUN\\ v. Breeding Sows", ["3.A.3.a.HUN-v"], 2],
+            ["\\C-HUN\\ vi. Guilts (NYM)", ["3.A.3.a.HUN-vi"], 2],
+            ["\\C-HUN\\ vii. Sows (MFF)", ["3.A.3.a.HUN-vii"], 2],
             # other livestock
             ["\\C!-CHL\\ 3.A.4. Other livestock(4)", ["3.A.4"], 0],
             ["\\C-CHL\\ 3.A.4. Other livestock (please specify) (4)", ["3.A.4"], 0],
@@ -3499,7 +3510,7 @@ CRTAI2026 = {
             ["\\C-LUX\\ Dairy cows", ["3.B.1.B.d.LUX-vi"], 4],
             ["3.B.2. Sheep", ["3.B.2"], 0],
             ["3.B.2.a. Other (please specify)", ["3.B.2.a"], 1],
-            ["\\C-ARG\\ All sheep", ["\\IGNORE"], 2],
+            ["\\C-ARG-HUN\\ All sheep", ["\\IGNORE"], 2],
             ["\\C-GHA-CHN\\ sheep", ["\\IGNORE"], 2],
             [
                 "\\C-AUS-ITA-CHL-COL-PAN-SRB-AUT-BLR-CHE-CZE-DNK-ESP-EST-FIN-GRC-HRV-JPN-KAZ-"
@@ -3626,6 +3637,13 @@ CRTAI2026 = {
             ["\\C-LUX\\ Fattening pigs", ["3.B.3.a.LUX-i"], 2],
             ["\\C-LUX\\ Breeding pigs", ["3.B.3.a.LUX-ii"], 2],
             ["\\C-LUX\\ Weaners", ["3.B.3.a.LUX-iii"], 2],
+            ["\\C-HUN\\ i. Piglets <20kg", ["3.b.3.a.HUN-i"], 2],
+            ["\\C-HUN\\ ii. Young Pigs 20-50 kg", ["3.B.3.a.HUN-ii"], 2],
+            ["\\C-HUN\\ iii. Pigs >50 kg", ["3.B.3.a.HUN-iii"], 2],
+            ["\\C-HUN\\ iv. Breeding Boars", ["3.B.3.a.HUN-iv"], 2],
+            ["\\C-HUN\\ v. Breeding Sows", ["3.B.3.a.HUN-v"], 2],
+            ["\\C-HUN\\ vi. Guilts (NYM)", ["3.B.3.a.HUN-vi"], 2],
+            ["\\C-HUN\\ vii. Sows (MFF)", ["3.B.3.a.HUN-vii"], 2],
             # other livestock
             # ["\\C!-AUS-CHL\\ 3.B.4. Other livestock(4)", ["3.B.4"], 0],
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
@@ -3858,7 +3876,7 @@ CRTAI2026 = {
             ["\\C-LUX\\ Dairy cows", ["3.B.1.B.d.LUX-vi"], 4],
             ["3.B.2. Sheep", ["3.B.2"], 0],
             ["3.B.2.a. Other (please specify)", ["3.B.2.a"], 1],
-            ["\\C-ARG\\ All sheep", ["\\IGNORE"], 2],
+            ["\\C-ARG-HUN\\ All sheep", ["\\IGNORE"], 2],
             ["\\C-GHA-CHN\\ sheep", ["\\IGNORE"], 2],
             [
                 "\\C-AUS-ITA-CHL-COL-PAN-SRB-AUT-BLR-CHE-CZE-DNK-ESP-EST-FIN-GRC-HRV-JPN-KAZ-"
@@ -3984,6 +4002,13 @@ CRTAI2026 = {
             ["\\C-LUX\\ Fattening pigs", ["3.B.3.a.LUX-i"], 2],
             ["\\C-LUX\\ Breeding pigs", ["3.B.3.a.LUX-ii"], 2],
             ["\\C-LUX\\ Weaners", ["3.B.3.a.LUX-iii"], 2],
+            ["\\C-HUN\\ i. Piglets <20kg", ["3.B.3.a.HUN-i"], 2],
+            ["\\C-HUN\\ ii. Young Pigs 20-50 kg", ["3.B.3.a.HUN-ii"], 2],
+            ["\\C-HUN\\ iii. Pigs >50 kg", ["3.B.3.a.HUN-iii"], 2],
+            ["\\C-HUN\\ iv. Breeding Boars", ["3.B.3.a.HUN-iv"], 2],
+            ["\\C-HUN\\ v. Breeding Sows", ["3.B.3.a.HUN-v"], 2],
+            ["\\C-HUN\\ vi. Guilts (NYM)", ["3.B.3.a.HUN-vi"], 2],
+            ["\\C-HUN\\ vii. Sows (MFF)", ["3.B.3.a.HUN-vii"], 2],
             # other livestock
             # ["\\C!-AUS-CHL\\ 3.B.4. Other livestock(4)", ["3.B.4"], 0],
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
