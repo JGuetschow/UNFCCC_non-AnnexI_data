@@ -11,11 +11,6 @@ Reading country greenhouse gas data submitted to the United Nations Framework Co
 [![Coverage](https://codecov.io/gh/JGuetschow/UNFCCC_non-AnnexI_data/branch/main/graph/badge.svg)](https://codecov.io/gh/JGuetschow/UNFCCC_non-AnnexI_data)
 [![Docs](https://readthedocs.org/projects/unfccc-ghg-data/badge/?version=latest)](https://unfccc-ghg-data.readthedocs.io)
 
-**PyPI :**
-[![PyPI](https://img.shields.io/pypi/v/unfccc-ghg-data.svg)](https://pypi.org/project/unfccc-ghg-data/)
-[![PyPI: Supported Python versions](https://img.shields.io/pypi/pyversions/unfccc-ghg-data.svg)](https://pypi.org/project/unfccc-ghg-data/)
-[![PyPI install](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/install.yaml/badge.svg?branch=main)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/actions/workflows/install.yaml)
-
 **Other info :**
 [![Licence](https://img.shields.io/github/license/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/blob/main/LICENCE)
 [![Last Commit](https://img.shields.io/github/last-commit/JGuetschow/UNFCCC_non-AnnexI_data.svg)](https://github.com/JGuetschow/UNFCCC_non-AnnexI_data/commits/main)
