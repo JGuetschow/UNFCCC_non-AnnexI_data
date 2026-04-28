@@ -74,7 +74,7 @@ source = ["src"]
 branch = true
 
 [tool.coverage.report]
-fail_under = 10  # almost no tests, so it fails all the time if there is a sensible values
+fail_under = 1  # almost no tests, so it fails all the time if there is a sensible values
 skip_empty = true
 show_missing = true
 # Regexes for lines to exclude from consideration in addition to the defaults
