@@ -50,7 +50,7 @@ jobs:
       # generate changelog
       - name: generate changelog
         run: |
-          uv run towncrier build --version=${{ steps.package-version.outputs.version }} --yes
+          poetry run towncrier build --version=${{ steps.package-version.outputs.version }} --yes
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$CI_COMMIT_EMAIL"
           git commit -a -m "create changelog for version ${{ steps.package-version.outputs.version }}"
