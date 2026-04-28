@@ -9,7 +9,7 @@ jobs:
     steps:
       # checkout repository
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup
@@ -28,7 +28,7 @@ jobs:
       # Get current version (as defined in pyproject.toml)
       - name: Get Current Version
         id: package-version
-        run: echo "version=$(poetry version --short) >> $GITHUB_OUTPUT
+        run: echo "version=$(poetry version --short)" >> $GITHUB_OUTPUT
 
       # Compare the versions. Workflow will fail if version is not newer than present version
       - uses: jackbilestech/semver-compare@1.0.4
