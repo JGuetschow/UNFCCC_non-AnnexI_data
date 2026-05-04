@@ -1068,7 +1068,7 @@ def get_info_from_crf_filename(  # noqa: PLR0912
     else:
         # not enough parts, we probably have a CRT file with different separator
         name_parts = filename.split("-")
-        if len(name_parts) >= 6 and "DataEntry" not in name_parts:  # noqa: PLR2004
+        if len(name_parts) >= 5 and "DataEntry" not in name_parts:  # noqa: PLR2004
             if name_parts[1] == "CRT":
                 file_info["party"] = name_parts[0]
                 file_info["submission_year"] = int(name_parts[2])
@@ -1081,12 +1081,16 @@ def get_info_from_crf_filename(  # noqa: PLR0912
                         "could not be converted to int."
                     )
                     file_info["data_year"] = name_parts[4]
-                file_info["date"] = name_parts[5]
-                # treat time code and note as optional
-                if len(name_parts) > 6:  # noqa: PLR2004
-                    file_info["extra"] = name_parts[6]
+                # treat date as optional
+                if len(name_parts) > 5:  # noqa: PLR2004
+                    file_info["date"] = name_parts[5]
+                    # treat time code and note as optional
+                    if len(name_parts) > 6:  # noqa: PLR2004
+                        file_info["extra"] = name_parts[6]
+                    else:
+                        file_info["extra"] = ""
                 else:
-                    file_info["extra"] = ""
+                    file_info["date"] = ""
             else:
                 message = f"File {filename} is not a valid CRF or CRT file."
                 raise ValueError(message)
