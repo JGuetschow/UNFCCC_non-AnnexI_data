@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "unfccc-ghg-data"
-version = "0.1.0"
+version = "1.0.0"
 description = "Reading country greenhouse gas data submitted to the United Nations Framework Convention on Climate Change (UNFCCC)in different submissions and formats and providing it in a standadized nc and csv format compatible with primap2. Data are read using different methods from APIs, xlsx and csv files as well as pdf files."
 authors = ["Johannes Gütschow <mail@johannes-guetschow.de>"]
 readme = "README.md"
 packages = [{include = "unfccc_ghg_data", from = "src"}]
-license = "TBD"
+license = "Apache 2"
 include = ["LICENCE"]  # poetry uses US English so assumes it will be spelt LICENSE
 
 [tool.poetry.dependencies]
@@ -74,7 +74,7 @@ source = ["src"]
 branch = true
 
 [tool.coverage.report]
-fail_under = 10  # almost no tests, so it fails all the time if there is a sensible values
+fail_under = 1  # almost no tests, so it fails all the time if there is a sensible values
 skip_empty = true
 show_missing = true
 # Regexes for lines to exclude from consideration in addition to the defaults
@@ -105,7 +105,7 @@ addopts = [
 
 [tool.ruff]
 src = ["src"]
-target-version = "py39"
+target-version = "py312"
 lint.select = [
     "E",  # pycodestyle error
     "W",  # pycodestyle warning

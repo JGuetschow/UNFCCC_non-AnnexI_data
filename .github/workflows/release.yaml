@@ -1,46 +1,66 @@
-name: Release
-
+name: Auto release for new version
 on:
   push:
-    tags: ['v*']
-
-defaults:
-  run:
-    shell: bash
+    branches: [main]
 
 jobs:
-  draft-release:
-    name: Create draft release
+  release:
     runs-on: ubuntu-latest
     steps:
+      # checkout repository
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup
         with:
-          python-version: "3.9"
+          python-version: "3.12"
           venv-id: "release"
           poetry-dependency-install-flags: "--all-extras"
-      - name: Add version to environment
+
+      # Get the latest tag from GitHub
+      - name: Get Latest Tag
+        id: last-tag
         run: |
-          PROJECT_VERSION=$(poetry version --short)
-          echo "PROJECT_VERSION=$PROJECT_VERSION" >> $GITHUB_ENV
+          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "tag=${latest_tag:1}" >> $GITHUB_OUTPUT      
+
+      # Get current version (as defined in pyproject.toml)
+      - name: Get Current Version
+        id: package-version
+        run: echo "version=$(poetry version --short)" >> $GITHUB_OUTPUT
+
+      # Compare the versions. Workflow will fail if version is not newer than present version
+      - uses: jackbilestech/semver-compare@1.0.4
+        with:
+          head: ${{ steps.package-version.outputs.version }}
+          base: ${{ steps.last-tag.outputs.tag }}
+          operator: '>'
+
+      # run the tests
       - name: Run tests
         run: |
           poetry run pytest -r a -v src tests --doctest-modules
-      - name: Build package
+
+      # build package (currently disabled)
+      # - name: Build package
+      #   run: |
+      #     poetry build --no-interaction
+
+      # generate changelog
+      - name: generate changelog
         run: |
-          poetry build --no-interaction
-      - name: Generate Release Notes
-        run: |
-          git log $(git describe --tags --abbrev=0 HEAD^)..HEAD --pretty='format:* %h %s' --no-merges >> ".github/release_template.md"
-      - name: Create Release Draft
-        uses: softprops/action-gh-release@v1
+          poetry run towncrier build --version=${{ steps.package-version.outputs.version }} --yes
+          git config --global user.name "$GITHUB_ACTOR"
+          git config --global user.email "$CI_COMMIT_EMAIL"
+          git commit -a -m "create changelog for version ${{ steps.package-version.outputs.version }}"
+          git push
+
+      # Create a draft release
+      - name: Create Draft GitHub Release
+        uses: softprops/action-gh-release@v3
         with:
           body_path: ".github/release_template.md"
-          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           draft: true
-          files: |
-            dist/unfccc_ghg_data-${{ env.PROJECT_VERSION }}-py3-none-any.whl
-            dist/unfccc_ghg_data-${{ env.PROJECT_VERSION }}.tar.gz
+          tag_name: v${{ steps.package-version.outputs.version }}
+          files: docs/changelog.md
