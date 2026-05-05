@@ -338,6 +338,7 @@ str_value_mapping = {
     "NO IE": 0,
     "IE NO NE": np.nan,
     "NE NO IE": np.nan,
+    "NENO": 0,
 }
 
 nan_values_crf_crt = [
