@@ -8,6 +8,7 @@ from .crf2023_aus_specification import CRF2023_AUS
 from .crf2023_specification import CRF2023
 from .crf2024_specification import CRF2024
 from .crt1_ecu_specification import CRT1_ECU
+from .crt1_ind_specification import CRT1_IND
 from .crt1_per_specification import CRT1_PER
 from .crt1_pry_specification import CRT1_PRY
 from .crt1_specification import CRT1
@@ -23,6 +24,7 @@ __all__ = [
     "CRF2024",
     "CRT1",
     "CRT1_ECU",
+    "CRT1_IND",
     "CRT1_PER",
     "CRT1_PRY",
     "CRT1_TUN",
