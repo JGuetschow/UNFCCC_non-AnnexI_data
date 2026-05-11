@@ -1038,7 +1038,7 @@ def merge_rows(
     data: pd.DataFrame, locs_to_merge: list[int]
 ) -> tuple[pd.DataFrame, list[int]]:
     """
-    merge rows defined by `locs_to_merge`
+    Merge rows defined by `locs_to_merge`
 
     The merged row is written to the first position in `locs_to_merge`. Other rows
     are not deleted, instead their indices are returned so they can be dropped later
