@@ -173,7 +173,10 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
         if "remove_ts" in processing_info_country:
             for case in processing_info_country["remove_ts"]:
                 remove_info = copy.deepcopy(processing_info_country["remove_ts"][case])
-                entities = remove_info.pop("entities")
+                if "entities" in remove_info:
+                    entities = remove_info.pop("entities")
+                else:
+                    entities = data_country.data_vars
                 for entity in entities:
                     data_country[entity].pr.loc[remove_info] *= np.nan
 
@@ -256,6 +259,26 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                     data_country = data_country.pr.merge(data_agg, tolerance=tolerance)
                 else:
                     print(f"no data to generate category {cat_to_generate}")
+
+        # interpolation
+        if "interpolate_ts" in processing_info_country:
+            for case in processing_info_country["interpolate_ts"]:
+                interp_info = copy.deepcopy(
+                    processing_info_country["interpolate_ts"][case]
+                )
+                if "entities" in interp_info:
+                    entities = interp_info.pop("entities")
+                else:
+                    entities = data_country.data_vars
+                for entity in entities:
+                    data_interpolated = (
+                        data_country[entity]
+                        .pr.loc[interp_info]
+                        .interpolate_na(dim="time", method="linear")
+                    )
+                    data_country[entity] = data_country[entity].pr.merge(
+                        data_interpolated
+                    )
 
         # downscaling
         if "downscale" in processing_info_country:

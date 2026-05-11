@@ -24,6 +24,7 @@ from unfccc_ghg_data.helper import (
     process_data_for_country,
 )
 from unfccc_ghg_data.unfccc_reader.Bangladesh.config_bgd_btr1 import (
+    agg_fuel_type,
     cols_to_drop_individual,
     cols_to_drop_key_cat,
     cols_to_rename_key_cat,
@@ -35,6 +36,8 @@ from unfccc_ghg_data.unfccc_reader.Bangladesh.config_bgd_btr1 import (
     coords_value_mapping_key_cat,
     country_processing_step1,
     country_processing_step2,
+    country_processing_step3,
+    data_to_remove,
     filter_remove,
     meta_data,
     page_defs,
@@ -158,46 +161,6 @@ if __name__ == "__main__":
         # else:
         #     data_key_cat_if = pd.concat([data_key_cat_if, data_this_table_if])
 
-    agg_fuel_type = {
-        "fuel_type": {
-            "all": {
-                "sources": [
-                    "bio_gas",
-                    "bio_liquid",
-                    "bio_other",
-                    "bio_solid",
-                    "gaseous",
-                    "liquid",
-                    "other_fossil",
-                    "peat",
-                    "solid",
-                ],
-            }
-        }
-    }
-
-    # data to drop because it is inconsistent between fuel types and aggregates
-    data_to_remove = {
-        "1A1": {
-            "entities": ["CO2", "CH4"],
-            "category (IPCC2006_PRIMAP)": ["1.A.1"],
-            "time": ["2019", "2022"],
-            "fuel_type": ["all"],
-        },
-        "2C1": {
-            "entities": ["CO2", "CH4"],
-            "category (IPCC2006_PRIMAP)": ["2.C.1"],
-            "time": ["2019", "2022"],
-            "fuel_type": ["solid"],
-        },
-        "1A3b": {
-            "entities": ["CO2"],
-            "category (IPCC2006_PRIMAP)": ["1.A.3.b"],
-            "time": ["2019", "2022"],
-            "fuel_type": ["all"],
-        },
-    }
-
     for case in data_to_remove.items():
         remove_info = deepcopy(case[1])
         if "entities" in remove_info:
@@ -230,19 +193,19 @@ if __name__ == "__main__":
     # ###
     # save raw data to IF and native format
     # ###
-    if not output_folder.exists():
-        output_folder.mkdir()
-    pm2.pm2io.write_interchange_format(
-        output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
-        data_if,
-    )
-
-    encoding = {var: compression for var in data_all_pm2.data_vars}
-    data_all_pm2.pr.to_netcdf(
-        output_folder
-        / (output_filename + coords_terminologies["category"] + "_raw.nc"),
-        encoding=encoding,
-    )
+    # if not output_folder.exists():
+    #     output_folder.mkdir()
+    # pm2.pm2io.write_interchange_format(
+    #     output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+    #     data_if,
+    # )
+    #
+    # encoding = {var: compression for var in data_all_pm2.data_vars}
+    # data_all_pm2.pr.to_netcdf(
+    #     output_folder
+    #     / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+    #     encoding=encoding,
+    # )
 
     ###
     # processing
@@ -260,7 +223,7 @@ if __name__ == "__main__":
         processing_info_country=country_processing_step1,
     )
 
-    # aggregate some gases for the individual data
+    # further aggregation
     data_proc_pm2 = process_data_for_country(
         data_proc_pm2,
         entities_to_ignore=[],
@@ -270,8 +233,19 @@ if __name__ == "__main__":
         processing_info_country=country_processing_step2,
     )
 
+    # downscaling
+    data_proc_pm2 = process_data_for_country(
+        data_proc_pm2,
+        entities_to_ignore=[],
+        gas_baskets=[],  # TODO
+        # cat_terminology_out=terminology_proc,
+        # category_conversion=cat_conversion_trends,
+        processing_info_country=country_processing_step3,
+    )
+
     data_proc_if = data_proc_pm2.pr.to_interchange_format()
     # aggregation of categories and gases
+    # change termionology
 
     # downscaling of categories and gases for
 

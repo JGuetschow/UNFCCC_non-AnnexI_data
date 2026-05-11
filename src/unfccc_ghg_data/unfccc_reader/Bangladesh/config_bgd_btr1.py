@@ -12,7 +12,7 @@ which contains detailed information for 2019 and 2022
 ## general configuration
 coords_terminologies = {
     "area": "ISO3",
-    "category": "IPCC2006_PRIMAP",
+    "category": "IPCC2006_BGD",
     "scenario": "PRIMAP",
 }
 
@@ -332,6 +332,46 @@ coords_value_mapping_key_cat = {
     },
 }
 
+agg_fuel_type = {
+    "fuel_type": {
+        "all": {
+            "sources": [
+                "bio_gas",
+                "bio_liquid",
+                "bio_other",
+                "bio_solid",
+                "gaseous",
+                "liquid",
+                "other_fossil",
+                "peat",
+                "solid",
+            ],
+        }
+    }
+}
+
+# data to drop because it is inconsistent between fuel types and aggregates
+data_to_remove = {
+    "1A1": {
+        "entities": ["CO2", "CH4"],
+        "category (IPCC2006_BGD)": ["1.A.1"],
+        "time": ["2019", "2022"],
+        "fuel_type": ["all"],
+    },
+    "2C1": {
+        "entities": ["CO2", "CH4"],
+        "category (IPCC2006_BGD)": ["2.C.1"],
+        "time": ["2019", "2022"],
+        "fuel_type": ["solid"],
+    },
+    "1A3b": {
+        "entities": ["CO2"],
+        "category (IPCC2006_BGD)": ["1.A.3.b"],
+        "time": ["2019", "2022"],
+        "fuel_type": ["all"],
+    },
+}
+
 ## processing configuration
 
 # TODO: check if this aggregation step is enough or if something is missing
@@ -397,6 +437,31 @@ country_processing_step1 = {
                     ],
                 },
             },
+            "3.B.4.a": {
+                "sources": ["3.B.4.a.i"],
+                "sel": {
+                    "variable": ["CO2"],
+                },
+            },
+            "M.3.C.8.LU": {  # all the extra 3.C categories which are part of Land use
+                "sources": [
+                    "3.C.8",
+                    "3.C.9",
+                    "3.C.10",
+                    "3.C.11",
+                    "3.C.13",
+                    "3.C.14",
+                ],
+                "sel": {
+                    "entity": ["CH4", "CO2", "N2O"],
+                },
+            },
+            "M.3.C.8.b": {  # for consistency with key category table
+                "sources": ["3.C.12"],
+                "sel": {
+                    "entity": ["N2O"],
+                },
+            },
         },
     },
 }
@@ -427,6 +492,79 @@ country_processing_step2 = {
                 "2.F.4",
             ],
         },
+        "3C_custom": {
+            # remove the source specific 3.C subcategories which were combined to 3.C.8
+            "category": [
+                "3.C.8",
+                "3.C.9",
+                "3.C.10",
+                "3.C.11",
+                "3.C.12",
+                "3.C.13",
+                "3.C.14",
+            ]
+        },
+        # "N2O_3B": {
+        #     "entities": ["N2O"],
+        #     "category": ["3.B.4.a.i", "3.B.4.b"],
+        # },
+    },
+    # interpolate timeseries for IPPU subsectors as they either have explicit information
+    # or are zero only
+    "interpolate_ts": {
+        "IPPU_CH4": {
+            "entities": ["CH4"],
+            "category": ["2.A", "2.A.5", "2.B", "2.B.10", "2.B.5", "2.B.8"],
+        },
+        "IPPU_CO2": {
+            "entities": ["CO2"],
+            "category": [
+                "2.A.2",
+                "2.A.4",
+                "2.A.5",
+                "2.B.10",
+                "2.B.5",
+                "2.B.6",
+                "2.B.7",
+                "2.B.8",
+                "2.H",
+            ],
+        },
+        "IPPU_FGASES": {
+            "entities": [f"FGASES ({gwp_to_use})"],
+            "category": [
+                "2",
+                "2.B",
+                "2.B.9",
+                "2.E",
+                "2.G",
+            ],
+        },
+        "IPPU_N2O": {
+            "entities": ["N2O"],
+            "category": [
+                "2.A",
+                "2.A.5",
+                "2.B",
+                "2.B.10",
+                "2.B.2",
+                "2.B.3",
+                "2.B.4",
+                "2.D",
+                "2.E",
+                "2.G",
+                "2.H",
+            ],
+        },
+        # "3CD_CH4": {
+        #     "entities": ["CH4"],
+        #     "category": ["3.C.1", "3.C.8", "3.D.2"]
+        # },
+        # "3CD_CH4": {
+        #     "entities": ["CH4"],
+        #     "category": ["3.C.1", "3.C.8", "3.D.2"]
+        # },
+        # dwn: 3.C.2
     },
     "aggregate_coords": {
         "category": {
@@ -535,7 +673,7 @@ country_processing_step2 = {
                 "sources": [
                     "3.A.1.j.vi",
                 ],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.A.1": {  # consistency check
                 "sources": [
@@ -550,13 +688,13 @@ country_processing_step2 = {
                     "3.A.1.i",
                     "3.A.1.j",
                 ],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.A.2.j": {
                 "sources": [
                     "3.A.2.j.vi",
                 ],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.A.2": {
                 "sources": [
@@ -571,29 +709,29 @@ country_processing_step2 = {
                     "3.A.2.i",
                     "3.A.2.j",
                 ],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.A": {
                 "sources": ["3.A.1", "3.A.2"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             ## 3.B (consistency check)
             "3.B": {
                 "sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             ## 3.C
             "3.C.1": {
                 "sources": ["M.3.C.1.SAV", "3.C.1.b"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "M.3.C.1.AG": {
                 "sources": ["M.3.C.1.SAV", "3.C.1.b"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.2": {
                 "sources": ["M.3.C.2.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.3": {
                 "sources": ["M.3.C.3.AG"],
@@ -601,28 +739,36 @@ country_processing_step2 = {
             },
             "3.C.4": {
                 "sources": ["M.3.C.4.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.4.a": {
                 "sources": ["M.3.C.4.a.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.4.b": {
                 "sources": ["M.3.C.4.b.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.4.e": {
                 "sources": ["M.3.C.4.e.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.4.f": {
                 "sources": ["M.3.C.4.f.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.5": {
                 "sources": ["M.3.C.5.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },  # , "M.3.C.5.LU"]},
+            "M.3.C.8.AG": {
+                "sources": ["M.3.C.8.a", "M.3.C.8.b"],
+                "sel": {"entity": ["KYOTOGHG", "N2O"]},
+            },
+            "3.C.8": {
+                "sources": ["M.3.C.8.AG", "M.3.C.8.LU"],
+                "sel": {"entity": ["KYOTOGHG", "N2O", "CH4"]},
+            },
             "3.C": {
                 "sources": [
                     "3.C.1",
@@ -632,8 +778,9 @@ country_processing_step2 = {
                     "3.C.5",
                     "3.C.6",
                     "3.C.7",
+                    "3.C.8",
                 ],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "M.3.C.AG": {
                 "sources": [
@@ -644,52 +791,161 @@ country_processing_step2 = {
                     "M.3.C.5.AG",
                     "3.C.6",
                     "3.C.7",
+                    "M.3.C.8.AG",
                 ],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             # 3.D
-            "M.3.D.2.AG": {
-                "sources": ["M.3.D.2.a.AG", "M.3.D.2.b.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
-            },
-            "3.D.2": {
-                "sources": ["M.3.D.2.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
-            },
             "M.3.D.LU": {
                 "sources": ["3.D.1"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "M.3.D.AG": {
                 "sources": ["M.3.D.2.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.D": {
                 "sources": ["M.3.D.LU", "M.3.D.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG", "CH4", "N2O", "CO2"]},
             },
             "M.AG.ELV": {
                 "sources": ["M.3.C.AG", "M.3.D.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             # "3": {"sources": ["3.A", "3.B", "3.C", "3.D"]},
             # consistency check
             "M.AG": {
                 "sources": ["3.A", "M.AG.ELV"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "M.LULUCF": {
-                "sources": ["3.B", "M.3.D.LU"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sources": ["3.B", "M.3.C.8.LU", "M.3.D.LU"],
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3": {
                 "sources": ["M.AG", "M.LULUCF"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
         },
     },
-    # downscale for 2020, 2021
 }
+
+# step 3 downscaling and aggregation after downscaling
+country_processing_step3 = {
+    # downscale for 2020, 2021
+    "downscale": {
+        "entities": {
+            "KYOTO_1": {
+                "basket": f"KYOTOGHG ({gwp_to_use})",
+                "basket_contents": ["CH4", "CO2", "N2O"],
+                "sel": {
+                    "category (IPCC2006_BGD)": [
+                        "1.A",
+                        "1.A.1",
+                        "1.A.2",
+                        "1.A.3",
+                        "1.A.4",
+                        "1.B",
+                        "1.B.1",
+                        "1.B.2",
+                        "1.C",
+                    ]
+                },
+            },
+            "KYOTO_2": {
+                "basket": f"KYOTOGHG ({gwp_to_use})",
+                "basket_contents": ["CH4", "CO2", "N2O"],
+                "sel": {
+                    "category (IPCC2006_BGD)": [
+                        "1.A",
+                        "1.A.1",
+                        "1.A.2",
+                        "1.A.3",
+                        "1.A.4",
+                        "1.B",
+                        "1.B.1",
+                        "1.B.2",
+                        "1.C",
+                    ]
+                },
+            },
+            "KYOTO_3A": {
+                "basket": f"KYOTOGHG ({gwp_to_use})",
+                "basket_contents": ["CH4", "N2O"],
+                "sel": {"category (IPCC2006_BGD)": ["3.A.1", "3.A.2"]},
+            },
+            "KYOTO_3B": {
+                "basket": f"KYOTOGHG ({gwp_to_use})",
+                "basket_contents": ["CO2", "N2O"],
+                "sel": {
+                    "category (IPCC2006_BGD)": [
+                        "3.B.1.a",
+                        "3.B.1.b",
+                        "3.B.2.a",
+                        "3.B.2.b",
+                        "3.B.3.a",
+                        "3.B.3.b",
+                        "3.B.4.a",
+                        "3.B.4.b",
+                        "3.B.5.a",
+                        "3.B.5.b",
+                        "3.B.6.b",
+                    ]
+                },
+            },
+            "KYOTO_3C": {
+                "basket": f"KYOTOGHG ({gwp_to_use})",
+                "basket_contents": ["CO2"],
+                "sel": {
+                    "category (IPCC2006_BGD)": [
+                        "3.C.1",
+                        "3.C.2",
+                        "3.C.3",
+                        "3.C.4",
+                        "3.C.5",
+                        "3.C.6",
+                        "3.C.8",
+                        "M.3.C.8.AG",
+                        "M.3.C.8.LU",
+                        "M.3.C.8.b",
+                    ]
+                },
+            },
+        },
+    },
+    ## TODO: third step for aggregation of downscaled categories e.g. in AFOLU 3.A, 3.C, 2.B.x
+    "aggregate_coords": {
+        "category": {
+            "3.A": {
+                "sources": ["3.A.1", "3.A.2"],
+            },
+            "3.B.1": {
+                "sources": ["3.B.1.a", "3.B.1.b"],
+            },
+            "3.B.2": {
+                "sources": ["3.B.2.a", "3.B.2.b"],
+            },
+            "3.B.3": {
+                "sources": ["3.B.3.a", "3.B.3.b"],
+            },
+            "3.B.4": {
+                "sources": ["3.B.4.a", "3.B.4.b"],
+            },
+            "3.B.5": {
+                "sources": ["3.B.5.a", "3.B.5.b"],
+            },
+            "3.B.6": {
+                "sources": ["3.B.6.b"],
+            },
+            "3.B": {
+                "sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"],
+            },
+        }
+    },
+    ## 3.A
+    ##
+}
+
 
 # Note on downscaling: Data are always available for the same years: 2013-2019,
 # so temporal downscaling does not makes sense here.
