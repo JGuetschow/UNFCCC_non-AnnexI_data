@@ -370,11 +370,51 @@ data_to_remove = {
         "time": ["2019", "2022"],
         "fuel_type": ["all"],
     },
+    "LULUCF": {  # all LULUCF data is inconsistent with the inventory
+        "entities": ["CO2", "N2O"],
+        "category (IPCC2006_BGD)": [
+            "3.B.1.a",
+            "3.B.1.b",
+            "3.B.2.a",
+            "3.B.2.b",
+            "3.B.3.a",
+            "3.B.3.b",
+            "3.B.4.a.i",
+            "3.B.4.b",
+            "3.B.5.a",
+            "3.B.5.b",
+            "3.B.6.b",
+            "3.D.2",
+            "3.D.1",
+        ],
+    },
 }
 
 ## processing configuration
+LULUCF_data_copy_cats = [
+    "3.B.1",
+    "3.B.1.a",
+    "3.B.1.b",
+    "3.B.2",
+    "3.B.2.a",
+    "3.B.2.b",
+    "3.B.3",
+    "3.B.3.a",
+    "3.B.3.b",
+    "3.B.4",
+    "3.B.4.a",
+    "3.B.4.b",
+    "3.B.5",
+    "3.B.5.a",
+    "3.B.5.b",
+    "3.B.6",
+    "3.B.6.a",
+    "3.B.6.b",
+    "3.D.1",
+    "M.LULUCF",
+]
 
-# TODO: check if this aggregation step is enough or if something is missing
+
 country_processing_step1 = {
     # aggregate gases
     "aggregate_gases": {
@@ -420,23 +460,26 @@ country_processing_step1 = {
                     "variable": [f"KYOTOGHG ({gwp_to_use})"],
                 },
             },
-            "2.F": {  # only 2.F has HFCS, but the sector lacks gas resolution
-                "sources": ["2"],
-                "sel": {
-                    "variable": [
-                        "HFC125",
-                        "HFC134a",
-                        "HFC143a",
-                        "HFC227ea",
-                        "HFC23",
-                        "HFC245fa",
-                        "HFC32",
-                        "HFC365mfc",
-                        "NF3",
-                        "SF6",
-                    ],
-                },
-            },
+            # don't copy to 2.F as this would mean we also have to downscale the zero
+            # F/gas data for 2.B, 2.E, 2.G to individual gases or at least gas groups
+            # for consistency
+            # "2.F": {  # only 2.F has HFCS, but the sector lacks gas resolution
+            #     "sources": ["2"],
+            #     "sel": {
+            #         "variable": [
+            #             "HFC125",
+            #             "HFC134a",
+            #             "HFC143a",
+            #             "HFC227ea",
+            #             "HFC23",
+            #             "HFC245fa",
+            #             "HFC32",
+            #             "HFC365mfc",
+            #             "NF3",
+            #             "SF6",
+            #         ],
+            #     },
+            # },
             "3.B.4.a": {
                 "sources": ["3.B.4.a.i"],
                 "sel": {
@@ -466,11 +509,6 @@ country_processing_step1 = {
     },
 }
 
-# TODO collection of issues
-# UnspMix is zero for IPPU, but non-zero for 2.F.1, 2.F.2, 2.F.3
-# the reason is the for cat 2 the gases are resolved while they are resolved while they
-# are not resolved for 2.F.x
-
 country_processing_step2 = {
     "tolerance": 0.01,
     "remove_ts": {
@@ -483,6 +521,7 @@ country_processing_step2 = {
                 f"UnspMixOfHFCsPFCs ({gwp_to_use})",
                 f"PFCS ({gwp_to_use})",
                 f"HFCS ({gwp_to_use})",
+                f"FGASES ({gwp_to_use})",
             ],
             "category": [
                 "2.C.3",
@@ -490,6 +529,10 @@ country_processing_step2 = {
                 "2.F.2",
                 "2.F.3",
                 "2.F.4",
+                "2.B",
+                "2.B.9",
+                "2.E",
+                "2.G",
             ],
         },
         "3C_custom": {
@@ -504,6 +547,12 @@ country_processing_step2 = {
                 "3.C.14",
             ]
         },
+        "4C_2019": {
+            # 0 for gases but actually NE
+            "category": ["4.C"],
+            "entities": ["CO2", "CH4", "N2O"],
+            "time": ["2019"],
+        },
         # "N2O_3B": {
         #     "entities": ["N2O"],
         #     "category": ["3.B.4.a.i", "3.B.4.b"],
@@ -514,7 +563,16 @@ country_processing_step2 = {
     "interpolate_ts": {
         "IPPU_CH4": {
             "entities": ["CH4"],
-            "category": ["2.A", "2.A.5", "2.B", "2.B.10", "2.B.5", "2.B.8"],
+            "category": [
+                "2.A",
+                "2.A.5",
+                "2.B",
+                "2.B.10",
+                "2.B.5",
+                "2.B.8",
+                "2.D",
+                "2.H",
+            ],
         },
         "IPPU_CO2": {
             "entities": ["CO2"],
@@ -556,15 +614,22 @@ country_processing_step2 = {
                 "2.H",
             ],
         },
-        # "3CD_CH4": {
-        #     "entities": ["CH4"],
-        #     "category": ["3.C.1", "3.C.8", "3.D.2"]
+        "3D2": {
+            "entities": ["CH4", "CO2", "N2O"],
+            "category": ["3.D.2"],
+        },
+        # "5": {
+        #     "entities": ["CO2", "N2O"],
+        #     "category": ["5.A", "5.B"],
         # },
-        # "3CD_CH4": {
-        #     "entities": ["CH4"],
-        #     "category": ["3.C.1", "3.C.8", "3.D.2"]
+        # "LULUCF": {
+        #     "entities": ["CH4", "N2O"],
+        #     "category": ["M.LULUCF"],
         # },
-        # dwn: 3.C.2
+        # "1B3_1C": {
+        #     "category": ["1.B.3", "1.C"],
+        #     "entities": ["CO2", "CH4", "N2O"],
+        # }
     },
     "aggregate_coords": {
         "category": {
@@ -718,7 +783,7 @@ country_processing_step2 = {
             ## 3.B (consistency check)
             "3.B": {
                 "sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"],
-                "sel": {"entity": ["KYOTOGHG"]},
+                "sel": {"entity": ["KYOTOGHG", "CO2"]},
             },
             ## 3.C
             "3.C.1": {
@@ -735,7 +800,7 @@ country_processing_step2 = {
             },
             "3.C.3": {
                 "sources": ["M.3.C.3.AG"],
-                "sel": {"entity": [f"KYOTOGHG ({gwp_to_use})"]},
+                "sel": {"entity": ["KYOTOGHG"]},
             },
             "3.C.4": {
                 "sources": ["M.3.C.4.AG"],
@@ -798,7 +863,7 @@ country_processing_step2 = {
             # 3.D
             "M.3.D.LU": {
                 "sources": ["3.D.1"],
-                "sel": {"entity": ["KYOTOGHG"]},
+                "sel": {"entity": ["KYOTOGHG", "CO2"]},
             },
             "M.3.D.AG": {
                 "sources": ["M.3.D.2.AG"],
@@ -820,7 +885,7 @@ country_processing_step2 = {
             },
             "M.LULUCF": {
                 "sources": ["3.B", "M.3.C.8.LU", "M.3.D.LU"],
-                "sel": {"entity": ["KYOTOGHG"]},
+                "sel": {"entity": ["KYOTOGHG", "CO2"]},
             },
             "3": {
                 "sources": ["M.AG", "M.LULUCF"],
@@ -845,6 +910,7 @@ country_processing_step3 = {
                         "1.A.2",
                         "1.A.3",
                         "1.A.4",
+                        "1.A.5",
                         "1.B",
                         "1.B.1",
                         "1.B.2",
@@ -874,28 +940,9 @@ country_processing_step3 = {
                 "basket_contents": ["CH4", "N2O"],
                 "sel": {"category (IPCC2006_BGD)": ["3.A.1", "3.A.2"]},
             },
-            "KYOTO_3B": {
-                "basket": f"KYOTOGHG ({gwp_to_use})",
-                "basket_contents": ["CO2", "N2O"],
-                "sel": {
-                    "category (IPCC2006_BGD)": [
-                        "3.B.1.a",
-                        "3.B.1.b",
-                        "3.B.2.a",
-                        "3.B.2.b",
-                        "3.B.3.a",
-                        "3.B.3.b",
-                        "3.B.4.a",
-                        "3.B.4.b",
-                        "3.B.5.a",
-                        "3.B.5.b",
-                        "3.B.6.b",
-                    ]
-                },
-            },
             "KYOTO_3C": {
                 "basket": f"KYOTOGHG ({gwp_to_use})",
-                "basket_contents": ["CO2"],
+                "basket_contents": ["CO2", "CH4", "N2O"],
                 "sel": {
                     "category (IPCC2006_BGD)": [
                         "3.C.1",
@@ -911,51 +958,150 @@ country_processing_step3 = {
                     ]
                 },
             },
+            "KYOTO_4": {
+                "basket": f"KYOTOGHG ({gwp_to_use})",
+                "basket_contents": ["CO2", "CH4", "N2O"],
+                "sel": {"category (IPCC2006_BGD)": ["4.B", "4.C", "4.D"]},
+            },
         },
     },
-    ## TODO: third step for aggregation of downscaled categories e.g. in AFOLU 3.A, 3.C, 2.B.x
+    # interpolate timeseries for IPPU subsectors as they either have explicit information
+    # or are zero only
+    "interpolate_ts": {
+        "5": {
+            "entities": ["CO2", "N2O"],
+            "category": ["5.A", "5.B"],
+        },
+        "LULUCF": {
+            "entities": ["CH4", "N2O"],
+            "category": ["M.LULUCF"],
+        },
+        # interpolation needed because of a bug in the downscaling which is not
+        # working when all data is nan or 0
+        # Maybe there is a fix implemented that's not yet in primap2
+        "1A5": {
+            "category": [
+                "1.A.5",
+                "1.B.3",
+                "1.C",
+                "3.C.1",
+                "3.C.2",
+                "M.3.C.8.LU",
+            ],
+            "entities": ["CO2", "CH4", "N2O"],
+        },
+    },
+    ## aggregating downscaled categories
     "aggregate_coords": {
         "category": {
             "3.A": {
                 "sources": ["3.A.1", "3.A.2"],
             },
-            "3.B.1": {
-                "sources": ["3.B.1.a", "3.B.1.b"],
+            "3.C": {
+                "sources": [
+                    "3.C.1",
+                    "3.C.2",
+                    "3.C.3",
+                    "3.C.4",
+                    "3.C.5",
+                    "3.C.6",
+                    "3.C.7",
+                    "3.C.8",
+                ],
             },
-            "3.B.2": {
-                "sources": ["3.B.2.a", "3.B.2.b"],
+            "M.3.C.AG": {
+                "sources": [
+                    "3.C.1",
+                    "3.C.2",
+                    "3.C.3",
+                    "3.C.4",
+                    "3.C.5",
+                    "3.C.6",
+                    "3.C.7",
+                    "M.3.C.8.AG",
+                ],
             },
-            "3.B.3": {
-                "sources": ["3.B.3.a", "3.B.3.b"],
+            # 3.D
+            "M.3.D.LU": {
+                "sources": ["3.D.1"],
             },
-            "3.B.4": {
-                "sources": ["3.B.4.a", "3.B.4.b"],
+            "M.3.D.AG": {
+                "sources": ["M.3.D.2.AG"],
             },
-            "3.B.5": {
-                "sources": ["3.B.5.a", "3.B.5.b"],
+            "3.D": {
+                "sources": ["M.3.D.LU", "M.3.D.AG"],
             },
-            "3.B.6": {
-                "sources": ["3.B.6.b"],
+            "M.AG.ELV": {
+                "sources": ["M.3.C.AG", "M.3.D.AG"],
             },
-            "3.B": {
-                "sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"],
+            "M.AG": {
+                "sources": ["3.A", "M.AG.ELV"],
+            },
+            "M.LULUCF": {
+                "sources": ["3.B", "M.3.C.8.LU", "M.3.D.LU"],
+            },
+            "3": {
+                "sources": ["M.AG", "M.LULUCF"],
+            },
+            "5": {
+                "sources": ["5.A", "5.B"],
+            },
+            "M.0.EL": {
+                "sources": ["1", "2", "M.AG", "4", "5"],
+            },
+            "0": {
+                "sources": ["M.0.EL", "M.LULUCF"],
             },
         }
     },
-    ## 3.A
-    ##
 }
-
-
-# Note on downscaling: Data are always available for the same years: 2013-2019,
-# so temporal downscaling does not makes sense here.
-# TODO: Perhaps entity, category downscaling can be done?
 
 
 # TODO: HFCs basket, F-gases basket,
-gas_baskets = {
-    "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O"],
-    "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O"],
-    "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O"],
-    "KYOTOGHG (AR6GWP100)": ["CO2", "CH4", "N2O"],
-}
+
+basket_copy = (
+    {
+        "GWPs_to_add": ["SARGWP100", "AR4GWP100", "AR6GWP100"],
+        "entities": ["UnspMixOfHFCsPFCs", "UnspMixOfPFCs", "PFCS"],
+        "source_GWP": gwp_to_use,
+    },
+)
+
+gwps_for_basket_aggregation = [
+    "SARGWP100",
+    "AR4GWP100",
+    "AR5GWP100",
+    "AR6GWP100",
+]
+
+gas_baskets = {}
+for gwp in gwps_for_basket_aggregation:
+    gas_baskets.update(
+        {
+            f"HFCS ({gwp})": [
+                "HFC23",
+                "HFC32",
+                "HFC125",
+                "HFC134",
+                "HFC134a",
+                "HFC143a",
+                "HFC227ea",
+                "HFC245fa",
+                "HFC365mfc",
+                f"UnspMixOfHFCs ({gwp})",
+            ],
+            f"FGASES ({gwp})": [
+                f"HFCS ({gwp})",
+                f"PFCS ({gwp})",
+                "SF6",
+                "NF3",
+                f"UnspMixOfHFCsPFCs ({gwp})",
+            ],
+            f"KYOTOGHG ({gwp})": [
+                "CO2",
+                "CH4",
+                "N2O",
+                f"FGASES ({gwp})",
+            ],
+        }
+    )

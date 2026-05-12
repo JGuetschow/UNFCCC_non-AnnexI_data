@@ -24,6 +24,7 @@ from unfccc_ghg_data.helper import (
     process_data_for_country,
 )
 from unfccc_ghg_data.unfccc_reader.Bangladesh.config_bgd_btr1 import (
+    LULUCF_data_copy_cats,
     agg_fuel_type,
     cols_to_drop_individual,
     cols_to_drop_key_cat,
@@ -39,9 +40,10 @@ from unfccc_ghg_data.unfccc_reader.Bangladesh.config_bgd_btr1 import (
     country_processing_step3,
     data_to_remove,
     filter_remove,
+    gas_baskets,
+    gwp_to_use,
     meta_data,
     page_defs,
-    # table_defs,
     unit_key_cat,
 )
 
@@ -193,19 +195,19 @@ if __name__ == "__main__":
     # ###
     # save raw data to IF and native format
     # ###
-    # if not output_folder.exists():
-    #     output_folder.mkdir()
-    # pm2.pm2io.write_interchange_format(
-    #     output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
-    #     data_if,
-    # )
-    #
-    # encoding = {var: compression for var in data_all_pm2.data_vars}
-    # data_all_pm2.pr.to_netcdf(
-    #     output_folder
-    #     / (output_filename + coords_terminologies["category"] + "_raw.nc"),
-    #     encoding=encoding,
-    # )
+    if not output_folder.exists():
+        output_folder.mkdir()
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"] + "_raw"),
+        data_if,
+    )
+
+    encoding = {var: compression for var in data_all_pm2.data_vars}
+    data_all_pm2.pr.to_netcdf(
+        output_folder
+        / (output_filename + coords_terminologies["category"] + "_raw.nc"),
+        encoding=encoding,
+    )
 
     ###
     # processing
@@ -213,13 +215,22 @@ if __name__ == "__main__":
 
     data_proc_pm2 = data_all_pm2.copy(deep=True)
 
+    # copy LULUCF KYOTOGHG data to
+    data_LULUCF = data_proc_pm2[f"KYOTOGHG ({gwp_to_use})"].pr.loc[
+        {"cat": LULUCF_data_copy_cats}
+    ]
+
+    # change the entity and remove gwp_context
+    del data_LULUCF.attrs["gwp_context"]
+    data_LULUCF.attrs["entity"] = "CO2"
+    data_LULUCF.name = "CO2"
+    data_proc_pm2 = data_proc_pm2.pr.merge(data_LULUCF)
+
     # aggregate some gases for the individual data
     data_proc_pm2 = process_data_for_country(
         data_proc_pm2,
         entities_to_ignore=[],
         gas_baskets=[],
-        # cat_terminology_out=terminology_proc,
-        # category_conversion=cat_conversion_trends,
         processing_info_country=country_processing_step1,
     )
 
@@ -227,9 +238,7 @@ if __name__ == "__main__":
     data_proc_pm2 = process_data_for_country(
         data_proc_pm2,
         entities_to_ignore=[],
-        gas_baskets=[],  # TODO
-        # cat_terminology_out=terminology_proc,
-        # category_conversion=cat_conversion_trends,
+        gas_baskets=[],
         processing_info_country=country_processing_step2,
     )
 
@@ -237,17 +246,24 @@ if __name__ == "__main__":
     data_proc_pm2 = process_data_for_country(
         data_proc_pm2,
         entities_to_ignore=[],
-        gas_baskets=[],  # TODO
-        # cat_terminology_out=terminology_proc,
-        # category_conversion=cat_conversion_trends,
+        gas_baskets=gas_baskets,
         processing_info_country=country_processing_step3,
     )
 
     data_proc_if = data_proc_pm2.pr.to_interchange_format()
-    # aggregation of categories and gases
-    # change termionology
 
-    # downscaling of categories and gases for
+    # ###
+    # save raw data to IF and native format
+    # ###
+    if not output_folder.exists():
+        output_folder.mkdir()
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]),
+        data_proc_if,
+    )
 
-    ### TODO processing ###
-    # The data is very inconsistent we have to deal with theis before processing
+    encoding = {var: compression for var in data_proc_pm2.data_vars}
+    data_proc_pm2.pr.to_netcdf(
+        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        encoding=encoding,
+    )
