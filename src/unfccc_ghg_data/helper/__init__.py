@@ -26,6 +26,7 @@ from .definitions import (
     root_path,
 )
 from .functions import (
+    auto_fix_rows,
     convert_categories,
     create_folder_mapping,
     fix_rows,
@@ -34,6 +35,7 @@ from .functions import (
     get_country_name,
     make_long_table,
     make_wide_table,
+    merge_rows,
     process_data_for_country,
     set_to_nan_in_ds,
 )
@@ -67,4 +69,6 @@ __all__ = [
     "process_data_for_country",
     "root_path",
     "set_to_nan_in_ds",
+    "auto_fix_rows",
+    "merge_rows",
 ]

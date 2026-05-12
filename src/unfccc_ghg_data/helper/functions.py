@@ -173,7 +173,10 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
         if "remove_ts" in processing_info_country:
             for case in processing_info_country["remove_ts"]:
                 remove_info = copy.deepcopy(processing_info_country["remove_ts"][case])
-                entities = remove_info.pop("entities")
+                if "entities" in remove_info:
+                    entities = remove_info.pop("entities")
+                else:
+                    entities = data_country.data_vars
                 for entity in entities:
                     data_country[entity].pr.loc[remove_info] *= np.nan
 
@@ -256,6 +259,26 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                     data_country = data_country.pr.merge(data_agg, tolerance=tolerance)
                 else:
                     print(f"no data to generate category {cat_to_generate}")
+
+        # interpolation
+        if "interpolate_ts" in processing_info_country:
+            for case in processing_info_country["interpolate_ts"]:
+                interp_info = copy.deepcopy(
+                    processing_info_country["interpolate_ts"][case]
+                )
+                if "entities" in interp_info:
+                    entities = interp_info.pop("entities")
+                else:
+                    entities = data_country.data_vars
+                for entity in entities:
+                    data_interpolated = (
+                        data_country[entity]
+                        .pr.loc[interp_info]
+                        .interpolate_na(dim="time", method="linear")
+                    )
+                    data_country[entity] = data_country[entity].pr.merge(
+                        data_interpolated
+                    )
 
         # downscaling
         if "downscale" in processing_info_country:
@@ -908,20 +931,26 @@ def fix_rows(
     """
     Fix rows that have been split during reading from pdf
 
-    This is the version used for Malaysia BUR3,4. adapt for other BURs if needed
+    This function combines rows which have been split into several rows during data
+    reading from pdf because they contained line breaks.
 
-    TODO: add feature to fix multiple instances of a row from Taiwan NIR reading
+    This version works for several BURs. adapt for other BURs if needed
 
-    Parameters
-    ----------
-    data
-    rows_to_fix
-    col_to_use
-    n_rows
+    data: pd.DataFrame
+        The data to work with
+    rows_to_fix: list
+        List of values for which to fix rows
+    col_to_use: str
+        column to use to find the rows to merge
+    n_rows: int
+        How many rows to combine for each row found. e.g. 3 means combine the found
+        row with the following two rows. Negative values are used for more
+        complicated situations where the rows to merge are also before the position
+        of the value that indicates the merge. See code for details
 
     Returns
     -------
-    Dataframe with fixed rows
+        pandas DataFrame with combined rows. The individual rows are removed
 
     """
     for row in rows_to_fix:
@@ -932,41 +961,146 @@ def fix_rows(
         if not list(index):
             print(f"Can't merge split row {row}")
             print(data[col_to_use])
+        indices_to_drop = []
         # print(f"Merging split row {row} for table {page}")
-        loc = data.index.get_loc(index[0])
-        # TODO: formula for negative values
-        if n_rows == -2:  # noqa: PLR2004
-            locs_to_merge = list(range(loc - 1, loc + 1))
-        elif n_rows == -3:  # noqa: PLR2004
-            locs_to_merge = list(range(loc - 1, loc + 2))
-        elif n_rows == -4:  # noqa: PLR2004
-            locs_to_merge = list(range(loc - 1, loc + 3))
-        elif n_rows == -5:  # noqa: PLR2004
-            locs_to_merge = list(range(loc - 1, loc + 4))
-        else:
-            locs_to_merge = list(range(loc, loc + n_rows))
-        rows_to_merge = data.iloc[locs_to_merge]
-        indices_to_merge = rows_to_merge.index
-        # join the three rows
-        new_row = rows_to_merge.agg(" ".join)
-        # replace the double spaces that are created
-        # must be done here and not at the end as splits are not always
-        # the same and join would produce different col values
-        new_row = new_row.str.replace("  ", " ")
-        new_row = new_row.str.replace("N O", "NO")
-        new_row = new_row.str.replace(", N", ",N")
-        new_row = new_row.str.replace("- ", "-")
-        new_row = new_row.str.strip()
-        # replace spaces in numbers
-        pat = r"^(?P<first>[0-9\.,]*)\s(?P<last>[0-9\.,]*)$"
+        for item in index:
+            loc = data.index.get_loc(item)
+            if not isinstance(loc, int):
+                raise TypeError("more than one loc found for item")  # noqa: TRY003
+            # TODO: formula for negative values
+            if n_rows == -2:  # noqa: PLR2004
+                locs_to_merge = list(range(loc - 1, loc + 1))
+            elif n_rows == -3:  # noqa: PLR2004
+                locs_to_merge = list(range(loc - 1, loc + 2))
+            elif n_rows == -4:  # noqa: PLR2004
+                locs_to_merge = list(range(loc - 1, loc + 3))
+            elif n_rows == -5:  # noqa: PLR2004
+                locs_to_merge = list(range(loc - 1, loc + 4))
+            else:
+                locs_to_merge = list(range(loc, loc + n_rows))
 
-        def repl(m):
-            return f"{m.group('first')}{m.group('last')}"
+            data, new_indices_to_drop = merge_rows(data, locs_to_merge)
+            indices_to_drop = indices_to_drop + new_indices_to_drop
 
-        new_row = new_row.str.replace(pat, repl, regex=True)
-        data.loc[indices_to_merge[0]] = new_row
-        data = data.drop(indices_to_merge[1:])
+        data = data.drop(indices_to_drop)
+        data = data.reset_index(drop=True)
     return data
+
+
+def auto_fix_rows(
+    data: pd.DataFrame,
+    col_to_use: str | int,
+    skip_rows: int = 0,
+) -> pd.DataFrame:
+    """
+    Automatically fix rows that have been split during reading from pdf
+
+    This function combines rows which have been split into several rows during data
+    reading from pdf because they contained line breaks. The function automatically
+    combines each row with the following rows if the given column is empty for the
+    following row. It only produces sensible results if the rows are split such that
+    there is a column where only the first row contains data.
+    Example: a short category code is always in the forst row while the long category
+    name is split over several rows. In this case we can use this function on the
+    category code column.
+    For more complicated cases use the `fix_rows` function.
+
+    This version works for several BURs. adapt for other BURs if needed
+
+    data: pd.DataFrame
+        The data to work with
+    col_to_use: str
+        column to use to find the rows to merge
+    skip_rows: int
+        How many rows to skip in the beginning of the file (header)
+
+    Returns
+    -------
+        pandas DataFrame with combined rows. The individual rows are removed
+
+    """
+    col_data = data[col_to_use]
+    col_data = col_data.replace("", np.nan)
+    col_data_notnan = col_data.notna()
+    col_data_nan = col_data.isna()
+    # make a rolling sum with width two and left alignment and take a nan mask
+    temp_data = col_data_nan.rolling(2, min_periods=1, center=False).sum()
+    col_data_left_nan = temp_data == 0.0  # noqa: PLR2004
+    col_data_left_nan = col_data_left_nan.shift(-1, fill_value=False)
+
+    # by xor-ing with the original nan mask we can get the left and the right boundaries
+    left_boundary_mask = np.logical_xor(col_data_notnan, col_data_left_nan)
+
+    left_boundaries = data.loc[left_boundary_mask]
+    indices_to_drop = []
+
+    for item in left_boundaries.index:
+        # get the position in the table
+        loc = data.index.get_loc(item)
+        if not isinstance(loc, int):
+            raise TypeError("more than one loc found for item")  # noqa: TRY003
+        # Get subsequent rows where col_to_use is empty
+        row_loc = loc + 1
+        locs_to_merge = [loc]
+        while row_loc < len(data):
+            if data[col_to_use].iloc[row_loc] == "":
+                locs_to_merge.append(row_loc)
+                row_loc += 1
+            else:
+                break
+
+        data, new_indices_to_drop = merge_rows(data, locs_to_merge)
+        indices_to_drop = indices_to_drop + new_indices_to_drop
+
+    data = data.drop(indices_to_drop)
+    data = data.reset_index(drop=True)
+    return data
+
+
+def merge_rows(
+    data: pd.DataFrame, locs_to_merge: list[int]
+) -> tuple[pd.DataFrame, list[int]]:
+    """
+    Merge rows defined by `locs_to_merge`
+
+    The merged row is written to the first position in `locs_to_merge`. Other rows
+    are not deleted, instead their indices are returned so they can be dropped later
+
+    Parameters
+    ----------
+    data
+        DataFrame in which rows should be merged
+    locs_to_merge
+        The locs of the rows that should be merged
+
+    Returns
+    -------
+        Returns a tuple where the first part is the DataFrame with the merged row and
+        the second part is a list of indices of the rows that should be dropped as they
+        were merged
+    """
+
+    def repl(m):
+        return f"{m.group('first')}{m.group('last')}"
+
+    rows_to_merge = data.iloc[locs_to_merge]
+    indices_to_merge = rows_to_merge.index
+    # join the trows
+    new_row = rows_to_merge.agg(" ".join)
+    # replace the double spaces that are created
+    # must be done here and not at the end as splits are not always
+    # the same and join would produce different col values
+    new_row = new_row.str.replace("  ", " ")
+    new_row = new_row.str.replace("N O", "NO")
+    new_row = new_row.str.replace(", N", ",N")
+    new_row = new_row.str.replace("- ", "-")
+    new_row = new_row.str.strip()
+    # replace spaces in numbers
+    pat = r"^(?P<first>[0-9\.,]*)\s(?P<last>[0-9\.,]*)$"
+
+    new_row = new_row.str.replace(pat, repl, regex=True)
+    data.loc[indices_to_merge[0]] = new_row
+    return data, list(indices_to_merge[1:])
 
 
 def make_wide_table(
@@ -1196,7 +1330,7 @@ def assert_values(
     expected_value = test_case[3]
 
     assert isinstance(  # noqa: S101
-        expected_value, (float, int)
+        expected_value, float | int
     ), (
         "This function only works for numbers. "
         "Use assert_nan_values to check for NaNs "

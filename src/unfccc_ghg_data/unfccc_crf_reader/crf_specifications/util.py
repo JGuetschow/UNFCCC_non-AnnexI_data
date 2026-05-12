@@ -1,5 +1,7 @@
 """Some definitions used for several CRF specifications"""
 
+import numpy as np
+
 unit_info = {
     "default": {
         "unit_row": 0,
@@ -51,6 +53,14 @@ unit_info = {
             "CO2 equivalents (kt) (2)": "kt CO2eq",  # for TUN
             "CO2 equivalent (kt) (2)": "kt CO2eq",  # for TUN
         },
+        "default_unit": "kt",
+    },
+    "ind_3c_2020": {
+        "unit_row": 0,
+        "entity_row": "header",
+        "regexp_entity": r".*",
+        "regexp_unit": r"\((.*)\)",
+        "manual_repl_unit": {np.nan: "kt"},
         "default_unit": "kt",
     },
 }

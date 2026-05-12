@@ -1,0 +1,24 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_BGD)
+  comment: Read fom pdf by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  entity: PFCS
+  gwp_context: AR5GWP100
+  institution: UNFCCC
+  references: https://unfccc.int/documents/655314
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: ' Bangladesh. 2024 Biennial Transparency Report (BTR). BTR1. '
+data_file: BGD_BTR1_2024_IPCC2006_BGD_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_BGD)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
