@@ -1,0 +1,22 @@
+attrs:
+  area: area (ISO3)
+  cat: category (CRF2013_2023)
+  comment: Read fom csv files by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: University of Maryland - Center for Global Sustainability
+  references: https://ghgi.cgs.umd.edu/index.html
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Greenhouse Gas Inventory and Analysis for the United States
+data_file: USA_2026-GHGIA_CRF2013_2023.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (CRF2013_2023)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
