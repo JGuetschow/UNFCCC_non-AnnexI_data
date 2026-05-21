@@ -63,29 +63,30 @@ TODO:
   into 1.B.1. Was in 2.C.1 in 2024 inventory
 """
 
+from copy import deepcopy
+
 import pandas as pd
 import primap2 as pm2
 
 from unfccc_ghg_data.helper import (
     downloaded_data_path,
     extracted_data_path,
+    gas_baskets,
     process_data_for_country,
 )
-from unfccc_ghg_data.unfccc_reader.United_States_of_America.config_usa_inv2024 import (
-    basket_copy,
-    category_col,
-    coords_cols_template,
-    filter_remove,
-    gas_baskets,
-    terminology_proc,
-    time_format,
-)
-from unfccc_ghg_data.unfccc_reader.United_States_of_America.config_usa_inv2025 import (
+from unfccc_ghg_data.unfccc_reader.Taiwan.config_twn_nir2025 import gwp_to_use
+from unfccc_ghg_data.unfccc_reader.United_States_of_America.config_usa_inv2026 import (
+    # basket_copy_PFCS,
+    basket_copy_UnspMix,
     cat_conversion,
+    coords_cols_template,
     coords_defaults_template,
     coords_terminologies,
+    filter_remove,
     inventory_files,
     meta_data,
+    terminology_proc,
+    time_format,
 )
 
 # TODO: adapt to subfolders for csv files
@@ -98,17 +99,13 @@ if __name__ == "__main__":
 
     # folders and files
     input_folder = (
-        downloaded_data_path
-        / "non-UNFCCC"
-        / "United_States_of_America"
-        / "2025-Inventory"
-        / "Chapter_2_-_Trends"
+        downloaded_data_path / "non-UNFCCC" / "United_States_of_America" / "2026_GHGIA"
     )
     output_folder = extracted_data_path / "non-UNFCCC" / "United_States_of_America"
     if not output_folder.exists():
         output_folder.mkdir()
 
-    output_filename = "USA_2025-Inventory_"
+    output_filename = "USA_2026-GHGIA_"
     compression = dict(zlib=True, complevel=9)
 
     # ###
@@ -117,69 +114,107 @@ if __name__ == "__main__":
 
     data_pm2 = None
 
-    for file in inventory_files.keys():
-        print(f"reading {file}")
-        data_current_pd = pd.read_csv(input_folder / file, header=[1])
-        # remove the thousands separators (can't be done during reading as data is
-        # stored as string)
-        all_cols = data_current_pd.columns
-        data_cols = [col for col in all_cols if col != category_col]
-        for col in data_cols:
-            if data_current_pd.dtypes[col] == "object":
-                data_current_pd[col] = data_current_pd[col].str.replace(",", "")
+    for folder, files in inventory_files.items():
+        for file, file_config in files.items():
+            print(f"reading {file}")
+            category_col = file_config.pop("cat_col")
+            # TODO: move to function if it works like this
+            data_current_pd = pd.read_csv(
+                input_folder / folder / file, header=[1], encoding="ISO-8859-1"
+            )
+            # remove the thousands separators (can't be done during reading as data is
+            # stored as string)
+            if "drop_cols" in file_config.keys():
+                cols_to_drop = file_config.pop("drop_cols")
+                data_current_pd = data_current_pd.drop(columns=cols_to_drop)
+            if "map_cols" in file_config.keys():
+                col_mapping = file_config.pop("map_cols")
+                data_current_pd = data_current_pd.rename(columns=col_mapping)
 
-        section_keys = inventory_files[file].keys()
-        key_info = {}
-        last_key = None
-        for i, row in data_current_pd.iterrows():
-            if row[category_col] in section_keys:
-                key_info[row[category_col]] = {}
-                key_info[row[category_col]]["start"] = i
-                if last_key is not None:
-                    key_info[last_key]["end"] = i
-                last_key = row[category_col]
+            all_cols = data_current_pd.columns
+            data_cols = [col for col in all_cols if col != category_col]
+            for col in data_cols:
+                if data_current_pd.dtypes[col] in ["object", "string"]:
+                    data_current_pd[col] = data_current_pd[col].str.replace(",", "")
 
-        for section_key in section_keys:
-            current_config = inventory_files[file][section_key]
-            if current_config is not None:
-                # get the data
-                if "end" in key_info[section_key].keys():
-                    data_section = data_current_pd.iloc[
-                        key_info[section_key]["start"] : key_info[section_key]["end"]
-                    ].copy()
-                else:
-                    data_section = data_current_pd.iloc[
-                        key_info[section_key]["start"] :
-                    ].copy()
+            # strip spaces from category col
+            data_current_pd[category_col] = data_current_pd[category_col].str.strip()
 
-                # convert to primap2 IF
-                coords_defaults = coords_defaults_template.copy()
-                coords_defaults.update(current_config["coords_defaults"])
-                coords_value_mapping = current_config["coords_value_mapping"]
-                coords_cols = coords_cols_template.copy()
-                if "entity" in coords_value_mapping:
-                    # make a copy of the category column as we also need if for entity
-                    data_section["entity"] = data_section[category_col]
-                    coords_cols["entity"] = "entity"
+            section_keys = file_config.keys()
+            key_info = {}
+            # find the ilocs for the section keys
+            last_key = None
+            for i, row in data_current_pd.iterrows():
+                if row[category_col] in section_keys:
+                    key_info[row[category_col]] = {}
+                    key_info[row[category_col]]["start"] = i
+                    if last_key is not None:
+                        key_info[last_key]["end"] = i
+                    last_key = row[category_col]
 
-                data_section_if = pm2.pm2io.convert_wide_dataframe_if(
-                    data_section,
-                    coords_cols=coords_cols,
-                    coords_terminologies=coords_terminologies,
-                    coords_defaults=coords_defaults,
-                    coords_value_mapping=coords_value_mapping,
-                    filter_remove=filter_remove,
-                    meta_data=meta_data,
-                    time_format=time_format,
-                )
-                # convert to primap2 native format
-                data_section_pm2 = pm2.pm2io.from_interchange_format(data_section_if)
+            # fill the key info for section keys with ilocs given
+            for section_key in section_keys:
+                if section_key.startswith("by_iloc"):
+                    key_info[section_key] = {}
+                    key_info[section_key]["start"] = file_config[section_key].pop(
+                        "start"
+                    )
+                    key_info[section_key]["end"] = file_config[section_key].pop("end")
 
-                # merge with other data
-                if data_pm2 is None:
-                    data_pm2 = data_section_pm2
-                else:
-                    data_pm2 = data_pm2.pr.merge(data_section_pm2)
+            for section_key in section_keys:
+                current_config = file_config[section_key]
+                if current_config is not None:
+                    # get the data
+                    if "end" in key_info[section_key].keys():
+                        data_section = data_current_pd.iloc[
+                            key_info[section_key]["start"] : key_info[section_key][
+                                "end"
+                            ]
+                        ].copy()
+                    else:
+                        data_section = data_current_pd.iloc[
+                            key_info[section_key]["start"] :
+                        ].copy()
+
+                    # convert to primap2 IF
+                    coords_defaults = coords_defaults_template.copy()
+                    coords_defaults.update(current_config["coords_defaults"])
+                    coords_value_mapping = current_config["coords_value_mapping"]
+                    coords_cols = coords_cols_template.copy()
+                    for col in coords_value_mapping.keys():
+                        # make a copy of the category column as we also need if for
+                        # entity
+                        data_section[col] = data_section[category_col]
+                        coords_cols[col] = col
+                    # drop the original col
+                    data_section = data_section.drop(columns=category_col)
+
+                    if "filter_remove" in current_config.keys():
+                        filter_remove_current = current_config["filter_remove"]
+                    else:
+                        filter_remove_current = filter_remove
+
+                    data_section_if = pm2.pm2io.convert_wide_dataframe_if(
+                        data_section,
+                        coords_cols=coords_cols,
+                        coords_terminologies=coords_terminologies,
+                        coords_defaults=coords_defaults,
+                        coords_value_mapping=coords_value_mapping,
+                        filter_remove=filter_remove_current,
+                        meta_data=meta_data,
+                        time_format=time_format,
+                        convert_str={"+": 0, "+ ": 0},
+                    )
+                    # convert to primap2 native format
+                    data_section_pm2 = pm2.pm2io.from_interchange_format(
+                        data_section_if
+                    )
+
+                    # merge with other data
+                    if data_pm2 is None:
+                        data_pm2 = data_section_pm2
+                    else:
+                        data_pm2 = data_pm2.pr.merge(data_section_pm2)
 
     # convert back to IF to have units in the fixed format
     data_if = data_pm2.pr.to_interchange_format()
@@ -204,19 +239,81 @@ if __name__ == "__main__":
     data_pm2_2006 = data_pm2.copy()
 
     # actual processing
+    # the processing is done in several steps because of limitations of the current
+    # processing function
 
-    country_processing = {
-        "basket_copy": basket_copy,
+    # we first need to make some copies of gwp weighted gas baskets with default
+    # conversion factors as gas information is missing for a few cases
+    country_processing_step1 = {
+        # "basket_copy": basket_copy_PFCS,
+        "aggregate_gases": {
+            f"UnspMixOfPFCs ({gwp_to_use})": {
+                "sources": [f"PFCS ({gwp_to_use})"],
+                "sel": {
+                    "category": ["2.G.2"],
+                },
+            },
+        },
     }
 
     data_pm2_2006 = process_data_for_country(
         data_pm2_2006,
         entities_to_ignore=[],
-        gas_baskets=gas_baskets,
-        processing_info_country=country_processing,
+        gas_baskets={},
+        processing_info_country=country_processing_step1,
+    )
+
+    country_processing_step2 = {
+        "basket_copy": basket_copy_UnspMix,
+    }
+
+    data_pm2_2006 = process_data_for_country(
+        data_pm2_2006,
+        entities_to_ignore=[],
+        gas_baskets={},
+        processing_info_country=country_processing_step2,
+    )
+
+    data_pm2_2006 = process_data_for_country(
+        data_pm2_2006,
+        entities_to_ignore=[],
+        gas_baskets={},
+        processing_info_country=None,
         cat_terminology_out=terminology_proc,
         category_conversion=cat_conversion,
         # sectors_out=sectors_to_save,
+    )
+
+    country_processing_step4 = {
+        "tolerance": 0.065  #  2.7% for HFC basket
+        # for PFCs in 2.E we need 6.5%
+        # for FGASES we need 2.5% (2.G.2.c)
+    }
+
+    gas_baskets_step4 = deepcopy(gas_baskets)
+    gas_baskets_step4.pop("KYOTOGHG (AR5GWP100)")
+
+    data_pm2_2006 = process_data_for_country(
+        data_pm2_2006,
+        entities_to_ignore=[],
+        gas_baskets=gas_baskets_step4,
+        processing_info_country=country_processing_step4,
+    )
+
+    country_processing_step5 = {
+        "tolerance": 0.01  # 25 # for HFC basket
+        # for PFCs in 2.E we need 6.5%
+    }
+
+    gas_baskets.pop("HFCS (AR5GWP100)")
+    gas_baskets.pop("PFCS (AR5GWP100)")
+    gas_baskets.pop("FGASES (AR5GWP100)")
+
+    data_pm2_2006 = process_data_for_country(
+        data_pm2_2006,
+        entities_to_ignore=[],
+        gas_baskets=gas_baskets,
+        processing_info_country=country_processing_step5,
     )
 
     # adapt source and metadata

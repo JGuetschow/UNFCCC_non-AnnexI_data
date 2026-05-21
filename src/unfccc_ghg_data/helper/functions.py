@@ -350,15 +350,34 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
             GWPs_to_add = processing_info_country["basket_copy"]["GWPs_to_add"]
             entities = processing_info_country["basket_copy"]["entities"]
             source_GWP = processing_info_country["basket_copy"]["source_GWP"]
-            for entity in entities:
-                data_source = data_country[f"{entity} ({source_GWP})"]
-                for GWP in GWPs_to_add:
-                    data_GWP = (
-                        data_source * GWP_factors[f"{source_GWP}_to_{GWP}"][entity]
-                    )
-                    data_GWP.attrs["entity"] = entity
-                    data_GWP.attrs["gwp_context"] = GWP
-                    data_country[f"{entity} ({GWP})"] = data_GWP
+            if "sel" in processing_info_country["basket_copy"]:
+                for entity in entities:
+                    data_source = data_country[f"{entity} ({source_GWP})"].pr.loc[
+                        processing_info_country["basket_copy"]["sel"]
+                    ]
+                    for GWP in GWPs_to_add:
+                        data_GWP = (
+                            data_source * GWP_factors[f"{source_GWP}_to_{GWP}"][entity]
+                        )
+                        data_GWP.attrs["entity"] = entity
+                        data_GWP.attrs["gwp_context"] = GWP
+                        variable = f"{entity} ({GWP})"
+                        if entity in data_country.data_vars:
+                            data_country[variable] = data_country[variable].pr.merge(
+                                data_GWP
+                            )
+                        else:
+                            data_country[variable] = data_GWP
+            else:
+                for entity in entities:
+                    data_source = data_country[f"{entity} ({source_GWP})"]
+                    for GWP in GWPs_to_add:
+                        data_GWP = (
+                            data_source * GWP_factors[f"{source_GWP}_to_{GWP}"][entity]
+                        )
+                        data_GWP.attrs["entity"] = entity
+                        data_GWP.attrs["gwp_context"] = GWP
+                        data_country[f"{entity} ({GWP})"] = data_GWP
 
         # aggregate gases if desired
         if "aggregate_gases" in processing_info_country:

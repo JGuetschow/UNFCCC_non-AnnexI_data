@@ -303,7 +303,6 @@ for gwp in gwps_for_basket_aggregation:
                 "C10F18",
                 "cC3F6",
                 "cC4F8",
-                "cC4F8",
                 f"UnspMixOfPFCs ({gwp})",
             ],
             f"FGASES ({gwp})": [
