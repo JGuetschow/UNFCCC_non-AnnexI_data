@@ -178,7 +178,8 @@ CRT1 = {
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 3],  # (empty)
             # 1.A.1.a.i Electricity Generation
             ["1.A.1.a.i. Electricity generation", ["1.A.1.a.i", "Total"], 3],
-            ["Liquid fuels", ["1.A.1.a.i", "Liquid"], 4],
+            ["\\C!-TUV\\ Liquid fuels", ["1.A.1.a.i", "Liquid"], 4],
+            ["\\C-TUV\\ Liquid fuels (Diesel)", ["1.A.1.a.i", "Liquid"], 4],
             ["Solid fuels", ["1.A.1.a.i", "Solid"], 4],
             ["Gaseous fuels (6)", ["1.A.1.a.i", "Gaseous"], 4],
             ["Other fossil fuels (7)", ["1.A.1.a.i", "OtherFF"], 4],
@@ -453,12 +454,16 @@ CRT1 = {
             ["Biomass (3)", ["1.A.2.g.vii", "Biomass"], 3],
             # 1.A.2.g.viii Other (please specify)
             ["1.A.2.g.viii. Other (please specify)", ["1.A.2.g.viii", "Total"], 2],
-            ["\\C-PER-ISR\\ Liquid fuels", ["1.A.2.g.viii", "Liquid"], 3],
-            ["\\C-PER-ISR\\ Solid fuels", ["1.A.2.g.viii", "Solid"], 3],
-            ["\\C-PER-ISR\\ Gaseous fuels (6)", ["1.A.2.g.viii", "Gaseous"], 3],
-            ["\\C-PER-ISR\\ Other fossil fuels (7)", ["1.A.2.g.viii", "OtherFF"], 3],
-            ["\\C-PER-ISR\\ Peat (8)", ["1.A.2.g.viii", "Peat"], 3],
-            ["\\C-PER-ISR\\ Biomass (3)", ["1.A.2.g.viii", "Biomass"], 3],
+            ["\\C-PER-ISR-TUV\\ Liquid fuels", ["1.A.2.g.viii", "Liquid"], 3],
+            ["\\C-PER-ISR-TUV\\ Solid fuels", ["1.A.2.g.viii", "Solid"], 3],
+            ["\\C-PER-ISR-TUV\\ Gaseous fuels (6)", ["1.A.2.g.viii", "Gaseous"], 3],
+            [
+                "\\C-PER-ISR-TUV\\ Other fossil fuels (7)",
+                ["1.A.2.g.viii", "OtherFF"],
+                3,
+            ],
+            ["\\C-PER-ISR-TUV\\ Peat (8)", ["1.A.2.g.viii", "Peat"], 3],
+            ["\\C-PER-ISR-TUV\\ Biomass (3)", ["1.A.2.g.viii", "Biomass"], 3],
             # other / non-specified (1.A.2.g.viii.1)
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
@@ -1223,18 +1228,18 @@ CRT1 = {
             # v. Other
             ["1.A.3.b.v. Other (please specify)", ["1.A.3.b.v", "Total"], 2],
             # nothing specified
-            ["\\C-PER\\ Gasoline", ["1.A.3.b.v", "Gasoline"], 3],
-            ["\\C-PER\\ Diesel oil", ["1.A.3.b.v", "DieselOil"], 3],
-            ["\\C-PER\\ Liquefied petroleum gases (LPG)", ["1.A.3.b.v", "LPG"], 3],
+            ["\\C-PER-TUV\\ Gasoline", ["1.A.3.b.v", "Gasoline"], 3],
+            ["\\C-PER-TUV\\ Diesel oil", ["1.A.3.b.v", "DieselOil"], 3],
+            ["\\C-PER-TUV\\ Liquefied petroleum gases (LPG)", ["1.A.3.b.v", "LPG"], 3],
             [
-                "\\C-PER\\ Other liquid fuels (please specify)",
+                "\\C-PER-TUV\\ Other liquid fuels (please specify)",
                 ["1.A.3.b.v", "OtherLiquid"],
                 3,
             ],
-            ["\\C-PER\\ Gaseous fuels (6)", ["1.A.3.b.v", "Gaseous"], 3],
-            ["\\C-PER\\ Biomass (3)", ["1.A.3.b.v", "Biomass"], 3],
+            ["\\C-PER-TUV\\ Gaseous fuels (6)", ["1.A.3.b.v", "Gaseous"], 3],
+            ["\\C-PER-TUV\\ Biomass (3)", ["1.A.3.b.v", "Biomass"], 3],
             [
-                "\\C-PER\\ Other fossil fuels (please specify)(7)",
+                "\\C-PER-TUV\\ Other fossil fuels (please specify)(7)",
                 ["1.A.3.b.v", "OtherFF"],
                 3,
             ],
@@ -1667,22 +1672,23 @@ CRT1 = {
             # ii other
             ["1.A.3.e.ii. Other (please specify)", ["1.A.3.e.ii", "Total"], 2],
             # nothing specified
-            ["\\C-PER\\ Gasoline", ["1.A.3.e.ii", "Gasoline"], 3],
+            ["\\C-PER-TUV\\ Gasoline", ["1.A.3.e.ii", "Gasoline"], 3],
             ["\\C-PER\\ Diesel oil", ["1.A.3.e.ii", "DieselOil"], 3],
+            ["\\C-TUV\\ Gas/Diesel oil", ["1.A.3.e.ii", "DieselOil"], 3],
             [
-                "\\C-PER\\ Liquefied petroleum gases (LPG)",
+                "\\C-PER-TUV\\ Liquefied petroleum gases (LPG)",
                 ["1.A.3.e.ii", "LPG"],
                 3,
             ],
             [
-                "\\C-PER\\ Other liquid fuels (please specify)",
+                "\\C-PER-TUV\\ Other liquid fuels (please specify)",
                 ["1.A.3.e.ii", "OtherLiquid"],
                 3,
             ],
-            ["\\C-PER\\ Solid fuels", ["1.A.3.e.ii", "Solid"], 3],
-            ["\\C-PER\\ Gaseous fuels (6)", ["1.A.3.e.ii", "Gaseous"], 3],
-            ["\\C-PER\\ Other fossil fuels (7)", ["1.A.3.e.ii", "OtherFF"], 3],
-            ["\\C-PER\\ Biomass (3)", ["1.A.3.e.ii", "Biomass"], 3],
+            ["\\C-PER-TUV\\ Solid fuels", ["1.A.3.e.ii", "Solid"], 3],
+            ["\\C-PER-TUV\\ Gaseous fuels (6)", ["1.A.3.e.ii", "Gaseous"], 3],
+            ["\\C-PER-TUV\\ Other fossil fuels (7)", ["1.A.3.e.ii", "OtherFF"], 3],
+            ["\\C-PER-TUV\\ Biomass (3)", ["1.A.3.e.ii", "Biomass"], 3],
             # Off-road vehicles
             ["\\C-AUS-ECU\\ Off-road vehicles", ["1.A.3.e.ii.1", "Total"], 3],
             [
@@ -1994,7 +2000,10 @@ CRT1 = {
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 2],  # (empty)
             # 1.A.4.a.i Stationary combustion
             ["1.A.4.a.i. Stationary combustion", ["1.A.4.a.i", "Total"], 2],
-            ["Liquid fuels", ["1.A.4.a.i", "Liquid"], 3],
+            ["\\C!-TUV\\ Liquid fuels", ["1.A.4.a.i", "Liquid"], 3],
+            ["\\C-TUV\\ Liquid fuels (diesel)", ["1.A.4.a.i", "DieselOil"], 3],
+            ["\\C-TUV\\ Liquid fuels (kerosene)", ["1.A.4.a.i", "JetKerosene"], 3],
+            ["\\C-TUV\\ Liquid fuels (LPG)", ["1.A.4.a.i", "LPG"], 3],
             ["Solid fuels", ["1.A.4.a.i", "Solid"], 3],
             ["Gaseous fuels (6)", ["1.A.4.a.i", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.4.a.i", "OtherFF"], 3],
@@ -2022,7 +2031,9 @@ CRT1 = {
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 2],  # (empty)
             # 1.A.4.b.i Stationary combustion
             ["1.A.4.b.i. Stationary combustion", ["1.A.4.b.i", "Total"], 2],
-            ["Liquid fuels", ["1.A.4.b.i", "Liquid"], 3],
+            ["\\C!-TUV\\ Liquid fuels", ["1.A.4.b.i", "Liquid"], 3],
+            ["\\C-TUV\\ Liquid fuels (kerosene)", ["1.A.4.b.i", "JetKerosene"], 3],
+            ["\\C-TUV\\ Liquid fuels (LPG)", ["1.A.4.b.i", "LPG"], 3],
             ["Solid fuels", ["1.A.4.b.i", "Solid"], 3],
             ["Gaseous fuels (6)", ["1.A.4.b.i", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.4.b.i", "OtherFF"], 3],
@@ -2122,7 +2133,12 @@ CRT1 = {
                 4,
             ],
             # iii. Fishing
-            ["1.A.4.c.iii. Fishing", ["1.A.4.c.iii", "Total"], 2],
+            ["\\C!-TUV\\ 1.A.4.c.iii. Fishing", ["1.A.4.c.iii", "Total"], 2],
+            [
+                "\\C-TUV\\ 1.A.4.c.iii. Fishing (mobile combustion)",
+                ["1.A.4.c.iii", "Total"],
+                2,
+            ],
             ["Residual fuel oil", ["1.A.4.c.iii", "ResFuelOil"], 3],
             ["Gas/diesel oil", ["1.A.4.c.iii", "GasDieselOil"], 3],
             ["Gasoline", ["1.A.4.c.iii", "Gasoline"], 3],
@@ -2181,24 +2197,28 @@ CRT1 = {
             ["\\C-AUS-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 2],
             ["\\C-SLB\\ nan", ["\\IGNORE", "\\IGNORE"], 2],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Liquid fuels",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Liquid fuels",
                 ["\\IGNORE", "Liquid"],
                 2,
             ],
-            ["\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Solid fuels", ["\\IGNORE", "Solid"], 2],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Gaseous fuels (6)",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Solid fuels",
+                ["\\IGNORE", "Solid"],
+                2,
+            ],
+            [
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Gaseous fuels (6)",
                 ["\\IGNORE", "Gaseous"],
                 2,
             ],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Other fossil fuels(7)",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Other fossil fuels(7)",
                 ["\\IGNORE", "OtherFF"],
                 2,
             ],
-            ["\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Peat (8)", ["\\IGNORE", "Peat"], 2],
+            ["\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Peat (8)", ["\\IGNORE", "Peat"], 2],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Biomass (3)",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Biomass (3)",
                 ["\\IGNORE", "Biomass"],
                 2,
             ],
@@ -2309,11 +2329,15 @@ CRT1 = {
             ["1.A.5.b. Mobile (please specify)", ["1.A.5.b", "Total"], 1],
             # nan
             ["\\C-SLB-ISR\\ nan", ["\\IGNORE", "\\IGNORE"], 2],
-            ["\\C-SLB-ISR-PER\\ Liquid fuels", ["\\IGNORE", "Liquid"], 2],
-            ["\\C-SLB-ISR-PER\\ Solid fuels", ["\\IGNORE", "Solid"], 2],
-            ["\\C-SLB-ISR-PER\\ Gaseous fuels (6)", ["\\IGNORE", "Gaseous"], 2],
-            ["\\C-SLB-ISR-PER\\ Other fossil fuels (7)", ["\\IGNORE", "OtherFF"], 2],
-            ["\\C-SLB-ISR-PER\\ Biomass(3)", ["\\IGNORE", "Biomass"], 2],
+            ["\\C-SLB-ISR-PER-TUV\\ Liquid fuels", ["\\IGNORE", "Liquid"], 2],
+            ["\\C-SLB-ISR-PER-TUV\\ Solid fuels", ["\\IGNORE", "Solid"], 2],
+            ["\\C-SLB-ISR-PER-TUV\\ Gaseous fuels (6)", ["\\IGNORE", "Gaseous"], 2],
+            [
+                "\\C-SLB-ISR-PER-TUV\\ Other fossil fuels (7)",
+                ["\\IGNORE", "OtherFF"],
+                2,
+            ],
+            ["\\C-SLB-ISR-PER-TUV\\ Biomass(3)", ["\\IGNORE", "Biomass"], 2],
             # Military
             ["\\C-SGP\\ Military activities", ["1.A.5.b.i", "Total"], 2],
             ["\\C-AUT-NOR-CHE-LTU-USA-HUN\\ Military", ["1.A.5.b.i", "Total"], 2],
@@ -2681,7 +2705,7 @@ CRT1 = {
             ["\\C-ROU\\ Other", ["1.B.1.a.ii.3.c"], 3],
             ["\\C-HND\\ 1.B.1.a.ii.3.Other", ["1.B.1.a.ii.3.c"], 3],
             ["1. B. 1. b. Fuel transformation (6)", ["1.B.1.b"], 0],
-            ["\\C-AUS-CHL-ECU-SLB-ISR-PER\\ Drop down list:", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-ECU-SLB-ISR-PER-TUV\\ Drop down list:", ["\\IGNORE"], 1],
             # some of the following items are missing for some countries but as they are
             # present for ost countries we do not specify the countries here
             ["1.B.1.b.i. Charcoal and biochar production (7)", ["1.B.1.b.i"], 1],
@@ -2794,12 +2818,12 @@ CRT1 = {
             ["1.B.2.a.iv. Refining/storage", ["1.B.2.a.iv"], 1],
             ["1.B.2.a.v. Distribution of oil products", ["1.B.2.a.v"], 1],
             ["1.B.2.a.vi. Other", ["1.B.2.a.vi"], 1],
-            ["\\C-AUS-CHL-ECU-SLB-ISR\\ Drop down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-CHL-ECU-SLB-ISR-TUV\\ Drop down list:", ["\\IGNORE"], 2],
             # the following categories are now present for all countries, but almost all
             # so there is no country filter specified
             ["1.B.2.a.vi.1. Abandoned wells", ["1.B.2.a.vi.1"], 2],
             ["1.B.2.a.vi.2. Other (please specify)", ["1.B.2.a.vi.2"], 2],
-            ["\\C-AUS-SGP-CHL-ECU\\ NA", ["\\IGNORE"], 3],
+            ["\\C-AUS-SGP-CHL-ECU-TUV\\ NA", ["\\IGNORE"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
                 "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
@@ -2826,7 +2850,7 @@ CRT1 = {
             ["1.B.2.b.iv. Transmission and storage", ["1.B.2.b.iv"], 1],
             ["1.B.2.b.v. Distribution", ["1.B.2.b.v"], 1],
             ["1.B.2.b.vi. Other", ["1.B.2.b.vi"], 1],
-            ["\\C-AUS-CHL-ECU-SLB-PER-ISR\\ Drop down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-CHL-ECU-SLB-PER-ISR-TUV\\ Drop down list:", ["\\IGNORE"], 2],
             # the following categories are now present for all countries, but almost all
             # so there is no country filter specified
             ["1.B.2.b.vi.1. Gas post-meter", ["1.B.2.b.vi.1"], 2],
@@ -2846,7 +2870,7 @@ CRT1 = {
             ],
             ["\\C-HND\\ 1.B.2.b.vi.3.Other", ["1.B.2.a.vi.3.d"], 3],
             ["\\C-SGP-CHL-ECU-BRA\\ NA", ["\\IGNORE"], 3],
-            ["\\C-SLB-ECU\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-SLB-ECU-TUV\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-ECU\\ NE", ["\\IGNORE"], 3],
             ["\\C-NOR-UKR-ROU\\ Other", ["1.B.2.b.vi.3.d"], 3],
             ["\\C-SVK\\ Storage of gas", ["1.B.2.b.vi.3.e"], 3],
@@ -2868,7 +2892,7 @@ CRT1 = {
             ["1.B.2.d. Other (please specify) (10)", ["1.B.2.d"], 0],
             ["\\C-AUS-SGP-CHL-ECU\\ NA", ["\\IGNORE"], 1],
             ["\\C-PER\\ NO", ["\\IGNORE"], 1],
-            ["\\C-SLB-ISR-PER\\ nan", ["\\IGNORE", "\\IGNORE"], 1],
+            ["\\C-SLB-ISR-PER-TUV\\ nan", ["\\IGNORE", "\\IGNORE"], 1],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
@@ -3373,7 +3397,7 @@ CRT1 = {
             ["3.I. Other carbon-containing fertilizers", ["3.I"], 1],
             ["3.J. Other (please specify)", ["3.J"], 1],
             ["\\C-GHA\\ 3.J. Other (N2O from aquaculture)", ["3.J"], 1],  # 2022 only
-            ["\\C-AUS-BRA-CHL-SGP\\ NA", ["\\IGNORE"], 2],
+            ["\\C-AUS-BRA-CHL-SGP-TUV\\ NA", ["\\IGNORE"], 2],
             ["\\C-DEU\\ 3.B NOx Emissions", ["3.J.1"], 2],
             ["\\C-AUT\\ NOx emissions from manure management", ["3.J.1"], 2],
             ["\\C-ESP\\ NOx 3B", ["3.J.1"], 2],
@@ -3698,17 +3722,19 @@ CRT1 = {
                 ["3.A.4"],
                 0,
             ],
-            ["\\C-AUS-CHL-SLB-ECU-ISR-PER\\ Drop down list:", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-SLB-ECU-ISR-PER-TUV\\ Drop down list:", ["\\IGNORE"], 1],
             ["3.A.4.a. Buffalo", ["3.A.4.a"], 1],
             ["3.A.4.b. Camels", ["3.A.4.b"], 1],
             ["3.A.4.c. Deer", ["3.A.4.c"], 1],
             ["3.A.4.d. Goats", ["3.A.4.d"], 1],
             ["3.A.4.e. Horses", ["3.A.4.e"], 1],
             ["3.A.4.f. Mules and asses", ["3.A.4.f"], 1],
-            ["3.A.4.g. Poultry", ["3.A.4.g"], 1],
+            ["\\C!-TUV\\ 3.A.4.g. Poultry", ["3.A.4.g"], 1],
+            ["\\C-TUV\\ 3.A.4.g. Poultry (Chicken)", ["3.A.4.g.TUV-i"], 1],
+            ["\\C-TUV\\ (Duck)", ["3.A.4.g.TUV-ii"], 1],
             ["\\C!-CHL-ISR-PER\\ 3.A.4.h. Other", ["3.A.4.h"], 1],
             ["\\C-CHL-ISR-PER\\ 3.A.4.h. Other (please specify)", ["3.A.4.h"], 1],
-            ["\\C-AUS-SLB\\ Drop-down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-SLB-TUV\\ Drop-down list:", ["\\IGNORE"], 2],
             ["3.A.4.h.i. Rabbit", ["3.A.4.h.i"], 2],
             ["3.A.4.h.ii. Reindeer", ["3.A.4.h.ii"], 2],
             ["3.A.4.h.iii. Ostrich", ["3.A.4.h.iii"], 2],
@@ -4042,7 +4068,7 @@ CRT1 = {
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
             # ["\\C-CHL\\ 3.B.4. Other livestock (please specify) (4)", ["3.B.4"], 0],
             ["3.B.4. Other livestock (4)", ["3.B.4"], 0],
-            ["\\C-AUS-CHL-SLB-ECU-ISR-PER\\ Drop-down list:", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-SLB-ECU-ISR-PER-TUV\\ Drop-down list:", ["\\IGNORE"], 1],
             ["\\C-SGP\\ NA", ["\\IGNORE"], 1],
             ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
             ["3.B.4.b. Camels", ["3.B.4.b"], 1],
@@ -4050,10 +4076,12 @@ CRT1 = {
             ["3.B.4.d. Goats", ["3.B.4.d"], 1],
             ["3.B.4.e. Horses", ["3.B.4.e"], 1],
             ["3.B.4.f. Mules and Asses", ["3.B.4.f"], 1],
-            ["3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C!-TUV\\ 3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C-TUV\\ 3.B.4.g. Poultry (Chicken)", ["3.B.4.g.TUV-i"], 1],
+            ["\\C-TUV\\ (Duck)", ["3.B.4.g.TUV-ii"], 1],
             ["\\C!-CHL-ISR-PER\\ 3.B.4.h. Other", ["3.B.4.h"], 1],
             ["\\C-CHL-ISR-PER\\ 3.B.4.h. Other (please specify)", ["3.B.4.h"], 1],
-            ["\\C-AUS-SLB-ECU\\ Drop-down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-SLB-ECU-TUV\\ Drop-down list:", ["\\IGNORE"], 2],
             ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 2],
             ["3.B.4.h.ii. Reindeer", ["3.B.4.h.ii"], 2],
             ["3.B.4.h.iii. Ostrich", ["3.B.4.h.iii"], 2],
@@ -4184,7 +4212,7 @@ CRT1 = {
             ["\\C!-AUS\\ 3.B.1.b. Non-dairy cattle", ["3.B.1.A.b"], 2],
             ["Option B (country-specific): (5)", ["\\IGNORE"], 1],
             ["3.B.1.a. Other", ["3.B.1.B"], 2],
-            ["\\C-AUS-ECU-SLB-ISR\\ Drop-down list", ["\\IGNORE"], 3],
+            ["\\C-AUS-ECU-SLB-ISR-VUT\\ Drop-down list", ["\\IGNORE"], 3],
             ["3.B.1.a.i. Mature dairy cattle", ["3.B.1.B.a"], 3],
             ["3.B.1.a.ii. Other mature cattle", ["3.B.1.B.b"], 3],
             ["3.B.1.a.iii. Growing cattle", ["3.B.1.B.c"], 3],
@@ -4424,13 +4452,13 @@ CRT1 = {
             ["\\C-THA\\ Swine - fattening", ["3.B.3.a.THA-iii"], 2],
             ["\\C-GAB\\ Truie", ["3.B.3.a.GAB-i"], 2],
             ["\\C-GAB\\ Porcs de marche", ["3.B.3.a.GAB-ii"], 2],
-            ["\\C-ECU\\ nan", ["\\IGNORE"], 2],
+            ["\\C-ECU-TUV\\ nan", ["\\IGNORE"], 2],
             # other livestock
             # ["\\C!-AUS-CHL\\ 3.B.4. Other livestock(4)", ["3.B.4"], 0],
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
             # ["\\C-CHL\\ 3.B.4. Other livestock (please specify) (4)", ["3.B.4"], 0],
             ["3.B.4. Other livestock (6)", ["3.B.4"], 0],
-            ["\\C-AUS-CHL-ECU-PER\\ Drop-down list", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-ECU-PER-TUV\\ Drop-down list", ["\\IGNORE"], 1],
             ["\\C-SLB-ISR\\ Drop-down list:", ["\\IGNORE"], 1],
             ["\\C-SGP\\ NA", ["\\IGNORE"], 1],
             ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
@@ -4439,10 +4467,12 @@ CRT1 = {
             ["3.B.4.d. Goats", ["3.B.4.d"], 1],
             ["3.B.4.e. Horses", ["3.B.4.e"], 1],
             ["3.B.4.f. Mules and asses", ["3.B.4.f"], 1],
-            ["3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C!-TUV\\ 3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C-TUV\\ 3.B.4.g. Poultry (Chicken)", ["3.B.4.g.TUV-i"], 1],
+            ["\\C-TUV\\ (Duck)", ["3.B.4.g.TUV-ii"], 1],
             ["\\C!-CHL-ISR-PER\\ 3.B.4.h. Other", ["3.B.4.h"], 1],
             ["\\C-CHL-ISR-PER\\ 3.B.4.h. Other (please specify)", ["3.B.4.h"], 1],
-            ["\\C-AUS-ECU\\ Drop-down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-ECU-TUV\\ Drop-down list:", ["\\IGNORE"], 2],
             ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 2],
             ["3.B.4.h.ii. Reindeer", ["3.B.4.h.ii"], 2],
             ["3.B.4.h.iii. Ostrich", ["3.B.4.h.iii"], 2],
@@ -4876,7 +4906,7 @@ CRT1 = {
             ["\\C-FIN-LTU\\ Other", ["5.E.5"], 2],
             ["\\C-ROU\\ Other please specify", ["5.E.5"], 2],
             ["\\C-COL-HND\\ 5.E. Other", ["5.E.5"], 2],
-            ["\\C-SGP-BRA-CHL\\ NA", ["\\IGNORE"], 2],
+            ["\\C-SGP-BRA-CHL-TUV\\ NA", ["\\IGNORE"], 2],
             ["\\C-ECU-PER\\ NO", ["\\IGNORE"], 2],
             ["\\C-SLB\\ nan", ["\\IGNORE"], 2],
             ["\\C-CHE\\ Car shredding", ["5.E.10"], 2],
@@ -4908,7 +4938,7 @@ CRT1 = {
                 1,
             ],
             [
-                "\\C-SLB\\ 5.F.21.a. Annual change in total long-term C storage",
+                "\\C-SLB-TUV\\ 5.F.21.a. Annual change in total long-term C storage",
                 ["M.Memo.ACLT"],
                 1,
             ],
@@ -4925,7 +4955,7 @@ CRT1 = {
                 1,
             ],
             [
-                "\\C-SLB\\ "
+                "\\C-SLB-TUV\\ "
                 "5.F.31.b. Annual change in total long-term C storage in HWP waste (4)",
                 ["M.Memo.ACLTHWP"],
                 1,
