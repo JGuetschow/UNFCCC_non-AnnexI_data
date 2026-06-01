@@ -11,5 +11,7 @@ unfccc\_ghg\_data.unfccc\_reader.United\_States\_of\_America
 
   config_usa_inv2024
   config_usa_inv2025
+  config_usa_inv2026
   read_USA_2024_Inventory_from_xlsx
   read_USA_2025_Inventory_from_csv
+  read_USA_2026_Inventory_from_csv

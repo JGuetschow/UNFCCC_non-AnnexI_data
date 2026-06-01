@@ -15,6 +15,7 @@ unfccc\_ghg\_data.unfccc\_crf\_reader.crf\_specifications
   crf2023_specification
   crf2024_specification
   crt1_ecu_specification
+  crt1_ind_specification
   crt1_per_specification
   crt1_pry_specification
   crt1_specification

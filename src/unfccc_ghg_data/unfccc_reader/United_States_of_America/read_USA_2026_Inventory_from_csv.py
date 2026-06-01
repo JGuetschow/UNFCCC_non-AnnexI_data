@@ -40,8 +40,7 @@ Tables not mentioned here are either not necessary or don't contain emissions da
 * 4-62: Other product use (needed for f-gases)
 
 ## chapter 5: Agriculture
-* 5-1: overview. not enough details to map to IPCC categories, but sufficient for
-  PRIMAP-hist
+* 5-1: overview. not enough details to map to IPCC categories, but OK for PRIMAP-hist
 * 5-3: CH4 enteric fermentation
 * 5-6: Manure management
 * 5-10: Agricultural soils direct and indirect
@@ -60,7 +59,7 @@ Tables not mentioned here are either not necessary or don't contain emissions da
 TODO:
 # sector mapping
 * Where does metallurgical coke production fit. Reported in IPPU, but could also fit
-  into 1.B.1. Was in 2.C.1 in 2024 inventory
+into 1.B.1. Was in 2.C.1 in 2024 inventory
 """
 
 from copy import deepcopy

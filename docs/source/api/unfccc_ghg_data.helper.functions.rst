@@ -67,6 +67,18 @@ fix\_rows
 .. autofunction:: fix_rows
 
 
+auto\_fix\_rows
+===============
+
+.. autofunction:: auto_fix_rows
+
+
+merge\_rows
+===========
+
+.. autofunction:: merge_rows
+
+
 make\_wide\_table
 =================
 
