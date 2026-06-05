@@ -67,7 +67,7 @@ dataset_path_UNFCCC = dataset_path / "UNFCCC"
 nAI_countries = list(pd.read_csv(code_path / "helper" / "DI_NAI_parties.conf")["code"])
 # AI_countries = list(reader.annex_one_reader.parties["code"])
 AI_countries = list(pd.read_csv(code_path / "helper" / "DI_AI_parties.conf")["code"])
-additional_territories = ["HKG", "MAC", "VAT"]
+additional_territories = ["HKG", "MAC", "VAT", "TWN"]
 # TODO: check if CRTAI countries are the same as CRF countries. It seems that Kazakhstan
 #  has been eremoved
 
@@ -303,7 +303,6 @@ for gwp in gwps_for_basket_aggregation:
                 "C10F18",
                 "cC3F6",
                 "cC4F8",
-                "cC4F8",
                 f"UnspMixOfPFCs ({gwp})",
             ],
             f"FGASES ({gwp})": [
@@ -331,9 +330,14 @@ str_value_mapping = {
     "NO;NE": 0,
     "NA;NO": 0,
     "NO; NE": 0,
-    'NO"': np.nan,
+    'NO"': 0,
     "CH4": np.nan,
     "N/A": np.nan,
+    "IE NO": 0,
+    "NO IE": 0,
+    "IE NO NE": np.nan,
+    "NE NO IE": np.nan,
+    "NENO": 0,
 }
 
 nan_values_crf_crt = [

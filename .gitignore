@@ -163,3 +163,6 @@ dmypy.json
 # Mac stuff
 *.DS_Store
 /stubs/xarray/
+
+# lock files
+.~lock*

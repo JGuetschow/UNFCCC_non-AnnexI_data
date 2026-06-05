@@ -178,7 +178,8 @@ CRT1 = {
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 3],  # (empty)
             # 1.A.1.a.i Electricity Generation
             ["1.A.1.a.i. Electricity generation", ["1.A.1.a.i", "Total"], 3],
-            ["Liquid fuels", ["1.A.1.a.i", "Liquid"], 4],
+            ["\\C!-TUV\\ Liquid fuels", ["1.A.1.a.i", "Liquid"], 4],
+            ["\\C-TUV\\ Liquid fuels (Diesel)", ["1.A.1.a.i", "Liquid"], 4],
             ["Solid fuels", ["1.A.1.a.i", "Solid"], 4],
             ["Gaseous fuels (6)", ["1.A.1.a.i", "Gaseous"], 4],
             ["Other fossil fuels (7)", ["1.A.1.a.i", "OtherFF"], 4],
@@ -427,12 +428,12 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-"
                 "MAR-NAM-NGA-PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-"
-                "BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other liquid fuels [IPCC Software 1.A.3.e.ii]",
                 ["1.A.2.g.vii", "OLOther"],
                 4,
             ],
-            ["\\C-ISL\\ Other", ["1.A.2.g.vii", "OLOther"], 4],
+            ["\\C-ISL-HND\\ Other", ["1.A.2.g.vii", "OLOther"], 4],
             ["\\C-SGP\\ Residual fuel oil", ["1.A.2.g.vii", "ResFuelOil"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
@@ -453,17 +454,21 @@ CRT1 = {
             ["Biomass (3)", ["1.A.2.g.vii", "Biomass"], 3],
             # 1.A.2.g.viii Other (please specify)
             ["1.A.2.g.viii. Other (please specify)", ["1.A.2.g.viii", "Total"], 2],
-            ["\\C-PER-ISR\\ Liquid fuels", ["1.A.2.g.viii", "Liquid"], 3],
-            ["\\C-PER-ISR\\ Solid fuels", ["1.A.2.g.viii", "Solid"], 3],
-            ["\\C-PER-ISR\\ Gaseous fuels (6)", ["1.A.2.g.viii", "Gaseous"], 3],
-            ["\\C-PER-ISR\\ Other fossil fuels (7)", ["1.A.2.g.viii", "OtherFF"], 3],
-            ["\\C-PER-ISR\\ Peat (8)", ["1.A.2.g.viii", "Peat"], 3],
-            ["\\C-PER-ISR\\ Biomass (3)", ["1.A.2.g.viii", "Biomass"], 3],
+            ["\\C-PER-ISR-TUV\\ Liquid fuels", ["1.A.2.g.viii", "Liquid"], 3],
+            ["\\C-PER-ISR-TUV\\ Solid fuels", ["1.A.2.g.viii", "Solid"], 3],
+            ["\\C-PER-ISR-TUV\\ Gaseous fuels (6)", ["1.A.2.g.viii", "Gaseous"], 3],
+            [
+                "\\C-PER-ISR-TUV\\ Other fossil fuels (7)",
+                ["1.A.2.g.viii", "OtherFF"],
+                3,
+            ],
+            ["\\C-PER-ISR-TUV\\ Peat (8)", ["1.A.2.g.viii", "Peat"], 3],
+            ["\\C-PER-ISR-TUV\\ Biomass (3)", ["1.A.2.g.viii", "Biomass"], 3],
             # other / non-specified (1.A.2.g.viii.1)
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
                 "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
-                "MNG-GAB\\ Non-specified Industry [IPCC Software 1.A.2.m]",
+                "MNG-GAB-ZMB\\ Non-specified Industry [IPCC Software 1.A.2.m]",
                 ["1.A.2.g.viii.1", "Total"],
                 3,
             ],
@@ -493,7 +498,7 @@ CRT1 = {
             ["\\C-OMN\\ Non specified industry", ["1.A.2.g.viii.1", "Total"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-LAO-SVN-"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-LAO-SVN-"
                 "MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD-THA-CRI-OMN\\ "
                 "Liquid fuels",
                 ["1.A.2.g.viii.1", "Liquid"],
@@ -501,7 +506,7 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-LAO-SVN-"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-LAO-SVN-"
                 "MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD-THA-CRI-OMN\\ "
                 "Solid fuels",
                 ["1.A.2.g.viii.1", "Solid"],
@@ -509,7 +514,7 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-LAO-SVN-"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-LAO-SVN-"
                 "MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD-THA-CRI-OMN\\ "
                 "Gaseous fuels (6)",
                 ["1.A.2.g.viii.1", "Gaseous"],
@@ -517,7 +522,7 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-LAO-SVN-"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-LAO-SVN-"
                 "MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD-THA-CRI-OMN\\ "
                 "Other fossil fuels (7)",
                 ["1.A.2.g.viii.1", "OtherFF"],
@@ -525,7 +530,7 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-LAO-SVN-"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-LAO-SVN-"
                 "MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD-THA-CRI-OMN\\ "
                 "Peat (8)",
                 ["1.A.2.g.viii.1", "Peat"],
@@ -533,7 +538,7 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-LAO-SVN-"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-LAO-SVN-"
                 "MCO-SVK-GEO-LTU-SRB-ARG-ISL-UKR-NLD-THA-CRI-OMN\\ "
                 "Biomass (3)",
                 ["1.A.2.g.viii.1", "Biomass"],
@@ -602,6 +607,7 @@ CRT1 = {
             ["\\C-GHA\\ Non-specified sectors", ["1.A.2.g.viii.4", "Total"], 3],
             ["\\C-CYP-HKG\\ Non-specified Industry", ["1.A.2.g.viii.4", "Total"], 3],
             ["\\C-CHN\\ other", ["1.A.2.g.viii.4", "Total"], 3],
+            ["\\C-HND\\ 1.A.2.g.viii.Other", ["1.A.2.g.viii.4", "Total"], 3],
             ["\\C-RUS\\ Other industries", ["1.A.2.g.viii.4", "Total"], 3],
             [
                 "\\C-GBR\\ Other industries (not specified above)",
@@ -611,32 +617,32 @@ CRT1 = {
             ["\\C-DZA-COL-LVA-ALB-KOR-ROU\\ Other", ["1.A.2.g.viii.4", "Total"], 3],
             ["\\C-ZAF\\ Combined remaining industries", ["1.A.2.g.viii.4", "Total"], 3],
             [
-                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Liquid fuels",
+                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-HND-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Liquid fuels",
                 ["1.A.2.g.viii.4", "Liquid"],
                 4,
             ],
             [
-                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Solid fuels",
+                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-HND-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Solid fuels",
                 ["1.A.2.g.viii.4", "Solid"],
                 4,
             ],
             [
-                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Gaseous fuels (6)",
+                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-HND-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Gaseous fuels (6)",
                 ["1.A.2.g.viii.4", "Gaseous"],
                 4,
             ],
             [
-                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Other fossil fuels (7)",
+                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-HND-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Other fossil fuels (7)",
                 ["1.A.2.g.viii.4", "OtherFF"],
                 4,
             ],
             [
-                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Peat (8)",
+                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-HND-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Peat (8)",
                 ["1.A.2.g.viii.4", "Peat"],
                 4,
             ],
             [
-                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Biomass (3)",
+                "\\C-BEL-CZE-BRA-GHA-CYP-HKG-CHN-HND-RUS-GBR-DZA-COL-LVA-ALB-KOR-ROU-ZAF\\ Biomass (3)",
                 ["1.A.2.g.viii.4", "Biomass"],
                 4,
             ],
@@ -754,7 +760,7 @@ CRT1 = {
             # [IPCC Software 1.A.3.e.ii] (1.A.2.g.viii.12)
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB\\ "
+                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Off-road - Manufacturing industries and construction- "
                 "solid fuels [IPCC Software 1.A.3.e.ii]",
                 ["1.A.2.g.viii.12", "Total"],
@@ -762,37 +768,37 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB\\ Liquid fuels",
+                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB\\ Liquid fuels",
                 ["1.A.2.g.viii.12", "Liquid"],
                 4,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB\\ Solid fuels",
+                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB\\ Solid fuels",
                 ["1.A.2.g.viii.12", "Solid"],
                 4,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB\\ Gaseous fuels (6)",
+                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB\\ Gaseous fuels (6)",
                 ["1.A.2.g.viii.12", "Gaseous"],
                 4,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB\\ Other fossil fuels (7)",
+                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB\\ Other fossil fuels (7)",
                 ["1.A.2.g.viii.12", "OtherFF"],
                 4,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB\\ Peat (8)",
+                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB\\ Peat (8)",
                 ["1.A.2.g.viii.12", "Peat"],
                 4,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB\\ Biomass (3)",
+                "PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB\\ Biomass (3)",
                 ["1.A.2.g.viii.12", "Biomass"],
                 4,
             ],
@@ -903,7 +909,8 @@ CRT1 = {
             ["\\C-SLB-ISR\\ nan", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM"
+                "-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other liquid fuels "
                 "[IPCC Software 1.A.3.b.i, 1.A.3.b.i.1, 1.A.3.b.i.2]",
                 ["1.A.3.b.i", "OLOther"],
@@ -921,7 +928,7 @@ CRT1 = {
             ["\\C-UKR\\ Keroseve", ["1.A.3.b.i", "Kerosene"], 4],
             ["\\C-ZAF\\ Other Kerosene", ["1.A.3.b.i", "Kerosene"], 4],
             ["\\C-ZAF\\ Residual Fuel", ["1.A.3.b.i", "ResidualFuel"], 4],
-            ["\\C-UKR-KOR\\ Other", ["1.A.3.b.i", "OLOther"], 4],
+            ["\\C-UKR-KOR-HND\\ Other", ["1.A.3.b.i", "OLOther"], 4],
             ["\\C-CYP-ROU\\ Other liquid fuels", ["1.A.3.b.i", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
@@ -937,7 +944,8 @@ CRT1 = {
             ["Other fossil fuels (please specify)(7)", ["1.A.3.b.i", "OtherFF"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ"
+                "-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fossil fuels "
                 "[IPCC Software 1.A.3.b.i, 1.A.3.b.i.1, 1.A.3.b.i.2]",
                 ["1.A.3.b.i", "OFFOther"],
@@ -974,7 +982,7 @@ CRT1 = {
             ],
             ["\\C-POL-ROU\\ Other fossil fuels", ["1.A.3.b.i", "OFFOther"], 4],
             ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.b.i", "OFFOther"], 4],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.b.i", "OFFOther"], 4],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.b.i", "OFFOther"], 4],
             ["\\C-GRC\\ Other fossil fuel", ["1.A.3.b.i", "OFFOther"], 4],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
@@ -993,7 +1001,8 @@ CRT1 = {
             ["\\C-SLB-ISR\\ nan", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other liquid fuels "
                 "[IPCC Software 1.A.3.b.ii, 1.A.3.b.ii.1, 1.A.3.b.ii.2]",
                 ["1.A.3.b.ii", "OLOther"],
@@ -1003,7 +1012,7 @@ CRT1 = {
             ["\\C-LVA-LAO\\ Lubricant", ["1.A.3.b.ii", "Lubricants"], 4],
             ["\\C-UKR\\ Lubricants", ["1.A.3.b.ii", "Lubricants"], 4],
             ["\\C-UKR\\ Kerosene", ["1.A.3.b.ii", "Kerosene"], 4],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.b.ii", "OLOther"], 4],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.b.ii", "OLOther"], 4],
             ["\\C-CYP-ROU\\ Other liquid fuels", ["1.A.3.b.ii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
@@ -1018,7 +1027,8 @@ CRT1 = {
             ["Other fossil fuels (please specify)(7)", ["1.A.3.b.ii", "OtherFF"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fossil fuels "
                 "[IPCC Software 1.A.3.b.ii, 1.A.3.b.ii.1, 1.A.3.b.ii.2]",
                 ["1.A.3.b.ii", "OFFOther"],
@@ -1059,7 +1069,7 @@ CRT1 = {
             ],
             ["\\C-POL-ROU\\ Other fossil fuels", ["1.A.3.b.ii", "OFFOther"], 4],
             ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.b.ii", "OFFOther"], 4],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.b.ii", "OFFOther"], 4],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.b.ii", "OFFOther"], 4],
             ["\\C-GRC\\ other fossil fuel", ["1.A.3.b.ii", "OFFOther"], 4],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
@@ -1076,7 +1086,8 @@ CRT1 = {
             ["\\C-SLB-ISR\\ nan", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other liquid fuels "
                 "[IPCC Software 1.A.3.b.iii]",
                 ["1.A.3.b.iii", "OLOther"],
@@ -1087,7 +1098,7 @@ CRT1 = {
             ["\\C-LVA-LAO\\ Lubricant", ["1.A.3.b.iii", "Lubricants"], 4],
             ["\\C-UKR\\ Lubricants", ["1.A.3.b.iii", "Lubricants"], 4],
             ["\\C-UKR\\ Keresone", ["1.A.3.b.iii", "Kerosene"], 4],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.b.iii", "OLOther"], 4],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.b.iii", "OLOther"], 4],
             ["\\C-CYP-ROU\\ Other liquid fuels", ["1.A.3.b.iii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
@@ -1103,7 +1114,8 @@ CRT1 = {
             ["Other fossil fuels (please specify)(7)", ["1.A.3.b.iii", "OtherFF"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fossil fuels [IPCC Software 1.A.3.b.iii]",
                 ["1.A.3.b.iii", "OFFOther"],
                 4,
@@ -1143,7 +1155,7 @@ CRT1 = {
             ],
             ["\\C-POL-ROU\\ Other fossil fuels", ["1.A.3.b.iii", "OFFOther"], 4],
             ["\\C-CYP\\ Other Fossil Fuels", ["1.A.3.b.iii", "OFFOther"], 4],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.b.iii", "OFFOther"], 4],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.b.iii", "OFFOther"], 4],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
                 ["1.A.3.b.iii", "OFFBiofuelFC"],
@@ -1159,7 +1171,8 @@ CRT1 = {
             ["\\C-SLB-ISR\\ nan", ["\\IGNORE", "\\IGNORE"], 4],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other liquid fuels [IPCC Software 1.A.3.b.iv]",
                 ["1.A.3.b.iv", "OLOther"],
                 4,
@@ -1182,7 +1195,7 @@ CRT1 = {
             ["\\C-CRI\\ lubricants", ["1.A.3.b.iv", "Lubricants"], 4],
             ["\\C-UKR\\ Kerosene", ["1.A.3.b.iv", "Kerosene"], 4],
             ["\\C-RUS\\ Other motor fuels", ["1.A.3.b.iv", "OMotorFuel"], 4],
-            ["\\C-COL\\ Other", ["1.A.3.b.iv", "OLOther"], 4],
+            ["\\C-COL-HND\\ Other", ["1.A.3.b.iv", "OLOther"], 4],
             ["\\C-CYP-ROU\\ Other liquid fuels", ["1.A.3.b.iv", "OLOther"], 4],
             ["\\C-UKR\\ Other/", ["1.A.3.b.iv", "OLOther"], 4],
             ["\\C-ZAF\\ Biofuels", ["1.A.3.b.iv", "OLBiofuelFC"], 4],
@@ -1192,7 +1205,8 @@ CRT1 = {
             ["Other fossil fuels (please specify)(7)", ["1.A.3.b.iv", "OtherFF"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other fossil fuels [IPCC Software 1.A.3.b.iv]",
                 ["1.A.3.b.iv", "OFFOther"],
                 4,
@@ -1211,7 +1225,7 @@ CRT1 = {
             ],
             ["\\C-BEL\\ Fossil part of biodiesel", ["1.A.3.b.iv", "OFFBiodieselFC"], 4],
             ["\\C-HRV\\ Fosil part of biodiesel", ["1.A.3.b.iv", "OFFBiodieselFC"], 4],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.b.iv", "OFFOther"], 4],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.b.iv", "OFFOther"], 4],
             ["\\C-CYP-ROU\\ Other fossil fuels", ["1.A.3.b.iv", "OFFOther"], 4],
             ["\\C-GRC\\ other fossil fuel", ["1.A.3.b.iv", "OFFOther"], 4],
             [
@@ -1222,18 +1236,18 @@ CRT1 = {
             # v. Other
             ["1.A.3.b.v. Other (please specify)", ["1.A.3.b.v", "Total"], 2],
             # nothing specified
-            ["\\C-PER\\ Gasoline", ["1.A.3.b.v", "Gasoline"], 3],
-            ["\\C-PER\\ Diesel oil", ["1.A.3.b.v", "DieselOil"], 3],
-            ["\\C-PER\\ Liquefied petroleum gases (LPG)", ["1.A.3.b.v", "LPG"], 3],
+            ["\\C-PER-TUV\\ Gasoline", ["1.A.3.b.v", "Gasoline"], 3],
+            ["\\C-PER-TUV\\ Diesel oil", ["1.A.3.b.v", "DieselOil"], 3],
+            ["\\C-PER-TUV\\ Liquefied petroleum gases (LPG)", ["1.A.3.b.v", "LPG"], 3],
             [
-                "\\C-PER\\ Other liquid fuels (please specify)",
+                "\\C-PER-TUV\\ Other liquid fuels (please specify)",
                 ["1.A.3.b.v", "OtherLiquid"],
                 3,
             ],
-            ["\\C-PER\\ Gaseous fuels (6)", ["1.A.3.b.v", "Gaseous"], 3],
-            ["\\C-PER\\ Biomass (3)", ["1.A.3.b.v", "Biomass"], 3],
+            ["\\C-PER-TUV\\ Gaseous fuels (6)", ["1.A.3.b.v", "Gaseous"], 3],
+            ["\\C-PER-TUV\\ Biomass (3)", ["1.A.3.b.v", "Biomass"], 3],
             [
-                "\\C-PER\\ Other fossil fuels (please specify)(7)",
+                "\\C-PER-TUV\\ Other fossil fuels (please specify)(7)",
                 ["1.A.3.b.v", "OtherFF"],
                 3,
             ],
@@ -1241,7 +1255,7 @@ CRT1 = {
             ["\\C-AUS-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Not occurring [IPCC Software]",
                 ["\\IGNORE", "\\IGNORE"],
                 3,
@@ -1253,21 +1267,24 @@ CRT1 = {
             ],
             [
                 "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-SLB"
+                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-"
+                "BDI-MNG-GAB-SLB-ZMB"
                 "\\ Gasoline",
                 ["\\IGNORE", "Gasoline"],
                 4,
             ],
             [
                 "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-SLB"
+                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-"
+                "BDI-MNG-GAB-SLB-ZMB"
                 "\\ Diesel oil",
                 ["\\IGNORE", "DieselOil"],
                 4,
             ],
             [
                 "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-SLB"
+                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-"
+                "BDI-MNG-GAB-SLB-ZMB"
                 "\\ Liquefied petroleum gases (LPG)",
                 ["\\IGNORE", "LPG"],
                 4,
@@ -1275,14 +1292,15 @@ CRT1 = {
             [
                 "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-SLB-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-"
-                "ARE-BDI-MNG-GAB\\ Other liquid fuels (please specify)",
+                "ARE-BDI-MNG-GAB-ZMB\\ Other liquid fuels (please specify)",
                 ["\\IGNORE", "OtherLiquid"],
                 4,
             ],
             ["\\C-AUS-CHL-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-"
+                "GAB-ZMB"
                 "\\ Not occurring [IPCC Software]",
                 ["\\IGNORE", "\\IGNORE"],
                 5,
@@ -1290,14 +1308,16 @@ CRT1 = {
             ["\\C-GUY-MDV-SLB\\ nan", ["\\IGNORE", "\\IGNORE"], 5],
             [
                 "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-SLB"
+                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-"
+                "BDI-MNG-GAB-ZMB-SLB"
                 "\\ Gaseous fuels (6)",
                 ["\\IGNORE", "Gaseous"],
                 4,
             ],
             [
                 "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-SLB"
+                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-"
+                "BDI-MNG-GAB-ZMB-SLB"
                 "\\ Biomass (3)",
                 ["\\IGNORE", "Biomass"],
                 4,
@@ -1305,14 +1325,15 @@ CRT1 = {
             [
                 "\\C-AUS-CHL-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-SLB-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-"
-                "ARE-BDI-MNG-GAB\\ Other fossil fuels (please specify)(7)",
+                "ARE-BDI-MNG-GAB-ZMB\\ Other fossil fuels (please specify)(7)",
                 ["\\IGNORE", "OtherFF"],
                 4,
             ],
             ["\\C-AUS-ECU\\ Lubricants", ["\\IGNORE", "OFFLubricants"], 5],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-"
+                "GAB-ZMB"
                 "\\ Not occurring [IPCC Software]",
                 ["\\IGNORE", "\\IGNORE"],
                 5,
@@ -1482,6 +1503,7 @@ CRT1 = {
                 4,
             ],
             # other / unspecified transportation
+            ["\\C-HND\\ 1.A.3.b.v. Other", ["1.A.3.b.v.13", "total"], 3],
             ["\\C-SGP\\ Others", ["1.A.3.b.v.13", "total"], 3],
             ["\\C-COL-ECU-UKR-ROU\\ Other", ["1.A.3.b.v.13", "total"], 3],
             ["\\C-ARG\\ Unspecified transportation", ["1.A.3.b.v.13", "total"], 3],
@@ -1491,28 +1513,28 @@ CRT1 = {
                 3,
             ],
             [
-                "\\C-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Gasoline",
+                "\\C-HND-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Gasoline",
                 ["1.A.3.b.v.13", "Gasoline"],
                 4,
             ],
             [
-                "\\C-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Diesel oil",
+                "\\C-HND-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Diesel oil",
                 ["1.A.3.b.v.13", "DieselOil"],
                 4,
             ],
             [
-                "\\C-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Liquefied petroleum gases (LPG)",
+                "\\C-HND-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Liquefied petroleum gases (LPG)",
                 ["1.A.3.b.v.13", "LPG"],
                 4,
             ],
             [
-                "\\C-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Other liquid fuels (please specify)",
+                "\\C-HND-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Other liquid fuels (please specify)",
                 ["1.A.3.b.v.13", "OtherLiquid"],
                 4,
             ],
             ["\\C-ARG\\ nan", ["\\IGNORE", "\\IGNORE"], 5],
             ["\\C-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
-            ["\\C-COL-ECU-UKR\\ Other", ["1.A.3.b.v.13", "OLOther"], 5],
+            ["\\C-HND-COL-ECU-UKR\\ Other", ["1.A.3.b.v.13", "OLOther"], 5],
             [
                 "\\C-ROU\\ Heating and Other Gasoil",
                 ["1.A.3.b.v.13", "HeatingGasoil"],
@@ -1520,23 +1542,23 @@ CRT1 = {
             ],
             ["\\C-ROU\\ Other Kerosene", ["1.A.3.b.v.13", "Kerosene"], 5],
             [
-                "\\C-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Gaseous fuels (6)",
+                "\\C-HND-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Gaseous fuels (6)",
                 ["1.A.3.b.v.13", "Gaseous"],
                 4,
             ],
             [
-                "\\C-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Biomass (3)",
+                "\\C-HND-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Biomass (3)",
                 ["1.A.3.b.v.13", "Biomass"],
                 4,
             ],
             [
-                "\\C-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Other fossil fuels (please specify)(7)",
+                "\\C-HND-SGP-COL-ECU-UKR-ROU-ARG-MAC\\ Other fossil fuels (please specify)(7)",
                 ["1.A.3.b.v.13", "OtherFF"],
                 4,
             ],
             ["\\C-ARG\\ nan", ["\\IGNORE", "\\IGNORE"], 5],
             ["\\C-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
-            ["\\C-COL-ECU-UKR\\ Other", ["1.A.3.b.v.13", "OFFOther"], 5],
+            ["\\C-HND-COL-ECU-UKR\\ Other", ["1.A.3.b.v.13", "OFFOther"], 5],
             ["\\C-ROU\\ Other fossil fuels", ["1.A.3.b.v.13", "OFFOther"], 5],
             # c. Railways
             # present twice for Cyprus, we have to ignore it completely (NO anyway)
@@ -1550,7 +1572,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
-                "ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fossil fuels [IPCC Software 1.A.3.c]",
                 ["1.A.3.c", "OFFOther"],
                 3,
@@ -1569,7 +1591,7 @@ CRT1 = {
                 ["1.A.3.c", "OFFBiodieselFC"],
                 3,
             ],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.c", "OFFOther"], 3],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.c", "OFFOther"], 3],
             ["\\C-ROU\\ Other fossil fuels", ["1.A.3.c", "OFFOther"], 3],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
@@ -1587,7 +1609,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
-                "ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other liquid fuels [IPCC Software 1.A.3.d.ii]",
                 ["1.A.3.d", "OLOther"],
                 3,
@@ -1600,7 +1622,7 @@ CRT1 = {
             ["\\C-CHL\\ Liquefied petroleum gases (LPG)", ["1.A.3.d", "LPG"], 3],
             ["\\C-KOR-ROU\\ LPG", ["1.A.3.d", "LPG"], 3],
             ["\\C-COL\\ Crude Oil", ["1.A.3.d", "CrudeOil"], 3],
-            ["\\C-COL-KOR\\ Other", ["1.A.3.d", "OLOther"], 3],
+            ["\\C-COL-KOR-HND\\ Other", ["1.A.3.d", "OLOther"], 3],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
                 ["1.A.3.d", "OLBiodieselFC"],
@@ -1615,7 +1637,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ"
-                "-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fossil fuels [IPCC Software 1.A.3.d.ii]",
                 ["1.A.3.d", "OFFOther"],
                 3,
@@ -1631,7 +1653,7 @@ CRT1 = {
                 ["1.A.3.d", "OFFBiodieselFC"],
                 3,
             ],
-            ["\\C-COL-UKR\\ Other", ["1.A.3.d", "OFFOther"], 3],
+            ["\\C-COL-UKR-HND\\ Other", ["1.A.3.d", "OFFOther"], 3],
             ["\\C-ROU\\ Other fossil fuels", ["1.A.3.d", "OFFOther"], 3],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
@@ -1665,27 +1687,29 @@ CRT1 = {
             # ii other
             ["1.A.3.e.ii. Other (please specify)", ["1.A.3.e.ii", "Total"], 2],
             # nothing specified
-            ["\\C-PER\\ Gasoline", ["1.A.3.e.ii", "Gasoline"], 3],
+            ["\\C-PER-TUV\\ Gasoline", ["1.A.3.e.ii", "Gasoline"], 3],
             ["\\C-PER\\ Diesel oil", ["1.A.3.e.ii", "DieselOil"], 3],
+            ["\\C-TUV\\ Gas/Diesel oil", ["1.A.3.e.ii", "DieselOil"], 3],
             [
-                "\\C-PER\\ Liquefied petroleum gases (LPG)",
+                "\\C-PER-TUV\\ Liquefied petroleum gases (LPG)",
                 ["1.A.3.e.ii", "LPG"],
                 3,
             ],
             [
-                "\\C-PER\\ Other liquid fuels (please specify)",
+                "\\C-PER-TUV\\ Other liquid fuels (please specify)",
                 ["1.A.3.e.ii", "OtherLiquid"],
                 3,
             ],
-            ["\\C-PER\\ Solid fuels", ["1.A.3.e.ii", "Solid"], 3],
-            ["\\C-PER\\ Gaseous fuels (6)", ["1.A.3.e.ii", "Gaseous"], 3],
-            ["\\C-PER\\ Other fossil fuels (7)", ["1.A.3.e.ii", "OtherFF"], 3],
-            ["\\C-PER\\ Biomass (3)", ["1.A.3.e.ii", "Biomass"], 3],
+            ["\\C-PER-TUV\\ Solid fuels", ["1.A.3.e.ii", "Solid"], 3],
+            ["\\C-PER-TUV\\ Gaseous fuels (6)", ["1.A.3.e.ii", "Gaseous"], 3],
+            ["\\C-PER-TUV\\ Other fossil fuels (7)", ["1.A.3.e.ii", "OtherFF"], 3],
+            ["\\C-PER-TUV\\ Biomass (3)", ["1.A.3.e.ii", "Biomass"], 3],
             # Off-road vehicles
             ["\\C-AUS-ECU\\ Off-road vehicles", ["1.A.3.e.ii.1", "Total"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB\\ "
                 "Other off-road transportation [IPCC Software 1.A.3.e.ii]",
                 ["1.A.3.e.ii.1", "Total"],
                 3,
@@ -1707,7 +1731,7 @@ CRT1 = {
             [
                 "\\C-AUS-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
-                "ARE-BDI-MNG-GAB-GEO-HKG-CAN-CRI-ISL-LTU-SWE\\"
+                "ARE-BDI-MNG-GAB-ZMB-GEO-HKG-CAN-CRI-ISL-LTU-SWE\\"
                 " Gasoline",
                 ["1.A.3.e.ii.1", "Gasoline"],
                 4,
@@ -1715,7 +1739,7 @@ CRT1 = {
             [
                 "\\C-AUS-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
-                "ARE-BDI-MNG-GAB-GEO-HKG-CAN-CRI-ISL-LTU-SWE\\"
+                "ARE-BDI-MNG-GAB-ZMB-GEO-HKG-CAN-CRI-ISL-LTU-SWE\\"
                 " Gas/Diesel oil",
                 ["1.A.3.e.ii.1", "DieselOil"],
                 4,
@@ -1724,15 +1748,15 @@ CRT1 = {
             [
                 "\\C-AUS-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
-                "ARE-BDI-MNG-GAB-GEO-HKG-CAN-CRI-ISL-LTU-SWE\\"
+                "ARE-BDI-MNG-GAB-ZMB-GEO-HKG-CAN-CRI-ISL-LTU-SWE\\"
                 " Liquefied petroleum gases (LPG)",
                 ["1.A.3.e.ii.1", "LPG"],
                 4,
             ],
             [
                 "\\C-AUS-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-GEO-HKG-CAN-"
-                "CRI-ISL-LTU-SWE\\"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-GEO-HKG-CAN-CRI-ISL-LTU-SWE\\"
                 " Other liquid fuels (please specify)",
                 ["1.A.3.e.ii.1", "OtherLiquid"],
                 4,
@@ -1740,7 +1764,8 @@ CRT1 = {
             ["\\C-AUS-ECU\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Other liquid fuels [IPCC Software 1.A.3.e.ii]",
                 ["1.A.3.e.ii.1", "OLOther"],
                 5,
@@ -1761,7 +1786,7 @@ CRT1 = {
             [
                 "\\C-AUS-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
-                "ARE-BDI-MNG-GAB-GEO-HKG-CAN-ISL-LTU-SWE"
+                "ARE-BDI-MNG-GAB-ZMB-GEO-HKG-CAN-ISL-LTU-SWE"
                 "\\ Solid fuels",
                 ["1.A.3.e.ii.1", "Solid"],
                 4,
@@ -1769,14 +1794,15 @@ CRT1 = {
             [
                 "\\C-AUS-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
-                "ARE-BDI-MNG-GAB-GEO-HKG-CAN-CRI-ISL-LTU-SWE"
+                "ARE-BDI-MNG-GAB-ZMB-GEO-HKG-CAN-CRI-ISL-LTU-SWE"
                 "\\ Gaseous fuels (6)",
                 ["1.A.3.e.ii.1", "Gaseous"],
                 4,
             ],
             [
                 "\\C-AUS-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-GEO-HKG-CAN-ISL-LTU-SWE"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-GEO-HKG-CAN-ISL-LTU-SWE"
                 "\\ Other fossil fuels (7)",
                 ["1.A.3.e.ii.1", "OtherFF"],
                 4,
@@ -1784,7 +1810,7 @@ CRT1 = {
             [
                 "\\C-AUS-ECU-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
-                "ARE-BDI-MNG-GAB-GEO-HKG-CAN-CRI-ISL-LTU-SWE"
+                "ARE-BDI-MNG-GAB-ZMB-GEO-HKG-CAN-CRI-ISL-LTU-SWE"
                 "\\ Biomass (3)",
                 ["1.A.3.e.ii.1", "Biomass"],
                 4,
@@ -1855,41 +1881,49 @@ CRT1 = {
             ["\\C-ISR\\ Biomass (3)", ["\\IGNORE", "Biomass"], 3],
             # "Other" and "NA but actually other" (Chile)
             ["\\C-CHL\\ NA", ["1.A.3.e.ii.3", "Total"], 3],
-            ["\\C-COL-UKR-KOR-ROU\\ Other", ["1.A.3.e.ii.3", "Total"], 3],
+            ["\\C-COL-UKR-KOR-ROU-HND\\ Other", ["1.A.3.e.ii.3", "Total"], 3],
             ["\\C-BEL\\ Other non-specified", ["1.A.3.e.ii.3", "Total"], 3],
-            ["\\C-CHL-COL-UKR-KOR-ROU-BEL\\ Gasoline", ["1.A.3.e.ii.3", "Gasoline"], 4],
+            [
+                "\\C-CHL-COL-UKR-KOR-ROU-HND-BEL\\ Gasoline",
+                ["1.A.3.e.ii.3", "Gasoline"],
+                4,
+            ],
             ["\\C-CHL\\ Diesel oil", ["1.A.3.e.ii.3", "DieselOil"], 4],
             [
-                "\\C-BEL-COL-UKR-KOR-ROU\\ Gas/Diesel oil",
+                "\\C-BEL-COL-UKR-KOR-ROU-HND\\ Gas/Diesel oil",
                 ["1.A.3.e.ii.3", "DieselOil"],
                 4,
             ],
             [
-                "\\C-CHL-COL-UKR-KOR-ROU-BEL\\ Liquefied petroleum gases (LPG)",
+                "\\C-CHL-COL-UKR-KOR-ROU-HND-BEL\\ Liquefied petroleum gases (LPG)",
                 ["1.A.3.e.ii.3", "LPG"],
                 4,
             ],
             [
-                "\\C-CHL-COL-UKR-KOR-ROU-BEL\\ Other liquid fuels (please specify)",
+                "\\C-CHL-COL-UKR-KOR-ROU-HND-BEL\\ Other liquid fuels (please specify)",
                 ["1.A.3.e.ii.3", "OtherLiquid"],
                 4,
             ],
             ["\\C-CHL\\ NA", ["\\IGNORE", "\\IGNORE"], 5],
-            ["\\C-COL-KOR-ROU\\ Other", ["1.A.3.e.ii.3", "OLOther"], 5],
+            ["\\C-COL-KOR-ROU-HND\\ Other", ["1.A.3.e.ii.3", "OLOther"], 5],
             ["\\C-KOR\\ Residual fuel oil", ["1.A.3.e.ii.3", "ResidualFuel"], 5],
-            ["\\C-CHL-COL-UKR-KOR-ROU-BEL\\ Solid fuels", ["1.A.3.e.ii.3", "Solid"], 4],
             [
-                "\\C-CHL-COL-UKR-KOR-ROU-BEL\\ Gaseous fuels (6)",
+                "\\C-CHL-COL-UKR-KOR-ROU-HND-BEL\\ Solid fuels",
+                ["1.A.3.e.ii.3", "Solid"],
+                4,
+            ],
+            [
+                "\\C-CHL-COL-UKR-KOR-ROU-HND-BEL\\ Gaseous fuels (6)",
                 ["1.A.3.e.ii.3", "Gaseous"],
                 4,
             ],
             [
-                "\\C-CHL-COL-UKR-KOR-ROU-BEL\\ Other fossil fuels (7)",
+                "\\C-CHL-COL-UKR-KOR-ROU-HND-BEL\\ Other fossil fuels (7)",
                 ["1.A.3.e.ii.3", "OtherFF"],
                 4,
             ],
             [
-                "\\C-CHL-COL-UKR-KOR-ROU-BEL\\ Biomass (3)",
+                "\\C-CHL-COL-UKR-KOR-ROU-HND-BEL\\ Biomass (3)",
                 ["1.A.3.e.ii.3", "Biomass"],
                 4,
             ],
@@ -1984,7 +2018,10 @@ CRT1 = {
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 2],  # (empty)
             # 1.A.4.a.i Stationary combustion
             ["1.A.4.a.i. Stationary combustion", ["1.A.4.a.i", "Total"], 2],
-            ["Liquid fuels", ["1.A.4.a.i", "Liquid"], 3],
+            ["\\C!-TUV\\ Liquid fuels", ["1.A.4.a.i", "Liquid"], 3],
+            ["\\C-TUV\\ Liquid fuels (diesel)", ["1.A.4.a.i", "DieselOil"], 3],
+            ["\\C-TUV\\ Liquid fuels (kerosene)", ["1.A.4.a.i", "JetKerosene"], 3],
+            ["\\C-TUV\\ Liquid fuels (LPG)", ["1.A.4.a.i", "LPG"], 3],
             ["Solid fuels", ["1.A.4.a.i", "Solid"], 3],
             ["Gaseous fuels (6)", ["1.A.4.a.i", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.4.a.i", "OtherFF"], 3],
@@ -2012,7 +2049,9 @@ CRT1 = {
             ["Drop-down list:", ["\\IGNORE", "\\IGNORE"], 2],  # (empty)
             # 1.A.4.b.i Stationary combustion
             ["1.A.4.b.i. Stationary combustion", ["1.A.4.b.i", "Total"], 2],
-            ["Liquid fuels", ["1.A.4.b.i", "Liquid"], 3],
+            ["\\C!-TUV\\ Liquid fuels", ["1.A.4.b.i", "Liquid"], 3],
+            ["\\C-TUV\\ Liquid fuels (kerosene)", ["1.A.4.b.i", "JetKerosene"], 3],
+            ["\\C-TUV\\ Liquid fuels (LPG)", ["1.A.4.b.i", "LPG"], 3],
             ["Solid fuels", ["1.A.4.b.i", "Solid"], 3],
             ["Gaseous fuels (6)", ["1.A.4.b.i", "Gaseous"], 3],
             ["Other fossil fuels (7)", ["1.A.4.b.i", "OtherFF"], 3],
@@ -2061,7 +2100,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-"
-                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other liquid fuels [IPCC Software 1.A.4.c.ii]",
                 ["1.A.4.c.ii", "OLOther"],
                 4,
@@ -2071,7 +2110,7 @@ CRT1 = {
             ["\\C-NOR\\ Marine gasoil", ["1.A.4.c.ii", "MarineGasoil"], 4],
             ["\\C-HRV\\ Lubricants", ["1.A.4.c.ii", "Lubricants"], 4],
             ["\\C-HRV\\ Other Kerosene", ["1.A.4.c.ii", "Kerosene"], 4],
-            ["\\C-COL-UKR-ROU\\ Other", ["1.A.4.c.ii", "OLOther"], 4],
+            ["\\C-COL-UKR-ROU-HND\\ Other", ["1.A.4.c.ii", "OLOther"], 4],
             ["\\C-MEX\\ OTHER", ["1.A.4.c.ii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
@@ -2092,7 +2131,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-"
-                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\"
+                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\"
                 " Other fossil fuels [IPCC Software 1.A.4.c.ii]",
                 ["1.A.4.c.ii", "OFFOther"],
                 4,
@@ -2103,7 +2142,7 @@ CRT1 = {
                 ["1.A.4.c.ii", "OFFBiodieselFC"],
                 4,
             ],
-            ["\\C-COL-UKR-ROU\\ Other", ["1.A.4.c.ii", "OFFOther"], 4],
+            ["\\C-COL-UKR-ROU-HND\\ Other", ["1.A.4.c.ii", "OFFOther"], 4],
             ["\\C-MEX\\ OTHER", ["1.A.4.c.ii", "OFFOther"], 4],
             ["\\C-LIE\\ Alkylate Gasoline", ["1.A.4.c.ii", "OFFAlkylateGasoline"], 4],
             [
@@ -2112,7 +2151,12 @@ CRT1 = {
                 4,
             ],
             # iii. Fishing
-            ["1.A.4.c.iii. Fishing", ["1.A.4.c.iii", "Total"], 2],
+            ["\\C!-TUV\\ 1.A.4.c.iii. Fishing", ["1.A.4.c.iii", "Total"], 2],
+            [
+                "\\C-TUV\\ 1.A.4.c.iii. Fishing (mobile combustion)",
+                ["1.A.4.c.iii", "Total"],
+                2,
+            ],
             ["Residual fuel oil", ["1.A.4.c.iii", "ResFuelOil"], 3],
             ["Gas/diesel oil", ["1.A.4.c.iii", "GasDieselOil"], 3],
             ["Gasoline", ["1.A.4.c.iii", "Gasoline"], 3],
@@ -2123,14 +2167,14 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-"
-                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\"
+                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\"
                 " Other liquid fuels [IPCC Software 1.A.4.c.iii]",
                 ["1.A.4.c.iii", "OLOther"],
                 4,
             ],
             ["\\C-RUS\\ Other motor fuels", ["1.A.4.c.iii", "OMotorFuel"], 4],
             ["\\C-CRI\\ Kerosene", ["1.A.4.c.iii", "Kerosene"], 4],
-            ["\\C-COL-UKR-KOR-ROU\\ Other", ["1.A.4.c.iii", "OLOther"], 4],
+            ["\\C-COL-UKR-KOR-ROU-HND\\ Other", ["1.A.4.c.iii", "OLOther"], 4],
             ["\\C-MEX\\ OTHER", ["1.A.4.c.iii", "OLOther"], 4],
             [
                 "\\C-CAN\\ Biodiesel (5 percent fossil portion)",
@@ -2145,12 +2189,12 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-"
-                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fossil fuels [IPCC Software 1.A.4.c.iii]",
                 ["1.A.4.c.iii", "OFFOther"],
                 4,
             ],
-            ["\\C-COL-UKR-ROU\\ Other", ["1.A.4.c.iii", "OFFOther"], 4],
+            ["\\C-COL-UKR-ROU-HND\\ Other", ["1.A.4.c.iii", "OFFOther"], 4],
             ["\\C-MEX\\ OTHER", ["1.A.4.c.iii", "OFFOther"], 4],
             [
                 "\\C-SWE\\ Fossil part of biodiesel and biogasoline",
@@ -2171,24 +2215,28 @@ CRT1 = {
             ["\\C-AUS-CHL-ECU-SGP\\ NA", ["\\IGNORE", "\\IGNORE"], 2],
             ["\\C-SLB\\ nan", ["\\IGNORE", "\\IGNORE"], 2],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Liquid fuels",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Liquid fuels",
                 ["\\IGNORE", "Liquid"],
                 2,
             ],
-            ["\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Solid fuels", ["\\IGNORE", "Solid"], 2],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Gaseous fuels (6)",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Solid fuels",
+                ["\\IGNORE", "Solid"],
+                2,
+            ],
+            [
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Gaseous fuels (6)",
                 ["\\IGNORE", "Gaseous"],
                 2,
             ],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Other fossil fuels(7)",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Other fossil fuels(7)",
                 ["\\IGNORE", "OtherFF"],
                 2,
             ],
-            ["\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Peat (8)", ["\\IGNORE", "Peat"], 2],
+            ["\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Peat (8)", ["\\IGNORE", "Peat"], 2],
             [
-                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER\\ Biomass (3)",
+                "\\C-AUS-CHL-ECU-SGP-SLB-ISR-PER-TUV\\ Biomass (3)",
                 ["\\IGNORE", "Biomass"],
                 2,
             ],
@@ -2215,16 +2263,19 @@ CRT1 = {
             ["\\C-BRA-GEO-LUX-MDA-KOR\\ Stationary", ["1.A.5.a.ii", "Total"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Stationary [IPCC Software 1.A.5.a]",
                 ["1.A.5.a.ii", "Total"],
                 2,
             ],
             ["\\C-COL\\ 1.A.5.a. Stationary", ["1.A.5.a.ii", "Total"], 2],
+            ["\\C-HND\\ 1.A.5.a.Stationary", ["1.A.5.a.ii", "Total"], 2],
             [
                 "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-OMN-BRA-GEO-LUX-MDA-KOR-GUY-MDV-AZE"
                 "-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-COL"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-COL-HND"
                 "\\ Liquid fuels",
                 ["1.A.5.a.ii", "Liquid"],
                 3,
@@ -2232,7 +2283,8 @@ CRT1 = {
             [
                 "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-OMN-BRA-GEO-LUX-MDA-KOR-GUY-MDV-AZE"
                 "-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-COL"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-COL-HND"
                 "\\ Solid fuels",
                 ["1.A.5.a.ii", "Solid"],
                 3,
@@ -2240,7 +2292,8 @@ CRT1 = {
             [
                 "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-OMN-BRA-GEO-LUX-MDA-KOR-GUY-MDV-AZE"
                 "-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-COL"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-COL-HND"
                 "\\ Gaseous fuels (6)",
                 ["1.A.5.a.ii", "Gaseous"],
                 3,
@@ -2248,7 +2301,8 @@ CRT1 = {
             [
                 "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-OMN-BRA-GEO-LUX-MDA-KOR-GUY-MDV-AZE"
                 "-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-COL"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-COL-HND"
                 "\\ Other fossil fuels(7)",
                 ["1.A.5.a.ii", "OtherFF"],
                 3,
@@ -2256,7 +2310,8 @@ CRT1 = {
             [
                 "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-OMN-BRA-GEO-LUX-MDA-KOR-GUY-MDV-AZE"
                 "-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-COL"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-COL-HND"
                 "\\ Peat (8)",
                 ["1.A.5.a.ii", "Peat"],
                 3,
@@ -2264,7 +2319,8 @@ CRT1 = {
             [
                 "\\C-ESP-FIN-SWE-ROU-ZAF-HKG-RUS-SVK-UKR-CYP-OMN-BRA-GEO-LUX-MDA-KOR-GUY-MDV-AZE"
                 "-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-COL"
+                "URY-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-COL-HND"
                 "\\ Biomass (3)",
                 ["1.A.5.a.ii", "Biomass"],
                 3,
@@ -2298,11 +2354,15 @@ CRT1 = {
             ["1.A.5.b. Mobile (please specify)", ["1.A.5.b", "Total"], 1],
             # nan
             ["\\C-SLB-ISR\\ nan", ["\\IGNORE", "\\IGNORE"], 2],
-            ["\\C-SLB-ISR-PER\\ Liquid fuels", ["\\IGNORE", "Liquid"], 2],
-            ["\\C-SLB-ISR-PER\\ Solid fuels", ["\\IGNORE", "Solid"], 2],
-            ["\\C-SLB-ISR-PER\\ Gaseous fuels (6)", ["\\IGNORE", "Gaseous"], 2],
-            ["\\C-SLB-ISR-PER\\ Other fossil fuels (7)", ["\\IGNORE", "OtherFF"], 2],
-            ["\\C-SLB-ISR-PER\\ Biomass(3)", ["\\IGNORE", "Biomass"], 2],
+            ["\\C-SLB-ISR-PER-TUV\\ Liquid fuels", ["\\IGNORE", "Liquid"], 2],
+            ["\\C-SLB-ISR-PER-TUV\\ Solid fuels", ["\\IGNORE", "Solid"], 2],
+            ["\\C-SLB-ISR-PER-TUV\\ Gaseous fuels (6)", ["\\IGNORE", "Gaseous"], 2],
+            [
+                "\\C-SLB-ISR-PER-TUV\\ Other fossil fuels (7)",
+                ["\\IGNORE", "OtherFF"],
+                2,
+            ],
+            ["\\C-SLB-ISR-PER-TUV\\ Biomass(3)", ["\\IGNORE", "Biomass"], 2],
             # Military
             ["\\C-SGP\\ Military activities", ["1.A.5.b.i", "Total"], 2],
             ["\\C-AUT-NOR-CHE-LTU-USA-HUN\\ Military", ["1.A.5.b.i", "Total"], 2],
@@ -2358,7 +2418,8 @@ CRT1 = {
             # Other
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Other mobile (other) [IPCC Software 1.A.3.b, 1.A.4.c, 1.A.5.b.iii]",
                 ["1.A.5.b.iv", "Total"],
                 2,
@@ -2368,45 +2429,51 @@ CRT1 = {
             ["\\C-ZAF\\ Non specified", ["1.A.5.b.iv", "Total"], 2],
             ["\\C-MLT-OMN\\ Other", ["1.A.5.b.iv", "Total"], 2],
             ["\\C-COL\\ 1.A.5.b. Mobile", ["1.A.5.b.iv", "Total"], 2],
+            ["\\C-HND\\ 1.A.5.b.Mobile", ["1.A.5.b.iv", "Total"], 2],
             ["\\C-CZE\\ iii. Mobile (other)", ["1.A.5.b.iv", "Total"], 2],
             ["\\C-GRC\\ mobile", ["1.A.5.b.iv", "Total"], 2],
             ["\\C-LVA-MDA-KOR\\ Mobile", ["1.A.5.b.iv", "Total"], 2],
             ["\\C-LUX\\ Unspecified mobile", ["1.A.5.b.iv", "Total"], 2],
             [
-                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-COL-"
+                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-"
+                "MUS-MAR-NAM-NGA-PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-"
+                "IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-COL-HND-"
                 "CZE-GRC-LVA-MDA-KOR-LUX"
                 "\\ Liquid fuels",
                 ["1.A.5.b.iv", "Liquid"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-COL-"
+                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-"
+                "MUS-MAR-NAM-NGA-PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-"
+                "IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-COL-HND-"
                 "CZE-GRC-LVA-MDA-KOR-LUX"
                 "\\ Solid fuels",
                 ["1.A.5.b.iv", "Solid"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-COL-"
+                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-"
+                "MUS-MAR-NAM-NGA-PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-"
+                "IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-COL-HND-"
                 "CZE-GRC-LVA-MDA-KOR-LUX"
                 "\\ Gaseous fuels (6)",
                 ["1.A.5.b.iv", "Gaseous"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-COL-"
+                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-"
+                "MUS-MAR-NAM-NGA-PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-"
+                "IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-COL-HND-"
                 "CZE-GRC-LVA-MDA-KOR-LUX"
                 "\\ Other fossil fuels (7)",
                 ["1.A.5.b.iv", "OtherFF"],
                 3,
             ],
             [
-                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-COL-"
+                "\\C-ESP-FIN-ROU-ZAF-GUY-MDV-MLT-OMN-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-"
+                "MUS-MAR-NAM-NGA-PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-"
+                "IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB-ZMB-COL-HND-"
                 "CZE-GRC-LVA-MDA-KOR-LUX"
                 "\\ Biomass(3)",
                 ["1.A.5.b.iv", "Biomass"],
@@ -2415,7 +2482,8 @@ CRT1 = {
             # Aviation
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB"
                 "\\ Other mobile (aviation) [IPCC Software 1.A.3.a.ii, 1.A.5.b.i]",
                 ["1.A.5.b.vi", "Total"],
                 2,
@@ -2425,15 +2493,16 @@ CRT1 = {
             ["\\C-CYP\\ Aviation Component", ["1.A.5.b.vi", "Total"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
-                "-BRA-CHL-CZE-CYP"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB-BRA-CHL-CZE-CYP"
                 "\\ Liquid fuels",
                 ["1.A.5.b.vi", "Liquid"],
                 3,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB"
                 "-BRA-CHL-CZE-CYP"
                 "\\ Solid fuels",
                 ["1.A.5.b.vi", "Solid"],
@@ -2441,7 +2510,8 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB"
                 "-BRA-CHL-CZE-CYP"
                 "\\ Gaseous fuels (6)",
                 ["1.A.5.b.vi", "Gaseous"],
@@ -2449,7 +2519,8 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB"
                 "-BRA-CHL-CZE-CYP"
                 "\\ Other fossil fuels (7)",
                 ["1.A.5.b.vi", "OtherFF"],
@@ -2457,7 +2528,8 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB"
                 "-BRA-CHL-CZE-CYP"
                 "\\ Biomass(3)",
                 ["1.A.5.b.vi", "Biomass"],
@@ -2525,42 +2597,48 @@ CRT1 = {
             # Other mobile (water-borne)
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Other mobile (water-borne) [IPCC Software 1.A.5.b.ii]",
                 ["1.A.5.b.xiv", "Total"],
                 2,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Liquid fuels",
                 ["1.A.5.b.xiv", "Liquid"],
                 3,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Solid fuels",
                 ["1.A.5.b.xiv", "Solid"],
                 3,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Gaseous fuels (6)",
                 ["1.A.5.b.xiv", "Gaseous"],
                 3,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Other fossil fuels (7)",
                 ["1.A.5.b.xiv", "OtherFF"],
                 3,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-MNG-GAB"
+                "URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-ARE-BDI-"
+                "MNG-GAB-ZMB"
                 "\\ Biomass(3)",
                 ["1.A.5.b.xiv", "Biomass"],
                 3,
@@ -2637,12 +2715,13 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
-                "ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other Underground Coal Mines [IPCC Software 1.B.3]",
                 ["1.B.1.a.i.5.a"],
                 3,
             ],
             ["\\C-ROU\\ Other", ["1.B.1.a.i.5.a"], 3],
+            ["\\C-HND\\ 1.B.1.a.i.5. Other", ["1.B.1.a.i.5.a"], 3],
             ["1.B.1.a.ii. Surface mines (4)", ["1.B.1.a.ii"], 1],
             ["1.B.1.a.ii.1. Mining activities", ["1.B.1.a.ii.1"], 2],
             ["1.B.1.a.ii.2. Post-mining activities", ["1.B.1.a.ii.2"], 2],
@@ -2652,7 +2731,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-"
-                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other Surface Coal Mines [IPCC Software 1.B.3]",
                 ["1.B.1.a.ii.3.a"],
                 3,
@@ -2660,14 +2739,15 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
-                "ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Abandoned surface mines [IPCC Software 1.B.3]",
                 ["1.B.1.a.ii.3.b"],
                 3,
             ],
             ["\\C-ROU\\ Other", ["1.B.1.a.ii.3.c"], 3],
+            ["\\C-HND\\ 1.B.1.a.ii.3.Other", ["1.B.1.a.ii.3.c"], 3],
             ["1. B. 1. b. Fuel transformation (6)", ["1.B.1.b"], 0],
-            ["\\C-AUS-CHL-ECU-SLB-ISR-PER\\ Drop down list:", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-ECU-SLB-ISR-PER-TUV\\ Drop down list:", ["\\IGNORE"], 1],
             # some of the following items are missing for some countries but as they are
             # present for ost countries we do not specify the countries here
             ["1.B.1.b.i. Charcoal and biochar production (7)", ["1.B.1.b.i"], 1],
@@ -2680,14 +2760,16 @@ CRT1 = {
             ["\\C-SLB-ECU\\ nan", ["\\IGNORE"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
+                "ARE-BDI-MNG-GAB-ZMB\\ "
                 "GHG emissions from other gasification [IPCC Software 1.B.1.c.iv]",
                 ["1.B.1.b.v.i"],
                 2,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
+                "ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other fuel transformation [IPCC Software 1.B.3]",
                 ["1.B.1.b.v.ii"],
                 2,
@@ -2700,6 +2782,7 @@ CRT1 = {
                 1,
             ],
             ["\\C-ROU\\ Coking coal", ["1.B.1.b.v.iv"], 1],
+            ["\\C-HND\\ 1.B.1.b.v.Other", ["1.B.1.b.v.v"], 1],
             ["1. B. 1. c. Other (please specify) (8)", ["1.B.1.c"], 0],
             ["\\C-AUS-SGP-BRA-CHL-ECU\\ NA", ["\\IGNORE"], 1],
             ["\\C-PER\\ NO", ["\\IGNORE"], 1],
@@ -2709,7 +2792,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-"
-                "ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Uncontrolled combustion and burning of coal dumps "
                 "[IPCC Software 1.B.1.b]",
                 ["1.B.1.c.ii"],
@@ -2718,7 +2801,7 @@ CRT1 = {
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
                 "PAN-PRY-URY-UZB-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-OMN-"
-                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "Other solid fuels [IPCC Software 1.B.3]",
                 ["1.B.1.c.v"],
                 1,
@@ -2727,8 +2810,9 @@ CRT1 = {
             ["\\C-SVN\\ SO2 scrubbing", ["1.B.1.c.iii"], 1],
             ["\\C-POL\\ Emisson from coke oven gas subsystem", ["1.B.1.c.iv"], 1],
             ["\\C-KAZ\\ Flaring of coke oven gas (1.B.1.c by CRF)", ["1.B.1.c.iv"], 1],
-            ["\\C-COL\\ 1.B.1.c. Other", ["1.B.1.c.v"], 0],
-            ["\\C-ROU\\ Other", ["1.B.1.c.v"], 0],
+            ["\\C-COL\\ 1.B.1.c. Other", ["1.B.1.c.v"], 1],
+            ["\\C-HND\\ 1.B.1.c.Other", ["1.B.1.c.v"], 1],
+            ["\\C-ROU\\ Other", ["1.B.1.c.v"], 1],
             ["\\C-SVK\\ CO2 emissions from Charcoal and biochar", ["1.B.1.c.vi"], 1],
             ["\\C-GBR\\ Solid smokeless fuel production", ["1.B.1.c.vii"], 1],
         ],
@@ -2778,20 +2862,22 @@ CRT1 = {
             ["1.B.2.a.iv. Refining/storage", ["1.B.2.a.iv"], 1],
             ["1.B.2.a.v. Distribution of oil products", ["1.B.2.a.v"], 1],
             ["1.B.2.a.vi. Other", ["1.B.2.a.vi"], 1],
-            ["\\C-AUS-CHL-ECU-SLB-ISR\\ Drop down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-CHL-ECU-SLB-ISR-TUV\\ Drop down list:", ["\\IGNORE"], 2],
             # the following categories are now present for all countries, but almost all
             # so there is no country filter specified
             ["1.B.2.a.vi.1. Abandoned wells", ["1.B.2.a.vi.1"], 2],
             ["1.B.2.a.vi.2. Other (please specify)", ["1.B.2.a.vi.2"], 2],
-            ["\\C-AUS-SGP-CHL-ECU\\ NA", ["\\IGNORE"], 3],
+            ["\\C-AUS-SGP-CHL-ECU-TUV\\ NA", ["\\IGNORE"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
+                "ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fugitive from oil industry "
                 "[IPCC Software 1.B.2.a.iii.6]",
                 ["1.B.2.a.vi.2.a"],
                 3,
             ],
+            ["\\C-HND\\ 1.B.2.a.vi.2.Other", ["1.B.2.a.vi.2.a"], 3],
             ["\\C-SLB-ECU\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-JPN\\ Accidents", ["1.B.2.a.vi.2.b"], 3],
             ["\\C-CAN\\ Accidents and equipment failures", ["1.B.2.a.vi.2.b"], 3],
@@ -2809,7 +2895,7 @@ CRT1 = {
             ["1.B.2.b.iv. Transmission and storage", ["1.B.2.b.iv"], 1],
             ["1.B.2.b.v. Distribution", ["1.B.2.b.v"], 1],
             ["1.B.2.b.vi. Other", ["1.B.2.b.vi"], 1],
-            ["\\C-AUS-CHL-ECU-SLB-PER-ISR\\ Drop down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-CHL-ECU-SLB-PER-ISR-TUV\\ Drop down list:", ["\\IGNORE"], 2],
             # the following categories are now present for all countries, but almost all
             # so there is no country filter specified
             ["1.B.2.b.vi.1. Gas post-meter", ["1.B.2.b.vi.1"], 2],
@@ -2821,14 +2907,16 @@ CRT1 = {
             # ["Natural Gas Storage", ["1.B.2.b.vi.3.c"], 3],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
-                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB"
+                "PRY-URY-UZB-ZWE-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-"
+                "ARE-BDI-MNG-GAB-ZMB"
                 "\\ Other fugitive from natural gas industry "
                 "[IPCC Software 1.B.2.b.iii.6]",
                 ["1.B.2.b.vi.3.d"],
                 3,
             ],
+            ["\\C-HND\\ 1.B.2.b.vi.3.Other", ["1.B.2.a.vi.3.d"], 3],
             ["\\C-SGP-CHL-ECU-BRA\\ NA", ["\\IGNORE"], 3],
-            ["\\C-SLB-ECU\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
+            ["\\C-SLB-ECU-TUV\\ nan", ["\\IGNORE", "\\IGNORE"], 3],
             ["\\C-ECU\\ NE", ["\\IGNORE"], 3],
             ["\\C-NOR-UKR-ROU\\ Other", ["1.B.2.b.vi.3.d"], 3],
             ["\\C-SVK\\ Storage of gas", ["1.B.2.b.vi.3.e"], 3],
@@ -2850,10 +2938,11 @@ CRT1 = {
             ["1.B.2.d. Other (please specify) (10)", ["1.B.2.d"], 0],
             ["\\C-AUS-SGP-CHL-ECU\\ NA", ["\\IGNORE"], 1],
             ["\\C-PER\\ NO", ["\\IGNORE"], 1],
-            ["\\C-SLB-ISR-PER\\ nan", ["\\IGNORE", "\\IGNORE"], 1],
+            ["\\C-SLB-ISR-PER-TUV\\ nan", ["\\IGNORE", "\\IGNORE"], 1],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "PAN-PRY-URY-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-"
+                "LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "N2O emissions from Oil and Natural Gas Systems "
                 "[IPCC Software 1.B.2]",
                 ["1.B.2.d.xii"],
@@ -2861,7 +2950,8 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GEO-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-"
-                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB\\ "
+                "PAN-PRY-URY-FRA-ZWE-VEN-CIV-CUB-SAU-THA-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-"
+                "BHR-LAO-ARE-BDI-MNG-GAB-ZMB\\ "
                 "N2O emissions from other Energy Production "
                 "[IPCC Software 1.B.3]",
                 ["1.B.2.d.xiii"],
@@ -2876,6 +2966,7 @@ CRT1 = {
             ["\\C-GRC\\ LPG transport", ["1.B.2.d.vi"], 1],
             ["\\C-FIN\\ Distribution of town gas", ["1.B.2.d.vii"], 1],
             ["\\C-COL\\ 1.B.2.d. Other", ["1.B.2.d.iv"], 1],
+            ["\\C-HND\\ 1.B.2.d.Other", ["1.B.2.d.iv"], 1],
             ["\\C-SWE\\ Other non-specified", ["1.B.2.d.iv"], 1],
             ["\\C-UKR-ROU\\ Other", ["1.B.2.d.iv"], 1],
             ["\\C-GBR\\ Natural gas exploration - N2O emissions", ["1.B.2.d.x"], 1],
@@ -3073,7 +3164,8 @@ CRT1 = {
             ["\\C!-AUS-ECU\\ 2.H.3. Other (please specify)", ["2.H.3"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-URY-"
-                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-ARM-BHR-LAO-ARE-BDI-MNG-ZWE-GAB\\ "
+                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "ZWE-GAB-ZMB\\ "
                 "Other industrial processes and product use [IPCC Software]",
                 ["2.H.3.a"],
                 3,
@@ -3108,6 +3200,8 @@ CRT1 = {
             ["\\C-BRA\\ NA", ["\\IGNORE"], 3],
             ["\\C-CHL\\ NO", ["\\IGNORE"], 3],
             ["\\C-SLB\\ nan", ["\\IGNORE"], 3],
+            ["\\C-HND\\ 2.H.3.a Paper and pulp", ["\\IGNORE"], 3],
+            ["\\C-HND\\ 2.H.3.b. Food and beverage industry", ["\\IGNORE"], 3],
             ["\\C-CZE\\ HFO-1234yf", ["2.H.3.n"], 3],
             ["\\C-CZE\\ HFO-1234ze", ["2.H.3.o"], 3],
             ["\\C-DEU\\ Aggregated confidential data", ["2.H.3.p"], 3],
@@ -3352,7 +3446,7 @@ CRT1 = {
             ["3.I. Other carbon-containing fertilizers", ["3.I"], 1],
             ["3.J. Other (please specify)", ["3.J"], 1],
             ["\\C-GHA\\ 3.J. Other (N2O from aquaculture)", ["3.J"], 1],  # 2022 only
-            ["\\C-AUS-BRA-CHL-SGP\\ NA", ["\\IGNORE"], 2],
+            ["\\C-AUS-BRA-CHL-SGP-TUV\\ NA", ["\\IGNORE"], 2],
             ["\\C-DEU\\ 3.B NOx Emissions", ["3.J.1"], 2],
             ["\\C-AUT\\ NOx emissions from manure management", ["3.J.1"], 2],
             ["\\C-ESP\\ NOx 3B", ["3.J.1"], 2],
@@ -3361,13 +3455,15 @@ CRT1 = {
             ["\\C-COL\\ 3.B. NOx_Manure management", ["3.J.1"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-GNB-KEN-LBN-MYS-MUS-URY-UZB-FRA-CIV-CUB"
-                "-SAU-EGY-IDN-MAR-NAM-NPL-NGA-VEN-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-ZWE-GAB\\ "
+                "-SAU-EGY-IDN-MAR-NAM-NPL-NGA-VEN-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-ZWE-GAB-ZMB\\ "
                 "Other sources from agriculture (non-carbon pools) "
                 "[IPCC Software 3.C.2 and 3.C.14]",
                 ["3.J.2"],
                 2,
             ],
             ["\\C-BLR-LTU-ROU\\ Other", ["3.J.2"], 2],
+            ["\\C-HND\\ 3.J.Other", ["3.J.2"], 2],
             ["\\C-GBR\\ Other UK emissions", ["3.J.2"], 2],
             ["\\C-DEU\\ Digestate renewable raw material (storage of N)", ["3.J.6"], 2],
             [
@@ -3542,12 +3638,13 @@ CRT1 = {
             ["\\C-BEL\\ Sheep unspecified", ["\\IGNORE"], 2],
             ["\\C-CAN\\ Sheep and Lamb", ["\\IGNORE"], 2],
             ["\\C-BRA\\ 3.A.2. Sheep", ["\\IGNORE"], 2],
-            ["\\C-COL\\ 3.A.2.a.i. Sheep", ["\\IGNORE"], 2],
+            ["\\C-COL-HND\\ 3.A.2.a.i. Sheep", ["\\IGNORE"], 2],
             ["\\C-ITA-NLD\\ Sheep (2)", ["\\IGNORE"], 2],
             ["\\C-NLD\\ Sheep (8)", ["\\IGNORE"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-ZWE-GAB"
+                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-ZWE-GAB-ZMB"
                 "\\ All sheep [IPCC Software 3.A.1.c]",
                 ["\\IGNORE"],
                 2,
@@ -3602,11 +3699,13 @@ CRT1 = {
             ],
             ["\\C-BEL\\ Swine unspecified", ["\\IGNORE"], 2],
             ["\\C-BRA\\ 3.A.3. Swine", ["\\IGNORE"], 2],
+            ["\\C-HND\\ 3.A.3.a.i. swine", ["\\IGNORE"], 2],
             ["\\C-ITA-NLD\\ Swine (3)", ["\\IGNORE"], 2],
             ["\\C-NLD\\ Swine (7)", ["\\IGNORE"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-ZWE-GAB"
+                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-ZWE-GAB-ZMB"
                 "\\ All swine [IPCC Software 3.A.1.h]",
                 ["\\IGNORE"],
                 2,
@@ -3675,17 +3774,19 @@ CRT1 = {
                 ["3.A.4"],
                 0,
             ],
-            ["\\C-AUS-CHL-SLB-ECU-ISR-PER\\ Drop down list:", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-SLB-ECU-ISR-PER-TUV\\ Drop down list:", ["\\IGNORE"], 1],
             ["3.A.4.a. Buffalo", ["3.A.4.a"], 1],
             ["3.A.4.b. Camels", ["3.A.4.b"], 1],
             ["3.A.4.c. Deer", ["3.A.4.c"], 1],
             ["3.A.4.d. Goats", ["3.A.4.d"], 1],
             ["3.A.4.e. Horses", ["3.A.4.e"], 1],
             ["3.A.4.f. Mules and asses", ["3.A.4.f"], 1],
-            ["3.A.4.g. Poultry", ["3.A.4.g"], 1],
+            ["\\C!-TUV\\ 3.A.4.g. Poultry", ["3.A.4.g"], 1],
+            ["\\C-TUV\\ 3.A.4.g. Poultry (Chicken)", ["3.A.4.g.TUV-i"], 1],
+            ["\\C-TUV\\ (Duck)", ["3.A.4.g.TUV-ii"], 1],
             ["\\C!-CHL-ISR-PER\\ 3.A.4.h. Other", ["3.A.4.h"], 1],
             ["\\C-CHL-ISR-PER\\ 3.A.4.h. Other (please specify)", ["3.A.4.h"], 1],
-            ["\\C-AUS-SLB\\ Drop-down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-SLB-TUV\\ Drop-down list:", ["\\IGNORE"], 2],
             ["3.A.4.h.i. Rabbit", ["3.A.4.h.i"], 2],
             ["3.A.4.h.ii. Reindeer", ["3.A.4.h.ii"], 2],
             ["3.A.4.h.iii. Ostrich", ["3.A.4.h.iii"], 2],
@@ -3695,7 +3796,8 @@ CRT1 = {
             ["\\C-AUS\\ Alpacas", ["3.A.4.h.v.1"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-UZB-"
-                "VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " Alpacas [IPCC Software 3.A.1.j]",
                 ["3.A.4.h.v.1"],
                 3,
@@ -3703,7 +3805,8 @@ CRT1 = {
             ["\\C-PER\\ 3.A.4.h.v.i. Alpacas", ["3.A.4.h.v.1"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-UZB-"
-                "VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " Llamas [IPCC Software 3.A.1.j]",
                 ["3.A.4.h.v.2"],
                 3,
@@ -3712,7 +3815,8 @@ CRT1 = {
             ["\\C-PER\\ 3.A.4.h.v.iii. Cuyes", ["3.A.4.h.v.20"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-UZB-"
-                "VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " All other species [IPCC Software 3.A.1.j]",
                 ["3.A.4.h.v.10"],
                 3,
@@ -3731,6 +3835,7 @@ CRT1 = {
             ["\\C-USA\\ American bison", ["3.A.4.h.v.17"], 3],
             ["\\C-CHL\\ Llamas, alpacas, huarizos", ["3.A.4.h.v.18"], 3],
             ["\\C-SLB\\ nan", ["\\IGNORE"], 3],
+            ["\\C-HND\\ 3.A.4.h.v. Other", ["3.A.4.h.v.21"], 3],
         ],
         "entity_mapping": {"EMISSIONS CH4": "CH4"},
         "coords_defaults": {
@@ -3886,12 +3991,13 @@ CRT1 = {
             ["\\C-BEL\\ Sheep unspecified", ["\\IGNORE"], 2],
             ["\\C-CAN\\ Sheep and Lamb", ["\\IGNORE"], 2],
             ["\\C-BRA\\ 3.B.2. Sheep", ["\\IGNORE"], 2],
-            ["\\C-COL\\ 3.B.2.a.i. Sheep", ["\\IGNORE"], 2],
+            ["\\C-COL-HND\\ 3.B.2.a.i. Sheep", ["\\IGNORE"], 2],
             ["\\C-ITA-NLD\\ Sheep (2)", ["\\IGNORE"], 2],
             ["\\C-NLD\\ Sheep (8)", ["\\IGNORE"], 2],
             [
                 "\\C-AZE-BTN-BRN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-"
-                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE"
+                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB-ZWE"
                 "\\ All sheep [IPCC Software 3.A.2.c]",
                 ["\\IGNORE"],
                 2,
@@ -3947,10 +4053,12 @@ CRT1 = {
             ["\\C-BEL\\ Swine unspecified", ["\\IGNORE"], 2],
             ["\\C-ITA-NLD\\ Swine (3)", ["\\IGNORE"], 2],
             ["\\C-BRA\\ 3.B.3. Swine", ["\\IGNORE"], 2],
+            ["\\C-HND\\ 3.A.3.a.i. swine", ["\\IGNORE"], 2],
             ["\\C-NLD\\ Swine (7)", ["\\IGNORE"], 2],
             [
                 "\\C-AZE-BTN-BRN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-"
-                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE"
+                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-ZWE"
                 "\\ All swine [IPCC Software 3.A.2.h]",
                 ["\\IGNORE"],
                 2,
@@ -4017,7 +4125,7 @@ CRT1 = {
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
             # ["\\C-CHL\\ 3.B.4. Other livestock (please specify) (4)", ["3.B.4"], 0],
             ["3.B.4. Other livestock (4)", ["3.B.4"], 0],
-            ["\\C-AUS-CHL-SLB-ECU-ISR-PER\\ Drop-down list:", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-SLB-ECU-ISR-PER-TUV\\ Drop-down list:", ["\\IGNORE"], 1],
             ["\\C-SGP\\ NA", ["\\IGNORE"], 1],
             ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
             ["3.B.4.b. Camels", ["3.B.4.b"], 1],
@@ -4025,10 +4133,12 @@ CRT1 = {
             ["3.B.4.d. Goats", ["3.B.4.d"], 1],
             ["3.B.4.e. Horses", ["3.B.4.e"], 1],
             ["3.B.4.f. Mules and Asses", ["3.B.4.f"], 1],
-            ["3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C!-TUV\\ 3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C-TUV\\ 3.B.4.g. Poultry (Chicken)", ["3.B.4.g.TUV-i"], 1],
+            ["\\C-TUV\\ (Duck)", ["3.B.4.g.TUV-ii"], 1],
             ["\\C!-CHL-ISR-PER\\ 3.B.4.h. Other", ["3.B.4.h"], 1],
             ["\\C-CHL-ISR-PER\\ 3.B.4.h. Other (please specify)", ["3.B.4.h"], 1],
-            ["\\C-AUS-SLB-ECU\\ Drop-down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-SLB-ECU-TUV\\ Drop-down list:", ["\\IGNORE"], 2],
             ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 2],
             ["3.B.4.h.ii. Reindeer", ["3.B.4.h.ii"], 2],
             ["3.B.4.h.iii. Ostrich", ["3.B.4.h.iii"], 2],
@@ -4038,7 +4148,8 @@ CRT1 = {
             ["\\C-AUS\\ Alpacas", ["3.B.4.h.v.1"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " Alpacas [IPCC Software 3.A.2.j]",
                 ["3.B.4.h.v.1"],
                 3,
@@ -4046,7 +4157,8 @@ CRT1 = {
             ["\\C-PER\\ 3.B.4.h.v.i. Alpacas", ["3.B.4.h.v.1"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " Llamas [IPCC Software 3.A.2.j]",
                 ["3.B.4.h.v.2"],
                 3,
@@ -4054,7 +4166,8 @@ CRT1 = {
             ["\\C-PER\\ 3.B.4.h.v.ii. Llamas", ["3.B.4.h.v.2"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " All other species [IPCC Software 3.A.2.j]",
                 ["3.B.4.h.v.10"],
                 3,
@@ -4075,6 +4188,7 @@ CRT1 = {
             ["\\C-HKG\\ Horse and Buffalo", ["3.B.4.h.v.19"], 3],
             ["\\C-PER\\ 3.B.4.h.v.iii. Cuyes", ["3.B.4.h.v.20"], 3],
             ["\\C-SLB-CHL-ECU-AUS-MLT-PER\\ nan", ["\\IGNORE"], 3],
+            ["\\C-HND\\ 3.A.4.h.v. Other", ["3.B.4.h.v.21"], 3],
         ],
         "entity_mapping": {
             "EMISSIONS CH4 producing potential (Bo) (2) (average) CH4": "CH4"
@@ -4158,7 +4272,7 @@ CRT1 = {
             ["\\C!-AUS\\ 3.B.1.b. Non-dairy cattle", ["3.B.1.A.b"], 2],
             ["Option B (country-specific): (5)", ["\\IGNORE"], 1],
             ["3.B.1.a. Other", ["3.B.1.B"], 2],
-            ["\\C-AUS-ECU-SLB-ISR\\ Drop-down list", ["\\IGNORE"], 3],
+            ["\\C-AUS-ECU-SLB-ISR-VUT\\ Drop-down list", ["\\IGNORE"], 3],
             ["3.B.1.a.i. Mature dairy cattle", ["3.B.1.B.a"], 3],
             ["3.B.1.a.ii. Other mature cattle", ["3.B.1.B.b"], 3],
             ["3.B.1.a.iii. Growing cattle", ["3.B.1.B.c"], 3],
@@ -4269,13 +4383,14 @@ CRT1 = {
             ["\\C-BEL\\ Sheep unspecified", ["\\IGNORE"], 2],
             ["\\C-CAN\\ Sheep and Lamb", ["\\IGNORE"], 2],
             ["\\C-BRA\\ 3.B.2. Sheep", ["\\IGNORE"], 2],
-            ["\\C-COL\\ 3.B.2.a.i. Sheep", ["\\IGNORE"], 2],
+            ["\\C-COL-HND\\ 3.B.2.a.i. Sheep", ["\\IGNORE"], 2],
             ["\\C-ITA-NLD\\ Sheep (3)", ["\\IGNORE"], 2],
             ["\\C-NLD\\ Sheep (8)", ["\\IGNORE"], 2],
             ["\\C-CRI\\ Sheeps", ["\\IGNORE"], 2],
             [
                 "\\C-AZE-BTN-BRN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-"
-                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE"
+                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB-ZWE"
                 "\\ All sheep [IPCC Software 3.A.2.c]",
                 ["\\IGNORE"],
                 2,
@@ -4332,10 +4447,12 @@ CRT1 = {
             ["\\C-BEL\\ Swine unspecified", ["\\IGNORE"], 2],
             ["\\C-ITA-NLD\\ Swine (2)", ["\\IGNORE"], 2],
             ["\\C-BRA\\ 3.B.3. Swine", ["\\IGNORE"], 2],
+            ["\\C-HND\\ 3.B.3.a.i. swine", ["\\IGNORE"], 2],
             ["\\C-NLD\\ Swine (7)", ["\\IGNORE"], 2],
             [
                 "\\C-AZE-BTN-BRN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-"
-                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE"
+                "UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-ZWE"
                 "\\ All swine [IPCC Software 3.A.2.h]",
                 ["\\IGNORE"],
                 2,
@@ -4397,13 +4514,13 @@ CRT1 = {
             ["\\C-THA\\ Swine - fattening", ["3.B.3.a.THA-iii"], 2],
             ["\\C-GAB\\ Truie", ["3.B.3.a.GAB-i"], 2],
             ["\\C-GAB\\ Porcs de marche", ["3.B.3.a.GAB-ii"], 2],
-            ["\\C-ECU\\ nan", ["\\IGNORE"], 2],
+            ["\\C-ECU-TUV\\ nan", ["\\IGNORE"], 2],
             # other livestock
             # ["\\C!-AUS-CHL\\ 3.B.4. Other livestock(4)", ["3.B.4"], 0],
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
             # ["\\C-CHL\\ 3.B.4. Other livestock (please specify) (4)", ["3.B.4"], 0],
             ["3.B.4. Other livestock (6)", ["3.B.4"], 0],
-            ["\\C-AUS-CHL-ECU-PER\\ Drop-down list", ["\\IGNORE"], 1],
+            ["\\C-AUS-CHL-ECU-PER-TUV\\ Drop-down list", ["\\IGNORE"], 1],
             ["\\C-SLB-ISR\\ Drop-down list:", ["\\IGNORE"], 1],
             ["\\C-SGP\\ NA", ["\\IGNORE"], 1],
             ["3.B.4.a. Buffalo", ["3.B.4.a"], 1],
@@ -4412,10 +4529,12 @@ CRT1 = {
             ["3.B.4.d. Goats", ["3.B.4.d"], 1],
             ["3.B.4.e. Horses", ["3.B.4.e"], 1],
             ["3.B.4.f. Mules and asses", ["3.B.4.f"], 1],
-            ["3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C!-TUV\\ 3.B.4.g. Poultry", ["3.B.4.g"], 1],
+            ["\\C-TUV\\ 3.B.4.g. Poultry (Chicken)", ["3.B.4.g.TUV-i"], 1],
+            ["\\C-TUV\\ (Duck)", ["3.B.4.g.TUV-ii"], 1],
             ["\\C!-CHL-ISR-PER\\ 3.B.4.h. Other", ["3.B.4.h"], 1],
             ["\\C-CHL-ISR-PER\\ 3.B.4.h. Other (please specify)", ["3.B.4.h"], 1],
-            ["\\C-AUS-ECU\\ Drop-down list:", ["\\IGNORE"], 2],
+            ["\\C-AUS-ECU-TUV\\ Drop-down list:", ["\\IGNORE"], 2],
             ["3.B.4.h.i. Rabbit", ["3.B.4.h.i"], 2],
             ["3.B.4.h.ii. Reindeer", ["3.B.4.h.ii"], 2],
             ["3.B.4.h.iii. Ostrich", ["3.B.4.h.iii"], 2],
@@ -4425,7 +4544,8 @@ CRT1 = {
             ["\\C-AUS\\ Alpacas", ["3.B.4.h.v.1"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " Alpacas [IPCC Software 3.A.2.j]",
                 ["3.B.4.h.v.1"],
                 3,
@@ -4433,7 +4553,8 @@ CRT1 = {
             ["\\C-PER\\ 3.B.4.h.v.i. Alpaca", ["3.B.4.h.v.1"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " Llamas [IPCC Software 3.A.2.j]",
                 ["3.B.4.h.v.2"],
                 3,
@@ -4441,7 +4562,8 @@ CRT1 = {
             ["\\C-PER\\ 3.B.4.h.v.ii. Llama", ["3.B.4.h.v.2"], 3],
             [
                 "\\C-GUY-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-URY-"
-                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\"
                 " All other species [IPCC Software 3.A.2.j]",
                 ["3.B.4.h.v.10"],
                 3,
@@ -4462,6 +4584,7 @@ CRT1 = {
             ["\\C-HKG\\ Horse, Goats and Buffalo", ["3.B.4.h.v.19"], 3],
             ["\\C-PER\\ 3.B.4.h.v.iii. Cuyes", ["3.B.4.h.v.20"], 3],
             # ["\\C-SLB-ECU\\ nan", ["\\IGNORE"], 3],
+            ["\\C-HND\\ 3.A.4.h.v. Other", ["3.B.4.h.v.21"], 3],
         ],
         "entity_mapping": {
             "EMISSIONS N2O Direct Nitrogen leaching and run-off": "N2O",
@@ -4508,14 +4631,15 @@ CRT1 = {
             ["3.C.4. Other (please specify)", ["3.C.4"]],
             ["\\C-AUS-BRA-CHL-SGP\\ NA", ["\\IGNORE"]],
             ["\\C-PER\\ NO", ["\\IGNORE"]],
-            ["\\C-COL\\ 3.C.4. Other", ["3.C.4.a"]],
+            ["\\C-COL-HND\\ 3.C.4. Other", ["3.C.4.a"]],
             ["\\C-EST\\ Other non-specified", ["3.C.4.a"]],
             ["\\C-LTU\\ Other", ["3.C.4.a"]],
             ["\\C-GHA\\ Upland", ["3.C.4.b"]],
             ["\\C-THA\\ Upland rice", ["3.C.4.b"]],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
-                "URY-UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\ "
+                "URY-UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB-ZWE\\ "
                 "Other rice ecosystems [IPCC Software 3.C.7]",
                 ["3.C.4.a"],
             ],
@@ -4614,11 +4738,13 @@ CRT1 = {
             ["3.E.1. Forest land (specify ecological zone) (2)", ["3.E.1"], 0],
             ["\\C-GHA\\ Savanna forest", ["3.E.1.a"], 1],
             ["\\C-COL\\ 3.E.1. Forest land", ["3.E.1.a"], 1],
+            ["\\C-HND\\ 3.E.1.Forest land", ["3.E.1.a"], 1],
             ["\\C-CHE-ESP-LTU-ROU\\ Forest land", ["3.E.1.a"], 1],
             ["\\C-DNK\\ Forest", ["3.E.1.a"], 1],
             [
                 "\\C-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-UZB-"
-                "FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\ "
+                "FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-ZWE\\ "
                 "All prescribed burning of savannahs on forest land "
                 "[IPCC Software 3.C.1.a]",
                 ["3.E.1.a"],
@@ -4638,11 +4764,13 @@ CRT1 = {
             ["3.E.2. Grassland (specify ecological zone) (2)", ["3.E.2"], 0],
             ["\\C-GHA\\ Savanna grassland", ["3.E.2.b"], 1],
             ["\\C-COL\\ 3.E.2. Grassland", ["3.E.2.b"], 1],
+            ["\\C-HND\\ 3.E.2.Grassland", ["3.E.2.b"], 1],
             ["\\C-CHE-ESP-LTU-ROU\\ Grassland", ["3.E.2.b"], 1],
             ["\\C-CRI\\ Grasses", ["3.E.2.b"], 1],
             [
                 "\\C-AZE-BTN-EGY-GNB-GUY-IDN-KEN-LBN-MYS-MDV-MUS-MAR-NAM-NGA-URY-UZB-"
-                "FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\ "
+                "FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-ZWE\\ "
                 "All prescribed burning of savannahs on grassland "
                 "[IPCC Software 3.C.1.c]",
                 ["3.E.2.b"],
@@ -4749,20 +4877,23 @@ CRT1 = {
             ["\\C-ECU\\ Biomass burning", ["4.H.12"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
-                "URY-UZB-VEN-CIV-CUB-SAU-NPL-RWA-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\ "
+                "URY-UZB-VEN-CIV-CUB-SAU-NPL-RWA-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-ZWE\\ "
                 "N2O emissions from aquaculture [IPCC Software 3.C.12]",
                 ["4.H.6"],
                 2,
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-URY-"
-                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\ "
+                "UZB-VEN-CIV-CUB-SAU-NPL-RWA-BFA-IRQ-OMN-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\ "
                 "Other emissions from LULUCF [IPCC Software 3.D.2]",
                 ["4.H.9"],
                 2,
             ],
             ["\\C-SGP-NZL-LTU-ECU-CRI-CYP-ROU\\ Other", ["4.H.9"], 2],
             ["\\C-COL-HRV\\ 4.H. Other", ["4.H.9"], 2],
+            ["\\C-HND\\ Other", ["4.H.9"], 2],
             ["\\C-BRA\\ Total", ["4.H.9"], 2],
             ["\\C-HUN\\ All other", ["4.H.9"], 2],
             ["\\C-JPN\\ Concrete using Biochar", ["4.H.10"], 2],
@@ -4823,7 +4954,8 @@ CRT1 = {
             ["Accidential fires at Solid Waste Disposal Sites", ["5.E.9"], 2],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\ "
+                "URY-UZB-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-ARM-BHR-LAO-ARE-BDI-MNG-"
+                "GAB-ZMB-ZWE\\ "
                 "CH₄ and N₂O emissions from methane flaring at waste facilities "
                 "[IPCC Software 4.E]",
                 ["5.E.6"],
@@ -4831,7 +4963,8 @@ CRT1 = {
             ],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-PRY-"
-                "URY-UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-BDI-MNG-GAB-ZWE\\ "
+                "URY-UZB-FRA-VEN-CIV-CUB-SAU-NPL-RWA-BLZ-BFA-IRQ-SWZ-ARM-BHR-LAO-ARE-"
+                "BDI-MNG-GAB-ZMB-ZWE\\ "
                 "Other waste emissions [IPCC Software 4.E, SO₂ from 4.A-4.D]",
                 ["5.E.5"],
                 2,
@@ -4844,8 +4977,8 @@ CRT1 = {
             ["\\C-CZE\\ Other waste", ["5.E.5"], 2],
             ["\\C-FIN-LTU\\ Other", ["5.E.5"], 2],
             ["\\C-ROU\\ Other please specify", ["5.E.5"], 2],
-            ["\\C-COL\\ 5.E. Other", ["5.E.5"], 2],
-            ["\\C-SGP-BRA-CHL\\ NA", ["\\IGNORE"], 2],
+            ["\\C-COL-HND\\ 5.E. Other", ["5.E.5"], 2],
+            ["\\C-SGP-BRA-CHL-TUV\\ NA", ["\\IGNORE"], 2],
             ["\\C-ECU-PER\\ NO", ["\\IGNORE"], 2],
             ["\\C-SLB\\ nan", ["\\IGNORE"], 2],
             ["\\C-CHE\\ Car shredding", ["5.E.10"], 2],
@@ -4877,7 +5010,7 @@ CRT1 = {
                 1,
             ],
             [
-                "\\C-SLB\\ 5.F.21.a. Annual change in total long-term C storage",
+                "\\C-SLB-TUV\\ 5.F.21.a. Annual change in total long-term C storage",
                 ["M.Memo.ACLT"],
                 1,
             ],
@@ -4894,7 +5027,7 @@ CRT1 = {
                 1,
             ],
             [
-                "\\C-SLB\\ "
+                "\\C-SLB-TUV\\ "
                 "5.F.31.b. Annual change in total long-term C storage in HWP waste (4)",
                 ["M.Memo.ACLTHWP"],
                 1,
@@ -4980,7 +5113,8 @@ CRT1 = {
             ["6. Other (please specify) (7)", ["6"]],
             [
                 "\\C-GUY-MDV-AZE-BTN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PRY-"
-                "URY-UZB-VEN-CIV-CUB-SAU-NPL-RWA-BFA-IRQ-SWZ-ARM-BHR-JOR-LAO-ARE-BDI-MNG-GAB-ZWE\\"
+                "URY-UZB-VEN-CIV-CUB-SAU-NPL-RWA-BFA-IRQ-SWZ-ARM-BHR-JOR-LAO-ARE-BDI-"
+                "MNG-GAB-ZMB-ZWE\\"
                 " Other sources of emissions/removals [IPCC Software 5.C]",
                 ["6.A"],
             ],
@@ -4994,7 +5128,7 @@ CRT1 = {
             ["\\C-NZL\\ 6. Tokelau_3. Agriculture", ["6.NZL-C"]],
             ["\\C-NZL\\ 6. Tokelau_5. Waste", ["6.NZL-D"]],
             ["\\C-AUS-BRA-CHL-ECU-SGP\\ NA", ["\\IGNORE"]],
-            ["\\C-COL-LTU-ROU\\ Other", ["6.A"]],
+            ["\\C-COL-LTU-ROU-HND\\ Other", ["6.A"]],
             ["\\C-GHA\\ Aquaculture", ["6.B"]],
             ["", ["\\IGNORE"]],
             ["\\C-PER\\ NA", ["\\IGNORE"]],

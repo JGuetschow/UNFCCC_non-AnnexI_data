@@ -9,5 +9,7 @@ unfccc\_ghg\_data.unfccc\_reader.Bangladesh
 .. autosummary::
   :toctree: ./
 
+  config_bgd_btr1
   config_bgd_bur1
+  read_BGD_BTR1_from_pdf
   read_BGD_BUR1_from_pdf

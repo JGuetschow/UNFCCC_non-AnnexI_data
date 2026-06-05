@@ -15,7 +15,6 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from operator import itemgetter
 from pathlib import Path
-from typing import Optional, Union
 
 import datalad as dl
 import numpy as np
@@ -847,11 +846,11 @@ def read_crf_table_from_file(  # noqa: PLR0912, PLR0915
 
 
 def get_crf_files(  # noqa: PLR0912, PLR0913
-    country_codes: Union[str, list[str]],
+    country_codes: str | list[str],
     submission_year: int,
-    data_year: Optional[Union[int, list[int]]] = None,
-    date_or_version: Optional[str] = None,
-    folder: Optional[str] = None,
+    data_year: int | list[int] | None = None,
+    date_or_version: str | None = None,
+    folder: str | None = None,
     submission_type: str = "CRF",
 ) -> list[Path]:
     """
@@ -966,7 +965,7 @@ def get_crf_files(  # noqa: PLR0912, PLR0913
 
 
 def get_country_folders(
-    country_codes: Union[str, list[str]],
+    country_codes: str | list[str],
     submission_year: int,
     submission_type: str = "CRF",
 ) -> list[Path]:
@@ -1026,7 +1025,7 @@ def get_country_folders(
 
 def get_info_from_crf_filename(  # noqa: PLR0912
     filename: str,
-) -> dict[str, Union[int, str]]:
+) -> dict[str, int | str]:
     """
     Parse given file name and return a dict with information on contained data.
 
@@ -1072,7 +1071,14 @@ def get_info_from_crf_filename(  # noqa: PLR0912
             if name_parts[1] == "CRT":
                 file_info["party"] = name_parts[0]
                 file_info["submission_year"] = int(name_parts[2])
-                file_info["version"] = name_parts[3]
+                if name_parts[3].lower().startswith("v"):
+                    file_info["version"] = name_parts[3]
+                else:
+                    message = (
+                        f"File {filename} is not a valid CRF or CRT file. "
+                        f"Version format mismatch."
+                    )
+                    raise ValueError(message)
                 try:
                     file_info["data_year"] = int(name_parts[4])
                 except:  # noqa: E722
@@ -1103,11 +1109,11 @@ def get_info_from_crf_filename(  # noqa: PLR0912
 
 def filter_filenames(  # noqa: PLR0913
     files_to_filter: list[Path] | Generator[Path, None, None],
-    party: Optional[Union[str, list[str]]] = None,
-    data_year: Optional[Union[int, list[int]]] = None,
-    submission_year: Optional[str] = None,
-    date: Optional[str] = None,
-    version: Optional[str] = None,
+    party: str | list[str] | None = None,
+    data_year: int | list[int] | None = None,
+    submission_year: str | None = None,
+    date: str | None = None,
+    version: str | None = None,
 ) -> list[Path]:
     """Filter a list of filenames of CRF/CRT files
 
@@ -1208,7 +1214,7 @@ def check_crf_file_info(  # noqa: PLR0911, PLR0912
 def create_category_tree(
     specification: list[list],
     table: str,
-    country: Optional[str] = None,
+    country: str | None = None,
 ) -> Tree:
     """
     Create a category hierarchy tree from a CRF table specification
@@ -1327,7 +1333,7 @@ def create_category_tree(
 
 def prep_specification(
     specification: list[list],
-    country: Optional[str] = None,
+    country: str | None = None,
 ) -> list[list]:
     """
     Prepare specification to build tree or use directly
@@ -1577,7 +1583,7 @@ def get_latest_version_for_country(
 
 def get_submission_dates(
     folder: Path,
-    file_filter: dict[str, Union[str, int, list]],
+    file_filter: dict[str, str | int | list],
 ) -> list[str]:
     """
     Return all submission dates available in a folder
@@ -1614,7 +1620,7 @@ def get_submission_dates(
 
 def get_submission_versions(
     folder: Path,
-    file_filter: dict[str, Union[str, int, list]],
+    file_filter: dict[str, str | int | list],
 ) -> list[str]:
     """
     Return all submission versions available in a folder.
@@ -1662,7 +1668,7 @@ def get_submission_versions(
 
 def get_submission_parties(
     folder: Path,
-    file_filter: dict[str, Union[str, int, list]],
+    file_filter: dict[str, str | int | list],
 ) -> list[str]:
     """
     Return all submission parties available in a folder

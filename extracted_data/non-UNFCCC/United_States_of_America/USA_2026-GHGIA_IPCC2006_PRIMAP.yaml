@@ -1,0 +1,28 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom csv files by Johannes Gütschow Processed on 2026-05-21 
+    Processed on 2026-05-21 Processed on 2026-05-21 Processed on 2026-05-21 
+    Processed on 2026-05-21
+  contact: mail@johannes-guetschow.de
+  entity: UnspMixOfPFCs
+  gwp_context: AR6GWP100
+  institution: University of Maryland - Center for Global Sustainability
+  references: https://ghgi.cgs.umd.edu/index.html
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Greenhouse Gas Inventory and Analysis for the United States Processed 
+    on 2026-05-21 Processed on 2026-05-21 Processed on 2026-05-21 Processed on 
+    2026-05-21 Processed on 2026-05-21
+data_file: USA_2026-GHGIA_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
