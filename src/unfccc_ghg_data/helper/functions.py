@@ -614,7 +614,6 @@ def create_folder_mapping(folder: str, extracted: bool = False) -> None:  # noqa
         json.dump(dict(sorted(folder_mapping.items())), mapping_file, indent=4)
 
 
-# TODO add crf
 def get_country_submissions(  # noqa: PLR0912
     country_name: str,
     print_sub: bool = True,

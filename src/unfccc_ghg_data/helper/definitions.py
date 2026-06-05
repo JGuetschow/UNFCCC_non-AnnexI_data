@@ -67,7 +67,7 @@ dataset_path_UNFCCC = dataset_path / "UNFCCC"
 nAI_countries = list(pd.read_csv(code_path / "helper" / "DI_NAI_parties.conf")["code"])
 # AI_countries = list(reader.annex_one_reader.parties["code"])
 AI_countries = list(pd.read_csv(code_path / "helper" / "DI_AI_parties.conf")["code"])
-additional_territories = ["HKG", "MAC", "VAT"]
+additional_territories = ["HKG", "MAC", "VAT", "TWN"]
 # TODO: check if CRTAI countries are the same as CRF countries. It seems that Kazakhstan
 #  has been eremoved
 
