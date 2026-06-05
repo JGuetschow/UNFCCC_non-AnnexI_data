@@ -54,6 +54,7 @@ all_crf_countries = [
 
 BTR_urls = {
     1: "https://unfccc.int/first-biennial-transparency-reports",
+    2: "https://unfccc.int/second-biennial-transparency-reports",
 }
 
 
