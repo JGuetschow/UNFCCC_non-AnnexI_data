@@ -173,10 +173,13 @@ def get_BTR_name_and_URL(submission_round: int) -> (str, str):
     """
     if submission_round == 1:
         name = "first"
-        URL = "https://unfccc.int/first-biennial-transparency-reports"
+        url = "https://unfccc.int/first-biennial-transparency-reports"
+    elif submission_round == 2:  # noqa: PLR2004
+        name = "second"
+        url = "https://unfccc.int/second-biennial-transparency-reports"
     else:
         raise ValueError(  # noqa: TRY003
             f"Submission round {submission_round} is not defined"
         )
 
-    return name, URL
+    return name, url
