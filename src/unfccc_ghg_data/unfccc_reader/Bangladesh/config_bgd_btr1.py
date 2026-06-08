@@ -391,6 +391,8 @@ data_to_remove = {
 }
 
 ## processing configuration
+terminology_proc = "IPCC2006_PRIMAP"
+
 LULUCF_data_copy_cats = [
     "3.B.1",
     "3.B.1.a",
