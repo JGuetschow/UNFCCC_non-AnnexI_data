@@ -20,6 +20,7 @@ unfccc\_ghg\_data.unfccc\_crf\_reader.crf\_specifications
   crt1_pry_specification
   crt1_specification
   crt1_tun_specification
+  crt2_specification
   crtai2025_specification
   crtai2026_specification
   util
