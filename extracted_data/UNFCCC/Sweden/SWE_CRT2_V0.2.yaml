@@ -1,0 +1,25 @@
+attrs:
+  area: area (ISO3)
+  cat: category (CRT2)
+  comment: Read fom xlsx file by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: United Nations Framework Convention on Climate Change 
+    (www.unfccc.int)
+  references: https://unfccc.int/second-biennial-transparency-reports
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: 'Data submitted for round 2 to the UNFCCC in the common reporting tables
+    (CRT) by Sweden. Submission version: V0.2'
+data_file: SWE_CRT2_V0.2.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (CRT2)
+  - class
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

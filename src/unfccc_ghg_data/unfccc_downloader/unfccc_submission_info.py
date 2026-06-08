@@ -10,6 +10,8 @@ from bs4 import BeautifulSoup
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import Firefox
 
+from unfccc_ghg_data.unfccc_crf_reader.util import BTR_urls
+
 
 def get_unfccc_submission_info(  # noqa: PLR0912, PLR0915
     url: str,
@@ -173,10 +175,13 @@ def get_BTR_name_and_URL(submission_round: int) -> (str, str):
     """
     if submission_round == 1:
         name = "first"
-        URL = "https://unfccc.int/first-biennial-transparency-reports"
+    elif submission_round == 2:  # noqa: PLR2004
+        name = "second"
     else:
         raise ValueError(  # noqa: TRY003
             f"Submission round {submission_round} is not defined"
         )
 
-    return name, URL
+    url = BTR_urls[submission_round]
+
+    return name, url

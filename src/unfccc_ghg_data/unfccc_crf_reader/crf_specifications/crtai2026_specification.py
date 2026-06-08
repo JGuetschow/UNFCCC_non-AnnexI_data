@@ -539,7 +539,7 @@ CRTAI2026 = {
                 ["1.A.2.g.viii.3", "Total"],
                 3,
             ],
-            ["\\C-NOR-CAN\\ Other Manufacturing", ["1.A.2.g.viii.3", "Total"], 3],
+            ["\\C-CAN\\ Other Manufacturing", ["1.A.2.g.viii.3", "Total"], 3],
             [
                 "\\C-NOR\\ Other manufacturing",
                 ["1.A.2.g.viii.3", "Total"],
@@ -3192,7 +3192,7 @@ CRTAI2026 = {
             ["3.A.2.a. Other (please specify)", ["3.A.2.a"], 1],
             [
                 "\\C-AUS-AUT-ITA-CHL-SRB-AUT-BLR-BGR-CHE-CHL-CYP-CZE-DNK-ESP-EST-FIN-GRC-HRV-JPN-KAZ-"
-                "LIE-LTU-LVA-NOR-NZL-PRT-SVN-SWE-UKR-BGR-NLD-ROU-POL-DEU\\ Sheep",
+                "LIE-LTU-LVA-NOR-NZL-PRT-SVN-SWE-UKR-NLD-ROU-POL-DEU\\ Sheep",
                 ["\\IGNORE"],
                 2,
             ],
@@ -3245,12 +3245,12 @@ CRTAI2026 = {
             ["\\C-LUX\\ Sheep lambs under 1 year", ["3.A.2.a.LUX-ii"], 2],
             ["3.A.3. Swine", ["3.A.3"], 0],
             ["3.A.3.a. Other (please specify)", ["3.A.3.a"], 1],
-            ["\\C-AUS-ITA-CAN-POL\\ Swine", ["\\IGNORE"], 2],
+            ["\\C\\ Swine", ["\\IGNORE"], 2],
             ["\\C-NZL\\ Pigs", ["\\IGNORE"], 2],
             ["\\C-ARG\\ All swine", ["\\IGNORE"], 2],
             [
-                "\\C-GHA-SRB-AUT-BLR-CHE-CZE-EST-FIN-GRC-JPN-KAZ-LIE-LTU-LVA-NOR-PRT-"
-                "SVN-SWE-TUR-UKR-CHN-BGR-NLD-ROU-DEU\\ Swine",
+                "\\C-AUS-ITA-CAN-POL-GHA-SRB-AUT-BLR-CHE-CZE-EST-FIN-GRC-JPN-KAZ-LIE-"
+                "LTU-LVA-NOR-PRT-SVN-SWE-TUR-UKR-CHN-BGR-NLD-ROU-DEU\\ Swine",
                 ["\\IGNORE"],
                 2,
             ],
@@ -4347,11 +4347,10 @@ CRTAI2026 = {
                 ["4.H.9"],
                 2,
             ],
-            ["\\C-SGP-NZL-LTU-ECU-ROU-ESP-CYP\\ Other", ["4.H.9"], 2],
+            ["\\C-SGP-NZL-LTU-ECU-ROU-ESP-CYP-UKR-GBR\\ Other", ["4.H.9"], 2],
             ["\\C-COL-HRV\\ 4.H. Other", ["4.H.9"], 2],
             ["\\C-BRA\\ Total", ["4.H.9"], 2],
             ["\\C-HUN\\ All other", ["4.H.9"], 2],
-            ["\\C-UKR-GBR\\ Other", ["4.H.9"], 2],
             ["\\C-JPN\\ Concrete using Biochar", ["4.H.10"], 2],
             ["\\C-CHN\\ Trees outside forests", ["4.H.11"], 2],
             ["\\C-CHL\\ NA", ["\\IGNORE"], 2],
