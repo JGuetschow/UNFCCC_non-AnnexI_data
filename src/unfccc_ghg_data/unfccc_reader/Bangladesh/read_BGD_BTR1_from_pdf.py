@@ -219,7 +219,7 @@ if __name__ == "__main__":
     # change category terminology
     cat_dim = data_proc_pm2.attrs["cat"]
     data_proc_pm2.attrs["cat"] = f"category ({terminology_proc})"
-    ds_converted = data_proc_pm2.rename({cat_dim: data_proc_pm2.attrs["cat"]})
+    data_proc_pm2 = data_proc_pm2.rename({cat_dim: data_proc_pm2.attrs["cat"]})
 
     # copy LULUCF KYOTOGHG data to
     data_LULUCF = data_proc_pm2[f"KYOTOGHG ({gwp_to_use})"].pr.loc[

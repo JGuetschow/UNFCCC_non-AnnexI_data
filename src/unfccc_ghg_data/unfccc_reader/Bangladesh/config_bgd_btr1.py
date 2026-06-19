@@ -906,7 +906,7 @@ country_processing_step3 = {
                 "basket": f"KYOTOGHG ({gwp_to_use})",
                 "basket_contents": ["CH4", "CO2", "N2O"],
                 "sel": {
-                    "category (IPCC2006_BGD)": [
+                    "category (IPCC2006_PRIMAP)": [
                         "1.A",
                         "1.A.1",
                         "1.A.2",
@@ -924,7 +924,7 @@ country_processing_step3 = {
                 "basket": f"KYOTOGHG ({gwp_to_use})",
                 "basket_contents": ["CH4", "CO2", "N2O"],
                 "sel": {
-                    "category (IPCC2006_BGD)": [
+                    "category (IPCC2006_PRIMAP)": [
                         "1.A",
                         "1.A.1",
                         "1.A.2",
@@ -940,13 +940,13 @@ country_processing_step3 = {
             "KYOTO_3A": {
                 "basket": f"KYOTOGHG ({gwp_to_use})",
                 "basket_contents": ["CH4", "N2O"],
-                "sel": {"category (IPCC2006_BGD)": ["3.A.1", "3.A.2"]},
+                "sel": {"category (IPCC2006_PRIMAP)": ["3.A.1", "3.A.2"]},
             },
             "KYOTO_3C": {
                 "basket": f"KYOTOGHG ({gwp_to_use})",
                 "basket_contents": ["CO2", "CH4", "N2O"],
                 "sel": {
-                    "category (IPCC2006_BGD)": [
+                    "category (IPCC2006_PRIMAP)": [
                         "3.C.1",
                         "3.C.2",
                         "3.C.3",
@@ -963,7 +963,7 @@ country_processing_step3 = {
             "KYOTO_4": {
                 "basket": f"KYOTOGHG ({gwp_to_use})",
                 "basket_contents": ["CO2", "CH4", "N2O"],
-                "sel": {"category (IPCC2006_BGD)": ["4.B", "4.C", "4.D"]},
+                "sel": {"category (IPCC2006_PRIMAP)": ["4.B", "4.C", "4.D"]},
             },
         },
     },
@@ -1058,8 +1058,6 @@ country_processing_step3 = {
     },
 }
 
-
-# TODO: HFCs basket, F-gases basket,
 
 basket_copy = (
     {
