@@ -14,6 +14,7 @@ from copy import deepcopy
 from datetime import date
 from pathlib import Path
 
+import globalwarmingpotentials as gwp
 import numpy as np
 import pandas as pd
 import pycountry
@@ -201,6 +202,41 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                         dim, to_val, ts_to_move
                     )
                     data_country[entity].pr.loc[sel] *= np.nan
+
+        # fix GWP for timeseries
+        if "fix_gwp" in processing_info_country:
+            # this fixes data where the gwp used is not what is stated
+            # the conversion is from the gwp actually used to the stated gwp
+            # native units are also possible. Use "native" instead of a gwp
+            # GWPs have to be specified as understood by the globalwarmingpotentials
+            # package
+            # Example:
+            # data is presented as native units but actually in AR4 GWPs
+            # fix_info["gwp_from"] = "AR4GWP100"
+            # fix_info["gwp_to"] = "native"
+            # the rest of the structure is the same as for the other operations
+            for case in processing_info_country["fix_gwp"]:
+                fix_info = copy.deepcopy(processing_info_country["fix_gwp"][case])
+                # from_gwp (can be empty for native unit)
+                variables = fix_info["variables"]
+
+                for variable in variables:
+                    # get the conversion factor
+                    entity = data_country[variable].attrs["entity"]
+                    if fix_info["gwp_from"] == "native":
+                        gwp_from = 1
+                    else:
+                        gwp_from = gwp.data[fix_info["gwp_from"]][entity]
+                    if fix_info["gwp_to"] == "native":
+                        gwp_to = 1
+                    else:
+                        gwp_to = gwp.data[fix_info["gwp_to"]][entity]
+                    factor = gwp_to / gwp_from
+                    # multiply time-series in place by factor
+                    if "sel" in fix_info.keys():
+                        data_country[variable].pr.loc[fix_info["sel"]] *= factor
+                    else:
+                        data_country[variable] *= factor
 
         # subtract categories
         if "subtract_cats" in processing_info_country:
