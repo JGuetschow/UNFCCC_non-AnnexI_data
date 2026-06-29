@@ -2553,6 +2553,7 @@ CRTAI2026 = {
                 3,
             ],
             ["\\C-NOR\\ Gas processed", ["1.B.2.b.vi.3.h"], 3],
+            ["\\C-RUS\\ LNG production", ["1.B.2.b.vi.3.i"], 3],
             ["1.B.2.c. Venting and flaring", ["1.B.2.c"], 0],
             ["1.B.2.c.i. Venting", ["1.B.2.c-ven"], 1],
             ["1.B.2.c.i.1. Oil", ["1.B.2.c-ven.i"], 2],
