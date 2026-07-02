@@ -1,0 +1,26 @@
+additional_coordinates:
+  orig_cat_name: category (CRT1_MEX)
+attrs:
+  area: area (ISO3)
+  cat: category (CRT1_MEX)
+  comment: Read fom xlsx by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: UNFCCC
+  references: 
+    https://www.gob.mx/cms/uploads/attachment/file/1031246/INEGyCEI_1990-2024_Dif_221025.xlsx
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Mexico INVENTARIO NACIONAL DE EMISIONES DE GASES Y COMPUESTOS DE EFECTO
+    INVERNADERO (INEGYCEI)
+data_file: MEX_2026-Inventory_2026_CRT1_MEX_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (CRT1_MEX)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

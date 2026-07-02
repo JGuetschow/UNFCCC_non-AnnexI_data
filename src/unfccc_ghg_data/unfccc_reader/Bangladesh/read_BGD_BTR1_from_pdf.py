@@ -44,6 +44,7 @@ from unfccc_ghg_data.unfccc_reader.Bangladesh.config_bgd_btr1 import (
     gwp_to_use,
     meta_data,
     page_defs,
+    terminology_proc,
     unit_key_cat,
 )
 
@@ -215,6 +216,11 @@ if __name__ == "__main__":
 
     data_proc_pm2 = data_all_pm2.copy(deep=True)
 
+    # change category terminology
+    cat_dim = data_proc_pm2.attrs["cat"]
+    data_proc_pm2.attrs["cat"] = f"category ({terminology_proc})"
+    data_proc_pm2 = data_proc_pm2.rename({cat_dim: data_proc_pm2.attrs["cat"]})
+
     # copy LULUCF KYOTOGHG data to
     data_LULUCF = data_proc_pm2[f"KYOTOGHG ({gwp_to_use})"].pr.loc[
         {"cat": LULUCF_data_copy_cats}
@@ -258,12 +264,12 @@ if __name__ == "__main__":
     if not output_folder.exists():
         output_folder.mkdir()
     pm2.pm2io.write_interchange_format(
-        output_folder / (output_filename + coords_terminologies["category"]),
+        output_folder / (output_filename + terminology_proc),
         data_proc_if,
     )
 
     encoding = {var: compression for var in data_proc_pm2.data_vars}
     data_proc_pm2.pr.to_netcdf(
-        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        output_folder / (output_filename + terminology_proc + ".nc"),
         encoding=encoding,
     )

@@ -12,7 +12,7 @@ terminology_proc = "IPCC2006_PRIMAP"
 gwp_to_use = "AR5GWP100"
 
 filename_sectors = (
-    code_path / "unfccc_reader" / "Republic_of_Korea" / "sector_mapping_INV2024.csv"
+    code_path / "unfccc_reader" / "Republic_of_Korea" / "sector_mapping_INV2024.conf"
 )
 
 sector_mapping = pd.read_csv(filename_sectors)
