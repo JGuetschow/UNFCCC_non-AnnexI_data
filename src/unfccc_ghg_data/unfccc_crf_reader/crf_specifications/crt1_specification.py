@@ -3700,6 +3700,7 @@ CRT1 = {
             ["\\C-LUX\\ Sheep", ["3.A.2.a.LUX-i"], 2],
             ["\\C-LUX\\ Sheep lambs under 1 year", ["3.A.2.a.LUX-ii"], 2],
             ["\\C-SLB\\ nan", ["\\IGNORE"], 2],
+            ["\\C-LBR\\ Sheep (Warm Climate)", ["3.A.2.a.LBR-i"], 2],
             ["3.A.3. Swine", ["3.A.3"], 0],
             ["3.A.3.a. Other (please specify)", ["3.A.3.a"], 1],
             ["\\C-AUS-ITA-CAN\\ Swine", ["\\IGNORE"], 2],
@@ -3780,6 +3781,7 @@ CRT1 = {
             ["\\C-THA\\ Swine - fattening", ["3.A.3.a.THA-iii"], 2],
             ["\\C-GAB\\ Truie", ["3.A.3.a.GAB-i"], 2],
             ["\\C-GAB\\ Porcs de marche", ["3.A.3.a.GAB-ii"], 2],
+            ["\\C-LBR\\ Mature Swine (Smallholder)", ["3.A.3.a.LBR-i"], 2],
             # other livestock
             ["\\C!-AUS-CHL-ISR-PER\\ 3.A.4. Other livestock(4)", ["3.A.4"], 0],
             ["\\C-AUS\\ 3.A.4. Other livestock (4)", ["3.A.4"], 0],
@@ -4053,6 +4055,7 @@ CRT1 = {
             ["\\C-LUX\\ Sheep", ["3.B.2.a.LUX-i"], 2],
             ["\\C-LUX\\ Sheep lambs under 1 year", ["3.B.2.a.LUX-ii"], 2],
             ["\\C-SLB-ECU-ISR\\ nan", ["\\IGNORE"], 2],
+            ["\\C-LBR\\ Mature Sheep", ["3.B.2.a.LBR-i"], 2],
             ["3.B.3. Swine", ["3.B.3"], 0],
             ["3.B.3.a. Other (please specify)", ["3.B.3.a"], 1],
             ["\\C-AUS-ITA-CAN\\ Swine", ["\\IGNORE"], 2],
@@ -4134,6 +4137,7 @@ CRT1 = {
             ["\\C-GAB\\ Truie", ["3.B.3.a.GAB-i"], 2],
             ["\\C-GAB\\ Porcs de marche", ["3.B.3.a.GAB-ii"], 2],
             ["\\C-SLB-ECU-ISR\\ nan", ["\\IGNORE"], 2],
+            ["\\C-LBR\\ Mature Swine", ["3.B.3.a.LBR-i"], 2],
             # other livestock
             # ["\\C!-AUS-CHL\\ 3.B.4. Other livestock(4)", ["3.B.4"], 0],
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
@@ -4447,6 +4451,7 @@ CRT1 = {
             ["\\C-LUX\\ Sheep lambs under 1 year", ["3.B.2.a.LUX-ii"], 2],
             ["\\C-SLB\\ NO", ["\\IGNORE"], 2],
             ["\\C-ECU\\ nan", ["\\IGNORE"], 2],
+            ["\\C-LBR\\ Mature Sheep", ["3.B.2.a.LBR-i"], 2],
             ["3.B.3. Swine", ["3.B.3"], 0],
             ["3.B.3.a. Other (please specify)", ["3.B.3.a"], 1],
             ["\\C-AUS-ITA-CAN\\ Swine", ["\\IGNORE"], 2],
@@ -4529,6 +4534,7 @@ CRT1 = {
             ["\\C-GAB\\ Truie", ["3.B.3.a.GAB-i"], 2],
             ["\\C-GAB\\ Porcs de marche", ["3.B.3.a.GAB-ii"], 2],
             ["\\C-ECU-TUV\\ nan", ["\\IGNORE"], 2],
+            ["\\C-LBR\\ Mature Swine", ["3.B.3.a.LBR-i"], 2],
             # other livestock
             # ["\\C!-AUS-CHL\\ 3.B.4. Other livestock(4)", ["3.B.4"], 0],
             # ["\\C-AUS-ARG-AZE-\\ 3.B.4. Other livestock (4)", ["3.B.4"], 0],
@@ -4648,7 +4654,7 @@ CRT1 = {
             ["\\C-COL-HND\\ 3.C.4. Other", ["3.C.4.a"]],
             ["\\C-EST\\ Other non-specified", ["3.C.4.a"]],
             ["\\C-LTU\\ Other", ["3.C.4.a"]],
-            ["\\C-GHA\\ Upland", ["3.C.4.b"]],
+            ["\\C-GHA-LBR\\ Upland", ["3.C.4.b"]],
             ["\\C-THA\\ Upland rice", ["3.C.4.b"]],
             [
                 "\\C-GUY-MDV-AZE-BTN-BRN-EGY-GNB-IDN-KEN-LBN-MYS-MUS-MAR-NAM-NGA-PAN-"
