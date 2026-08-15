@@ -238,6 +238,30 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                     else:
                         data_country[variable] *= factor
 
+        # fix emissions factor for timeseries
+        if "fix_EF" in processing_info_country:
+            # this fixes data where a wrong emissions factor was used
+            # Example:
+            # EF_used = 140
+            # EF_correct = 5
+            # data is presented as native units but actually in AR4 GWPs
+            # fix_info["EF_used"] = 140
+            # fix_info["EF_correct"] = 5
+            # the rest of the structure is the same as for the other operations
+            for case in processing_info_country["fix_EF"]:
+                fix_info = copy.deepcopy(processing_info_country["fix_EF"][case])
+                variables = fix_info["variables"]
+
+                for variable in variables:
+                    # get the conversion factor
+                    entity = data_country[variable].attrs["entity"]
+                    factor = fix_info["EF_correct"] / fix_info["EF_used"]
+                    # multiply time-series in place by factor
+                    if "sel" in fix_info.keys():
+                        data_country[variable].pr.loc[fix_info["sel"]] *= factor
+                    else:
+                        data_country[variable] *= factor
+
         # subtract categories
         if "subtract_cats" in processing_info_country:
             subtract_cats_current = processing_info_country["subtract_cats"]
