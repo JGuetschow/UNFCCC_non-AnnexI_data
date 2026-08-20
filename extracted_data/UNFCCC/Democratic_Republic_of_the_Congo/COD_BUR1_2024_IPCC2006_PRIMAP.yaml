@@ -1,0 +1,25 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom pdf by Johannes Gütschow Processed on 2026-08-20
+  contact: mail@johannes-guetschow.de
+  entity: N2O
+  gwp_context: AR5GWP100
+  institution: UNFCCC
+  references: https://unfccc.int/documents/629121
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Democratic Republic of the Congo. Biennial update report (BUR). BUR1 
+    Processed on 2026-08-20
+data_file: COD_BUR1_2024_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
