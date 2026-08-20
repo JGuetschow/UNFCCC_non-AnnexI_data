@@ -2,7 +2,42 @@
 Read Democratic Republic of the Congo's BUR1 from pdf
 
 This script reads data from Democratic Republic of the Congo,'s BUR1
-Data are read from pdf using camelot
+Data are read from pdf using camelot.
+
+Data in the different tables are highly inconsistent. We mostly use the main
+overview tables as the reference. For LULUCF data we make an exception, because the
+data in the main tables only includes emissions and removals from forestry (and
+cropland, though the data from cropland are also reported as emissions from forests
+in some tables.).
+
+GWP values are not consistent between the tables and in case ot table 29 even within
+the table. Table 5 uses AR5 GWPs, Table 16 uses AR4 GWPS, Table 29 uses AR4 GWPs for
+livestock CH4 and SAR GWPs for livestock N2O. Table 30 probably uses SAR GWPs for CH4
+and AR5 GWPs for N2O (as the data are inconsistent with other tables it is not
+completely clear)
+
+We use table 3 and 5 for the main sectors with the exception of 3.C from table 3
+and M.AGG from table 5 as the data do not contain emissions from biomass burning.
+LULUCF data from both tables only contain forestry data so we don't use the data from
+tables 3 and 5. We use table 16 for energy sector data.
+Table 27 is our main source for detailed AFOLU data.
+Table 29 has inconsistencies for N2O from livestock for a few years. The 3.C.x data
+are the sum of 3.C x 1000 and other 3.C subsectors, so they are not usable at all.
+Table 30 is not consistent with any other tables for CH4 but consistent for N2O.
+Table 31 is consistent with table 27 for 3.A.1  except for 2017 and 2018 and
+inconsistent for 3.A.2.
+Table 32 is used for enteric fermentation details and consistent with Table 27.
+Table 33 contains details for CH4 from manure management but is not consistent with
+table 27.
+Table 34 contains details for N2O from manure management but is inconsistent with table
+27 for 2017 and 2018.
+Table 39 is used for biomass buning details and consistent with other tables after
+correcting the unit to tonnes.
+Table 40 is consistent with other tables for most sectors except indirect emissions
+from manure management and N2O total emissions.
+
+We read the inconsistent data into custom categories M.XXX.TYY where XXX is the proper
+sector code and YY is the table number. The data are available in the raw data.
 
 """
 
@@ -17,16 +52,21 @@ from primap2.pm2io._data_reading import matches_time_format
 from unfccc_ghg_data.helper import (
     downloaded_data_path,
     extracted_data_path,
+    process_data_for_country,
 )
 from unfccc_ghg_data.unfccc_reader.Democratic_Republic_of_the_Congo.config_cod_bur1 import (  # noqa: E501
     coords_cols,
     coords_defaults,
     coords_terminologies,
     coords_value_mapping,
+    country_processing_step1,
     filter_remove,
+    gas_baskets,
     meta_data,
     page_defs,
+    sectors_proc,
     table_defs,
+    tolerance,
 )
 
 if __name__ == "__main__":
@@ -163,7 +203,7 @@ if __name__ == "__main__":
             if data_pm2 is None:
                 data_pm2 = this_table_pm2
             else:
-                data_pm2 = data_pm2.pr.merge(this_table_pm2)
+                data_pm2 = data_pm2.pr.merge(this_table_pm2, tolerance=tolerance)
 
             print("done")
 
@@ -187,5 +227,39 @@ if __name__ == "__main__":
         encoding=encoding,
     )
 
-    ### TODO processing ###
-    # The data is very inconsistent we have to deal with theis before processing
+    # ###
+    # ## process the data
+    # ###
+    data_proc_pm2 = data_pm2
+
+    # actual processing
+    data_proc_pm2 = process_data_for_country(
+        data_proc_pm2,
+        entities_to_ignore=["CO2 emissions", "CO2 removals"],
+        gas_baskets=gas_baskets,
+        processing_info_country=country_processing_step1,
+        sectors_out=sectors_proc,
+    )
+
+    # adapt source and metadata
+    # TODO: processing info is present twice
+    current_source = data_proc_pm2.coords["source"].to_numpy()[0]
+    data_temp = data_proc_pm2.pr.loc[{"source": current_source}]
+    data_proc_pm2 = data_proc_pm2.pr.set("source", "BUR_NIR", data_temp)
+
+    # ###
+    # save data to IF and native format
+    # ###
+    data_proc_if = data_proc_pm2.pr.to_interchange_format()
+    if not output_folder.exists():
+        output_folder.mkdir()
+    pm2.pm2io.write_interchange_format(
+        output_folder / (output_filename + coords_terminologies["category"]),
+        data_proc_if,
+    )
+
+    encoding = {var: compression for var in data_proc_pm2.data_vars}
+    data_proc_pm2.pr.to_netcdf(
+        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+        encoding=encoding,
+    )
