@@ -33,7 +33,10 @@
     "CHN": "China",
     "CIV": "C\u00f4te_d'Ivoire",
     "CMR": "Cameroon",
-    "COD": "Congo,_The_Democratic_Republic_of_the",
+    "COD": [
+        "Democratic_Republic_of_the_Congo",
+        "Congo,_The_Democratic_Republic_of_the"
+    ],
     "COG": "Congo",
     "COK": "Cook_Islands",
     "COL": "Colombia",
