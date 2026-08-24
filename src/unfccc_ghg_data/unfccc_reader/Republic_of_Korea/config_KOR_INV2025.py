@@ -95,6 +95,12 @@ category_conversion = {
             "sources": ["1.A.3.d.2"],
             # "name": "Water-borne Navigation"
         },  # shipping
+        "2.D": {
+            "sources": ["2.D.1", "2.D.2"],
+        },
+        "2": {
+            "sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"],
+        },
         "3.A.2": {
             "sources": ["3.A.2.a", "3.A.2.c", "3.A.2.h", "3.A.2.j"],
             # "name": "Livestock"
