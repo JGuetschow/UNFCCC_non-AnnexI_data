@@ -30,6 +30,7 @@
 :maxdepth: 2
 usage
 development
+contribution
 api/unfccc_ghg_data
 changelog
 ```
