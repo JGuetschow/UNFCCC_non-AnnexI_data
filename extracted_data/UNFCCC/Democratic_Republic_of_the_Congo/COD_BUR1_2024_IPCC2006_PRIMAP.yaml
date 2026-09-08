@@ -3,7 +3,6 @@ attrs:
   cat: category (IPCC2006_PRIMAP)
   comment: Read fom pdf by Johannes Gütschow Processed on 2026-09-08
   contact: mail@johannes-guetschow.de
-  entity: N2O
   gwp_context: AR4GWP100
   institution: UNFCCC
   references: https://unfccc.int/documents/629121
