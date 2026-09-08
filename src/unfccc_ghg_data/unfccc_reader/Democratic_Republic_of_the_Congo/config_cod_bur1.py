@@ -612,8 +612,91 @@ meta_data = {
 # ###
 # aggregate categories
 country_processing_step1 = {
+    "fix_EF": {  # fix errors in 2003 for 1 and 1.A
+        "energy": {
+            "EF_used": 2,  # not the actual factors, easier like this
+            "EF_correct": 1,
+            "variables": ["N2O"],
+            "sel": {
+                "category": [
+                    "1",
+                ],
+                "time": ["2003"],
+            },
+        },
+        "ffb": {
+            "EF_used": 2,  # not the actual factors, easier like this
+            "EF_correct": 1,
+            "variables": ["N2O", "CH4"],
+            "sel": {
+                "category": [
+                    "1.A",
+                ],
+                "time": ["2003"],
+            },
+        },
+    },
+    "subtract_cats": {
+        "1.B.1": {
+            "parent": "1",
+            "subtract": ["1.A"],
+            # 'name': 'Land Use, Land Use Change, and Forestry'
+        },
+    },
+    "remove_ts": {
+        # we have to remove 2003 because it contains the erroneous N2O data
+        "energy_2003": {  # we have to remove 2003 as it contains the erroneous N2O data
+            "category": ["1"],
+            "entities": ["KYOTOGHG (AR5GWP100)"],
+            "time": ["2003"],
+        },
+        "ffb": {  # remove as the GWP is not the same as for 1,
+            # so we can't do the subtraction
+            "category": ["1.A"],
+            "entities": ["KYOTOGHG (AR4GWP100)"],
+        },
+    },
+    "downscale": {
+        "sectors": {
+            "3.A.1_CH4": {
+                "basket": "3.A.1",
+                "basket_contents": [
+                    "3.A.1.a.i",
+                    "3.A.1.a.ii",
+                    "3.A.1.c",
+                    "3.A.1.d",
+                    "3.A.1.h",
+                ],
+                "entities": ["CH4"],
+                "dim": "category (IPCC2006_PRIMAP)",
+            },
+            "3.C.1": {
+                "basket": "3.C.1",
+                "basket_contents": [
+                    "3.C.1.a",
+                    "3.C.1.c",
+                ],
+                "entities": ["CH4", "N2O"],
+                "dim": "category (IPCC2006_PRIMAP)",
+            },
+            # 3.C.4, CH4 not present for all years. Very low emissions
+        }
+    },
     "aggregate_coords": {
         f"category ({coords_terminologies['category']})": {
+            "1.B": {
+                "sources": ["1.B.1"],
+                "sel": {
+                    "entity": ["CH4", "N2O"],
+                },
+            },
+            # consistency check
+            "1": {
+                "sources": ["1.A", "1.B"],
+                "sel": {
+                    "entity": ["CH4", "N2O"],
+                },
+            },
             # consistency check
             "3.A": {
                 "sources": ["3.A.1", "3.A.2"],
@@ -734,6 +817,7 @@ gas_baskets = {
 sectors_proc = [
     "1",
     "1.A",
+    "1.B.1",
     "2",
     "3",
     "3.A",
