@@ -355,7 +355,7 @@ if __name__ == "__main__":
     data_proc_pm2 = process_data_for_country(
         data_country=data_pm2,
         entities_to_ignore=[],
-        gas_baskets=gas_baskets,
+        gas_baskets={},
         filter_dims=None,
         cat_terminology_out=None,
         category_conversion=None,
@@ -366,7 +366,7 @@ if __name__ == "__main__":
     data_proc_pm2 = process_data_for_country(
         data_country=data_proc_pm2,
         entities_to_ignore=[],
-        gas_baskets={},
+        gas_baskets=gas_baskets,
         filter_dims=None,
         cat_terminology_out=None,
         category_conversion=None,
