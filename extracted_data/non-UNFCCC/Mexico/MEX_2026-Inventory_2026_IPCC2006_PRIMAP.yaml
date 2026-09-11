@@ -1,0 +1,25 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom xlsx by Johannes Gütschow Processed on 2026-06-24
+  contact: mail@johannes-guetschow.de
+  gwp_context: AR5GWP100
+  institution: UNFCCC
+  references: 
+    https://www.gob.mx/cms/uploads/attachment/file/1031246/INEGyCEI_1990-2024_Dif_221025.xlsx
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Mexico INVENTARIO NACIONAL DE EMISIONES DE GASES Y COMPUESTOS DE EFECTO
+    INVERNADERO (INEGYCEI) Processed on 2026-06-24
+data_file: MEX_2026-Inventory_2026_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

@@ -1,7 +1,7 @@
 attrs:
   area: area (ISO3)
   cat: category (IPCC2006_PRIMAP)
-  comment: Read fom xlsx file by Johannes Gütschow Processed on 2026-03-04
+  comment: Read fom xlsx file by Johannes Gütschow Processed on 2026-08-24
   contact: mail@johannes-guetschow.de
   entity: PFCS
   gwp_context: AR6GWP100
@@ -12,7 +12,7 @@ attrs:
   rights: ''
   scen: scenario (PRIMAP)
   title: 'Republic of Korea: National Greenhouse Gas Inventory Report 2025 Processed
-    on 2026-03-04'
+    on 2026-08-24'
 data_file: KOR_2025-Inventory_2025_IPCC2006_PRIMAP.csv
 dimensions:
   '*':

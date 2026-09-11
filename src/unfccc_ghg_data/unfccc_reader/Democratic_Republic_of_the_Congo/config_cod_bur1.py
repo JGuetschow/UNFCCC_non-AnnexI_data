@@ -10,7 +10,7 @@ Full configuration including PRIMAP2 conversion config and metadata
 
 # general
 gwp_to_use = "SARGWP100"
-terminology_proc = "IPCC2006_PRIMAP"
+tolerance = 0.011
 
 
 page_defs = {
@@ -104,7 +104,8 @@ table_defs = {
             "Energie": "1",
             "PIUP": "2",
             "Bétail": "3.A",  # not completely clear, maybe includes other things as well
-            "Terres forestières": "3.B.1",  # for removals. for emissions 3.B.2
+            "Terres forestières": "M.3.B.1.T3",  # for removals. for emissions 3.B.2
+            # inconsistent with other tables where emissions come from 3.B.2
             "Sources agrégées": "M.3.C.NBB",  # no biomass burning included
             "Déchets": "4",
         },
@@ -152,15 +153,15 @@ table_defs = {
         "category_cell": [0, 0],
         "unit": "GgCO2eq",
         "add_coords_defaults": {
-            "entity": f"KYOTOGHG ({gwp_to_use})",
+            "entity": "KYOTOGHG (AR5GWP100)",
         },
         "cat_codes_mapping": {
             "Energie": "1",
             "PIUP": "2",
-            "Agriculture": "M.AG.NBB",  # no biomass burning inlcuded
-            "FAT": "M.LULUCF",  # same data as Terres forestières from Tableau 3
+            "Agriculture": "M.AG.NBB",  # no biomass burning included
+            "FAT": "M.LULUCF.T5",  # inconsistetn with LULUCF data in later tables
             "Déchets": "4",
-            "Total": "0",
+            "Total": "0.T5",  # LULUCF inconsistent with later tables
         },
     },
     "Tableau_16": {  # contribution des émissions des principaux gaz
@@ -174,10 +175,10 @@ table_defs = {
                 "CO2",
                 "CH4",
                 "N2O",
-                f"CO2 ({gwp_to_use})",
-                f"CH4 ({gwp_to_use})",
-                f"N2O ({gwp_to_use})",
-                f"KYOTOGHG ({gwp_to_use})",
+                "CO2 (AR4GWP100)",
+                "CH4 (AR4GWP100)",
+                "N2O (AR4GWP100)",
+                "KYOTOGHG (AR4GWP100)",
             ],
             [
                 "unit",
@@ -193,9 +194,9 @@ table_defs = {
         "filter_remove": {
             "f_co2eq": {
                 "entity": [
-                    f"CO2 ({gwp_to_use})",
-                    f"CH4 ({gwp_to_use})",
-                    f"N2O ({gwp_to_use})",
+                    "CO2 (AR4GWP100)",
+                    "CH4 (AR4GWP100)",
+                    "N2O (AR4GWP100)",
                 ],
             },
         },
@@ -221,7 +222,7 @@ table_defs = {
             "3.B.3-Prairies": "3.B.3",
             "3.B.6-AutresTerres": "3.B.6",
         },
-        "drop_rows": [0, 1],
+        "drop_rows": [0],
         "header": [
             [
                 "category",
@@ -264,11 +265,13 @@ table_defs = {
     "Tableau_29": {  # Émissions agrégées dues au bétail, aux sources agrégées et émissions sans CO2 (Gg CO2-éq)
         "tables": [6],
         "rows_to_fix": {},
-        "unit": "GgCO2eq",
+        # "unit": "GgCO2eq",
         "cat_codes_mapping": {
-            "Bétail": "M.3.A.T29",  # inconsistent with other tables
-            "Sources agrégées et émissions sans CO2": "3.C",
-            "Total": "M.AG",  # maybe LU bits of 3.C.1 included
+            "Bétail": "M.3.A.T29",  # not fully consistent for N2O for a few years
+            "Sources agrégées et émissions sans CO2": "M.3.C.T29",
+            # the above is the sum of 1000x 3.C.1 + 3.C.4 + 3.C.7
+            # so it's completely unusable, but consistent with data from other tables
+            "Total": "M.AG.T29",  # includes the chaos category above, so it's unsuable
         },
         "drop_rows": [0, 1, 2],
         "header": [
@@ -283,14 +286,20 @@ table_defs = {
             ],
             [
                 "entity",
-                f"CH4 ({gwp_to_use})",
-                f"CO2 ({gwp_to_use})",
-                f"CH4 ({gwp_to_use})",
+                "CH4 (AR4GWP100)",
                 f"N2O ({gwp_to_use})",
-                f"CO2 ({gwp_to_use})",
-                f"KYOTOGHG ({gwp_to_use})",
+                "CH4 (AR5GWP100)",
+                "N2O (AR5GWP100)",
+                "CO2",
+                f"KYOTOGHG ({gwp_to_use})",  # TODO: GWP mixture, remove
             ],
+            ["unit", "GgCO2eq", "GgCO2eq", "tCO2eq", "tCO2eq", "Gg", "GgCO2eq"],
         ],
+        "filter_remove": {
+            "f_total": {
+                "category": ["Total", "Sources agrégées et émissions sans CO2"],
+            },
+        },
     },
     "Tableau_30": {  # Synthèse de l'évolution des émission imputables au Bétail (Gg éq-CO2)
         "tables": [7, 8],
@@ -313,13 +322,17 @@ table_defs = {
                 "CH4",
                 "N2O",
                 f"CH4 ({gwp_to_use})",
-                f"N2O ({gwp_to_use})",
-                f"KYOTOGHG ({gwp_to_use})",
+                "N2O (AR5GWP100)",
+                f"KYOTOGHG ({gwp_to_use})",  # actually a GWP mixture, so discard data
             ],
         ],
         "filter_remove": {
             "f_co2eq": {
-                "entity": [f"CH4 ({gwp_to_use})", f"N2O ({gwp_to_use})"],
+                "entity": [
+                    f"CH4 ({gwp_to_use})",
+                    "N2O (AR5GWP100)",
+                    f"KYOTOGHG ({gwp_to_use})",
+                ],
             },
         },
     },
@@ -331,9 +344,9 @@ table_defs = {
         },
         "unit": "Gg",
         "cat_codes_mapping": {
-            "Fermentation entérique": "M.3.A.1.T31",
-            "Gestion du fumier": "M.3.A.2.T31",
-            "Total": "M.3.A.T31",  # not consisten with table 30
+            "Fermentation entérique": "M.3.A.1.T31",  # inconsistent with table 27 for 2017, 2018
+            "Gestion du fumier": "M.3.A.2.T31",  # not consistent wit table 27
+            "Total": "M.3.A.T31",  # not consistent with table 30
         },
         "drop_rows": [0, 1, 2],
         "header": [
@@ -353,12 +366,12 @@ table_defs = {
         },
         "unit": "Gg",
         "cat_codes_mapping": {
-            "Vaches laitières": "M.3.A.1.a.i.T31",
-            "Autres bovins": "M.3.A.1.a.ii.T31",
-            "Moutons": "M.3.A.1.c.T31",
-            "Chèvres": "M.3.A.1.d.T31",
-            "Suidés": "M.3.A.1.h.T31",
-            "Total": "M.3.A.1.T31",
+            "Vaches laitières": "3.A.1.a.i",
+            "Autres bovins": "3.A.1.a.ii",
+            "Moutons": "3.A.1.c",
+            "Chèvres": "3.A.1.d",
+            "Suidés": "3.A.1.h",
+            "Total": "3.A.1",
         },
         "drop_rows": [0, 1, 2],
         "header": [
@@ -381,13 +394,13 @@ table_defs = {
         },
         "unit": "Gg",
         "cat_codes_mapping": {
-            "Vaches laitières": "M.3.A.2.a.i.T31",
-            "Autres bovins": "M.3.A.2.a.ii.T31",
-            "Moutons": "M.3.A.2.c.T31",
-            "Chèvres": "M.3.A.2.d.T31",
-            "Suidés": "M.3.A.2.h.T31",
-            "Volaille": "M.3.A.2.i.T31",
-            "Total": "M.3.A.2.T31",
+            "Vaches laitières": "M.3.A.2.a.i.T33",
+            "Autres bovins": "M.3.A.2.a.ii.T33",
+            "Moutons": "M.3.A.2.c.T33",
+            "Chèvres": "M.3.A.2.d.T33",
+            "Suidés": "M.3.A.2.h.T33",
+            "Volaille": "M.3.A.2.i.T33",
+            "Total": "M.3.A.2.T33",
         },
         "drop_rows": [0, 1, 2],
         "header": [
@@ -410,14 +423,14 @@ table_defs = {
             "entity": "N2O",
         },
         "unit": "Gg",
-        "cat_codes_mapping": {
-            "Vaches laitières": "M.3.A.2.a.i.T31",
-            "Autres bovins": "M.3.A.2.a.ii.T31",
-            "Moutons": "M.3.A.2.c.T31",
-            "Chèvres": "M.3.A.2.d.T31",
-            "Suidés": "M.3.A.2.h.T31",
-            "Volaille": "M.3.A.2.i.T31",
-            "Total": "M.3.A.2.T31",
+        "cat_codes_mapping": {  # inconsistent with table 27 for 2017 and 2018
+            "Vaches laitières": "M.3.A.2.a.i.T34",
+            "Autres bovins": "M.3.A.2.a.ii.T34",
+            "Moutons": "M.3.A.2.c.T34",
+            "Chèvres": "M.3.A.2.d.T34",
+            "Suidés": "M.3.A.2.h.T34",
+            "Volaille": "M.3.A.2.i.T34",
+            "Total": "M.3.A.2.T34",
         },
         "drop_rows": [0, 1, 2],
         "header": [
@@ -437,9 +450,9 @@ table_defs = {
         "tables": [15],
         "rows_to_fix": {},
         "cat_codes_mapping": {
-            "Brûlage de biomasse - Forêt": "M.3.C.1.a.T39",
-            "Brûlage de biomasse - Savanes et prairies": "M.3.C.1.c.T39",
-            "Brûlage de biomasse - Total": "M.3.C.1.T39",
+            "Brûlage de biomasse - Forêt": "3.C.1.a",
+            "Brûlage de biomasse - Savanes et prairies": "3.C.1.c",
+            "Brûlage de biomasse - Total": "3.C.1",
         },
         "drop_rows": [0, 1, 2, 3, 4, 5],
         "header": [
@@ -467,14 +480,14 @@ table_defs = {
             ],
             [
                 "unit",
-                "Gg",
-                "Gg",
-                "Gg",
-                "GgCO2eq",
-                "Gg",
-                "Gg",
-                "Gg",
-                "GgCO2eq",
+                "t",
+                "t",
+                "t",
+                "tCO2eq",
+                "t",
+                "t",
+                "t",
+                "tCO2eq",
             ],
         ],
         "filter_remove": {
@@ -488,12 +501,12 @@ table_defs = {
         "rows_to_fix": {},
         "cat_codes_mapping": {
             "Riziculture": "3.C.7",
-            "Terres cultivées (Drainage des sols)": "M.3.C.4.DOS",
-            "Total": "3.C",
+            "Terres cultivées (Drainage des sols)": "3.C.4",
+            "Total": "M.3.C.NBB.T40",  # inconsistent for N2O
             "Chaulage": "3.C.2",
             "Urée": "3.C.3",
-            "Gestion des sols - Directe": "M.3.C.4.LM",  # land management
-            "Gestion des sols - Inirectes": "3.C.5",
+            "Gestion des sols - Directe": "3.C.4",  # land management
+            "Gestion des sols - Inirectes": "M.3.C.5.T40",  # inconsistent with other tables
             "Gestion du fumier - Inirectes": "3.C.6",
         },
         "drop_rows": [0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -561,7 +574,7 @@ coords_cols = {
 
 coords_terminologies = {
     "area": "ISO3",
-    "category": "IPCC2006",
+    "category": "IPCC2006_PRIMAP",
     "scenario": "PRIMAP",
 }
 
@@ -599,35 +612,120 @@ meta_data = {
 # ###
 # aggregate categories
 country_processing_step1 = {
-    "basket_copy": {
-        "GWPs_to_add": ["AR4GWP100", "AR5GWP100", "AR6GWP100"],
-        "entities": ["HFCS", "PFCS", "UnspMixOfHFCsPFCs"],
-        "source_GWP": gwp_to_use,
+    "fix_EF": {  # fix errors in 2003 for 1 and 1.A
+        "energy": {
+            "EF_used": 2,  # not the actual factors, easier like this
+            "EF_correct": 1,
+            "variables": ["N2O"],
+            "sel": {
+                "category": [
+                    "1",
+                ],
+                "time": ["2003"],
+            },
+        },
+        "ffb": {
+            "EF_used": 2,  # not the actual factors, easier like this
+            "EF_correct": 1,
+            "variables": ["N2O", "CH4"],
+            "sel": {
+                "category": [
+                    "1.A",
+                ],
+                "time": ["2003"],
+            },
+        },
+    },
+    "subtract_cats": {
+        "1.B.1": {
+            "parent": "1",
+            "subtract": ["1.A"],
+            # 'name': 'Land Use, Land Use Change, and Forestry'
+        },
+    },
+    "remove_ts": {
+        # we have to remove 2003 because it contains the erroneous N2O data
+        "energy_2003": {  # we have to remove 2003 as it contains the erroneous N2O data
+            "category": ["1"],
+            "entities": ["KYOTOGHG (AR5GWP100)"],
+            "time": ["2003"],
+        },
+        "ffb": {  # remove as the GWP is not the same as for 1,
+            # so we can't do the subtraction
+            "category": ["1.A"],
+            "entities": ["KYOTOGHG (AR4GWP100)"],
+        },
+    },
+    "downscale": {
+        "sectors": {
+            "3.A.1_CH4": {
+                "basket": "3.A.1",
+                "basket_contents": [
+                    "3.A.1.a.i",
+                    "3.A.1.a.ii",
+                    "3.A.1.c",
+                    "3.A.1.d",
+                    "3.A.1.h",
+                ],
+                "entities": ["CH4"],
+                "dim": "category (IPCC2006_PRIMAP)",
+            },
+            "3.C.1": {
+                "basket": "3.C.1",
+                "basket_contents": [
+                    "3.C.1.a",
+                    "3.C.1.c",
+                ],
+                "entities": ["CH4", "N2O"],
+                "dim": "category (IPCC2006_PRIMAP)",
+            },
+            # 3.C.4, CH4 not present for all years. Very low emissions
+        }
     },
     "aggregate_coords": {
         f"category ({coords_terminologies['category']})": {
-            "1.B": {  # because we had to fix 1.B for year 2000
-                "sources": ["1.B.1", "1.B.2", "1.C"],
+            "1.B": {
+                "sources": ["1.B.1"],
                 "sel": {
-                    "entity": ["CO2", "CH4", "N2O", "NOx", "CO", "SO2", "NMVOC"],
+                    "entity": ["CH4", "N2O"],
                 },
             },
-            "1": {  # because we had to fix 1.B for year 2000
-                "sources": ["1.A", "1.B", "1.C"],
+            # consistency check
+            "1": {
+                "sources": ["1.A", "1.B"],
                 "sel": {
-                    "entity": ["CO2", "CH4", "N2O", "NOx", "CO", "SO2", "NMVOC"],
+                    "entity": ["CH4", "N2O"],
+                },
+            },
+            # consistency check
+            "3.A": {
+                "sources": ["3.A.1", "3.A.2"],
+                "sel": {
+                    "entity": ["CH4", "N2O"],
+                },
+            },
+            "3.B": {
+                "sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.6"],
+                "sel": {
+                    "entity": ["CO2"],
                 },
             },
             "M.3.C.1.AG": {
-                "sources": ["3.C.1.b"],
+                "sources": ["3.C.1.c"],
                 "sel": {
-                    "entity": ["CH4", "CO2", "N2O", "NOx", "CO"],
+                    "entity": ["CH4", "N2O"],
                 },
             },
             "M.3.C.1.LU": {
                 "sources": ["3.C.1.a"],
                 "sel": {
-                    "entity": ["CH4", "CO2", "N2O", "NOx", "CO"],
+                    "entity": ["CH4", "N2O"],
+                },
+            },
+            "3.C.1": {  # consistency check
+                "sources": ["M.3.C.1.AG", "M.3.C.1.LU"],
+                "sel": {
+                    "entity": ["CH4", "N2O"],
                 },
             },
             "M.3.C.AG": {
@@ -638,33 +736,51 @@ country_processing_step1 = {
                     "3.C.4",
                     "3.C.5",
                     "3.C.6",
+                    "3.C.7",
                 ],
                 "sel": {
-                    "entity": ["CH4", "CO2", "N2O", "NOx", "CO"],
+                    "entity": ["CH4", "CO2", "N2O"],
+                },
+            },
+            "M.3.C.LU": {
+                "sources": [
+                    "M.3.C.1.LU",
+                ],
+                "sel": {
+                    "entity": ["CH4", "CO2", "N2O"],
+                },
+            },
+            "3.C": {
+                "sources": [
+                    "M.3.C.LU",
+                    "M.3.C.AG",
+                ],
+                "sel": {
+                    "entity": ["CH4", "CO2", "N2O"],
                 },
             },
             "M.AG.ELV": {
                 "sources": ["M.3.C.AG"],
                 "sel": {
-                    "entity": ["CH4", "CO2", "N2O", "NOx", "CO"],
+                    "entity": ["CH4", "CO2", "N2O"],
                 },
             },
             "M.AG": {
                 "sources": ["M.AG.ELV", "3.A"],
                 "sel": {
-                    "entity": ["CH4", "CO2", "N2O", "NOx", "CO"],
+                    "entity": ["CH4", "CO2", "N2O"],
                 },
             },
             "M.LULUCF": {
-                "sources": ["3.B", "3.D", "M.3.C.1.LU"],
+                "sources": ["3.B", "M.3.C.LU"],
                 "sel": {
-                    "entity": ["CH4", "CO2", "N2O", "NOx", "CO"],
+                    "entity": ["CH4", "CO2", "N2O"],
                 },
             },
-            "3": {  # conmsistency check
+            "3": {  # consistency check
                 "sources": ["M.AG", "M.LULUCF"],
                 "sel": {
-                    "entity": ["CH4", "CO2", "N2O", "NOx", "CO"],
+                    "entity": ["CH4", "CO2", "N2O"],
                 },
             },
             "0": {  # consistency check
@@ -674,14 +790,6 @@ country_processing_step1 = {
                         "CH4",
                         "CO2",
                         "N2O",
-                        "NOx",
-                        "CO",
-                        "SO2",
-                        "NMVOC",
-                        "SF6",
-                        f"HFCS ({gwp_to_use})",
-                        f"PFCS ({gwp_to_use})",
-                        f"UnspMixOfHFCsPFCs ({gwp_to_use})",
                     ],
                 },
             },
@@ -692,14 +800,6 @@ country_processing_step1 = {
                         "CH4",
                         "CO2",
                         "N2O",
-                        "NOx",
-                        "CO",
-                        "SO2",
-                        "NMVOC",
-                        "SF6",
-                        f"HFCS ({gwp_to_use})",
-                        f"PFCS ({gwp_to_use})",
-                        f"UnspMixOfHFCsPFCs ({gwp_to_use})",
                     ],
                 },
             },
@@ -708,32 +808,47 @@ country_processing_step1 = {
 }
 
 gas_baskets = {
-    "FGASES (SARGWP100)": [
-        "HFCS (SARGWP100)",
-        "PFCS (SARGWP100)",
-        "SF6",
-        "UnspMixOfHFCsPFCs (SARGWP100)",
-    ],
-    "FGASES (AR4GWP100)": [
-        "HFCS (AR4GWP100)",
-        "PFCS (AR4GWP100)",
-        "SF6",
-        "UnspMixOfHFCsPFCs (AR4GWP100)",
-    ],
-    "FGASES (AR5GWP100)": [
-        "HFCS (AR5GWP100)",
-        "PFCS (AR5GWP100)",
-        "SF6",
-        "UnspMixOfHFCsPFCs (AR5GWP100)",
-    ],
-    "FGASES (AR6GWP100)": [
-        "HFCS (AR6GWP100)",
-        "PFCS (AR6GWP100)",
-        "SF6",
-        "UnspMixOfHFCsPFCs (AR6GWP100)",
-    ],
-    "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O", "FGASES (SARGWP100)"],
-    "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR4GWP100)"],
-    "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR5GWP100)"],
-    "KYOTOGHG (AR6GWP100)": ["CO2", "CH4", "N2O", "FGASES (AR6GWP100)"],
+    "KYOTOGHG (SARGWP100)": ["CO2", "CH4", "N2O"],
+    "KYOTOGHG (AR4GWP100)": ["CO2", "CH4", "N2O"],
+    "KYOTOGHG (AR5GWP100)": ["CO2", "CH4", "N2O"],
+    "KYOTOGHG (AR6GWP100)": ["CO2", "CH4", "N2O"],
 }
+
+sectors_proc = [
+    "1",
+    "1.A",
+    "1.B.1",
+    "2",
+    "3",
+    "3.A",
+    "3.A.1",
+    "3.A.1.a.i",
+    "3.A.1.a.ii",
+    "3.A.1.c",
+    "3.A.1.d",
+    "3.A.1.h",
+    "3.A.2",
+    "3.B",
+    "3.B.1",
+    "3.B.2",
+    "3.B.3",
+    "3.B.6",
+    "3.C",
+    "3.C.1",
+    "3.C.1.a",
+    "3.C.1.c",
+    "3.C.2",
+    "3.C.3",
+    "3.C.4",
+    "3.C.5",
+    "3.C.6",
+    "3.C.7",
+    "4",
+    "M.0.EL",
+    "M.LULUCF",
+    "M.AG",
+    "M.AG.ELV",
+    "M.3.C.AG",
+    "M.3.C.LU",
+    "M.3.C.1.AG" "M.3.C.1.LU",
+]
