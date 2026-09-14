@@ -640,6 +640,7 @@ country_processing_step1 = {
         "1.B.1": {
             "parent": "1",
             "subtract": ["1.A"],
+            "entities": ["CH4", "N2O"],
             # 'name': 'Land Use, Land Use Change, and Forestry'
         },
     },
