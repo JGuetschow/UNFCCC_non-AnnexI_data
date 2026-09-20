@@ -1,17 +1,17 @@
 attrs:
   area: area (ISO3)
   cat: category (IPCC2006_PRIMAP)
-  comment: Read fom pdf by Johannes Gütschow Processed on 2026-06-08 Processed 
-    on 2026-06-08 Processed on 2026-06-08
+  comment: Read fom pdf by Johannes Gütschow Processed on 2026-09-20 Processed 
+    on 2026-09-20 Processed on 2026-09-20
   contact: mail@johannes-guetschow.de
-  entity: CO2
+  entity: CH4
   gwp_context: AR5GWP100
   institution: UNFCCC
   references: https://unfccc.int/documents/655314
   rights: ''
   scen: scenario (PRIMAP)
   title: ' Bangladesh. 2024 Biennial Transparency Report (BTR). BTR1.  Processed on
-    2026-06-08 Processed on 2026-06-08 Processed on 2026-06-08'
+    2026-09-20 Processed on 2026-09-20 Processed on 2026-09-20'
 data_file: BGD_BTR1_2024_IPCC2006_PRIMAP.csv
 dimensions:
   '*':
