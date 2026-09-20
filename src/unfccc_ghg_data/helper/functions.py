@@ -198,9 +198,10 @@ def process_data_for_country(  # noqa PLR0913, PLR0912, PLR0915
                 to_val = move_info["to"]
                 for entity in entities:
                     ts_to_move = data_country[entity].pr.loc[sel]
-                    data_country[entity] = data_country[entity].pr.set(
-                        dim, to_val, ts_to_move
-                    )
+                    # merging so new coord values will be propagated to the whole
+                    # dataset
+                    data_moved = data_country[entity].pr.set(dim, to_val, ts_to_move)
+                    data_country = data_country.pr.merge(data_moved)
                     data_country[entity].pr.loc[sel] *= np.nan
 
         # fix GWP for timeseries

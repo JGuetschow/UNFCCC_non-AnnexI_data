@@ -1056,16 +1056,13 @@ country_processing_step3 = {
             },
         }
     },
-}
-
-
-basket_copy = (
-    {
+    "basket_copy": {
         "GWPs_to_add": ["SARGWP100", "AR4GWP100", "AR6GWP100"],
-        "entities": ["UnspMixOfHFCsPFCs", "UnspMixOfPFCs", "PFCS"],
+        "entities": ["UnspMixOfHFCsPFCs", "PFCS"],
         "source_GWP": gwp_to_use,
     },
-)
+}
+
 
 gwps_for_basket_aggregation = [
     "SARGWP100",
