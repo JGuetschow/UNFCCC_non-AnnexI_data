@@ -1,0 +1,22 @@
+attrs:
+  area: area (ISO3)
+  cat: category (CRT)
+  comment: Read fom pdf by Johannes Gütschow
+  contact: mail@johannes-guetschow.de
+  institution: UNFCCC
+  references: https://unfccc.int/documents/659994
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Indonesia. National Communication (NC). NC 4.
+data_file: IDN_NC4_2026_CRT_raw.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (CRT)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
