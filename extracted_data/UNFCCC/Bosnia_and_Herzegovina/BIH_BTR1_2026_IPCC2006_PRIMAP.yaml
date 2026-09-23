@@ -1,0 +1,23 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom pdf by Johannes Gütschow Processed on 2026-09-22
+  contact: mail@johannes-guetschow.de
+  institution: UNFCCC
+  references: https://unfccc.int/documents/660085
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Bosnia and Herzegovina. 2024 Biennial Transparency Report (BTR). BTR1. 
+    National Communications (NC). NC5 Processed on 2026-09-22
+data_file: BIH_BTR1_2026_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'

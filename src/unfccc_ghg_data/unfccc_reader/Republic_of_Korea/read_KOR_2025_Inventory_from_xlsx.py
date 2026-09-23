@@ -92,10 +92,11 @@ if __name__ == "__main__":
         "unit": "unit",
     }
 
-    add_coords_cols = {
-        "orig_cat_name": ["orig_cat_name", "category"],
-        "cat_name_translation": ["cat_name_translation", "category"],
-    }
+    # add_coords_cols = {
+    #     "orig_cat_name": ["orig_cat_name", "category"],
+    #     "cat_name_translation": ["cat_name_translation", "category"],
+    # }
+    add_coords_cols = None
 
     coords_terminologies = {
         "area": "ISO3",
@@ -201,8 +202,8 @@ if __name__ == "__main__":
     df_all = df_all.rename(columns={"분야·부문/연도": "category"})
 
     # create copies of category col for further processing
-    df_all["orig_cat_name"] = df_all["category"]
-    df_all["cat_name_translation"] = df_all["category"]
+    # df_all["orig_cat_name"] = df_all["category"]
+    # df_all["cat_name_translation"] = df_all["category"]
 
     # ###
     # convert to PRIMAP2 interchange format
@@ -227,9 +228,9 @@ if __name__ == "__main__":
     # conversion to PRIMAP2 native format
     data_pm2 = pm2.pm2io.from_interchange_format(data_if)
     # convert back to IF to have units in the fixed format
-    data_pm2 = data_pm2.reset_coords(
-        ["orig_cat_name", "cat_name_translation"], drop=True
-    )
+    # data_pm2 = data_pm2.reset_coords(
+    #     ["orig_cat_name", "cat_name_translation"], drop=True
+    # )
     data_if = data_pm2.pr.to_interchange_format()
 
     # ###

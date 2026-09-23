@@ -1179,7 +1179,7 @@ inventory_files = {
                 "coords_value_mapping": {
                     "category": {
                         "N2O": "3",
-                        "Agricultural Soil Management": "3.A",
+                        "Agricultural Soil Management": "3.D",
                         "Manure Management": "3.B",
                         "Field Burning of Agricultural Residues": "3.F",
                     }

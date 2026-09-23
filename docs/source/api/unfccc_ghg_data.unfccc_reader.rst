@@ -11,6 +11,7 @@ unfccc\_ghg\_data.unfccc\_reader
 
   Argentina
   Bangladesh
+  Bosnia_and_Herzegovina
   Burundi
   Cabo_Verde
   Chile

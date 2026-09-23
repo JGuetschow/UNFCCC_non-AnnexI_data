@@ -221,15 +221,15 @@ if __name__ == "__main__":
     # ###
     # save data to IF and native format
     # ###
-    pm2.pm2io.write_interchange_format(
-        output_folder / (output_filename + coords_terminologies["category"]), data_if
-    )
-
-    encoding = {var: compression for var in data_pm2.data_vars}
-    data_pm2.pr.to_netcdf(
-        output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
-        encoding=encoding,
-    )
+    # pm2.pm2io.write_interchange_format(
+    #     output_folder / (output_filename + coords_terminologies["category"]), data_if
+    # )
+    #
+    # encoding = {var: compression for var in data_pm2.data_vars}
+    # data_pm2.pr.to_netcdf(
+    #     output_folder / (output_filename + coords_terminologies["category"] + ".nc"),
+    #     encoding=encoding,
+    # )
 
     # ###
     # conversion to ipcc 2006 categories
@@ -241,7 +241,12 @@ if __name__ == "__main__":
     # the processing is done in several steps because of limitations of the current
     # processing function
 
-    # we first need to make some copies of gwp weighted gas baskets with default
+    # interpolate all timeseries because some have gaps leading to wrong sector sums
+    data_pm2_2006_dequ = data_pm2_2006.pr.dequantify()
+    data_pm2_2006_dequ = data_pm2_2006_dequ.interpolate_na(dim="time", method="linear")
+    data_pm2_2006 = data_pm2_2006_dequ.pr.quantify()
+
+    # we need to make some copies of gwp weighted gas baskets with default
     # conversion factors as gas information is missing for a few cases
     country_processing_step1 = {
         # "basket_copy": basket_copy_PFCS,
