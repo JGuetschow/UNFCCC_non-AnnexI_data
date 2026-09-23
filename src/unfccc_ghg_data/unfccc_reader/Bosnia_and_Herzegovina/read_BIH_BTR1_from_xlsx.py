@@ -1,10 +1,10 @@
 """
-Read Indonesia's NC4 from pdf
+Read Bosnia and Herzegovina's BTR1 from pdf
 
-This script reads data from Indonesia's NC4
+This script reads data from Bosnia and Herzegovina's BTR1
 Data are read from pdf using camelot.
 
-TODO: elaborate on processing
+TODO: fix M.AG.ELV and fix negative value for waste N2O
 
 """
 
@@ -89,12 +89,18 @@ if __name__ == "__main__":
     )
 
     ### add the processed data
-    data_proc_pm2 = data_raw_pm2.copy()
+    # data_proc_pm2 = data_raw_pm2.copy()
 
-    data_temp = data_proc_pm2.pr.loc[{"provenance": "measured"}]
-    data_proc_pm2 = data_proc_pm2.pr.set("provenance", "derived", data_temp)
-    data_proc_pm2 = data_proc_pm2.pr.loc[{"provenance": ["derived"]}]
-    data_proc_pm2 = data_proc_pm2.pr.merge(data_pm2.pr.loc[{"provenance": ["derived"]}])
+    # set provenance to measured for result to avoid problems when combining with data
+    # from other reports
+    data_temp = data_pm2.pr.loc[{"provenance": "derived"}]
+    data_temp = data_pm2.pr.loc[{"provenance": ["derived"]}].pr.set(
+        "provenance", "measured", data_temp
+    )
+    data_temp = data_temp.pr.loc[{"provenance": ["measured"]}]
+    data_proc_pm2 = data_raw_pm2.pr.loc[{"provenance": ["measured"]}].pr.merge(
+        data_temp
+    )
 
     # actual processing
     data_proc_pm2 = process_data_for_country(
