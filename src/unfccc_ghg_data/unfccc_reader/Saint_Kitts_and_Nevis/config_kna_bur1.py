@@ -50,7 +50,7 @@ filter_remove = {
     "f1": {
         "entity": "Other halogenated gases without CO2 equivalent conversion factors (2)"
     },
-    "f2": {"entity": "3D2LULUCF"},
+    # "f2": {"entity": "3D2LULUCF"},
 }
 
 conf_general = {
@@ -283,7 +283,7 @@ conf_trend = {
             "E. Settlements": "3.B.5",
             "F. Other Land": "3.B.6",
             "G. Harvested wood products": "3.D.1",
-            "H. Other": "3.D.2.LULUCF",
+            "H. Other": "M.3.D.2.LU",
             "5. Waste": "4",
             "A.  Solid Waste Disposal": "4.A",
             "B.  Biological treatment of solid": "4.B",
@@ -541,52 +541,49 @@ gas_baskets = {
 country_processing_step1 = {
     "tolerance": 0.01,
     "aggregate_cats": {
-        "M.3.D.AG": {"sources": ["M.3.D.2.AG"]},
+        "M.3.D.AG": {"sources": ["M.3.D.2.AG"]},  # not present
         "3.C.1.AG": {"sources": ["3.C.1.b", "3.C.1.c"]},
         "M.3.C.AG": {
             "sources": [
                 "3.C.1.AG",
-                "3.C.2",
+                "3.C.2",  # not present
                 "3.C.3",
                 "3.C.4",
                 "3.C.5",
                 "3.C.6",
                 "3.C.7",
-                "3.C.8",
+                "3.C.8",  # not present
             ],
         },
         "M.AG.ELV": {
             "sources": ["M.3.C.AG", "M.3.D.AG"],
         },
+        # 3.X aggregation needed for KyotoGHG
         "3.A": {"sources": ["3.A.1", "3.A.2"]},
         "3.B": {"sources": ["3.B.1", "3.B.2", "3.B.3", "3.B.4", "3.B.5", "3.B.6"]},
         "3.C": {
             "sources": [
                 "3.C.1",
-                "3.C.2",
+                "3.C.2",  # not present
                 "3.C.3",
                 "3.C.4",
-                "3.C.5",
+                "3.C.5",  # only N2O, all zero
                 "3.C.6",
-                "3.C.7",
-                "3.C.8",
+                "3.C.7",  # all zero
+                "3.C.8",  # not present
             ]
         },
-        "3.D": {"sources": ["3.D.1", "3.D.2"]},
+        "3.D.2": {"sources": ["M.3.D.2.AG", "M.3.D.2.LU"]},
+        "3.D": {"sources": ["3.D.1", "3.D.2"]},  # 3.D.1 not present
         "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
-        "3.C.1.LU": {"sources": ["3.C.1.a", "3.C.1.d"]},
-        "M.3.D.LU": {"sources": ["3.D.1"]},
-        "M.LULUCF": {"sources": ["3.B", "3.C.1.LU", "M.3.D.LU"]},
+        "M.3.C.1.LU": {"sources": ["3.C.1.a", "3.C.1.d"]},
+        "M.3.D.LU": {"sources": ["3.D.1", "M.3.D.2.LU"]},
+        "M.LULUCF": {"sources": ["3.B", "M.3.C.1.LU", "M.3.D.LU"]},
         "M.0.EL": {
-            "sources": ["1", "2", "M.AG", "4"],
+            "sources": ["1", "2", "M.AG", "4", "5"],  # 5 is all zero
         },
         "3": {"sources": ["M.AG", "M.LULUCF"]},  # consistency check
         "0": {"sources": ["1", "2", "3", "4", "5"]},  # consistency check
-    },
-    "basket_copy": {
-        "GWPs_to_add": ["AR4GWP100", "SARGWP100", "AR6GWP100"],
-        "entities": ["HFCS", "PFCS", "UnspMixOfHFCs"],
-        "source_GWP": gwp_to_use,
     },
 }
 
@@ -601,7 +598,7 @@ country_processing_step2 = {
         #     },
         # },
         "entities": {
-            "KYOTO": {
+            "KYOTO_NZ": {
                 "basket": "KYOTOGHG (AR5GWP100)",
                 "basket_contents": [
                     "CH4",
@@ -613,32 +610,65 @@ country_processing_step2 = {
                 ],
                 "sel": {
                     f"category ({coords_terminologies['category']})": [
-                        "1",
+                        # downscale leaf categories, else we will ge inconsistent results
+                        # "1",
                         "1.A",
-                        "1.B",
+                        # "1.B",
                         "1.B.2",
-                        # "1.B.3" # all zero -> doesn't work
                         # "1.C",  # we don't have trend values for 1.C
                         # Downscaling currently doesn't work for all zero basket content, see
                         # https://github.com/pik-primap/primap2/issues/254#issue-2491434285
-                        # "2",  # all zero -> doesn't work
-                        # "2.A",  # all zero -> doesn't work
-                        # "2.B",  # all zero -> doesn't work
-                        # "2.C",  # all zero -> doesn't work
-                        # "2.D",  # all zero -> doesn't work
-                        # "2.E",  # all zero -> doesn't work
-                        # "2.F",  # all zero -> doesn't work
-                        # "2.G",  # all zero -> doesn't work
-                        # "2.H",  # all zero -> doesn't work
-                        "3",
+                        # "3",
                         "3.A",
-                        "3.B",
-                        "3.C",
-                        "3.D",
+                        # "3.B",
+                        # "3.C",
+                        # "3.D",
+                        "M.AG.ELV",
+                        # "M.AG",
+                        "M.LULUCF",
                         "4",
+                        # "5", # no basket contents data
+                    ]
+                },
+            },
+            "KYOTO_Zero": {  # only the categories which have only zero data
+                "basket": "KYOTOGHG (AR5GWP100)",
+                "basket_contents": [
+                    "CH4",
+                    "CO2",
+                    "N2O",
+                    "HFCS (AR5GWP100)",
+                    "PFCS (AR5GWP100)",
+                    "SF6",
+                ],
+                "sel": {
+                    f"category ({coords_terminologies['category']})": [
+                        # downscale leaf categories, else we will ge inconsistent results
+                        "1.B.1",
+                        "1.B.3",
+                        "2.A",  # all zero -> doesn't work
+                        "2.B",  # all zero -> doesn't work
+                        "2.C",  # all zero -> doesn't work
+                        "2.H",  # all zero -> doesn't work
                     ]
                 },
             },
         },
+    },
+    "aggregate_cats": {
+        "1.B": {"sources": ["1.B.1", "1.B.2", "1.B.3"]},
+        "1": {"sources": ["1.A", "1.B"]},
+        "M.AG": {"sources": ["3.A", "M.AG.ELV"]},
+        "2": {"sources": ["2.A", "2.B", "2.C", "2.D", "2.E", "2.F", "2.G", "2.H"]},
+        "M.0.EL": {
+            "sources": ["1", "2", "M.AG", "4", "5"],  # 5 is all zero
+        },
+        "3": {"sources": ["M.AG", "M.LULUCF"]},
+        "0": {"sources": ["1", "2", "3", "4", "5"]},
+    },
+    "basket_copy": {
+        "GWPs_to_add": ["AR4GWP100", "SARGWP100", "AR6GWP100"],
+        "entities": ["HFCS", "PFCS", "UnspMixOfHFCs"],
+        "source_GWP": gwp_to_use,
     },
 }

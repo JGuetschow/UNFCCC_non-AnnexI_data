@@ -1,0 +1,23 @@
+attrs:
+  area: area (ISO3)
+  cat: category (IPCC2006_PRIMAP)
+  comment: Read fom pdf by Johannes Gütschow Processed on 2026-09-22
+  contact: mail@johannes-guetschow.de
+  entity: PFCS
+  institution: UNFCCC
+  references: https://unfccc.int/documents/659994
+  rights: ''
+  scen: scenario (PRIMAP)
+  title: Indonesia. National Communication (NC). NC 4. Processed on 2026-09-22
+data_file: IDN_NC4_2026_IPCC2006_PRIMAP.csv
+dimensions:
+  '*':
+  - area (ISO3)
+  - category (IPCC2006_PRIMAP)
+  - entity
+  - provenance
+  - scenario (PRIMAP)
+  - source
+  - time
+  - unit
+time_format: '%Y'
