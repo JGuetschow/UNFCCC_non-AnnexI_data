@@ -7,7 +7,7 @@ runs:
   steps:
     # get all csv files in the code directory using datalad
     - name: setup remote
-      uses: mathiasvr/command-output@v1
+      uses: mathiasvr/command-output@v2.0.0
       # shell: bash
       id: setup_remote
       with:
@@ -21,8 +21,7 @@ runs:
       shell: bash
       if: ${{ contains(steps.setup_remote.outputs.stdout, 'publicurl=https://pub-550cb70a20574daa8b2d1f979876bf4b.r2.dev') }}
       run: |
-        echo "Output ${{ steps.setup_remote.outputs.stdout }}"        
-        poetry run git annex verifyremote public-r2 --save 1
+        poetry run git annex verifyremote public-r2 --safe 1
     # get a file that is needed for docs to run
     - name: get files
       shell: bash
