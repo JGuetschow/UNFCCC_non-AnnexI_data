@@ -19,9 +19,10 @@ runs:
           poetry run git annex enableremote public-r2
     - name: verify remote
       shell: bash
+      if: ${{ contains(steps.setup_remote.outputs.stdout, 'publicurl=https://pub-550cb70a20574daa8b2d1f979876bf4b.r2.dev') }}
       run: |
-        echo "Output ${{ steps.setup_remote.outputs}}"
-        # poetry run git annex verifyremote public-r2 --save 1
+        echo "Output ${{ steps.setup_remote.outputs.stdout }}"
+        poetry run git annex verifyremote public-r2 --save 1
     # get a file that is needed for docs to run
     - name: get files
       shell: bash
