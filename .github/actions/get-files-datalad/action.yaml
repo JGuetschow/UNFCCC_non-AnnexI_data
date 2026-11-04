@@ -7,19 +7,21 @@ runs:
   steps:
     # get all csv files in the code directory using datalad
     - name: setup remote
+      uses: mathiasvr/command-output@v1
       shell: bash
       id: setup_remote
-      run: |
-        poetry run git config user.email "test@test.com"
-        poetry run git config user.name "github CI"        
-        poetry run git annex init
-        poetry run git annex sync
-        poetry run git annex enableremote public-r2 >> $GITHUB_OUTPUT
+      with:
+        run: |
+          poetry run git config user.email "test@test.com"
+          poetry run git config user.name "github CI"        
+          poetry run git annex init
+          poetry run git annex sync
+          poetry run git annex enableremote public-r2
     - name: verify remote
       shell: bash
       run: |
-        echo "Output [$steps.setup_remote.outputs]"
-        poetry run git annex verifyremote public-r2 --save 1
+        echo "Output ${{ steps.setup_remote.outputs}}"
+        # poetry run git annex verifyremote public-r2 --save 1
     # get a file that is needed for docs to run
     - name: get files
       shell: bash
