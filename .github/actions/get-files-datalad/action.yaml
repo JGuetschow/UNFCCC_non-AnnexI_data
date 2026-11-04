@@ -6,14 +6,22 @@ runs:
   using: "composite"
   steps:
     # get all csv files in the code directory using datalad
-    - name: get files
+    - name: setup remote
       shell: bash
+      id: setup_remote
       run: |
         poetry run git config user.email "test@test.com"
         poetry run git config user.name "github CI"        
         poetry run git annex init
         poetry run git annex sync
-        poetry run git annex enableremote public-r2
-        poetry run git annex verifyremote public-r2 --unsafe
-        poetry run datalad get src/unfccc_ghg_data/unfccc_reader/Republic_of_Korea/sector_mapping_INV2024.conf
-     
+        poetry run git annex enableremote public-r2 >> $GITHUB_OUTPUT
+    - name: verify remote
+      shell: bash
+      run: |
+        echo "Output [$steps.setup_remote.outputs]"
+        poetry run git annex verifyremote public-r2 --save 1
+    # get a file that is needed for docs to run
+    - name: get files
+      shell: bash
+      run: |
+        poetry run datalad get src/unfccc_ghg_data/unfccc_reader/Republic_of_Korea/sector_mapping_INV2024.conf 
