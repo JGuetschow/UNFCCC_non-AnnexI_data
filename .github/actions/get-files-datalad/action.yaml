@@ -6,12 +6,24 @@ runs:
   using: "composite"
   steps:
     # get all csv files in the code directory using datalad
+    - name: setup remote
+      uses: mathiasvr/command-output@v2.0.0
+      # shell: bash
+      id: setup_remote
+      with:
+        run: |
+          poetry run git config user.email "test@test.com"
+          poetry run git config user.name "github CI"        
+          poetry run git annex init
+          poetry run git annex sync
+          poetry run git annex enableremote public-r2
+    - name: verify remote
+      shell: bash
+      if: ${{ contains(steps.setup_remote.outputs.stdout, 'publicurl=https://pub-550cb70a20574daa8b2d1f979876bf4b.r2.dev') }}
+      run: |
+        poetry run git annex verifyremote public-r2 --safe 1
+    # get a file that is needed for docs to run
     - name: get files
       shell: bash
       run: |
-        poetry run git config user.email "test@test.com"
-        poetry run git config user.name "github CI"        
-        poetry run git annex init
-        poetry run git annex sync
-        poetry run git annex enableremote public-r2
-        poetry run datalad get src/unfccc_ghg_data/unfccc_reader/Republic_of_Korea/sector_mapping_INV2024.conf
+        poetry run datalad get src/unfccc_ghg_data/unfccc_reader/Republic_of_Korea/sector_mapping_INV2024.conf 
