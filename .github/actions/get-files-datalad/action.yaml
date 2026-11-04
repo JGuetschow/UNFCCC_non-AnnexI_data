@@ -7,7 +7,7 @@ runs:
   steps:
     # get all csv files in the code directory using datalad
     - name: setup remote
-      uses: mathiasvr/command-output@v1
+      uses: mathiasvr/command-output@v2.0.0
       # shell: bash
       id: setup_remote
       with:
