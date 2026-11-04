@@ -34,9 +34,8 @@ jobs:
           python-version: "3.12"
           venv-id: "docs"
           poetry-dependency-install-flags: "--all-extras --only 'main,docs'"
-      # git annex and datalad not needed at the moment and need a fix for verifyremote
-      # - uses: ./.github/actions/setup-git-annex
-      # - uses: ./.github/actions/get-files-datalad
+      - uses: ./.github/actions/setup-git-annex
+      - uses: ./.github/actions/get-files-datalad
       - name: docs
         run: |
           poetry run sphinx-build -W --keep-going -T -b html docs/source docs/build
