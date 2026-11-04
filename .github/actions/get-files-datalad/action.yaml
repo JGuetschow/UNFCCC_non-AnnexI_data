@@ -21,7 +21,7 @@ runs:
       shell: bash
       if: ${{ contains(steps.setup_remote.outputs.stdout, 'publicurl=https://pub-550cb70a20574daa8b2d1f979876bf4b.r2.dev') }}
       run: |
-        poetry run git annex verifyremote public-r2 --save 1
+        poetry run git annex verifyremote public-r2 --safe 1
     # get a file that is needed for docs to run
     - name: get files
       shell: bash
